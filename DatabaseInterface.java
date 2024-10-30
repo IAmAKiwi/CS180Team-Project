@@ -1,7 +1,7 @@
 public interface DatabaseInterface {
     // Methods we definitely need
     void addUser(User user);
-    ArrayList<User> getUsers();
+    ArrayList<User> getUsers(); // Users have passwords 
     User getUser(String username);
     String getUserName(String username);
 
