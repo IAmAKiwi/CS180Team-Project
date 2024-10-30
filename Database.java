@@ -1,12 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-<<<<<<< Updated upstream
-
-=======
 import java.util.*;
 import java.io.*;
->>>>>>> Stashed changes
 /**
  *
  */
@@ -76,8 +72,6 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
-<<<<<<< Updated upstream
-=======
 
 
         public boolean saveUsers()
@@ -131,7 +125,6 @@ public class Database implements DatabaseInterface {
 
 
        
->>>>>>> Stashed changes
     }
 
 
