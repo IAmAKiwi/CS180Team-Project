@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class MessageHistory {
+public class MessageHistory implements MessageHistoryInterface {
     private String[] userMessagers;
     private ArrayList<Message> messageHistory; // in each element of the arraylist will contain username: content, time 
     public MessageHistory() {
