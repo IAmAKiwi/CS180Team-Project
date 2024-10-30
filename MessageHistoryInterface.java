@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+
 public interface MessageHistoryInterface {
-    void addMessage(Message message);
-    ArrayList<Message> getMessages();
     String[] getUsernames();
+    public ArrayList<Message> getMessageHistory();
+    public void setMessageHistory(ArrayList<Message> messageHistory);
+    public void setUserMessagers(String[] userMessagers);
 }

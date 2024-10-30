@@ -16,11 +16,16 @@ public class MessageHistory implements MessageHistoryInterface {
         messageHistory.add(message);
     }
 
+    public MessageHistory(String[] users) {
+        userMessagers = users;
+        messageHistory = new ArrayList<Message>();
+    }
+
     public ArrayList<Message> getMessageHistory() {
         return messageHistory;
     }
 
-    public String[] getUserMessagers() {
+    public String[] getUsernames() {
         return userMessagers;
     }
 

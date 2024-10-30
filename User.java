@@ -10,6 +10,7 @@ public class User implements UserInterface {
         private String profilePic;
         private ArrayList<String> friends;
         private ArrayList<String> blocked;
+        private boolean friendsOnly;
 
         public User(String username, String password) {
             this.username = username;
@@ -21,6 +22,7 @@ public class User implements UserInterface {
             profilePic = null;
             friends = new ArrayList<String>();
             blocked = new ArrayList<String>();
+            friendsOnly = false;
         }
         public String getUsername() {
             return username;
@@ -108,6 +110,14 @@ public class User implements UserInterface {
 
         public void unblock(String username) {
             blocked.remove(username); // double check if this is right
+        }
+
+        public boolean friendsOnly() {
+            return friendsOnly;
+        }
+
+        public void setFriendsOnly(boolean friendsOnly) {
+            this.friendsOnly = friendsOnly;
         }
         
 

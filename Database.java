@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class Database implements DatabaseInterface {
     private ArrayList<User> userList;
     private ArrayList<MessageHistory> allChats;
-    private final char fileSeparator = File.separatorChar;
+    private final char fileSeparator = 28;
     private final char groupSeparator = 29;
 
     public Database() {
@@ -93,10 +94,10 @@ public class Database implements DatabaseInterface {
                 fw.write(fileSeparator);
                 fw.write(mh.toString() + "\n");
                 for (Message m : mh.getMessageHistory()) {
-                    fw.write(groupSeparator);
-                    fw.write(m.toString() + "\n");
+                    fw.write(m.toString() + groupSeparator +"\n");
                 }
             }
+            fw.write(fileSeparator);
         } catch (Exception e) {
             return false;
         }
@@ -115,10 +116,38 @@ public class Database implements DatabaseInterface {
             return false;
         }
         // Writes output to the file.
-        try (BufferedReader br = new BufferedReader(new java.io.FileReader(messagesFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
             ArrayList<Message> messages = new ArrayList<Message>();
+            String line = br.readLine();
+            String[] usernames = new String[2];
             while (br.ready()) {
+                // Get the usernames from the first line of a new MessageHistory (if it's a new fileSeparator)
+                if (line.charAt(0) == fileSeparator) {
+                    line = line.substring(1);
+                    usernames = line.split(" ");
+                    line = br.readLine();
+                }
+                /*
+                 * Add to the line until the next group separator (which is at the end of a line/message)
+                 * Or until the next file separator (which is at the beginning of a line/messageHistory)
+                 */
+                while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
+                    line = line + "\n" +br.readLine();
+                }
+                // Creates a new Message and adds it to the list
+                Message m = new Message(line.substring(line.indexOf(':') + 1, line.length() - 1),
+                        line.substring(0, line.indexOf(':')));
+                messages.add(m);
+                line = br.readLine();
 
+
+                // Add the messageHistory to the allChats list if it's a new fileSeparator and reset messages
+                if (line.charAt(0) == fileSeparator) {
+                    MessageHistory mh = new MessageHistory(usernames);
+                    mh.setMessageHistory(messages);
+                    this.allChats.add(mh);
+                    messages = new ArrayList<Message>();
+                }
             }
         } catch (Exception e) {
             return false;
