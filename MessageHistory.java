@@ -33,4 +33,13 @@ public class MessageHistory implements MessageHistoryInterface {
     public void setUserMessagers(String[] userMessagers) {
         this.userMessagers = userMessagers;
     }
+
+    /**
+     * Gives the file formatted string for this MessageHistory. Only the two usernames.
+     * Each message must be looped through to get individual toStrings.
+     */
+    @Override
+    public String toString() {
+        return String.format("%s %s", this.userMessagers[0], this.userMessagers[1]);
+    }
 }

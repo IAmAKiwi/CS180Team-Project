@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 /**
  * 
@@ -99,6 +100,18 @@ public class Database implements DatabaseInterface
         public boolean saveMessages()
         {
             //TODO: write to a backup file the contents of allChats
+            File messagesFile = new File("messageHistory.txt");
+            if (!messagesFile.exists())
+            {
+                try
+                {
+                    messagesFile.createNewFile();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
             return false;
         }
 
