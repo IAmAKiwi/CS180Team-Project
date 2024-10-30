@@ -11,7 +11,6 @@ public class Database implements DatabaseInterface {
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = File.separatorChar;
     private final char groupSeparator = 29;
-
     public Database() {
         this.userList = new ArrayList<User>();
         this.allChats = new ArrayList<MessageHistory>();
@@ -66,6 +65,59 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
+
+
+        public boolean saveUsers()
+        {
+            //TODO: write to a backup file the contents of userList
+            return false;
+        }
+
+        public boolean saveMessages()
+        {
+            //TODO: write to a backup file the contents of allChats
+            File messagesFile = new File("messageHistory.txt");
+            if (!messagesFile.exists())
+            {
+                try
+                {
+                    messagesFile.createNewFile();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
+
+        public boolean loadUsers()
+        {
+            //TODO: read backup file into userList
+            File f = new File("usersHistory.txt");
+            FileReader fr = new FilReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+            String line = bfr.readLine();
+            ArrayList<String> data = new ArrayList<>();
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                data.add(line);
+                line = bfr.readLine();
+            }
+            
+
+            return false;
+        }
+
+        public boolean loadMessages()
+        {
+            //TODO: read backup file into allChats
+        }
+
+
+       
     }
 
 
@@ -126,4 +178,4 @@ public class Database implements DatabaseInterface {
 
 
 }
-}
+
