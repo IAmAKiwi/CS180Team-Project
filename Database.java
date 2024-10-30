@@ -11,7 +11,6 @@ public class Database implements DatabaseInterface {
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = File.separatorChar;
     private final char groupSeparator = 29;
-
     public Database() {
         this.userList = new ArrayList<User>();
         this.allChats = new ArrayList<MessageHistory>();
@@ -102,10 +101,10 @@ public class Database implements DatabaseInterface {
         {
             //TODO: read backup file into userList
             File f = new File("usersHistory.txt");
-            FileReader fr = new FilReader(f);
+            FileReader fr = new FileReader(f);
             BufferedReader bfr = new BufferedReader(fr);
             String line = bfr.readLine();
-            ArrayList<String> data = new ArrayList<>();
+            ArrayList<String> data;
             while (true) {
                 if (line == null) {
                     break;
@@ -113,9 +112,26 @@ public class Database implements DatabaseInterface {
                 data.add(line);
                 line = bfr.readLine();
             }
+            if (data == null) {
+                System.out.println("No data is put ")
+            }
+            /*  username password bio .......
+            * fileSeparator username: ... groupSeparator password: .... groupSeperator bio: ....
+            */
+            User user; 
+            String userName;
+            String passWord;
+            String[] element; 
+            Character character = (Character) groupSeparator;
+            String cha = character.toString();
+            for (String item : data) {
+                element = item.split(cha);
+                userName = element[0].replace("username: ","");
+                passWord = element[1].replace("password: ", "");
+                user = new User(userName, passWord);
+                userList.add(user);
+            }
             
-
-            return false;
         }
 
         public boolean loadMessages()
@@ -168,4 +184,4 @@ public class Database implements DatabaseInterface {
 
 
 }
-}
+
