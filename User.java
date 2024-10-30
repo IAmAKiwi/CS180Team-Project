@@ -110,6 +110,5 @@ public class User implements UserInterface {
             blocked.remove(username); // double check if this is right
         }
         
-        
 
     }
