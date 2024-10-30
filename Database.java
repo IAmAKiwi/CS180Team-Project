@@ -6,8 +6,10 @@ import java.util.ArrayList;
  *
  */
 public class Database implements DatabaseInterface {
-    private final ArrayList<User> userList;
-    private final ArrayList<MessageHistory> allChats;
+    private ArrayList<User> userList;
+    private ArrayList<MessageHistory> allChats;
+    private final char fileSeparator = File.separatorChar;
+    private final char groupSeparator = 29;
 
     public Database() {
         this.userList = new ArrayList<User>();
@@ -79,6 +81,7 @@ public class Database implements DatabaseInterface {
 
     public boolean saveMessages() {
         //TODO: write to a backup file the contents of allChats
+        // Checks if the File does not yet exist and creates one if so.
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
             try {
@@ -87,9 +90,16 @@ public class Database implements DatabaseInterface {
                 e.printStackTrace();
             }
         }
-        try (FileWriter fw = new FileWriter(messagesFile)) {
-
+        // Writes output to the file.
+        try (FileWriter fw = new FileWriter(messagesFile, false)) {
+            for (MessageHistory mh : this.allChats) {
+                fw.write()
+                fw.write(mh.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return false;
     }
 
