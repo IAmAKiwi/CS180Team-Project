@@ -51,11 +51,12 @@ public class Database implements DatabaseInterface {
                 return u;
             }
         }
+        return null;
     }
 
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
         if (user1.equals(user2)) {
-            throw new IllegalArgumentException("No such self-messaging history.")
+            throw new IllegalArgumentException("No such self-messaging history.");
         }
 
         for (MessageHistory mh : this.allChats) {

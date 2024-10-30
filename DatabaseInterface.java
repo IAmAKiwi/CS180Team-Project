@@ -1,9 +1,10 @@
+import java.util.ArrayList;
+
 public interface DatabaseInterface {
     // Methods we definitely need
     boolean addUser(User user);
     ArrayList<User> getUsers();
     User getUser(String username);
-    String getUserName(String username); // What is the purpose here?
     boolean validateNewUser(User user);
 
     //void addMessage(Message message); // Could change based upon how we implement message/message history.
