@@ -2,7 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-
+import java.util.*;
+import java.io.*;
 /**
  *
  */
@@ -66,6 +67,59 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
+
+
+        public boolean saveUsers()
+        {
+            //TODO: write to a backup file the contents of userList
+            return false;
+        }
+
+        public boolean saveMessages()
+        {
+            //TODO: write to a backup file the contents of allChats
+            File messagesFile = new File("messageHistory.txt");
+            if (!messagesFile.exists())
+            {
+                try
+                {
+                    messagesFile.createNewFile();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
+
+        public boolean loadUsers()
+        {
+            //TODO: read backup file into userList
+            File f = new File("usersHistory.txt");
+            FileReader fr = new FilReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+            String line = bfr.readLine();
+            ArrayList<String> data = new ArrayList<>();
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                data.add(line);
+                line = bfr.readLine();
+            }
+            
+
+            return false;
+        }
+
+        public boolean loadMessages()
+        {
+            //TODO: read backup file into allChats
+        }
+
+
+       
     }
 
 
