@@ -4,5 +4,5 @@ public interface MessageInterface {
     String getSender();
 
     // Methods we may need (depends on implementation, could be a String[])
-    String getReceiver();
+    //String getReceiver();
 }
