@@ -9,5 +9,3 @@ File Separator
 Specify MessageHistory
 Sender and Message
 etc.
-
-username: jfeijfoewjfoi|||||password: fjowjfioew||||bio: fjijoewjifoiewiofjeowjfioe|||||

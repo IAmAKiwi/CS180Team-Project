@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -32,9 +33,10 @@ public class Database implements DatabaseInterface {
                 return false;
             }
         }
-
-
-        return !user.getPassword().contains(user.getUsername());
+        if (user.getPassword().contains(user.getUsername())) {
+            return false;
+        }
+        return true;
 
         // TODO: implement more password safety verifications
     }
@@ -50,13 +52,6 @@ public class Database implements DatabaseInterface {
                 return u;
             }
         }
-    }
-
-    public String getUserName(String username) {
-        // TODO: clarify purpose of method.
-        // How does providing a username and 
-        // receiving a username have any function?
-        return null;
     }
 
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
@@ -87,20 +82,23 @@ public class Database implements DatabaseInterface {
             try {
                 messagesFile.createNewFile();
             } catch (Exception e) {
-                e.printStackTrace();
+                return false;
             }
         }
         // Writes output to the file.
         try (FileWriter fw = new FileWriter(messagesFile, false)) {
             for (MessageHistory mh : this.allChats) {
-                fw.write()
-                fw.write(mh.toString());
+                fw.write(fileSeparator);
+                fw.write(mh.toString() + "\n");
+                for (Message m : mh.getMessageHistory()) {
+                    fw.write(groupSeparator);
+                    fw.write(m.toString() + "\n");
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
-
-        return false;
+        return true;
     }
 
     public boolean loadUsers() {
@@ -110,6 +108,20 @@ public class Database implements DatabaseInterface {
 
     public boolean loadMessages() {
         //TODO: read backup file into allChats
+        File messagesFile = new File("messageHistory.txt");
+        if (!messagesFile.exists()) {
+            return false;
+        }
+        // Writes output to the file.
+        try (BufferedReader br = new BufferedReader(new java.io.FileReader(messagesFile))) {
+            ArrayList<Message> messages = new ArrayList<Message>();
+            while (br.ready()) {
+
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 
