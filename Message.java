@@ -42,4 +42,13 @@ public class Message implements MessageInterface
     {
         return this.senderUsername;
     }
+
+    /**
+     *
+     * toString method for Message. It is in File Format.
+     */
+    @Override
+    public String toString() {
+        return String.format("%s: %s", this.senderUsername, this.contents);
+    }
 }
