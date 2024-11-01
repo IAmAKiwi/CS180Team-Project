@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.io.FileReader;
 
 /**
  *
@@ -53,7 +54,8 @@ public class Database implements DatabaseInterface {
                 return u;
             }
         }
-        return null;
+        User noEqual = new User();
+        return noEqual;
     }
 
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
@@ -68,7 +70,80 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
-        return null;
+    }
+
+
+        public boolean saveUsers()
+        {
+            //TODO: write to a backup file the contents of userList
+            return false;
+        }
+
+        public boolean saveMessages()
+        {
+            //TODO: write to a backup file the contents of allChats
+            File messagesFile = new File("messageHistory.txt");
+            if (!messagesFile.exists())
+            {
+                try
+                {
+                    messagesFile.createNewFile();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
+
+        public boolean loadUsers() {
+            //TODO: read backup file into userList
+            File f = new File("usersHistory.txt");
+            FileReader fr = new FileReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+            String line = bfr.readLine();
+            ArrayList<String> data;
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                data.add(line);
+                line = bfr.readLine();
+            }
+            if (data == null) {
+                System.out.println("No data is put in");
+                return false;
+            }
+            /*  username password bio .......
+            * fileSeparator username: ... groupSeparator password: .... groupSeperator bio: ....
+            */
+            User user; 
+            String userName;
+            String passWord;
+            String[] element; 
+            Character character = (Character) groupSeparator;
+            String cha = character.toString();
+            for (String item : data) {
+                element = item.split(cha);
+                userName = element[0].replace("username: ","");
+                passWord = element[1].replace("password: ", "");
+                user = new User(userName, passWord);
+                userList.add(user);
+            }
+            if (userList == null) {
+                System.out.println("no data is put in userList");
+            }
+            return true;
+        }
+
+        public boolean loadMessages()
+        {
+            //TODO: read backup file into allChats
+        }
+
+
+       
     }
 
 
@@ -103,12 +178,6 @@ public class Database implements DatabaseInterface {
         }
         return true;
     }
-
-    public boolean loadUsers() {
-        //TODO: read backup file into userList
-        return false;
-    }
-
     public boolean loadMessages() {
         //TODO: read backup file into allChats
         File messagesFile = new File("messageHistory.txt");
@@ -156,4 +225,3 @@ public class Database implements DatabaseInterface {
     }
 
 
-}
