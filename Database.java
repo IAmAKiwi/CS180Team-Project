@@ -77,38 +77,25 @@ public class Database implements DatabaseInterface {
     public boolean saveUsers() {
         // TODO: write to a backup file the contents of userList
         try {
-        File f = new File("usersHistory.txt");
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
+            File f = new File("usersHistory.txt");
+            if (!f.exists()) {
+                try {
+                    f.createNewFile();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        FileWriter fr = new FileWriter(f);
-        BufferedWriter bfr = new BufferedWriter(fr);
-        for (User users : userList) {
-            bfr.write(users.toString());
-            bfr.newLine();
-        }
-        return true;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
-    }
-
-    public boolean saveMessages() {
-        // TODO: write to a backup file the contents of allChats
-        File messagesFile = new File("messageHistory.txt");
-        if (!messagesFile.exists()) {
-            try {
-                messagesFile.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
+            FileWriter fr = new FileWriter(f);
+            BufferedWriter bfr = new BufferedWriter(fr);
+            for (User users : userList) {
+                bfr.write(users.toString());
+                bfr.newLine();
             }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean loadUsers() {
@@ -153,126 +140,79 @@ public class Database implements DatabaseInterface {
         return true;
     }
 
-    public boolean loadMessages() {
-        // TODO: read backup file into allChats
-        // Test case: fileSeparatorSender: groupSeparator"Content"groupSeparatorRecipient: groupSeparator(and repeat.....)
-        File f = new File("allChats.txt");
-        FileReader fr = new FileReader(f);
-        BufferedReader bfr = new BufferedReader(fr);
-        String line = bfr.readLine();
-        ArrayList<String> data;
-        while (true) {
-            if (line == null) {
-                break;
+    public boolean saveMessages() {
+        // TODO: write to a backup file the contents of allChats
+        // Checks if the File does not yet exist and creates one if so.
+        File messagesFile = new File("messageHistory.txt");
+        if (!messagesFile.exists()) {
+            try {
+                messagesFile.createNewFile();
+            } catch (Exception e) {
+                return false;
             }
-            data.add(line);
-            line = bfr.readLine();
         }
-        if (data == null) {
-            System.out.println("No data is read");
-            return false;
-        }
-        Message message;
-        MessageHistory history;
-        String recipient;
-        String sender;
-        String content;
-        String[] element;
-        Character character = (Character) groupSeparator;
-        String cha = character.toString();
-        for (String item : data) {
-            element = item.split(cha);
-            sender = element[0].replace(": ","");
-            recipient = element[2].replace(":","")
-            content = element[1];
-            message = new Message(content,sender);
-            history = new MessageHistory(message, recipient);
-            allChats.add(history);
-        }
-        if (allChats == null) {
-            System.out.println("no data is put in allChats");
-        }
-        return true;
-    }
-}
-
-public boolean saveUsers() {
-    // TODO: write to a backup file the contents of userList
-    return false;
-}
-
-public boolean saveMessages() {
-    // TODO: write to a backup file the contents of allChats
-    // Checks if the File does not yet exist and creates one if so.
-    File messagesFile = new File("messageHistory.txt");
-    if (!messagesFile.exists()) {
-        try {
-            messagesFile.createNewFile();
+        // Writes output to the file.
+        try (FileWriter fw = new FileWriter(messagesFile, false)) {
+            for (MessageHistory mh : this.allChats) {
+                fw.write(fileSeparator);
+                fw.write(mh.toString() + "\n");
+                for (Message m : mh.getMessageHistory()) {
+                    fw.write(m.toString() + groupSeparator + "\n");
+                }
+            }
+            fw.write(fileSeparator);
         } catch (Exception e) {
             return false;
         }
+        return true;
     }
-    // Writes output to the file.
-    try (FileWriter fw = new FileWriter(messagesFile, false)) {
-        for (MessageHistory mh : this.allChats) {
-            fw.write(fileSeparator);
-            fw.write(mh.toString() + "\n");
-            for (Message m : mh.getMessageHistory()) {
-                fw.write(m.toString() + groupSeparator + "\n");
-            }
-        }
-        fw.write(fileSeparator);
-    } catch (Exception e) {
-        return false;
-    }
-    return true;
-}
 
-public boolean loadMessages() {
-    // TODO: read backup file into allChats
-    File messagesFile = new File("messageHistory.txt");
-    if (!messagesFile.exists()) {
-        return false;
-    }
-    // Writes output to the file.
-    try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
-        ArrayList<Message> messages = new ArrayList<Message>();
-        String line = br.readLine();
-        String[] usernames = new String[2];
-        while (br.ready()) {
-            // Get the usernames from the first line of a new MessageHistory (if it's a new
-            // fileSeparator)
-            if (line.charAt(0) == fileSeparator) {
-                line = line.substring(1);
-                usernames = line.split(" ");
+    public boolean loadMessages() {
+        // TODO: read backup file into allChats
+        File messagesFile = new File("messageHistory.txt");
+        if (!messagesFile.exists()) {
+            return false;
+        }
+        // Writes output to the file.
+        try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
+            ArrayList<Message> messages = new ArrayList<Message>();
+            String line = br.readLine();
+            String[] usernames = new String[2];
+            while (br.ready()) {
+                // Get the usernames from the first line of a new MessageHistory (if it's a new
+                // fileSeparator)
+                if (line.charAt(0) == fileSeparator) {
+                    line = line.substring(1);
+                    usernames = line.split(" ");
+                    line = br.readLine();
+                }
+                /*
+                 * Add to the line until the next group separator (which is at the end of a
+                 * line/message)
+                 * Or until the next file separator (which is at the beginning of a
+                 * line/messageHistory)
+                 */
+                while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
+                    line = line + "\n" + br.readLine();
+                }
+                // Creates a new Message and adds it to the list
+                Message m = new Message(line.substring(line.indexOf(':') + 1, line.length() - 1),
+                        line.substring(0, line.indexOf(':')));
+                messages.add(m);
                 line = br.readLine();
-            }
-            /*
-             * Add to the line until the next group separator (which is at the end of a
-             * line/message)
-             * Or until the next file separator (which is at the beginning of a
-             * line/messageHistory)
-             */
-            while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
-                line = line + "\n" + br.readLine();
-            }
-            // Creates a new Message and adds it to the list
-            Message m = new Message(line.substring(line.indexOf(':') + 1, line.length() - 1),
-                    line.substring(0, line.indexOf(':')));
-            messages.add(m);
-            line = br.readLine();
 
-            // Add the messageHistory to the allChats list if it's a new fileSeparator and
-            // reset messages
-            if (line.charAt(0) == fileSeparator) {
-                MessageHistory mh = new MessageHistory(usernames);
-                mh.setMessageHistory(messages);
-                this.allChats.add(mh);
-                messages = new ArrayList<Message>();
+                // Add the messageHistory to the allChats list if it's a new fileSeparator and
+                // reset messages
+                if (line.charAt(0) == fileSeparator) {
+                    MessageHistory mh = new MessageHistory(usernames);
+                    mh.setMessageHistory(messages);
+                    this.allChats.add(mh);
+                    messages = new ArrayList<Message>();
+                }
             }
+        } catch (Exception e) {
+            return false;
         }
-    } catch (Exception e) {
-        return false;
+        return true;
     }
-    return true;
 }
