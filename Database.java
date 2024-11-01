@@ -172,7 +172,6 @@ public class Database implements DatabaseInterface {
     }
 
     public boolean loadMessages() {
-        // TODO: read backup file into allChats
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
             return false;
@@ -200,7 +199,7 @@ public class Database implements DatabaseInterface {
                     line = line + "\n" + br.readLine();
                 }
                 // Creates a new Message and adds it to the list
-                Message m = new Message(line.substring(line.indexOf(':') + 1, line.length() - 1),
+                Message m = new Message(line.substring(line.indexOf(' ') + 1, line.length() - 1),
                         line.substring(0, line.indexOf(':')));
                 messages.add(m);
                 line = br.readLine();
