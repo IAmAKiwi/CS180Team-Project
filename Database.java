@@ -87,9 +87,26 @@ public class Database implements DatabaseInterface {
             }
             FileWriter fr = new FileWriter(f);
             BufferedWriter bfr = new BufferedWriter(fr);
+            bfr.write(fileSeparator);
             for (User users : userList) {
-                bfr.write(users.toString());
-                bfr.newLine();
+                bfr.write("username: ");
+                bfr.write(users.getUsername());
+                bfr.write(groupSeparator);
+                bfr.write("password: ");
+                bfr.write(users.getPassword());
+                bfr.write(groupSeparator);
+                bfr.write("First Name: ");
+                bfr.write(users.getFirstName());
+                bfr.write(groupSeparator);
+                bfr.write("Last Name");
+                bfr.write(users.getLastName());
+                bfr.write(groupSeparator);
+                bfr.write("Bio: ");
+                bfr.write(users.getBio());
+                bfr.write(groupSeparator);
+                bfr.write("Birthday: ");
+                bfr.write(users.getBirthday()); //fix
+                bfr.write(fileSeparator);
             }
             bfr.close();
             return true;
