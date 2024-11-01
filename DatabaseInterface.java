@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public interface DatabaseInterface {
     // Methods we definitely need
     boolean addUser(User user);
