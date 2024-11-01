@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.io.FileReader;
 import java.io.BufferedWriter;
 
 /**
@@ -72,6 +71,7 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
+        return new MessageHistory();
     }
 
     public boolean saveUsers() {
@@ -91,6 +91,7 @@ public class Database implements DatabaseInterface {
                 bfr.write(users.toString());
                 bfr.newLine();
             }
+            bfr.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,44 +101,51 @@ public class Database implements DatabaseInterface {
 
     public boolean loadUsers() {
         // TODO: read backup file into userList
-        File f = new File("usersHistory.txt");
-        FileReader fr = new FileReader(f);
-        BufferedReader bfr = new BufferedReader(fr);
-        String line = bfr.readLine();
-        ArrayList<String> data;
-        while (true) {
-            if (line == null) {
-                break;
+        try {
+            File f = new File("usersHistory.txt");
+            FileReader fr = new FileReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+            String line = bfr.readLine();
+            ArrayList<String> data = new ArrayList<String>();
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                data.add(line);
+                line = bfr.readLine();
             }
-            data.add(line);
-            line = bfr.readLine();
-        }
-        if (data == null) {
-            System.out.println("No data is put in");
+            bfr.close();
+            if (data.size() == 0) {
+                System.out.println("No data is put in");
+                return false;
+            
+            }
+            /*
+             * username password bio .......
+             * fileSeparator username: ... groupSeparator password: .... groupSeperator bio:
+             * ....
+             */
+            User user;
+            String userName;
+            String passWord;
+            String[] element;
+            Character character = (Character) groupSeparator;
+            String cha = character.toString();
+            for (String item : data) {
+                element = item.split(cha);
+                userName = element[0].replace("username: ", "");
+                passWord = element[1].replace("password: ", "");
+                user = new User(userName, passWord);
+                userList.add(user);
+            }
+            if (userList == null) {
+                System.out.println("no data is put in userList");
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-        /*
-         * username password bio .......
-         * fileSeparator username: ... groupSeparator password: .... groupSeperator bio:
-         * ....
-         */
-        User user;
-        String userName;
-        String passWord;
-        String[] element;
-        Character character = (Character) groupSeparator;
-        String cha = character.toString();
-        for (String item : data) {
-            element = item.split(cha);
-            userName = element[0].replace("username: ", "");
-            passWord = element[1].replace("password: ", "");
-            user = new User(userName, passWord);
-            userList.add(user);
-        }
-        if (userList == null) {
-            System.out.println("no data is put in userList");
-        }
-        return true;
     }
 
     public boolean saveMessages() {
