@@ -72,6 +72,7 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
+        return null;
     }
 
     public boolean saveUsers() {
@@ -101,20 +102,23 @@ public class Database implements DatabaseInterface {
     public boolean loadUsers() {
         // TODO: read backup file into userList
         File f = new File("usersHistory.txt");
-        FileReader fr = new FileReader(f);
-        BufferedReader bfr = new BufferedReader(fr);
-        String line = bfr.readLine();
-        ArrayList<String> data;
-        while (true) {
-            if (line == null) {
-                break;
-            }
-            data.add(line);
+        String line = null;
+        ArrayList<String> data = new ArrayList<String>();
+        try (BufferedReader bfr = new BufferedReader(new FileReader(f))){
             line = bfr.readLine();
-        }
-        if (data == null) {
-            System.out.println("No data is put in");
-            return false;
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                data.add(line);
+                line = bfr.readLine();
+            }
+            if (data == null) {
+                System.out.println("No data is put in");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         /*
          * username password bio .......
