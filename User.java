@@ -1,3 +1,4 @@
+import java.time.Year;
 import java.util.ArrayList;
 
 public class User implements UserInterface {
@@ -79,8 +80,23 @@ public class User implements UserInterface {
         public int[] getBirthday() {
             return birthday;
         }
-    
+
+        /*
+        * Month, Day, Year.
+         */
         public void setBirthday(int[] birthday) {
+            if (birthday.length != 3) {
+                return;
+            }
+            if (birthday[0] < 1 || birthday[0] > 12) {
+                return;
+            }
+            if (birthday[1] < 1 || birthday[1] > 31) {
+                return;
+            }
+            if (Year.now().getValue() < birthday[2]) {
+                return;
+            }
             this.birthday = birthday;
         }
     
@@ -124,7 +140,7 @@ public class User implements UserInterface {
             blocked.remove(username); // double check if this is right
         }
 
-        public boolean friendsOnly() {
+        public boolean isFriendsOnly() {
             return friendsOnly;
         }
 

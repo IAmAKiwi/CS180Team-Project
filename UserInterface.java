@@ -26,7 +26,7 @@ public interface UserInterface {
     void removeFriend(String username);
     // void block(String username);
     // void unblock(String username);
-    boolean friendsOnly(); // Returns true if they only take messages from friends, false for all users
+    boolean isFriendsOnly(); // Returns true if they only take messages from friends, false for all users
     void setFriendsOnly(boolean friendsOnly);
 }
 

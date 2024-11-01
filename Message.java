@@ -49,6 +49,6 @@ public class Message implements MessageInterface
      */
     @Override
     public String toString() {
-        return String.format("%s:%s", this.senderUsername, this.contents);
+        return String.format("%s: %s", this.senderUsername, this.contents);
     }
 }
