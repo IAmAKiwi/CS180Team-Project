@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.BufferedWriter;
 
 /**
  *
@@ -47,13 +49,15 @@ public class Database implements DatabaseInterface {
     }
 
     public User getUser(String username) {
-        // if User implements Comparable, we can sort userList and make this more efficient
+        // if User implements Comparable, we can sort userList and make this more
+        // efficient
         for (User u : this.userList) {
             if (u.getUsername().equals(username)) {
                 return u;
             }
         }
-        return null;
+        User noEqual = new User();
+        return noEqual;
     }
 
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
@@ -68,17 +72,76 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
-        return null;
     }
 
-
     public boolean saveUsers() {
-        //TODO: write to a backup file the contents of userList
-        return false;
+        // TODO: write to a backup file the contents of userList
+        try {
+            File f = new File("usersHistory.txt");
+            if (!f.exists()) {
+                try {
+                    f.createNewFile();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            FileWriter fr = new FileWriter(f);
+            BufferedWriter bfr = new BufferedWriter(fr);
+            for (User users : userList) {
+                bfr.write(users.toString());
+                bfr.newLine();
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean loadUsers() {
+        // TODO: read backup file into userList
+        File f = new File("usersHistory.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        String line = bfr.readLine();
+        ArrayList<String> data;
+        while (true) {
+            if (line == null) {
+                break;
+            }
+            data.add(line);
+            line = bfr.readLine();
+        }
+        if (data == null) {
+            System.out.println("No data is put in");
+            return false;
+        }
+        /*
+         * username password bio .......
+         * fileSeparator username: ... groupSeparator password: .... groupSeperator bio:
+         * ....
+         */
+        User user;
+        String userName;
+        String passWord;
+        String[] element;
+        Character character = (Character) groupSeparator;
+        String cha = character.toString();
+        for (String item : data) {
+            element = item.split(cha);
+            userName = element[0].replace("username: ", "");
+            passWord = element[1].replace("password: ", "");
+            user = new User(userName, passWord);
+            userList.add(user);
+        }
+        if (userList == null) {
+            System.out.println("no data is put in userList");
+        }
+        return true;
     }
 
     public boolean saveMessages() {
-        //TODO: write to a backup file the contents of allChats
+        // TODO: write to a backup file the contents of allChats
         // Checks if the File does not yet exist and creates one if so.
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
@@ -94,7 +157,7 @@ public class Database implements DatabaseInterface {
                 fw.write(fileSeparator);
                 fw.write(mh.toString() + "\n");
                 for (Message m : mh.getMessageHistory()) {
-                    fw.write(m.toString() + groupSeparator +"\n");
+                    fw.write(m.toString() + groupSeparator + "\n");
                 }
             }
             fw.write(fileSeparator);
@@ -104,13 +167,8 @@ public class Database implements DatabaseInterface {
         return true;
     }
 
-    public boolean loadUsers() {
-        //TODO: read backup file into userList
-        return false;
-    }
-
     public boolean loadMessages() {
-        //TODO: read backup file into allChats
+        // TODO: read backup file into allChats
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
             return false;
@@ -121,18 +179,21 @@ public class Database implements DatabaseInterface {
             String line = br.readLine();
             String[] usernames = new String[2];
             while (br.ready()) {
-                // Get the usernames from the first line of a new MessageHistory (if it's a new fileSeparator)
+                // Get the usernames from the first line of a new MessageHistory (if it's a new
+                // fileSeparator)
                 if (line.charAt(0) == fileSeparator) {
                     line = line.substring(1);
                     usernames = line.split(" ");
                     line = br.readLine();
                 }
                 /*
-                 * Add to the line until the next group separator (which is at the end of a line/message)
-                 * Or until the next file separator (which is at the beginning of a line/messageHistory)
+                 * Add to the line until the next group separator (which is at the end of a
+                 * line/message)
+                 * Or until the next file separator (which is at the beginning of a
+                 * line/messageHistory)
                  */
                 while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
-                    line = line + "\n" +br.readLine();
+                    line = line + "\n" + br.readLine();
                 }
                 // Creates a new Message and adds it to the list
                 Message m = new Message(line.substring(line.indexOf(':') + 1, line.length() - 1),
@@ -140,8 +201,8 @@ public class Database implements DatabaseInterface {
                 messages.add(m);
                 line = br.readLine();
 
-
-                // Add the messageHistory to the allChats list if it's a new fileSeparator and reset messages
+                // Add the messageHistory to the allChats list if it's a new fileSeparator and
+                // reset messages
                 if (line.charAt(0) == fileSeparator) {
                     MessageHistory mh = new MessageHistory(usernames);
                     mh.setMessageHistory(messages);
@@ -154,6 +215,4 @@ public class Database implements DatabaseInterface {
         }
         return true;
     }
-
-
 }

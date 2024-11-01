@@ -13,6 +13,18 @@ public class User implements UserInterface {
         private ArrayList<String> blocked;
         private boolean friendsOnly;
 
+        public User() {
+            this.username = null;
+            this.password = null;
+            firstName = null;
+            lastName = null;
+            bio = null;
+            birthday = null;
+            profilePic = null;
+            friends = new ArrayList<String>();
+            blocked = new ArrayList<String>();
+        }
+
         public User(String username, String password) {
             this.username = username;
             this.password = password;
