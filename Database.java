@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.io.FileReader;
+import java.io.BufferedWriter;
 
 /**
  *
@@ -75,7 +76,26 @@ public class Database implements DatabaseInterface {
 
     public boolean saveUsers() {
         // TODO: write to a backup file the contents of userList
+        try {
+        File f = new File("usersHistory.txt");
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        FileWriter fr = new FileWriter(f);
+        BufferedWriter bfr = new BufferedWriter(fr);
+        for (User users : userList) {
+            bfr.write(users.toString());
+            bfr.newLine();
+        }
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
         return false;
+    }
     }
 
     public boolean saveMessages() {
