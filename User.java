@@ -1,6 +1,14 @@
 import java.time.Year;
 import java.util.ArrayList;
-
+/**
+ * Class that contains all information that a User of
+ * the social media platform could store, including
+ * the username and password.
+ * 
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * 
+ * @version Nov 2, 2024
+ */
 public class User implements UserInterface {
         private String username;
         private String password;
@@ -13,6 +21,9 @@ public class User implements UserInterface {
         private ArrayList<String> blocked;
         private boolean friendsOnly;
 
+        /**
+         * Default constructor
+         */
         public User() {
             this.username = null;
             this.password = null;
@@ -25,6 +36,11 @@ public class User implements UserInterface {
             blocked = new ArrayList<String>();
         }
 
+        /**
+         * Typical barebones constructor
+         * @param username The username used to construct the new User.
+         * @param password The password used to construct the new User.
+         */
         public User(String username, String password) {
             this.username = username;
             this.password = password;
@@ -37,6 +53,13 @@ public class User implements UserInterface {
             blocked = new ArrayList<String>();
             friendsOnly = false;
         }
+
+        //After here are simple constructors that define
+        //getters and setters for the various fields of User,
+        // or adders and removers for the ArrayList fields,
+        // save the setBirthday method, which checks for validity
+        // before completing the set.
+
         public String getUsername() {
             return username;
         }
@@ -82,7 +105,7 @@ public class User implements UserInterface {
         }
 
         /*
-        * Month, Day, Year.
+         * Month, Day, Year.
          */
         public void setBirthday(int[] birthday) {
             if (birthday.length != 3) {
