@@ -88,6 +88,8 @@ public class Database implements DatabaseInterface {
             FileWriter fr = new FileWriter(f);
             BufferedWriter bfr = new BufferedWriter(fr);
             bfr.write(fileSeparator);
+            int[] birthday;
+            String date = new String();
             for (User users : userList) {
                 bfr.write("username: ");
                 bfr.write(users.getUsername());
@@ -105,7 +107,13 @@ public class Database implements DatabaseInterface {
                 bfr.write(users.getBio());
                 bfr.write(groupSeparator);
                 bfr.write("Birthday: ");
-                bfr.write(users.getBirthday()); //fix
+                birthday = users.getBirthday(); // fix
+                for (int i = 0; i < birthday.length; i++) {
+                    date += String.valueOf(birthday[i]);
+                    if (i != birthday.length - 1) {
+                        date += "/";
+                    }
+                }
                 bfr.write(fileSeparator);
             }
             bfr.close();
@@ -135,7 +143,7 @@ public class Database implements DatabaseInterface {
             if (data.size() == 0) {
                 System.out.println("No data is put in");
                 return false;
-            
+
             }
             /*
              * username password bio .......
