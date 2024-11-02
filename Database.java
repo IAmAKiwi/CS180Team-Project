@@ -105,7 +105,7 @@ public class Database implements DatabaseInterface {
                 bfr.write(users.getBio());
                 bfr.write(groupSeparator);
                 bfr.write("Birthday: ");
-                bfr.write(users.getBirthday()); //fix
+                bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); //fix
                 bfr.write(fileSeparator);
             }
             bfr.close();
