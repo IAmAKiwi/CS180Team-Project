@@ -88,8 +88,6 @@ public class Database implements DatabaseInterface {
             FileWriter fr = new FileWriter(f);
             BufferedWriter bfr = new BufferedWriter(fr);
             bfr.write(fileSeparator);
-            int[] birthday;
-            String date = new String();
             for (User users : userList) {
                 bfr.write("username: ");
                 bfr.write(users.getUsername());
