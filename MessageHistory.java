@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 /**
+ * Class that stores messages between two (or more if implemented) users.
  * 
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
  * 
