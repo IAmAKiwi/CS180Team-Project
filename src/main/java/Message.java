@@ -1,6 +1,5 @@
-public class Message implements MessageInterface 
-{
-    
+public class Message implements MessageInterface {
+
     private String contents;
     private String senderUsername;
 
@@ -8,19 +7,18 @@ public class Message implements MessageInterface
      * 
      * Default constructor.
      */
-    public Message()
-    {
+    public Message() {
         this.contents = null;
         this.senderUsername = null;
     }
 
     /**
      * Main constructor for the class Message.
-     * @param contents The text that makes up the Message.
+     * 
+     * @param contents       The text that makes up the Message.
      * @param senderUsername The username of the User that sent this Message.
      */
-    public Message(String contents, String senderUsername)
-    {
+    public Message(String contents, String senderUsername) {
         this.contents = contents;
         this.senderUsername = senderUsername;
     }
@@ -29,8 +27,7 @@ public class Message implements MessageInterface
      * 
      * Getter for the contents of this Message.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.contents;
     }
 
@@ -38,8 +35,7 @@ public class Message implements MessageInterface
      * 
      * Getter for the username of the sender of this Message.
      */
-    public String getSender()
-    {
+    public String getSender() {
         return this.senderUsername;
     }
 

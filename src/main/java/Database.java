@@ -3,6 +3,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import java.io.IOException;
 
 import java.io.BufferedWriter;
@@ -21,13 +26,16 @@ public class Database implements DatabaseInterface {
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
     private final char groupSeparator = 29;
+    private ArrayList<String> photosPath;
 
     /**
-     * Constructor for the Database class, initializes userList and allChats
+     * Initializes the Database class, setting up the user list, message history
+     * list, and photo paths.
      */
     public Database() {
         this.userList = new ArrayList<User>();
         this.allChats = new ArrayList<MessageHistory>();
+        this.photosPath = new ArrayList<String>();
     }
 
     /**
@@ -59,6 +67,13 @@ public class Database implements DatabaseInterface {
             }
         }
         if (user.getPassword().contains(user.getUsername())) {
+            return false;
+        } else if (!user.getPassword().matches(".*[A-Z].*") || !user.getPassword().matches(".*[a-z].*")
+                || !user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            return false;
+        } else if (user.getPassword().contains(user.getFirstName()) || user.getPassword().contains(user.getLastName())
+                || user.getPassword().contains(String.valueOf(user.getBirthday()[0])
+                        + String.valueOf(user.getBirthday()[1]) + String.valueOf(user.getBirthday()[2]))) {
             return false;
         }
         return true;
@@ -133,6 +148,17 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
+    /**
+     * Saves all users in the `userList` to a file named `usersHistory.txt`.
+     * Each user's information (username, password, first name, last name, bio,
+     * and birthday) is written to the file, with fields separated by
+     * the `groupSeparator` character, and user entries separated by
+     * the `fileSeparator` character. If the file does not exist, it will be
+     * created.
+     * 
+     * @return true if users were successfully saved to the file, false if an
+     *         exception occurred.
+     */
     public boolean saveUsers() {
         // TODO: write to a backup file the contents of userList
         try {
@@ -184,6 +210,16 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    /**
+     * Loads user data from a file named `usersHistory.txt` into the `userList`.
+     * Reads each user's information, which is expected to be formatted with
+     * fields separated by the `groupSeparator` character and user entries
+     * separated by the `fileSeparator` character. For each valid user entry,
+     * a new `User` object is created and added to the `userList`.
+     * 
+     * @return true if users were successfully loaded from the file, false if
+     *         the file does not exist or an error occurs during reading.
+     */
     public boolean loadUsers() {
         // TODO: read backup file into userList
 
@@ -298,5 +334,99 @@ public class Database implements DatabaseInterface {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Loads photo paths from a file named `UsersPhotos.txt` and stores them in
+     * `photosPath`.
+     * Reads each line in the file as a separate path and adds it to the list.
+     * 
+     * @return true if the photo paths were successfully loaded, false if an error
+     *         occurred.
+     */
+    public boolean loadPhotos() {
+        try {
+            File f = new File("UsersPhotos.txt");
+            FileReader fr = new FileReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+            String line = bfr.readLine();
+            while (true) {
+                if (line == null) {
+                    break;
+                }
+                photosPath.add(line);
+                line = bfr.readLine();
+            }
+            bfr.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Saves the current photo paths in `photosPath` to a file named
+     * `UsersPhotos.txt`.
+     * Each path is written to a new line in the file.
+     * 
+     * @return true if the photo paths were successfully saved, false if an error
+     *         occurred.
+     */
+    public boolean savePhotos() {
+        try {
+            File f = new File("UsersPhotos.txt");
+            if (!f.exists()) {
+                try {
+                    f.createNewFile();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bfw = new BufferedWriter(fw);
+            for (String path : photosPath) {
+                bfw.write(path + "\n");
+            }
+            bfw.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Adds a new photo path to the `photosPath` list.
+     *
+     * @param path The file path of the photo to add.
+     */
+    public void addPhotos(String path) {
+        photosPath.add(path);
+    }
+
+    /**
+     * Displays a photo in a new JFrame window using the given file path.
+     * The window shows the image and can be closed by the user.
+     * 
+     * @param path The file path of the photo to display.
+     */
+    public void displayPhotos(String path) {
+        // Create a JFrame Window
+        JFrame frame = new JFrame(path);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 500);
+
+        // Load image using ImageIcon
+        ImageIcon imageIcon = new ImageIcon(path);
+
+        // Add image to the window
+        JLabel label = new JLabel(imageIcon);
+
+        // add label to frame(window)
+        frame.add(label);
+
+        // make visible
+        frame.setVisible(true);
     }
 }

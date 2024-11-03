@@ -1,11 +1,24 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.io.*;
-import javax.swing.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import java.io.IOException;
+
+import java.io.BufferedWriter;
+
 public class DatabasePhoto {
     private ArrayList<String> photosPath;
+
     public DatabasePhoto() {
         photosPath = new ArrayList<String>();
     }
+
     public boolean loadPhotos() {
         try {
             File f = new File("UsersPhotos.txt");
@@ -58,17 +71,17 @@ public class DatabasePhoto {
         // Create a JFrame Window
         JFrame frame = new JFrame(path);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        frame.setSize(500, 500);
 
         // Load image using ImageIcon
         ImageIcon imageIcon = new ImageIcon(path);
 
         // Add image to the window
         JLabel label = new JLabel(imageIcon);
-        
-        //add label to frame(window)
+
+        // add label to frame(window)
         frame.add(label);
-        
+
         // make visible
         frame.setVisible(true);
     }
