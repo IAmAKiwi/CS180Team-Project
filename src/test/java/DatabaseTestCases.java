@@ -32,11 +32,14 @@ class DatabaseTestCases {
     public void setUp() throws IOException {
         db = new Database();
         tempFile = Files.createTempFile("usersHistory", ".txt").toFile();
+        tempMessageFile = Files.createTempFile("messageHistory", ".txt").toFile();
         tempFile.deleteOnExit();
+        tempMessageFile.deleteOnExit();
     }
 
     void tearDown() {
         tempFile.delete();
+        tempMessageFile.delete();
     }
 
     @Test
