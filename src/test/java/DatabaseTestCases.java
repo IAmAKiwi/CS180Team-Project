@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -119,20 +120,20 @@ class DatabaseTestCases {
         db.addUser(user2);
         db.saveUsers();
 
-        ArrayList<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("usersHistory.txt"))) {
-            String line;
-            char groupSeparator = 29;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim().replace(String.valueOf(groupSeparator), "");
-                lines.add(line);
-            }
-        }
+        char groupSeparator = 29;
+        char fileSeparator = 28;
 
-        assertTrue(lines.contains("username: user1"));
-        assertTrue(lines.contains("password: password1"));
-        assertTrue(lines.contains("username: user2"));
-        assertTrue(lines.contains("password: password2"));
+        try (BufferedReader reader = new BufferedReader(new FileReader("usersHistory.txt"))) {
+            String line = reader.readLine();
+            String[] liness = line.replace(String.valueOf(fileSeparator), "").split(String.valueOf(groupSeparator));
+            ArrayList<String> lines = new ArrayList<>(Arrays.asList(liness));
+            assertTrue(lines.contains("username: user1"));
+            assertTrue(lines.contains("password: password1"));
+            assertTrue(lines.contains("username: user2"));
+            assertTrue(lines.contains("password: password2"));
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions as needed
+        }
     }
 
     @Test

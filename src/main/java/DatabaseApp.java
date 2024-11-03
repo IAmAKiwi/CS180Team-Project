@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DatabaseApp {
     public static void main(String[] args) {
@@ -24,25 +23,24 @@ public class DatabaseApp {
 
         // Save users
         try {
-            ArrayList<String> lines = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader("usersHistory.txt"))) {
-                String line;
-                char groupSeparator = 29;
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    lines.add(line);
-                }
-            }
+            BufferedReader reader = new BufferedReader(new FileReader("usersHistory.txt"));
+            String line;
+            char groupSeparator = 29;
+            line = reader.readLine();
+            char fileSeparator = 28;
+            String[] lines = line.replace(String.valueOf(fileSeparator), "").split(String.valueOf(groupSeparator));
             if (db.saveUsers()) {
                 System.out.println("Users saved successfully.");
-                for (String lai : lines) {
-                    System.out.println("line: " + lai);
-
+                for (String l : lines) {
+                    if (l.equals("username: user1")) {
+                        System.out.println(true);
+                        break;
+                    }
                 }
-                System.out.println(lines.contains("username: john_doe"));
             } else {
                 System.out.println("Failed to save users.");
             }
+            reader.close();
         } catch (IOException e) {
             System.out.println("Error creating temp file: " + e.getMessage());
         }
