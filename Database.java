@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import java.io.BufferedWriter;
 
 /**
+ * Class that stores all of the Users and MessageHistories.
+ * Manages all loading, saving, and accessing of data and some data validation.
  *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ *
+ * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
     private ArrayList<User> userList;
@@ -14,11 +19,20 @@ public class Database implements DatabaseInterface {
     private final char fileSeparator = 28;
     private final char groupSeparator = 29;
 
+    /**
+     * Constructor for the Database class, initializes userList and allChats
+     */
     public Database() {
         this.userList = new ArrayList<User>();
         this.allChats = new ArrayList<MessageHistory>();
     }
 
+    /**
+     * Adds a new user to the database if the username is valid
+     *
+     * @param user User to add
+     * @return true if user was added
+     */
     public boolean addUser(User user) {
         if (this.validateNewUser(user)) {
             this.userList.add(user);
@@ -27,6 +41,12 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
+    /**
+     * Checks if a username valid for a new user
+     *
+     * @param user User to validate.
+     * @return true if username passes test cases
+     */
     public boolean validateNewUser(User user) {
         // verifies that a username unique from all
         // current others was provided.
@@ -43,10 +63,18 @@ public class Database implements DatabaseInterface {
         // TODO: implement more password safety verifications
     }
 
+    /**
+     * @return userList of Users
+     */
     public ArrayList<User> getUsers() {
         return this.userList;
     }
 
+    /**
+     * Accesses a User based on username
+     * @param username Username of user
+     * @return User with matching username
+     */
     public User getUser(String username) {
         // if User implements Comparable, we can sort userList and make this more
         // efficient
@@ -59,6 +87,13 @@ public class Database implements DatabaseInterface {
         return noEqual;
     }
 
+    /**
+     * Returns the MessageHistory from AllChats for two users
+     * @param user1 One username in the MessageHistory
+     * @param user2 Other username in the MessageHistory
+     * @return MessageHistory for the two users
+     * @throws IllegalArgumentException If user1 and user2 are the same
+     */
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
         if (user1.equals(user2)) {
             throw new IllegalArgumentException("No such self-messaging history.");
@@ -165,6 +200,10 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    /**
+     * Saves all of the MessageHistories to a file.
+     * @return if the messages were properly saved to the file
+     */
     public boolean saveMessages() {
         // TODO: write to a backup file the contents of allChats
         // Checks if the File does not yet exist and creates one if so.
@@ -192,6 +231,10 @@ public class Database implements DatabaseInterface {
         return true;
     }
 
+    /**
+     * Loads all of the MessageHistories from a file.
+     * @return if the messages were properly loaded from the file
+     */
     public boolean loadMessages() {
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
