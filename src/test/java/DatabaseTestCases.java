@@ -1,6 +1,9 @@
+import java.util.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import org.junit.jupiter.api.Test;
 class DatabaseTestCases {
     private Database db;
     private File tempFile;
+    private File tempMessageFile;
 
     @BeforeEach
     public void setUp() throws IOException {
