@@ -57,6 +57,49 @@ public class User implements UserInterface {
         friendsOnly = false;
     }
 
+    /**
+     * More comprehensive constructor for use in loadUsers from Database.
+     * Use nulls in uninitiatied parameters.
+     * @param username
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param bio
+     * @param birthday
+     * @param profilePic
+     * @param friends
+     * @param blocked
+     * @param friendsOnly
+     */
+    public User(String username, String password, String firstName, String lastName,
+        String bio, int[] birthday, String profilePic, ArrayList<String> friends,
+        ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException
+    {
+        if (birthday != null)
+        {
+            if (birthday.length != 3)
+            {
+                throw new IllegalArgumentException("Illegal size of \"birthday\" parameter");
+            }
+        }
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bio = bio;
+        this.setBirthday(birthday);
+        this.profilePic = profilePic;
+        if (friends.equals(null))
+        {
+            this.friends = new ArrayList<String>();
+        } else this.friends = friends;
+        if (blocked.equals(null))
+        {
+            this.blocked = new ArrayList<String>();
+        } else this.blocked = blocked;
+        this.friendsOnly = friendsOnly;
+    }
+
     // After here are simple constructors that define
     // getters and setters for the various fields of User,
     // or adders and removers for the ArrayList fields,
