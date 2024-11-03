@@ -65,7 +65,14 @@ public class Database implements DatabaseInterface {
 
         // TODO: implement more password safety verifications
     }
-
+    
+    /**
+    * @return allChats of MessageHistory
+    */
+    public ArrayList<MessageHistory> getAllChats() {
+        return this.allChats;
+    }
+    
     /**
      * @return userList of Users
      */

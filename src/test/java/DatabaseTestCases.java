@@ -1,6 +1,9 @@
+import java.util.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -27,16 +30,20 @@ import org.junit.jupiter.api.Test;
 class DatabaseTestCases {
     private Database db;
     private File tempFile;
+    private File tempMessageFile;
 
     @BeforeEach
     public void setUp() throws IOException {
         db = new Database();
         tempFile = Files.createTempFile("usersHistory", ".txt").toFile();
+        tempMessageFile = Files.createTempFile("messageHistory", ".txt").toFile();
         tempFile.deleteOnExit();
+        tempMessageFile.deleteOnExit();
     }
 
     void tearDown() {
         tempFile.delete();
+        tempMessageFile.delete();
     }
 
     @Test
@@ -144,5 +151,64 @@ class DatabaseTestCases {
         File file = new File("usersHistory.txt");
         assertTrue(file.exists());
         file.delete();
+    }
+
+    @Test
+    void testSaveMessages_FileOutput() throws IOException {
+        // create a MessageHistory with some messages
+        MessageHistory messageHistory = new MessageHistory();
+        messageHistory.setUserMessagers(new String[] {"user1", "user2"});
+        
+        Message message1 = new Message("Hello", "user1");
+        Message message2 = new Message("Hi there!", "user2");
+
+        // add messages to the message history
+        ArrayList<Message> messages = messageHistory.getMessageHistory();
+        messages.add(message1);
+        messages.add(message2);
+        
+        db.getAllChats().add(messageHistory);
+        
+        // run method
+        db.saveMessages();
+
+        // read the contents of the file to check for saved messages
+        List<String> lines = Files.readAllLines(tempMessageFile.toPath());
+        
+        assertTrue(lines.contains("user1 user2"));
+        assertTrue(lines.contains("user1: Hello"));
+        assertTrue(lines.contains("user2: Hi there!"));
+    }
+
+    @Test
+    void testLoadMessages_FileInput() throws IOException {
+        // sample message history, please change if needed
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempMessageFile))) {
+            writer.write((char) 28 + "user1 user2\n");  // start with users and char
+            writer.write("user1: Hello" + (char) 29 + "\n");  // message
+            writer.write("user2: Hi there!" + (char) 29 + "\n");  // message
+            writer.write((char) 28 + "\n");  // end with char
+        }
+
+        // calls method then creates ArrayList containing newly updated allChats
+        db.loadMessages();
+        ArrayList<MessageHistory> allChats = db.getAllChats();
+
+        assertEquals(1, allChats.size());
+        
+        // specifies the first conversation in MessageHistory
+        MessageHistory loadedHistory = allChats.get(0);
+        String[] usernames = loadedHistory.getUsernames();
+        assertArrayEquals(new String[] {"user1", "user2"}, usernames);
+
+        // makes sure messages exist in MessageHistory
+        ArrayList<Message> messages = loadedHistory.getMessageHistory();
+        assertEquals(2, messages.size());
+
+        // checks content of each message
+        assertEquals("Hello", messages.get(0).getMessage());
+        assertEquals("user1", messages.get(0).getSender());
+        assertEquals("Hi there!", messages.get(1).getMessage());
+        assertEquals("user2", messages.get(1).getSender());
     }
 }
