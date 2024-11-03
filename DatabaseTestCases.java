@@ -4,6 +4,13 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
+/**
+ * A framework to run public test cases for Database
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ *
+ * @version Nov 2, 2024
+ */
 class DatabaseTestCases {
     private Database db;
     private File tempFile;
@@ -75,7 +82,7 @@ class DatabaseTestCases {
         db.addUser(user2);
         MessageHistory messageHistory = new MessageHistory();
         messageHistory.setUserMessagers(new String[] { "user1", "user2" });
-        db.getAllChats().add(messageHistory); // directly adding to create a chat history
+        db.addMessageHistory(messageHistory); // directly adding to create a chat history
 
         MessageHistory retrievedHistory = db.getMessages("user1", "user2");
         assertNotNull(retrievedHistory);

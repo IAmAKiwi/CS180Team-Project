@@ -79,4 +79,20 @@ public class MessageHistory implements MessageHistoryInterface {
     public String toString() {
         return String.format("%s %s", this.userMessagers[0], this.userMessagers[1]);
     }
+
+    /**
+     * Checks if the two MessageHistories are equal by comparing if they have the same users.
+     * @param o Object to compare
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof MessageHistory)) {
+            return false;
+        }
+        if (this == (MessageHistory) o) {
+            return true;
+        }
+        return this.toString().equals(((MessageHistory) o).toString());
+    }
 }

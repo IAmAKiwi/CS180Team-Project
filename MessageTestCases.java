@@ -11,7 +11,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 /**
- * A framework to run public test cases for User.
+ * A framework to run public test cases for Message
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ *
+ * @version Nov 2, 2024
  */
 
 @RunWith(Enclosed.class)

@@ -109,6 +109,24 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
+    /**
+     * adds a MessageHistory to AllChats
+     * @param messageHistory MessageHistory to add
+     * @return true if MessageHistory was added
+     */
+    public boolean addMessageHistory(MessageHistory messageHistory) {
+        for (MessageHistory mh : this.allChats) {
+            if (mh.equals(messageHistory)) {
+                return false;
+            }
+        }
+        if (messageHistory.getUsernames().length == 2) {
+            this.allChats.add(messageHistory);
+            return true;
+        }
+        return false;
+    }
+
     public boolean saveUsers() {
         // TODO: write to a backup file the contents of userList
         try {

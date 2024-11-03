@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.io.*;
 import javax.swing.*;
+/**
+ * A framework to later implement photo functionality.
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ *
+ * @version Nov 2, 2024
+ */
 public class DatabasePhoto {
     private ArrayList<String> photosPath;
     public DatabasePhoto() {
