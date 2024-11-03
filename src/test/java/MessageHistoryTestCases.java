@@ -13,7 +13,8 @@ import java.util.ArrayList;
 /**
  * A framework to run public test cases for MessageHistory
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  *
  * @version Nov 2, 2024
  */
@@ -36,7 +37,7 @@ public class MessageHistoryTestCases {
         public void MessageHistoryTest() {
             // Tests the creation of a MessageHistory
             ArrayList<Message> messageHistory = new ArrayList<Message>();
-            String[] users = {"User1", "User2"};
+            String[] users = { "User1", "User2" };
             Message m1 = new Message("Hello World!", "User1");
             Message m2 = new Message("Goodbye World!", "User2");
             messageHistory.add(m1);
