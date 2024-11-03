@@ -31,8 +31,10 @@ public class MessageTestCases {
     public static class TestCase {
         @Test(timeout = 1000)
         public void MessageTest() {
+            // Tests creation of Messages
             Message m1 = new Message("Hello World!", "User1");
             Message m2 = new Message("Goodbye World!", "User2");
+            // Tests the toString and getSender and getMessage methods.
             Assert.assertEquals("User1: Hello World!", m1.toString());
             Assert.assertEquals("User2", m2.getSender());
             Assert.assertEquals("Goodbye World!", m2.getMessage());
