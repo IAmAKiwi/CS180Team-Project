@@ -11,9 +11,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 /**
- * A framework to run public test cases for User.
+ * A framework to run public test cases for MessageHistory
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ *
+ * @version Nov 2, 2024
  */
-
 @RunWith(Enclosed.class)
 public class MessageHistoryTestCases {
 
@@ -31,6 +34,7 @@ public class MessageHistoryTestCases {
     public static class TestCase {
         @Test(timeout = 1000)
         public void MessageHistoryTest() {
+            // Tests the creation of a MessageHistory
             ArrayList<Message> messageHistory = new ArrayList<Message>();
             String[] users = {"User1", "User2"};
             Message m1 = new Message("Hello World!", "User1");
@@ -39,6 +43,7 @@ public class MessageHistoryTestCases {
             messageHistory.add(m2);
             MessageHistory mh = new MessageHistory(users);
             mh.setMessageHistory(messageHistory);
+            // Tests accessing MessageHistory messages.
             Assert.assertEquals("User1: Hello World!", mh.getMessageHistory().get(0).toString());
             Assert.assertEquals("User2", mh.getMessageHistory().get(1).getSender());
             Assert.assertEquals("Goodbye World!", mh.getMessageHistory().get(1).getMessage());

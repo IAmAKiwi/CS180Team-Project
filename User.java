@@ -1,6 +1,16 @@
 import java.time.Year;
 import java.util.ArrayList;
 
+/**
+ * Class that contains all information that a User of
+ * the social media platform could store, including
+ * the username and password.
+ * 
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
+ * 
+ * @version Nov 2, 2024
+ */
 public class User implements UserInterface {
     private String username;
     private String password;
