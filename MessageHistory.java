@@ -39,22 +39,34 @@ public class MessageHistory implements MessageHistoryInterface {
         messageHistory = new ArrayList<Message>();
     }
 
-    // Getter for messageHistory
+    /**
+     * Getter for messageHistory
+     * @return the ArrayList of Messages for this MessageHistory
+     */
     public ArrayList<Message> getMessageHistory() {
         return this.messageHistory;
     }
 
-    // Getter for userMessagers
+    /**
+     * Getter for userMessagers
+     * @return the array of usernames for this MessageHistory
+     */
     public String[] getUsernames() {
         return this.userMessagers;
     }
 
-    //idk if we need these setters yet
-
+    /**
+     * Setter for messageHistory
+     * @param messageHistory the ArrayList of Messages to set for this MessageHistory
+     */
     public void setMessageHistory(ArrayList<Message> messageHistory) {
         this.messageHistory = messageHistory;
     }
 
+    /**
+     * Setter for userMessagers
+     * @param userMessagers the array of usernames to set for this MessageHistory
+     */
     public void setUserMessagers(String[] userMessagers) {
         this.userMessagers = userMessagers;
     }
