@@ -3,13 +3,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.io.IOException;
+
 import java.io.BufferedWriter;
 
 /**
  * Class that stores all of the Users and MessageHistories.
  * Manages all loading, saving, and accessing of data and some data validation.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  *
  * @version Nov 2, 2024
  */
@@ -72,6 +75,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Accesses a User based on username
+     * 
      * @param username Username of user
      * @return User with matching username
      */
@@ -89,6 +93,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Returns the MessageHistory from AllChats for two users
+     * 
      * @param user1 One username in the MessageHistory
      * @param user2 Other username in the MessageHistory
      * @return MessageHistory for the two users
@@ -111,6 +116,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * adds a MessageHistory to AllChats
+     * 
      * @param messageHistory MessageHistory to add
      * @return true if MessageHistory was added
      */
@@ -148,19 +154,28 @@ public class Database implements DatabaseInterface {
                 bfr.write("password: ");
                 bfr.write(users.getPassword());
                 bfr.write(groupSeparator);
-                bfr.write("First Name: ");
-                bfr.write(users.getFirstName());
-                bfr.write(groupSeparator);
-                bfr.write("Last Name");
-                bfr.write(users.getLastName());
-                bfr.write(groupSeparator);
-                bfr.write("Bio: ");
-                bfr.write(users.getBio());
-                bfr.write(groupSeparator);
-                bfr.write("Birthday: ");
-                bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
-                bfr.write(fileSeparator);
+                if (users.getFirstName() != null) {
+                    bfr.write("First Name: ");
+                    bfr.write(users.getFirstName());
+                    bfr.write(groupSeparator);
+                }
+                if (users.getLastName() != null) {
+                    bfr.write("Last Name: ");
+                    bfr.write(users.getLastName());
+                    bfr.write(groupSeparator);
+                }
+                if (users.getBio() != null) {
+                    bfr.write("Bio: ");
+                    bfr.write(users.getBio());
+                    bfr.write(groupSeparator);
+                }
+                if (users.getBirthday() != null && users.getBirthday().length == 3) {
+                    bfr.write("Birthday: ");
+                    bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
+                    bfr.write(fileSeparator);
+                }
             }
+            bfr.write(fileSeparator);
             bfr.close();
             return true;
         } catch (Exception e) {
@@ -171,48 +186,30 @@ public class Database implements DatabaseInterface {
 
     public boolean loadUsers() {
         // TODO: read backup file into userList
+
+        File f = new File("usersHistory.txt");
+        if (!f.exists()) {
+            System.out.println("No data file found.");
+            return false;
+        }
         try {
-            File f = new File("usersHistory.txt");
             FileReader fr = new FileReader(f);
             BufferedReader bfr = new BufferedReader(fr);
-            String line = bfr.readLine();
-            ArrayList<String> data = new ArrayList<String>();
-            while (true) {
-                if (line == null) {
-                    break;
-                }
-                data.add(line);
-                line = bfr.readLine();
+            String line;
+            while ((line = bfr.readLine()) != null) {
+                String[] elements = line.split(String.valueOf(groupSeparator));
+                if (elements.length < 2)
+                    continue;
+
+                String username = elements[0].replace("username: ", "").trim();
+                String password = elements[1].replace("password: ", "").trim();
+                User user = new User(username, password);
+                this.userList.add(user);
             }
             bfr.close();
-            if (data.size() == 0) {
-                System.out.println("No data is put in");
-                return false;
-
-            }
-            /*
-             * username password bio .......
-             * fileSeparator username: ... groupSeparator password: .... groupSeperator bio:
-             * ....
-             */
-            User user;
-            String userName;
-            String passWord;
-            String[] element;
-            Character character = (Character) groupSeparator;
-            String cha = character.toString();
-            for (String item : data) {
-                element = item.split(cha);
-                userName = element[0].replace("username: ", "");
-                passWord = element[1].replace("password: ", "");
-                user = new User(userName, passWord);
-                userList.add(user);
-            }
-            if (userList == null) {
-                System.out.println("no data is put in userList");
-            }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.out.println("Error loading users: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -220,6 +217,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Saves all of the MessageHistories to a file.
+     * 
      * @return if the messages were properly saved to the file
      */
     public boolean saveMessages() {
@@ -251,6 +249,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Loads all of the MessageHistories from a file.
+     * 
      * @return if the messages were properly loaded from the file
      */
     public boolean loadMessages() {

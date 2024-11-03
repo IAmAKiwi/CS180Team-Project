@@ -1,13 +1,26 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * A framework to run public test cases for Database
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ *         lab sec 12
  *
  * @version Nov 2, 2024
  */
@@ -15,7 +28,8 @@ class DatabaseTestCases {
     private Database db;
     private File tempFile;
 
-    void setUp() throws IOException {
+    @BeforeEach
+    public void setUp() throws IOException {
         db = new Database();
         tempFile = Files.createTempFile("usersHistory", ".txt").toFile();
         tempFile.deleteOnExit();
@@ -74,7 +88,7 @@ class DatabaseTestCases {
     }
 
     @Test
-    // simulates a conversation between two users and verifies it can be retrieved 
+    // simulates a conversation between two users and verifies it can be retrieved
     void testGetMessages_ValidConversation() {
         User user1 = new User("user1", "password1");
         User user2 = new User("user2", "password2");
@@ -97,7 +111,8 @@ class DatabaseTestCases {
     }
 
     @Test
-    // adds and saves users and verifies that the correct data was written to the file
+    // adds and saves users and verifies that the correct data was written to the
+    // file
     void testSaveUsers_FileOutput() throws IOException {
         User user1 = new User("user1", "password1");
         User user2 = new User("user2", "password2");
@@ -105,15 +120,25 @@ class DatabaseTestCases {
         db.addUser(user2);
         db.saveUsers();
 
-        List<String> lines = Files.readAllLines(tempFile.toPath());
-        assertTrue(lines.contains("username: user1"));
-        assertTrue(lines.contains("password: password1"));
-        assertTrue(lines.contains("username: user2"));
-        assertTrue(lines.contains("password: password2"));
+        char groupSeparator = 29;
+        char fileSeparator = 28;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("usersHistory.txt"))) {
+            String line = reader.readLine();
+            String[] liness = line.replace(String.valueOf(fileSeparator), "").split(String.valueOf(groupSeparator));
+            ArrayList<String> lines = new ArrayList<>(Arrays.asList(liness));
+            assertTrue(lines.contains("username: user1"));
+            assertTrue(lines.contains("password: password1"));
+            assertTrue(lines.contains("username: user2"));
+            assertTrue(lines.contains("password: password2"));
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions as needed
+        }
     }
 
     @Test
-    // checks that the saveUsers method creates usersHistory.txt if it doesn’t exist otherwise
+    // checks that the saveUsers method creates usersHistory.txt if it doesn’t exist
+    // otherwise
     void testSaveUsers_CreatesFileIfNotExists() {
         db.saveUsers();
         File file = new File("usersHistory.txt");

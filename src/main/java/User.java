@@ -23,6 +23,9 @@ public class User implements UserInterface {
     private ArrayList<String> blocked;
     private boolean friendsOnly;
 
+    /**
+     * Default constructor
+     */
     public User() {
         this.username = null;
         this.password = null;
@@ -35,6 +38,12 @@ public class User implements UserInterface {
         blocked = new ArrayList<String>();
     }
 
+    /**
+     * Typical barebones constructor
+     * 
+     * @param username The username used to construct the new User.
+     * @param password The password used to construct the new User.
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -47,6 +56,12 @@ public class User implements UserInterface {
         blocked = new ArrayList<String>();
         friendsOnly = false;
     }
+
+    // After here are simple constructors that define
+    // getters and setters for the various fields of User,
+    // or adders and removers for the ArrayList fields,
+    // save the setBirthday method, which checks for validity
+    // before completing the set.
 
     public String getUsername() {
         return username;
