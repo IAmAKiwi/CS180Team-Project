@@ -62,10 +62,6 @@ This repository contains a Java framework designed to run public test cases for 
 
 The `DatabaseTestCases` class provides unit tests using JUnit 5. These tests ensure that the `Database` class correctly handles user creation, retrieval, validation, and message history management.
 
-## Requirements
-
-- Java Development Kit (JDK) 11 or higher
-- JUnit 5 for testing
 
 ## Usage
 
