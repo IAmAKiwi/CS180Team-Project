@@ -1,16 +1,14 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import java.io.IOException;
-
-import java.io.BufferedWriter;
 
 /**
  * Class that stores all of the Users and MessageHistories.
@@ -33,9 +31,9 @@ public class Database implements DatabaseInterface {
      * list, and photo paths.
      */
     public Database() {
-        this.userList = new ArrayList<User>();
-        this.allChats = new ArrayList<MessageHistory>();
-        this.photosPath = new ArrayList<String>();
+        this.userList = new ArrayList<>();
+        this.allChats = new ArrayList<>();
+        this.photosPath = new ArrayList<>();
     }
 
     /**
@@ -44,6 +42,7 @@ public class Database implements DatabaseInterface {
      * @param user User to add
      * @return true if user was added
      */
+    @Override
     public boolean addUser(User user) {
         if (this.validateNewUser(user)) {
             this.userList.add(user);
@@ -58,6 +57,7 @@ public class Database implements DatabaseInterface {
      * @param user User to validate.
      * @return true if username passes test cases
      */
+    @Override
     public boolean validateNewUser(User user) {
         // verifies that a username unique from all
         // current others was provided.
@@ -71,26 +71,26 @@ public class Database implements DatabaseInterface {
         } else if (!user.getPassword().matches(".*[A-Z].*") || !user.getPassword().matches(".*[a-z].*")
                 || !user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
             return false;
-        } else if (user.getPassword().contains(user.getFirstName()) || user.getPassword().contains(user.getLastName())
-                || user.getPassword().contains(String.valueOf(user.getBirthday()[0])
-                        + String.valueOf(user.getBirthday()[1]) + String.valueOf(user.getBirthday()[2]))) {
+        } else if (user.getPassword().length() < 6) {
             return false;
         }
         return true;
 
         // TODO: implement more password safety verifications
     }
-    
+
     /**
-    * @return allChats of MessageHistory
-    */
+     * @return allChats of MessageHistory
+     */
+    @Override
     public ArrayList<MessageHistory> getAllChats() {
         return this.allChats;
     }
-    
+
     /**
      * @return userList of Users
      */
+    @Override
     public ArrayList<User> getUsers() {
         return this.userList;
     }
@@ -101,6 +101,7 @@ public class Database implements DatabaseInterface {
      * @param username Username of user
      * @return User with matching username
      */
+    @Override
     public User getUser(String username) {
         // if User implements Comparable, we can sort userList and make this more
         // efficient
@@ -121,6 +122,7 @@ public class Database implements DatabaseInterface {
      * @return MessageHistory for the two users
      * @throws IllegalArgumentException If user1 and user2 are the same
      */
+    @Override
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
         if (user1.equals(user2)) {
             throw new IllegalArgumentException("No such self-messaging history.");
@@ -142,6 +144,7 @@ public class Database implements DatabaseInterface {
      * @param messageHistory MessageHistory to add
      * @return true if MessageHistory was added
      */
+    @Override
     public boolean addMessageHistory(MessageHistory messageHistory) {
         for (MessageHistory mh : this.allChats) {
             if (mh.equals(messageHistory)) {
@@ -166,6 +169,7 @@ public class Database implements DatabaseInterface {
      * @return true if users were successfully saved to the file, false if an
      *         exception occurred.
      */
+    @Override
     public boolean saveUsers() {
         // TODO: write to a backup file the contents of userList
         try {
@@ -173,46 +177,47 @@ public class Database implements DatabaseInterface {
             if (!f.exists()) {
                 try {
                     f.createNewFile();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
+                    return false;
                 }
             }
-            FileWriter fr = new FileWriter(f);
-            BufferedWriter bfr = new BufferedWriter(fr);
-            bfr.write(fileSeparator);
-            for (User users : userList) {
-                bfr.write("username: ");
-                bfr.write(users.getUsername());
-                bfr.write(groupSeparator);
-                bfr.write("password: ");
-                bfr.write(users.getPassword());
-                bfr.write(groupSeparator);
-                if (users.getFirstName() != null) {
-                    bfr.write("First Name: ");
-                    bfr.write(users.getFirstName());
+
+            // Use try-with-resources for BufferedWriter
+            try (BufferedWriter bfr = new BufferedWriter(new FileWriter(f))) {
+                bfr.write(fileSeparator);
+                for (User users : userList) {
+                    bfr.write("username: ");
+                    bfr.write(users.getUsername());
                     bfr.write(groupSeparator);
-                }
-                if (users.getLastName() != null) {
-                    bfr.write("Last Name: ");
-                    bfr.write(users.getLastName());
+                    bfr.write("password: ");
+                    bfr.write(users.getPassword());
                     bfr.write(groupSeparator);
+                    if (users.getFirstName() != null) {
+                        bfr.write("First Name: ");
+                        bfr.write(users.getFirstName());
+                        bfr.write(groupSeparator);
+                    }
+                    if (users.getLastName() != null) {
+                        bfr.write("Last Name: ");
+                        bfr.write(users.getLastName());
+                        bfr.write(groupSeparator);
+                    }
+                    if (users.getBio() != null) {
+                        bfr.write("Bio: ");
+                        bfr.write(users.getBio());
+                        bfr.write(groupSeparator);
+                    }
+                    if (users.getBirthday() != null && users.getBirthday().length == 3) {
+                        bfr.write("Birthday: ");
+                        bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
+                        bfr.write(fileSeparator);
+                    }
                 }
-                if (users.getBio() != null) {
-                    bfr.write("Bio: ");
-                    bfr.write(users.getBio());
-                    bfr.write(groupSeparator);
-                }
-                if (users.getBirthday() != null && users.getBirthday().length == 3) {
-                    bfr.write("Birthday: ");
-                    bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
-                    bfr.write(fileSeparator);
-                }
+                bfr.write(fileSeparator);
+                bfr.newLine();
+                return true;
             }
-            bfr.write(fileSeparator);
-            bfr.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             return false;
         }
     }
@@ -227,6 +232,7 @@ public class Database implements DatabaseInterface {
      * @return true if users were successfully loaded from the file, false if
      *         the file does not exist or an error occurs during reading.
      */
+    @Override
     public boolean loadUsers() {
         // TODO: read backup file into userList
 
@@ -235,9 +241,7 @@ public class Database implements DatabaseInterface {
             System.out.println("No data file found.");
             return false;
         }
-        try {
-            FileReader fr = new FileReader(f);
-            BufferedReader bfr = new BufferedReader(fr);
+        try (BufferedReader bfr = new BufferedReader(new FileReader(f))) {
             String line;
             while ((line = bfr.readLine()) != null) {
                 String[] elements = line.split(String.valueOf(groupSeparator));
@@ -249,11 +253,9 @@ public class Database implements DatabaseInterface {
                 User user = new User(username, password);
                 this.userList.add(user);
             }
-            bfr.close();
             return true;
         } catch (IOException e) {
             System.out.println("Error loading users: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -263,6 +265,7 @@ public class Database implements DatabaseInterface {
      * 
      * @return if the messages were properly saved to the file
      */
+    @Override
     public boolean saveMessages() {
         // TODO: write to a backup file the contents of allChats
         // Checks if the File does not yet exist and creates one if so.
@@ -270,7 +273,7 @@ public class Database implements DatabaseInterface {
         if (!messagesFile.exists()) {
             try {
                 messagesFile.createNewFile();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 return false;
             }
         }
@@ -295,6 +298,7 @@ public class Database implements DatabaseInterface {
      * 
      * @return if the messages were properly loaded from the file
      */
+    @Override
     public boolean loadMessages() {
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
@@ -302,7 +306,7 @@ public class Database implements DatabaseInterface {
         }
         // Writes output to the file.
         try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
-            ArrayList<Message> messages = new ArrayList<Message>();
+            ArrayList<Message> messages = new ArrayList<>();
             String line = br.readLine();
             String[] usernames = new String[2];
             while (br.ready()) {
@@ -334,7 +338,7 @@ public class Database implements DatabaseInterface {
                     MessageHistory mh = new MessageHistory(usernames);
                     mh.setMessageHistory(messages);
                     this.allChats.add(mh);
-                    messages = new ArrayList<Message>();
+                    messages = new ArrayList<>();
                 }
             }
         } catch (Exception e) {
@@ -351,11 +355,9 @@ public class Database implements DatabaseInterface {
      * @return true if the photo paths were successfully loaded, false if an error
      *         occurred.
      */
+    @Override
     public boolean loadPhotos() {
-        try {
-            File f = new File("UsersPhotos.txt");
-            FileReader fr = new FileReader(f);
-            BufferedReader bfr = new BufferedReader(fr);
+        try (BufferedReader bfr = new BufferedReader(new FileReader("UsersPhotos.txt"))) {
             String line = bfr.readLine();
             while (true) {
                 if (line == null) {
@@ -364,10 +366,8 @@ public class Database implements DatabaseInterface {
                 photosPath.add(line);
                 line = bfr.readLine();
             }
-            bfr.close();
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             return false;
         }
     }
@@ -380,25 +380,24 @@ public class Database implements DatabaseInterface {
      * @return true if the photo paths were successfully saved, false if an error
      *         occurred.
      */
+    @Override
     public boolean savePhotos() {
         try {
             File f = new File("UsersPhotos.txt");
             if (!f.exists()) {
                 try {
                     f.createNewFile();
-                } catch (Exception e) {
+                } catch (IOException e) {
                     return false;
                 }
             }
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bfw = new BufferedWriter(fw);
-            for (String path : photosPath) {
-                bfw.write(path + "\n");
+            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))) {
+                for (String path : photosPath) {
+                    bfw.write(path + "\n");
+                }
             }
-            bfw.close();
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             return false;
         }
     }
@@ -408,6 +407,7 @@ public class Database implements DatabaseInterface {
      *
      * @param path The file path of the photo to add.
      */
+    @Override
     public void addPhotos(String path) {
         photosPath.add(path);
     }
@@ -418,6 +418,7 @@ public class Database implements DatabaseInterface {
      * 
      * @param path The file path of the photo to display.
      */
+    @Override
     public void displayPhotos(String path) {
         // Create a JFrame Window
         JFrame frame = new JFrame(path);
@@ -435,5 +436,40 @@ public class Database implements DatabaseInterface {
 
         // make visible
         frame.setVisible(true);
+    }
+
+    /**
+     * Sets the list of photos.
+     *
+     * @param photoPath An ArrayList of String path objects to be set.
+     */
+    @Override
+    public void setPhotos(ArrayList<String> photoPath) {
+        this.photosPath = photoPath;
+    }
+
+    @Override
+    public ArrayList<String> getPhotos() {
+        return photosPath;
+    }
+
+    /**
+     * Sets the list of users.
+     *
+     * @param userList An ArrayList of User objects to be set.
+     */
+    @Override
+    public void setUsersList(ArrayList<User> userList) {
+        this.userList = userList;
+    }
+
+    /**
+     * Sets the list of all message histories.
+     *
+     * @param allChats An ArrayList of MessageHistory objects to be set.
+     */
+    @Override
+    public void setAllChats(ArrayList<MessageHistory> allChats) {
+        this.allChats = allChats;
     }
 }

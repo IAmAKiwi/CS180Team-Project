@@ -17,7 +17,7 @@ public class MessageHistory implements MessageHistoryInterface {
      */
     public MessageHistory() {
         userMessagers = null;
-        messageHistory = null;
+        messageHistory = new ArrayList<Message>();
     }
 
     /**

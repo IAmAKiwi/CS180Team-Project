@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -5,10 +7,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
-
-import java.io.*;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 
 /**
  * A framework to run public test cases for MessageHistory
@@ -36,7 +34,7 @@ public class MessageHistoryTestCases {
         @Test(timeout = 1000)
         public void MessageHistoryTest() {
             // Tests the creation of a MessageHistory
-            ArrayList<Message> messageHistory = new ArrayList<Message>();
+            ArrayList<Message> messageHistory = new ArrayList<>();
             String[] users = { "User1", "User2" };
             Message m1 = new Message("Hello World!", "User1");
             Message m2 = new Message("Goodbye World!", "User2");

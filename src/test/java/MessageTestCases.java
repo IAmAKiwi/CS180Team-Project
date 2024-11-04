@@ -6,10 +6,6 @@ import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 
-import java.io.*;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-
 /**
  * A framework to run public test cases for User.
  */

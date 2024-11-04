@@ -1,11 +1,8 @@
-PhotoMessageInterface.class
 UserInterface.class
 Database.class
 DatabaseInterface.class
 User.class
 MessageInterface.class
-DatabaseApp.class
-DatabasePhoto.class
 MessageHistory.class
 MessageHistoryInterface.class
 Message.class
