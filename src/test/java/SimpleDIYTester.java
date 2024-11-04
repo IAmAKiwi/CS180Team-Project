@@ -58,7 +58,8 @@ public class SimpleDIYTester {
                 newLastName, newBio, birthdayIntArray, null, null, null, newFriendsOnly);
 
         System.out.println(
-                "Done, your data has been saved to usersHistory.txt, our database: " + "\n\n" + exampleUser.toString());
+                "\n" + "Done, your data has been saved to usersHistory.txt, our database: " + "\n"
+                        + exampleUser.toString());
 
         db.addUser(exampleUser);
         db.saveUsers();
