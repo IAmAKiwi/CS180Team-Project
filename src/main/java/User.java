@@ -60,6 +60,7 @@ public class User implements UserInterface {
     /**
      * More comprehensive constructor for use in loadUsers from Database.
      * Use nulls in uninitiatied parameters.
+     * 
      * @param username
      * @param password
      * @param firstName
@@ -72,13 +73,10 @@ public class User implements UserInterface {
      * @param friendsOnly
      */
     public User(String username, String password, String firstName, String lastName,
-        String bio, int[] birthday, String profilePic, ArrayList<String> friends,
-        ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException
-    {
-        if (birthday != null)
-        {
-            if (birthday.length != 3)
-            {
+            String bio, int[] birthday, String profilePic, ArrayList<String> friends,
+            ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException {
+        if (birthday != null) {
+            if (birthday.length != 3) {
                 throw new IllegalArgumentException("Illegal size of \"birthday\" parameter");
             }
         }
@@ -89,37 +87,34 @@ public class User implements UserInterface {
         this.bio = bio;
         this.setBirthday(birthday);
         this.profilePic = profilePic;
-        if (friends == null)
-        {
-            this.friends = new ArrayList<String>();
-        } else this.friends = friends;
-        if (blocked == null)
-        {
+        if (friends == null) {
+            friends = new ArrayList<String>();
+        } else
+            this.friends = friends;
+        if (blocked == null) {
             this.blocked = new ArrayList<String>();
-        } else this.blocked = blocked;
+        } else
+            this.blocked = blocked;
         this.friendsOnly = friendsOnly;
     }
 
-    public String toString()
-    {
+    public String toString() {
         int birthdayVal0;
         int birthdayVal1;
         int birthdayVal2;
-        if ((this.birthday == null) ||(this.birthday.length != 3))
-        {
+        if ((this.birthday == null) || (this.birthday.length != 3)) {
             birthdayVal0 = 0;
             birthdayVal1 = 0;
             birthdayVal2 = 0;
-        } else
-        {
+        } else {
             birthdayVal0 = this.birthday[0];
             birthdayVal1 = this.birthday[1];
             birthdayVal2 = this.birthday[2];
         }
         return String.format("%s,%s,%s,%s,%s,%d/%d/%d,%s,%s,%s,%b",
-            this.username, this.password, this.firstName, this.lastName,
-            this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic,
-            this.friends.toString(), this.blocked.toString(), this.friendsOnly);
+                this.username, this.password, this.firstName, this.lastName,
+                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic,
+                this.friends.toString(), this.blocked.toString(), this.friendsOnly);
     }
 
     // After here are simple constructors that define

@@ -66,7 +66,7 @@ public class Database implements DatabaseInterface {
                 return false;
             }
         }
-        if (user.getPassword().contains(user.getUsername())) {
+        if (user.getPassword().toLowerCase().contains(user.getUsername().toLowerCase())) {
             return false;
         } else if (!user.getPassword().matches(".*[A-Z].*") || !user.getPassword().matches(".*[a-z].*")
                 || !user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
