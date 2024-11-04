@@ -88,13 +88,15 @@ public class User implements UserInterface {
         this.setBirthday(birthday);
         this.profilePic = profilePic;
         if (friends == null) {
-            friends = new ArrayList<String>();
-        } else
+            this.friends = new ArrayList<String>();
+        } else {
             this.friends = friends;
+        }
         if (blocked == null) {
             this.blocked = new ArrayList<String>();
-        } else
+        } else {
             this.blocked = blocked;
+        }
         this.friendsOnly = friendsOnly;
     }
 
