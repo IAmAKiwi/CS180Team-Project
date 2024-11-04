@@ -89,15 +89,37 @@ public class User implements UserInterface {
         this.bio = bio;
         this.setBirthday(birthday);
         this.profilePic = profilePic;
-        if (friends.equals(null))
+        if (friends == null)
         {
             this.friends = new ArrayList<String>();
         } else this.friends = friends;
-        if (blocked.equals(null))
+        if (blocked == null)
         {
             this.blocked = new ArrayList<String>();
         } else this.blocked = blocked;
         this.friendsOnly = friendsOnly;
+    }
+
+    public String toString()
+    {
+        int birthdayVal0;
+        int birthdayVal1;
+        int birthdayVal2;
+        if ((this.birthday == null) ||(this.birthday.length != 3))
+        {
+            birthdayVal0 = 0;
+            birthdayVal1 = 0;
+            birthdayVal2 = 0;
+        } else
+        {
+            birthdayVal0 = this.birthday[0];
+            birthdayVal1 = this.birthday[1];
+            birthdayVal2 = this.birthday[2];
+        }
+        return String.format("%s,%s,%s,%s,%s,%d/%d/%d,%s,%s,%s,%b",
+            this.username, this.password, this.firstName, this.lastName,
+            this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic,
+            this.friends.toString(), this.blocked.toString(), this.friendsOnly);
     }
 
     // After here are simple constructors that define
