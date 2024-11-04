@@ -1,6 +1,7 @@
 import java.util.Scanner;
 /**
  * Use this to give your own input to test at least the User constructor.
+ * Also now adds the DIY User to the database and saves the user in a txt file.
  */
 public class SimpleDIYTester 
 {
@@ -59,9 +60,13 @@ public class SimpleDIYTester
             System.out.print("Enter a character to represent true or false here (t/f):\t");
             if (sc.nextLine().equals("t")) newFriendsOnly = true;
         }
-        System.out.println("\n\n" + (new User(newUsername, newPassword, newFirstName, 
-            newLastName, newBio, birthdayIntArray, null, null, null, newFriendsOnly)).toString());
+        User exampleUser = new User(newUsername, newPassword, newFirstName, 
+            newLastName, newBio, birthdayIntArray, null, null, null, newFriendsOnly);
+        
+        System.out.println("\n\n" + exampleUser.toString());
 
+        db.addUser(exampleUser);
+        db.saveUsers();
 
         sc.close();
     }
