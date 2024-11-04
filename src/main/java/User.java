@@ -89,11 +89,11 @@ public class User implements UserInterface {
         this.bio = bio;
         this.setBirthday(birthday);
         this.profilePic = profilePic;
-        if (friends.equals(null))
+        if (friends == null)
         {
             this.friends = new ArrayList<String>();
         } else this.friends = friends;
-        if (blocked.equals(null))
+        if (blocked == null)
         {
             this.blocked = new ArrayList<String>();
         } else this.blocked = blocked;
@@ -105,7 +105,7 @@ public class User implements UserInterface {
         int birthdayVal0;
         int birthdayVal1;
         int birthdayVal2;
-        if (this.birthday.length != 3)
+        if ((this.birthday == null) ||(this.birthday.length != 3))
         {
             birthdayVal0 = 0;
             birthdayVal1 = 0;
