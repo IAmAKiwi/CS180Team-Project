@@ -22,6 +22,8 @@ public class Server implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // TODO: implement server
+        // Client will send commands to server based on the GUI
 
 
     }
@@ -69,13 +71,19 @@ public class Server implements Runnable, ServerInterface {
         db.loadMessages();
         db.loadUsers();
 
-        serverSocket = new ServerSocket(4242);
-
         try {
-            Socket socket = serverSocket.accept();
-            new Thread(new Server(socket)).start();
+            serverSocket = new ServerSocket(4242);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                Socket socket = serverSocket.accept();
+                new Thread(new Server(socket)).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
