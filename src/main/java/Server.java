@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 
 public class Server implements Runnable, ServerInterface {
+    public static Object userKey = new Object(); // Synchronization used for Users access
+    public static Object messageKey = new Object();  // Synchronization used for Messages access
     private static ServerSocket serverSocket;
     private static Database db;
     private Socket clientSocket;
@@ -16,14 +18,32 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public void run() {
+        BufferedReader reader = null;
+        PrintWriter writer = null;
+
+
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            writer = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
         // TODO: implement server
         // Client will send commands to server based on the GUI
+
+        boolean running = true;
+        String[] command = new String[2]; // [0] = command, [1] = argument
+        while (running) {
+            try {
+               command = reader.readLine().split("womp womp"); //TODO: fix this
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            switch (command[0]) {
+                // so many cases the client can do everything everywhere all at once !!!!!!
+            }
+
+        }
 
 
     }

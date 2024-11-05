@@ -10,10 +10,11 @@ public class Client implements Runnable {
             Socket socket = new Socket("localhost", 4242);
             serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             serverWriter = new PrintWriter(socket.getOutputStream(), true);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // Switch based on commands from GUI
+
     }
 
     public static void main(String[] args) {
