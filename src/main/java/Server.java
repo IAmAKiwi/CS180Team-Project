@@ -48,7 +48,7 @@ public class Server implements Runnable, ServerInterface {
 
     }
 
-
+    // TODO: disallow a user to be logged into multiple devices simultaneously (perhaps?)
     public boolean login(String username, String password) {
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
