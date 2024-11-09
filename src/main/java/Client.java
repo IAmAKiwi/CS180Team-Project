@@ -73,12 +73,27 @@ public class Client implements Runnable {
 
     public synchronized boolean sendCommand(String command) {
         try {
-            serverWriter.write(comand);
+            serverWriter.write(command);
             serverWriter.flush();
-        } catch (Exception ioe) {
+        } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    public boolean removeFiend(String friend) {
+        String command = "removeFriend:" + friend;
+        return sendCommand(command);
+    }
+
+    public boolean addFriend(String friend) {
+        String command = "addFriend:" + friend;
+        return sendCommand(command);
+    }
+
+    public boolean unblockUser(String user) {
+        String command = "unblockUser:" + user;
+        return sendCommand(command);
     }
 
     public synchronized String requestData(String command) {
