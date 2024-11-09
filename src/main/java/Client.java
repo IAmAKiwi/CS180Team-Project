@@ -20,6 +20,7 @@ public class Client implements Runnable {
 
     }
 
+
     public boolean sendMessage(String content) {
         try {
             String command = "sendMessage," + content;
