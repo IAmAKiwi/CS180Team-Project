@@ -43,6 +43,44 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
+    public boolean addBlock(String content) {
+        String command = "addBlock:" + content;
+        return sendCommand(command);
+    }
+
+    public String getBlockList() {
+        return requestData("getBlockList:");
+    }
+
+    public boolean isFriendsOnly() {
+        return boolCommand("isFriendsOnly:");
+    }
+
+    public boolean setFriendsOnly(String content) {
+        String command = "setFriendsOnly:" + content;
+        return sendCommand(command);
+    }
+
+    public boolean setProfilePic(String content) {
+        String command = "setProfilePic" + content;
+        return sendCommand(content);
+    }
+
+    public boolean logout() {
+
+    retrun boolCommand("logout:");
+    }
+
+    public synchronized boolean sendCommand(String command) {
+        try {
+            serverWriter.write(command);
+            serverWriter.flush();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public boolean removeFiend(String friend) {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
@@ -95,6 +133,8 @@ public class Client implements Runnable {
 
     // maybe add synchronized or not
     public synchronized boolean sendCommand(String command) {
+
+    public boolean boolCommand(String command) {
         return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
     }
 
