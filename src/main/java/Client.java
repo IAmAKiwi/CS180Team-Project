@@ -43,44 +43,6 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
-    public boolean addBlock(String content) {
-        String command = "addBlock:" + content;
-        return sendCommand(command);
-    }
-
-    public String getBlockList() {
-        return requestData("getBlockList:");
-    }
-
-    public boolean isFriendsOnly() {
-        return boolCommand("isFriendsOnly:");
-    }
-
-    public boolean setFriendsOnly(String content) {
-        String command = "setFriendsOnly:" + content;
-        return sendCommand(command);
-    }
-
-    public boolean setProfilePic(String content) {
-        String command = "setProfilePic" + content;
-        return sendCommand(content);
-    }
-
-    public boolean logout() {
-
-    retrun boolCommand("logout:");
-    }
-
-    public synchronized boolean sendCommand(String command) {
-        try {
-            serverWriter.write(command);
-            serverWriter.flush();
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
     public boolean removeFiend(String friend) {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
@@ -118,23 +80,48 @@ public class Client implements Runnable {
         return requestData(command);
     }
 
-    public String[]
+    public String getFriendList() {
+        return requestData("getFriendList:");
+    }
 
+    public boolean addBlock(String otherUsername) {
+        String command = "addBlock:" + otherUsername;
+        return sendCommand(command);
+    }
+
+    public String getBlockList() {
+        return requestData("getBlockList:");
+    }
+
+    public boolean isFriendsOnly(String otherUsername) {
+        String command = "isFriendsOnly:" + otherUsername;
+        return sendCommand(command);
+    }
+
+    public boolean setFriendsOnly(String booleanValue) {
+        return sendCommand("setFriendsOnly:" + booleanValue);
+    }
+
+    public boolean setProfilePic(String profilePic) {
+        return sendCommand("setProfilePic" + profilePic);
+    }
+
+    public String getProfilePic() {
+        return requestData("getProfilePic");
+    }
 
     public synchronized String requestData(String command) {
         try {
             serverWriter.println(command);
             serverWriter.flush();
             return serverReader.readLine();
-        } catch (Exception ioe) {
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            return null;
         }
     }
 
     // maybe add synchronized or not
     public synchronized boolean sendCommand(String command) {
-
-    public boolean boolCommand(String command) {
         return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
     }
 
@@ -145,13 +132,13 @@ public class Client implements Runnable {
     // Abstraction is good.
     // TODO: format all remaining methods in this fashion
 
-    public boolean receivelogin(String username, String password) {
-        try {
-            return boolCommand(String.format(
-                    "login:%s;%s", username, password));
-        } catch (Exception ioe) {
-            return false;
-        }
+    public boolean receiveLogin(String username, String password) {
+        String command = "receiveLogin:" + username + ":" + password;
+        return sendCommand(command);
+    }
+
+    public boolean receiveLogout() {
+        return sendCommand("receiveLogout");
     }
 
     public static void main(String[] args) {
