@@ -22,7 +22,7 @@ public interface ClientInterface {
 
     boolean addFriend();
 
-    boolean unblockUser();
+    boolean unblockUser(); // Peter do here
 
     boolean deleteMessage();
 
