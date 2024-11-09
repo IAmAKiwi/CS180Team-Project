@@ -21,7 +21,26 @@ public class Client implements Runnable {
     }
 
     public boolean sendMessage(String content) {
-        String command = "sendMessage," + content;
+        String command = "sendMessage:" + content;
+        return sendCommand(command);
+    }
+
+    public boolean deleteMessage(String content) {
+        String command = "deleteMessage:" + content;
+        return sendCommand(command);
+    }
+
+    public boolean sendPhoto(String content) {
+        String command = "sendPhoto:" + content;
+        return sendCommand(command);
+    }
+
+    public String accessProfile() {
+        return requestData("accessProfile:");
+    }
+
+    public boolean updateProfile(String content) {
+        String command = "updateProfile:" + content;
         return sendCommand(command);
     }
 
@@ -50,8 +69,12 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
-    public String requestData(String command) throws IOException {
-        serverWriter.println(command);
+    public synchronized String requestData(String command) {
+        try {
+            serverWriter.println(command);
+        } catch (Exception ioe) {
+            e.printStackTrace();
+        }
         serverWriter.flush();
         return serverReader.readLine();
     }
@@ -71,7 +94,7 @@ public class Client implements Runnable {
         try {
             return boolCommand(String.format(
                     "login:%s;%s", username, password));
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             return false;
         }
     }
