@@ -20,6 +20,10 @@ public class Client implements Runnable {
 
     }
 
+    public String getMessage() {
+        return requestData("receiveMessage:");
+    }
+
     public boolean sendMessage(String content) {
         String command = "sendMessage:" + content;
         return sendCommand(command);
@@ -30,11 +34,6 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
-    public boolean sendPhoto(String content) {
-        String command = "sendPhoto:" + content;
-        return sendCommand(command);
-    }
-
     public String accessProfile() {
         return requestData("accessProfile:");
     }
@@ -42,16 +41,6 @@ public class Client implements Runnable {
     public boolean updateProfile(String content) {
         String command = "updateProfile:" + content;
         return sendCommand(command);
-    }
-
-    public synchronized boolean sendCommand(String command) {
-        try {
-            serverWriter.write(command);
-            serverWriter.flush();
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     public boolean removeFiend(String friend) {
@@ -69,17 +58,43 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
+    // String output of requestActive can be "active" or "inactive"
+    public boolean requestActive(String otherUser) {
+        String command = "requestActive:" + otherUser;
+        return sendCommand(command);
+    }
+
+    // the other user
+    public boolean deleteChat(String user) {
+        String command = "deleteChat:" + user;
+        return sendCommand(command);
+    }
+
+    public boolean sendImage(String otherUsername, String imagePath) {
+        String command = "sendImage:" + otherUsername + "," + imagePath;
+        return sendCommand(command);
+    }
+
+    public String openChat(String otherUsername) {
+        String command = "openChat:" + otherUsername;
+        return requestData(command);
+    }
+
+    public String[]
+
+
     public synchronized String requestData(String command) {
         try {
             serverWriter.println(command);
+            serverWriter.flush();
+            return serverReader.readLine();
         } catch (Exception ioe) {
             e.printStackTrace();
         }
-        serverWriter.flush();
-        return serverReader.readLine();
     }
 
-    public boolean boolCommand(String command) throws IOException {
+    // maybe add synchronized or not
+    public synchronized boolean sendCommand(String command) {
         return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
     }
 
