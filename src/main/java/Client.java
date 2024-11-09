@@ -22,13 +22,18 @@ public class Client implements Runnable {
 
 
     public boolean sendMessage(String content) {
+        String command = "sendMessage," + content;
+        return sendCommand(command);
+    }
+
+    public synchronized boolean sendCommand(String command) {
         try {
-            String command = "sendMessage," + content;
-            serverWriter.write(command);
-            return true;
-        } catch (Exception e) {
+            serverWriter.write(comand);
+            serverWriter.flush();
+        } catch (IOException e) {
             return false;
         }
+        return true;
     }
 
     public String requestData(String command) throws IOException {
