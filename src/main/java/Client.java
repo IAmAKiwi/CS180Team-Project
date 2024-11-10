@@ -7,10 +7,11 @@ import java.net.Socket;
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
+    public Socket socket;
 
     public void run() {
         try {
-            Socket socket = new Socket("localhost", 4242);
+            socket = new Socket("localhost", 4242);
             serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             serverWriter = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
@@ -43,7 +44,7 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
-    public boolean removeFiend(String friend) {
+    public boolean removeFriend(String friend) {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
     }
@@ -132,13 +133,28 @@ public class Client implements Runnable, ClientInterface {
     // Abstraction is good.
     // TODO: format all remaining methods in this fashion
 
-    public boolean receiveLogin(String username, String password) {
+    public boolean login(String username, String password) {
         String command = "receiveLogin:" + username + ":" + password;
         return sendCommand(command);
     }
 
-    public boolean receiveLogout() {
+    public boolean logout() {
         return sendCommand("receiveLogout:");
+    }
+
+    // May not be needed, potentially included in "logout".
+    public boolean disconnect() {
+        boolean disconnected = sendCommand("receiveDisconnect:");
+        if (disconnected) {
+            try {
+                socket.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {
