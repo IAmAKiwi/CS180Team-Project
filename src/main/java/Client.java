@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client implements Runnable {
+public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
 
@@ -103,11 +103,11 @@ public class Client implements Runnable {
     }
 
     public boolean setProfilePic(String profilePic) {
-        return sendCommand("setProfilePic" + profilePic);
+        return sendCommand("setProfilePic:" + profilePic);
     }
 
     public String getProfilePic() {
-        return requestData("getProfilePic");
+        return requestData("getProfilePic:");
     }
 
     public synchronized String requestData(String command) {
@@ -138,7 +138,7 @@ public class Client implements Runnable {
     }
 
     public boolean receiveLogout() {
-        return sendCommand("receiveLogout");
+        return sendCommand("receiveLogout:");
     }
 
     public static void main(String[] args) {
