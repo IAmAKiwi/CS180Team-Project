@@ -7,14 +7,18 @@ import java.util.ArrayList;
 public class Server implements Runnable, ServerInterface {
     public static Object userKey = new Object(); // Synchronization used for Users access
     public static Object messageKey = new Object();  // Synchronization used for Messages access
-    private static ServerSocket serverSocket;
+    protected static ServerSocket serverSocket;
+    protected static ArrayList<Socket> clients;
     private static Database db;
     private Socket clientSocket;
-    private User loggedInUser;
+    private User currentUser;
+    private String otherUser;
     private MessageHistory currentChat; // Maybe, have to update our chat a bunch.
+
 
     public Server(Socket socket) {
         clientSocket = socket;
+        clients.add(socket);
     }
 
     public void run() {
@@ -52,7 +56,7 @@ public class Server implements Runnable, ServerInterface {
     public boolean login(String username, String password) {
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                loggedInUser = u;
+                currentUser = u;
                 return true;
             }
         }
@@ -61,13 +65,13 @@ public class Server implements Runnable, ServerInterface {
 
     public boolean register(String username, String password) {
         if (db.addUser(new User(username, password))) {
-            loggedInUser = new User(username, password);
+            currentUser = new User(username, password);
             return true;
         }
         return false;
     }
 
-    public boolean sendMessage(String otherUsername);
+    /*public boolean sendMessage(String otherUsername);
     public boolean sendImage(String otherUsername, String image);
     public boolean openChat(String otherUsername);
 
@@ -84,7 +88,7 @@ public class Server implements Runnable, ServerInterface {
     public boolean setProfilePic(String profilePic);
     // A billion more setters and getters
 
-    public boolean logout();
+    public boolean logout();*/
 
     public static void main(String[] args) {
         db = new Database();

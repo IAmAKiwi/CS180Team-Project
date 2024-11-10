@@ -159,6 +159,25 @@ public class Database implements DatabaseInterface {
     }
 
     /**
+     * Adds a message to a MessageHistory based upon the message and receiver.
+     * @param message Message to add
+     * @param receiver Username of receiver
+     * @return true if message was added
+     **/
+
+    public boolean addMessage(Message message, String receiver) {
+        for (int i = 0; i < this.allChats.size(); i++) {
+            MessageHistory mh = this.allChats.get(i);
+            if (mh.getUsernames()[0].equals(message.getSender()) || mh.getUsernames()[1].equals(receiver)) {
+                mh.addMessage(message);
+                this.allChats.set(i, mh);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Saves all users in the `userList` to a file named `usersHistory.txt`.
      * Each user's information (username, password, first name, last name, bio,
      * and birthday) is written to the file, with fields separated by
