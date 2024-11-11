@@ -9,9 +9,6 @@ public interface ClientInterface {
 
     boolean login(String username, String password);
 
-    // when sending message, GUI takes that data and send to client, client sends to
-    // server, server stores in database, server also send that content to another
-    // client
     String getMessage();
 
     // When receiving the message, server sends content to the receiver's client and

@@ -52,9 +52,6 @@ public class Server implements Runnable, ServerInterface {
                     register(command[1].substring(0, command[1].indexOf(":")),
                             command[1].substring(command[1].indexOf(":") + 1));
                     break;
-                case "disconnect":
-                    disconnect(content);
-                    break;
                 case "getMessage":
                     getMessage(content);
                     break;
@@ -115,7 +112,11 @@ public class Server implements Runnable, ServerInterface {
                 case "logout":
                     logout();
                     break;
-
+                case "disconnect":
+                    if (disconnect()) {
+                        running = false;
+                    }
+                    break;
             }
 
         }
