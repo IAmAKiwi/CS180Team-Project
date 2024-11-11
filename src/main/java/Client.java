@@ -21,10 +21,6 @@ public class Client implements Runnable, ClientInterface {
 
     }
 
-    public String getMessage() {
-        return requestData("receiveMessage:");
-    }
-
     public boolean sendMessage(String content) {
         String command = "sendMessage:" + content;
         return sendCommand(command);
@@ -71,8 +67,8 @@ public class Client implements Runnable, ClientInterface {
     }
 
     // the other user
-    public boolean deleteChat(String user) {
-        String command = "deleteChat:" + user;
+    public boolean deleteChat(String otherUser) {
+        String command = "deleteChat:" + otherUser;
         return sendCommand(command);
     }
 
@@ -81,8 +77,8 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
-    public String openChat(String otherUsername) {
-        String command = "openChat:" + otherUsername;
+    public String getChat(String otherUsername) {
+        String command = "getChat:" + otherUsername;
         return requestData(command);
     }
 

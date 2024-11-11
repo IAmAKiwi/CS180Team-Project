@@ -3,37 +3,33 @@ import java.io.IOException;
 public interface ClientInterface {
     void run();
 
-    String requestData(String command);
+    String requestData(String command); // General case for all requests
 
-    boolean sendCommand(String command);
+    boolean sendCommand(String command); // General case for all commands
 
-    boolean login(String username, String password);
+    boolean login(String username, String password); // Login command
 
-    String getMessage();
+    boolean sendMessage(String content); // Update message history. otherUser:message
 
-    // When receiving the message, server sends content to the receiver's client and
-    // client sends data to GUI
-    boolean sendMessage(String content);
+    boolean removeFriend(String friend); // remove friend
 
-    boolean removeFriend(String friend);
+    boolean addFriend(String friend); // add friend
 
-    boolean addFriend(String friend);
+    boolean unblockUser(String user); // unblock user
 
-    boolean unblockUser(String user); // Peter do here
+    boolean deleteMessage(String content); // delete message, otherUser:message
 
-    boolean deleteMessage(String content);
+    boolean deleteChat(String user); // delete chat, otherUser
 
-    boolean deleteChat(String user);
+    boolean sendImage(String otherUsername, String imagePath); // Send image. otherUser:imagePath
 
-    boolean sendImage(String otherUsername, String imagePath);
+    String accessProfile(); // get profile information
 
-    String accessProfile();
-
-    boolean updateProfile(String content);
+    boolean updateProfile(String content); // update profile information very complicated format!!!
 
     boolean requestActive(String otherUser);
 
-    String openChat(String otherUsername);
+    String getChat(String otherUsername); // Open a messageHistory, get
 
     String getFriendList();
 

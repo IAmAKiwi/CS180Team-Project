@@ -43,24 +43,24 @@ public class Server implements Runnable, ServerInterface {
         // Client will send commands to server based on the GUI
 
         boolean running = true;
-        String[] command = new String[2]; // [0] = command, [1] = argument
+        String line = "";
         while (running) {
             try {
-               command = reader.readLine().split(":");
+               line = reader.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            switch (command[0]) {
+            String command = line.substring(0, line.indexOf(':'));
+            String content = line.substring(line.indexOf(':') + 1);
+            switch (command) {
                 case "login":
-                    login(command[1].substring(0, command[1].indexOf(":")),
-                            command[1].substring(command[1].indexOf(":") + 1));
+                    login(content);
                     break;
                 case "register":
-                    register(command[1].substring(0, command[1].indexOf(":")),
-                            command[1].substring(command[1].indexOf(":") + 1));
+                    register(content);
                     break;
-                case "getMessage":
-                    getMessage(content);
+                case "getChat":
+                    getChat(content);
                     break;
                 case "sendMessage":
                     sendMessage(content);
@@ -131,7 +131,9 @@ public class Server implements Runnable, ServerInterface {
 
     // TODO: disallow a user to be logged into multiple devices simultaneously (perhaps?)
     // Update this and other methods to be void. Each method will handle writing back information.
-    public boolean login(String username, String password) {
+    public boolean login(String content) {
+        String username = content.substring(0, content.indexOf(':'));
+        String password = content.substring(content.indexOf(':') + 1);
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 currentUser = u;
@@ -141,7 +143,9 @@ public class Server implements Runnable, ServerInterface {
         return false;
     }
 
-    public boolean register(String username, String password) {
+    public boolean register(String content) {
+        String username = content.substring(0, content.indexOf(':'));
+        String password = content.substring(content.indexOf(':') + 1);
         if (db.addUser(new User(username, password))) {
             currentUser = new User(username, password);
             return true;
