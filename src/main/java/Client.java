@@ -134,22 +134,22 @@ public class Client implements Runnable, ClientInterface {
     // TODO: format all remaining methods in this fashion
 
     public boolean login(String username, String password) {
-        String command = "receiveLogin:" + username + ":" + password;
+        String command = "login:" + username + ":" + password;
         return sendCommand(command);
     }
 
     public boolean register(String username, String password) {
-        String command = "receiveRegister:" + username + ":" + password;
+        String command = "register:" + username + ":" + password;
         return sendCommand(command);
     }
 
     public boolean logout() {
-        return sendCommand("receiveLogout:");
+        return sendCommand("logout:");
     }
 
     // May not be needed, potentially included in "logout".
     public boolean disconnect() {
-        boolean disconnected = sendCommand("receiveDisconnect:");
+        boolean disconnected = sendCommand("disconnect:");
         if (disconnected) {
             try {
                 socket.close();

@@ -3,12 +3,20 @@ import java.net.Socket;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Typical use flow of a client/server connection:
+ * Client connects to server.
+ * Client either logs in or registers. (should not have to check if they are logged in, should be done implicitly by GUI)
+ * Client opens a chat (server sends back the data to display)
+ * Client sends a message (server updates the data)
+ * Whenever a
+ *
+ */
 
 public class Server implements Runnable, ServerInterface {
     public static Object userKey = new Object(); // Synchronization used for Users access
     public static Object messageKey = new Object();  // Synchronization used for Messages access
-    protected static ServerSocket serverSocket;
-    protected static ArrayList<Socket> clients;
+    private static ServerSocket serverSocket;
     private static Database db;
     private Socket clientSocket;
     private User currentUser;
@@ -18,7 +26,6 @@ public class Server implements Runnable, ServerInterface {
 
     public Server(Socket socket) {
         clientSocket = socket;
-        clients.add(socket);
     }
 
     public void run() {
@@ -39,16 +46,16 @@ public class Server implements Runnable, ServerInterface {
         String[] command = new String[2]; // [0] = command, [1] = argument
         while (running) {
             try {
-               command = reader.readLine().split(":"); //TODO: fix this
+               command = reader.readLine().split(":");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             switch (command[0]) {
-                case "receiveLogin":
+                case "login":
                     login(command[1].substring(0, command[1].indexOf(":")),
                             command[1].substring(command[1].indexOf(":") + 1));
                     break;
-                case "receiveRegister":
+                case "register":
                     register(command[1].substring(0, command[1].indexOf(":")),
                             command[1].substring(command[1].indexOf(":") + 1));
                     break;
@@ -120,11 +127,10 @@ public class Server implements Runnable, ServerInterface {
             }
 
         }
-
-
     }
 
     // TODO: disallow a user to be logged into multiple devices simultaneously (perhaps?)
+    // Update this and other methods to be void. Each method will handle writing back information.
     public boolean login(String username, String password) {
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
@@ -158,7 +164,6 @@ public class Server implements Runnable, ServerInterface {
     public boolean setFriendsOnly(boolean friendsOnly);
 
     public boolean setProfilePic(String profilePic);
-    // A billion more setters and getters
 
     public boolean logout();*/
 
