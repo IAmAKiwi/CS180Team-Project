@@ -39,12 +39,83 @@ public class Server implements Runnable, ServerInterface {
         String[] command = new String[2]; // [0] = command, [1] = argument
         while (running) {
             try {
-               command = reader.readLine().split("womp womp"); //TODO: fix this
+               command = reader.readLine().split(":"); //TODO: fix this
             } catch (IOException e) {
                 e.printStackTrace();
             }
             switch (command[0]) {
-                // so many cases the client can do everything everywhere all at once !!!!!!
+                case "receiveLogin":
+                    login(command[1].substring(0, command[1].indexOf(":")),
+                            command[1].substring(command[1].indexOf(":") + 1));
+                    break;
+                case "receiveRegister":
+                    register(command[1].substring(0, command[1].indexOf(":")),
+                            command[1].substring(command[1].indexOf(":") + 1));
+                    break;
+                case "disconnect":
+                    disconnect(content);
+                    break;
+                case "getMessage":
+                    getMessage(content);
+                    break;
+                case "sendMessage":
+                    sendMessage(content);
+                    break;
+                case "deleteMessage":
+                    deleteMessage(content);
+                    break;
+                case "accessProfile":
+                    accessProfile();
+                    break;
+                case "updateProfile":
+                    updateProfile(content);
+                    break;
+                case "removeFriend":
+                    removeFriend(content);
+                    break;
+                case "addFriend":
+                    addFriend(content);
+                    break;
+                case "unblockUser":
+                    unblockUser(content);
+                    break;
+                case "blockUser":
+                    blockUser(content);
+                    break;
+                case "requestActive":
+                    requestActive(content);
+                    break;
+                case "deleteChat":
+                    deleteChat(content);
+                    break;
+                case "sendImage":
+                    sendImage(content);
+                    break;
+                case "openChat":
+                    openChat(content);
+                    break;
+                case "getBlockList":
+                    getBlockList();
+                    break;
+                case "getFriendList":
+                    getFriendList();
+                    break;
+                case "isFriendsOnly":
+                    isFriendsOnly(content);
+                    break;
+                case "setFriendsOnly":
+                    setFriendsOnly(content);
+                    break;
+                case "setProfilePic":
+                    setProfilePic(content);
+                    break;
+                case "getProfilePic":
+                    getProfilePic();
+                    break;
+                case "logout":
+                    logout();
+                    break;
+
             }
 
         }

@@ -40,7 +40,7 @@ public interface ClientInterface {
 
     String getFriendList();
 
-    boolean addBlock(String otherUsername);
+    boolean blockUser(String otherUsername);
 
     String getBlockList();
 

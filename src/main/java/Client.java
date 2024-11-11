@@ -59,6 +59,11 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
+    public boolean blockUser(String otherUsername) {
+        String command = "addBlock:" + otherUsername;
+        return sendCommand(command);
+    }
+
     // String output of requestActive can be "active" or "inactive"
     public boolean requestActive(String otherUser) {
         String command = "requestActive:" + otherUser;
@@ -83,11 +88,6 @@ public class Client implements Runnable, ClientInterface {
 
     public String getFriendList() {
         return requestData("getFriendList:");
-    }
-
-    public boolean addBlock(String otherUsername) {
-        String command = "addBlock:" + otherUsername;
-        return sendCommand(command);
     }
 
     public String getBlockList() {
@@ -135,6 +135,11 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean login(String username, String password) {
         String command = "receiveLogin:" + username + ":" + password;
+        return sendCommand(command);
+    }
+
+    public boolean register(String username, String password) {
+        String command = "receiveRegister:" + username + ":" + password;
         return sendCommand(command);
     }
 
