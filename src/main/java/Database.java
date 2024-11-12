@@ -76,7 +76,6 @@ public class Database implements DatabaseInterface {
         }
         return true;
 
-        // TODO: implement more password safety verifications
     }
 
     /**

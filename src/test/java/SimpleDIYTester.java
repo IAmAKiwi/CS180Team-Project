@@ -1,8 +1,12 @@
 import java.util.Scanner;
 
 /**
- * Use this to give your own input to test at least the User constructor.
- * Also now adds the DIY User to the database and saves the user in a txt file.
+ * A framework to run give illustrations for Database
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ *         lab sec 12
+ *
+ * @version Nov 2, 2024
  */
 public class SimpleDIYTester {
     public static void main(String[] args) {

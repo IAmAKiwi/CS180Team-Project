@@ -42,7 +42,7 @@ class DatabaseTestCases {
     @Test
     // Verifies that adding a user with a unique username succeeds
     // and that adding a user with a duplicate username fails
-    void testAddUser_UniqueUsername() {
+    void testAddUserUniqueUsername() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user1", "Password2$");
         assertTrue(db.addUser(user1));
@@ -51,14 +51,14 @@ class DatabaseTestCases {
 
     @Test
     // checks that the validation method fails if the password contains the username
-    void testValidateNewUser_UsernameInPassword() {
+    void testValidateNewUserUsernameInPassword() {
         User user = new User("user", "userpassword");
         assertFalse(db.validateNewUser(user)); // should return false if password contains username
     }
 
     @Test
     // adds a user and retrieves it to verify getter
-    void testGetUser_ExistingUser() {
+    void testGetUserExistingUser() {
         User user = new User("user1", "Password1$");
         db.addUser(user);
         User gottenUser = db.getUser("user1");
@@ -68,7 +68,7 @@ class DatabaseTestCases {
 
     @Test
     // attempts to retrieve a non-existent user which should be default
-    void testGetUser_NonExistentUser() {
+    void testGetUserNonExistentUser() {
         User defaultUser = db.getUser("nonexistent");
         assertNotNull(defaultUser);
         assertNull(defaultUser.getUsername()); // assuming default user has null username and password
@@ -89,7 +89,7 @@ class DatabaseTestCases {
 
     @Test
     // simulates a conversation between two users and verifies it can be retrieved
-    void testGetMessages_ValidConversation() {
+    void testGetMessagesValidConversation() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -105,7 +105,7 @@ class DatabaseTestCases {
 
     @Test
     // checks if self messaging throws exception
-    void testGetMessages_SelfMessagingException() {
+    void testGetMessagesSelfMessagingException() {
         db.addUser(new User("user1", "Password1$"));
         // assertThrows(IllegalArgumentException.class, () -> db.getMessages("user1",
         // "user1"));
@@ -114,7 +114,7 @@ class DatabaseTestCases {
     @Test
     // adds and saves users and verifies that the correct data was written to the
     // file
-    void testSaveUsers_FileOutput() throws IOException {
+    void testSaveUsersFileOutput() throws IOException {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -179,7 +179,7 @@ class DatabaseTestCases {
     }
 
     @Test
-    void testSaveMessages_FileOutput() throws IOException {
+    void testSaveMessagesFileOutput() throws IOException {
         // create a MessageHistory with some messages
         MessageHistory messageHistory = new MessageHistory();
         messageHistory.setUserMessagers(new String[] { "user1", "user2" });
@@ -243,7 +243,7 @@ class DatabaseTestCases {
     }
 
     @Test
-    void testLoadMessages_FileInput() throws IOException {
+    void testLoadMessagesFileInput() throws IOException {
         // sample message history, please change if needed
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempMessageFile))) {
             writer.write((char) 28 + "user1 user2\n"); // start with users and char
