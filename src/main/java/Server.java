@@ -124,6 +124,8 @@ public class Server implements Runnable, ServerInterface {
                         running = false;
                     }
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid command: " + command);
             }
 
         }
