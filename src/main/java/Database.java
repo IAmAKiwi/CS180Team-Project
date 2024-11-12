@@ -198,10 +198,10 @@ public class Database implements DatabaseInterface {
         }
 
         for (int i = 0; i < this.allChats.size(); i++) {
+            synchronized (this.messageKey) {
             MessageHistory mh = this.allChats.get(i);
             if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                 mh.addMessage(message);
-                synchronized (this.messageKey) {
                     this.allChats.set(i, mh);
                 }
                 return true;
@@ -210,7 +210,7 @@ public class Database implements DatabaseInterface {
 
         MessageHistory mh = new MessageHistory(message, receiver);
         synchronized (this.messageKey) {
-        this.allChats.add(mh);
+            this.allChats.add(mh);
         }
         return true;
     }
