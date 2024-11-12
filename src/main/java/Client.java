@@ -23,6 +23,12 @@ public class Client implements Runnable, ClientInterface {
 
     }
 
+    // Getusers
+
+    public String getUserList() {
+        return requestData("getUserList: ");
+    }
+
     public boolean sendMessage(String content) {
         String command = "sendMessage:" + content;
         return sendCommand(command);

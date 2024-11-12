@@ -59,6 +59,9 @@ public class Server implements Runnable, ServerInterface {
                 case "register":
                     register(content);
                     break;
+                case "getUserList":
+                    getUserList();
+                    break;
                 case "getChat":
                     getChat(content);
                     break;
