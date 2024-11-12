@@ -128,12 +128,11 @@ public class Database implements DatabaseInterface {
         }
 
         for (MessageHistory mh : this.allChats) {
-            if ((mh.getUsernames()[0].equals(user1)) || (mh.getUsernames()[1].equals(user1))) {
-                if ((mh.getUsernames()[0].equals(user2)) || (mh.getUsernames()[1].equals(user2))) {
-                    return mh;
+            if (mh.equals(new MessageHistory(new String[] { user1, user2 }))) {
+                return mh;
                 }
             }
-        }
+
         return null;
     }
 
@@ -169,6 +168,7 @@ public class Database implements DatabaseInterface {
         User u2 = this.getUser(receiver);
         ArrayList<String> u1Blocked = u1.getBlocked();
         ArrayList<String> u2Blocked =u2.getBlocked();
+
         if (u1Blocked.contains(receiver) || u2Blocked.contains(message.getSender())) {
             return false;
         }
@@ -189,13 +189,16 @@ public class Database implements DatabaseInterface {
 
         for (int i = 0; i < this.allChats.size(); i++) {
             MessageHistory mh = this.allChats.get(i);
-            if (mh.getUsernames()[0].equals(message.getSender()) || mh.getUsernames()[1].equals(receiver)) {
+            if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                 mh.addMessage(message);
                 this.allChats.set(i, mh);
                 return true;
             }
         }
-        return false;
+
+        MessageHistory mh = new MessageHistory(message, receiver);
+        this.allChats.add(mh);
+        return true;
     }
 
     /**
