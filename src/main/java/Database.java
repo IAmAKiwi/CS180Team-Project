@@ -20,6 +20,9 @@ import javax.swing.JLabel;
  * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
+    private static Object userKey;
+    private static Object messageKey;
+    private static Object photoKey;
     private ArrayList<User> userList;
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
@@ -34,6 +37,9 @@ public class Database implements DatabaseInterface {
         this.userList = new ArrayList<>();
         this.allChats = new ArrayList<>();
         this.photosPath = new ArrayList<>();
+        this.userKey = new Object();
+        this.messageKey = new Object();
+        this.photoKey = new Object();
     }
 
     /**
@@ -44,9 +50,11 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean addUser(User user) {
-        if (this.validateNewUser(user)) {
-            this.userList.add(user);
-            return true;
+        synchronized (this.userKey) {
+            if (this.validateNewUser(user)) {
+                this.userList.add(user);
+                return true;
+            }
         }
         return false;
     }
@@ -150,7 +158,9 @@ public class Database implements DatabaseInterface {
             }
         }
         if (messageHistory.getUsernames().length == 2) {
-            this.allChats.add(messageHistory);
+            synchronized (this.messageKey) {
+                this.allChats.add(messageHistory);
+            }
             return true;
         }
         return false;
@@ -191,13 +201,17 @@ public class Database implements DatabaseInterface {
             MessageHistory mh = this.allChats.get(i);
             if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                 mh.addMessage(message);
-                this.allChats.set(i, mh);
+                synchronized (this.messageKey) {
+                    this.allChats.set(i, mh);
+                }
                 return true;
             }
         }
 
         MessageHistory mh = new MessageHistory(message, receiver);
+        synchronized (this.messageKey) {
         this.allChats.add(mh);
+        }
         return true;
     }
 
@@ -227,38 +241,40 @@ public class Database implements DatabaseInterface {
 
             // Use try-with-resources for BufferedWriter
             try (BufferedWriter bfr = new BufferedWriter(new FileWriter(f))) {
-                bfr.write(fileSeparator);
-                for (User users : userList) {
-                    bfr.write("username: ");
-                    bfr.write(users.getUsername());
-                    bfr.write(groupSeparator);
-                    bfr.write("password: ");
-                    bfr.write(users.getPassword());
-                    bfr.write(groupSeparator);
-                    if (users.getFirstName() != null) {
-                        bfr.write("First Name: ");
-                        bfr.write(users.getFirstName());
+                synchronized (this.userKey) {
+                    bfr.write(fileSeparator);
+                    for (User users : userList) {
+                        bfr.write("username: ");
+                        bfr.write(users.getUsername());
                         bfr.write(groupSeparator);
-                    }
-                    if (users.getLastName() != null) {
-                        bfr.write("Last Name: ");
-                        bfr.write(users.getLastName());
+                        bfr.write("password: ");
+                        bfr.write(users.getPassword());
                         bfr.write(groupSeparator);
+                        if (users.getFirstName() != null) {
+                            bfr.write("First Name: ");
+                            bfr.write(users.getFirstName());
+                            bfr.write(groupSeparator);
+                        }
+                        if (users.getLastName() != null) {
+                            bfr.write("Last Name: ");
+                            bfr.write(users.getLastName());
+                            bfr.write(groupSeparator);
+                        }
+                        if (users.getBio() != null) {
+                            bfr.write("Bio: ");
+                            bfr.write(users.getBio());
+                            bfr.write(groupSeparator);
+                        }
+                        if (users.getBirthday() != null && users.getBirthday().length == 3) {
+                            bfr.write("Birthday: ");
+                            bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
+                            bfr.write(fileSeparator);
+                        }
                     }
-                    if (users.getBio() != null) {
-                        bfr.write("Bio: ");
-                        bfr.write(users.getBio());
-                        bfr.write(groupSeparator);
-                    }
-                    if (users.getBirthday() != null && users.getBirthday().length == 3) {
-                        bfr.write("Birthday: ");
-                        bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
-                        bfr.write(fileSeparator);
-                    }
+                    bfr.write(fileSeparator);
+                    bfr.newLine();
+                    return true;
                 }
-                bfr.write(fileSeparator);
-                bfr.newLine();
-                return true;
             }
         } catch (IOException e) {
             return false;
@@ -277,8 +293,6 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean loadUsers() {
-        // TODO: read backup file into userList
-
         File f = new File("usersHistory.txt");
         if (!f.exists()) {
             System.out.println("No data file found.");
@@ -310,7 +324,6 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean saveMessages() {
-        // TODO: write to a backup file the contents of allChats
         // Checks if the File does not yet exist and creates one if so.
         File messagesFile = new File("messageHistory.txt");
         if (!messagesFile.exists()) {
@@ -322,6 +335,7 @@ public class Database implements DatabaseInterface {
         }
         // Writes output to the file.
         try (FileWriter fw = new FileWriter(messagesFile, false)) {
+            synchronized (this.messageKey) {
             for (MessageHistory mh : this.allChats) {
                 fw.write(fileSeparator);
                 fw.write(mh.toString() + "\n");
@@ -330,6 +344,7 @@ public class Database implements DatabaseInterface {
                 }
             }
             fw.write(fileSeparator);
+            }
         } catch (Exception e) {
             return false;
         }
@@ -435,11 +450,13 @@ public class Database implements DatabaseInterface {
                 }
             }
             try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))) {
-                for (String path : photosPath) {
-                    bfw.write(path + "\n");
+                synchronized (this.photoKey) {
+                    for (String path : photosPath) {
+                        bfw.write(path + "\n");
+                    }
                 }
+                return true;
             }
-            return true;
         } catch (IOException e) {
             return false;
         }
@@ -452,7 +469,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void addPhotos(String path) {
-        photosPath.add(path);
+        synchronized (this.photoKey) {
+            photosPath.add(path);
+        }
     }
 
     /**
@@ -488,7 +507,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setPhotos(ArrayList<String> photoPath) {
-        this.photosPath = photoPath;
+        synchronized (this.photoKey) {
+            this.photosPath = photoPath;
+        }
     }
 
     @Override
@@ -503,7 +524,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setUsersList(ArrayList<User> userList) {
-        this.userList = userList;
+        synchronized (this.userKey) {
+            this.userList = userList;
+        }
     }
 
     /**
@@ -513,6 +536,8 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setAllChats(ArrayList<MessageHistory> allChats) {
-        this.allChats = allChats;
+        synchronized (this.messageKey) {
+            this.allChats = allChats;
+        }
     }
 }
