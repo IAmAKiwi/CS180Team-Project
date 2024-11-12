@@ -6,7 +6,8 @@ import java.util.ArrayList;
 /**
  * Typical use flow of a client/server connection:
  * Client connects to server.
- * Client either logs in or registers. (should not have to check if they are logged in, should be done implicitly by GUI)
+ * Client either logs in or registers. (should not have to check if they are
+ * logged in, should be done implicitly by GUI)
  * Client opens a chat (server sends back the data to display)
  * Client sends a message (server updates the data)
  * Whenever a
@@ -15,14 +16,13 @@ import java.util.ArrayList;
 
 public class Server implements Runnable, ServerInterface {
     public static Object userKey = new Object(); // Synchronization used for Users access
-    public static Object messageKey = new Object();  // Synchronization used for Messages access
+    public static Object messageKey = new Object(); // Synchronization used for Messages access
     private static ServerSocket serverSocket;
     private static Database db;
     private Socket clientSocket;
     private User currentUser;
     private String otherUser;
     private MessageHistory currentChat; // Maybe, have to update our chat a bunch.
-
 
     public Server(Socket socket) {
         clientSocket = socket;
@@ -31,7 +31,6 @@ public class Server implements Runnable, ServerInterface {
     public void run() {
         BufferedReader reader = null;
         PrintWriter writer = null;
-
 
         try {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -46,7 +45,7 @@ public class Server implements Runnable, ServerInterface {
         String line = "";
         while (running) {
             try {
-               line = reader.readLine();
+                line = reader.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -129,8 +128,10 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    // TODO: disallow a user to be logged into multiple devices simultaneously (perhaps?)
-    // Update this and other methods to be void. Each method will handle writing back information.
+    // TODO: disallow a user to be logged into multiple devices simultaneously
+    // (perhaps?)
+    // Update this and other methods to be void. Each method will handle writing
+    // back information.
     public boolean login(String content) {
         String username = content.substring(0, content.indexOf(':'));
         String password = content.substring(content.indexOf(':') + 1);
@@ -153,23 +154,82 @@ public class Server implements Runnable, ServerInterface {
         return false;
     }
 
-    /*public boolean sendMessage(String otherUsername);
-    public boolean sendImage(String otherUsername, String image);
-    public boolean openChat(String otherUsername);
+    @Override
+    public boolean sendMessage(String content) {
+        try {
+            String userTo = content.substring(0, content.indexOf(':'));
+            String message = content.substring(content.indexOf(':') + 1);
+            Message mes = new Message(message, currentUser.getUsername());
+            db.addMessage(mes, userTo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-    public boolean addFriend(String otherUsername);
-    public String[] getFriendList();
-    public boolean addBlock(String otherUsername);
-    public String[] getBlockList();
-    public boolean removeFriend(String otherUsername);
-    public boolean removeBlock(String otherUsername);
+    public boolean sendImage(String content) {
+        try {
+            String userTo = content.substring(0, content.indexOf(','));
+            String path = content.substring(content.indexOf(',') + 1);
+            db.addPhotos(path);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-    public boolean isFriendsOnly(String otherUsername);
-    public boolean setFriendsOnly(boolean friendsOnly);
+    public boolean openChat(String otherUsername) {
+        otherUser = otherUsername;
+        currentChat = db.getChat(currentUser.getUsername(), otherUsername);
+        return true;
+    }
 
-    public boolean setProfilePic(String profilePic);
+    public boolean addFriend(String otherUsername) {
+        return db.addFriend(currentUser.getUsername(), otherUsername);
+    }
 
-    public boolean logout();*/
+    public String[] getFriendList() {
+        return db.getFriends(currentUser.getUsername());
+    }
+
+    public boolean addBlock(String otherUsername) {
+        return db.addBlock(currentUser.getUsername(), otherUsername);
+    }
+
+    public String[] getBlockList() {
+        return db.getBlockList(currentUser.getUsername());
+    }
+
+    public boolean removeFriend(String otherUsername) {
+        return db.removeFriend(currentUser.getUsername(), otherUsername);
+    }
+
+    public boolean removeBlock(String otherUsername) {
+        return db.removeBlock(currentUser.getUsername(), otherUsername);
+    }
+
+    public boolean isFriendsOnly(String otherUsername) {
+        return db.isFriendsOnly(currentUser.getUsername(), otherUsername);
+    }
+
+    public boolean setFriendsOnly(boolean friendsOnly) {
+        return db.setFriendsOnly(currentUser.getUsername(), otherUser, friendsOnly);
+    }
+
+    public boolean setProfilePic(String profilePic) {
+        return db.setProfilePic(currentUser.getUsername(), profilePic);
+    }
+
+    public boolean logout() {
+        currentUser = null;
+        return true;
+    }
+
+    public void confirmExecution(Object o) {
+
+    }
 
     public static void main(String[] args) {
         db = new Database();
@@ -193,4 +253,3 @@ public class Server implements Runnable, ServerInterface {
 
     }
 }
-

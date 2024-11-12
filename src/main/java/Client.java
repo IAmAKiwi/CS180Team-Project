@@ -22,7 +22,7 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public boolean sendMessage(String content) {
-        String command = "sendMessage:" + content;
+        String command = "sendMessage:" + content; //
         return sendCommand(command);
     }
 
@@ -32,7 +32,7 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public String accessProfile() {
-        return requestData("accessProfile:");
+        return requestData("accessProfile: ");
     }
 
     public boolean updateProfile(String content) {
@@ -83,11 +83,11 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public String getFriendList() {
-        return requestData("getFriendList:");
+        return requestData("getFriendList: ");
     }
 
     public String getBlockList() {
-        return requestData("getBlockList:");
+        return requestData("getBlockList: ");
     }
 
     public boolean isFriendsOnly(String otherUsername) {
@@ -104,7 +104,7 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public String getProfilePic() {
-        return requestData("getProfilePic:");
+        return requestData("getProfilePic: ");
     }
 
     public synchronized String requestData(String command) {
@@ -140,12 +140,12 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public boolean logout() {
-        return sendCommand("logout:");
+        return sendCommand("logout: ");
     }
 
     // May not be needed, potentially included in "logout".
     public boolean disconnect() {
-        boolean disconnected = sendCommand("disconnect:");
+        boolean disconnected = sendCommand("disconnect: ");
         if (disconnected) {
             try {
                 socket.close();
