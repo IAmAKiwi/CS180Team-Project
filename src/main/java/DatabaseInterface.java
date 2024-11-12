@@ -94,6 +94,15 @@ public interface DatabaseInterface {
     boolean addMessageHistory(MessageHistory messageHistory);
 
     /**
+     * Adds a new message to the database.
+     * Will create a new MessageHistory object if one does not exist.
+     * @param message The Message object to be added.
+     * @param receiver The username of the receiver of the message.
+     * @return true if the message was added successfully, false otherwise.
+     */
+    public boolean addMessage(Message message, String receiver);
+
+    /**
      * Loads photos associated with users or messages from persistent storage.
      * 
      * @return true if photos were loaded successfully, false otherwise.
