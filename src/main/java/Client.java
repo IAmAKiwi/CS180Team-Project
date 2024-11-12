@@ -9,7 +9,7 @@ public class Client implements Runnable, ClientInterface {
     public PrintWriter serverWriter;
     public Socket socket;
 
-    public void run() {
+    public Client() {
         try {
             socket = new Socket("localhost", 4242);
             serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -17,8 +17,16 @@ public class Client implements Runnable, ClientInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // Switch based on commands from GUI
+    }
 
+    public void run() {
+
+    }
+
+    // Getusers
+
+    public String getUserList() {
+        return requestData("getUserList: ");
     }
 
     public boolean sendMessage(String content) {
@@ -107,28 +115,6 @@ public class Client implements Runnable, ClientInterface {
         return requestData("getProfilePic: ");
     }
 
-    public synchronized String requestData(String command) {
-        try {
-            serverWriter.println(command);
-            serverWriter.flush();
-            return serverReader.readLine();
-        } catch (IOException ioe) {
-            return null;
-        }
-    }
-
-    // maybe add synchronized or not
-    public synchronized boolean sendCommand(String command) {
-        return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
-    }
-
-    // IMPORTANT!! Command format is lowercase command name, colon (:), arguments
-    // seperated by semicolons (username;password).
-    // NO SPACES!!
-    // In addition, use the above functions to send and read the commands.
-    // Abstraction is good.
-    // TODO: format all remaining methods in this fashion
-
     public boolean login(String username, String password) {
         String command = "login:" + username + ":" + password;
         return sendCommand(command);
@@ -157,6 +143,30 @@ public class Client implements Runnable, ClientInterface {
         }
         return false;
     }
+
+    public synchronized String requestData(String command) {
+        try {
+            serverWriter.println(command);
+            serverWriter.flush();
+            return serverReader.readLine();
+        } catch (IOException ioe) {
+            return null;
+        }
+    }
+
+    // maybe add synchronized or not
+    public synchronized boolean sendCommand(String command) {
+        return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
+    }
+
+    // IMPORTANT!! Command format is lowercase command name, colon (:), arguments
+    // seperated by colon (username:password).
+    // NO SPACES!!
+    // In addition, use the above functions to send and read the commands.
+    // Abstraction is good.
+    // TODO: format all remaining methods in this fashion
+
+
 
     public static void main(String[] args) {
         Thread t = new Thread(new Client());

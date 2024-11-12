@@ -8,6 +8,8 @@ public interface ClientInterface {
 
     boolean login(String username, String password); // Login command
 
+    String getUserList();
+
     boolean sendMessage(String content); // Update message history. otherUser:message
 
     boolean removeFriend(String friend); // remove friend

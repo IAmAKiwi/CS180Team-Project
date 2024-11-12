@@ -74,6 +74,30 @@ public class MessageHistory implements MessageHistoryInterface {
     }
 
     /**
+     * Checks if two MessageHistories are equal (if they are between the same two users).
+     * @param other
+     * @return true if they are between the same users.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        } else if (!(other instanceof MessageHistory)) {
+            return false;
+        } else {
+            MessageHistory mh = (MessageHistory) other;
+            if ((mh.userMessagers[0].equals(this.userMessagers[0])) ||
+                    (mh.userMessagers[1].equals(this.userMessagers[0]))) {
+                if ((mh.userMessagers[0].equals(this.userMessagers[1])) ||
+                        (mh.userMessagers[1].equals(this.userMessagers[1]))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Gives the file formatted string for this MessageHistory. Only the two
      * usernames.
      * Each message must be looped through to get individual toStrings.
