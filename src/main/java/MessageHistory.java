@@ -54,6 +54,14 @@ public class MessageHistory implements MessageHistoryInterface {
         return userMessagers;
     }
 
+    /**
+     * Adds a message to the message history
+     * @param message Message to be added
+     */
+    public void addMessage(Message message) {
+        messageHistory.add(message);
+    }
+
     // idk if we need these yet
     // idk if we need these setters yet
 

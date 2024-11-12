@@ -1,50 +1,50 @@
-import java.io.IOException;
 
 public interface ClientInterface {
     void run();
 
-    String requestData(String command) throws IOException;
+    String requestData(String command); // General case for all requests
 
-    boolean boolCommand(String command) throws IOException;
+    boolean sendCommand(String command); // General case for all commands
 
-    boolean login(String username, String password);
+    boolean login(String username, String password); // Login command
 
+    boolean sendMessage(String content); // Update message history. otherUser:message
 
-    boolean receiveMessage();
+    boolean removeFriend(String friend); // remove friend
 
-    boolean sendMessage();
+    boolean addFriend(String friend); // add friend
 
-    boolean removeFriend();
+    boolean unblockUser(String user); // unblock user
 
-    boolean addFriend();
+    boolean deleteMessage(String content); // delete message, otherUser:message
 
-    boolean unblockUser(); // Peter do here
+    boolean deleteChat(String user); // delete chat, otherUser
 
-    boolean deleteMessage();
+    boolean sendImage(String otherUsername, String imagePath); // Send image. otherUser:imagePath
 
-    boolean accessingProfile();
+    String accessProfile(); // get profile information
 
-    boolean updateProfile();
+    boolean updateProfile(String content); // update profile information very complicated format!!!
 
-    boolean requestActive();
+    boolean requestActive(String otherUser);
 
-    boolean deleteChat();
+    String getChat(String otherUsername); // Open a messageHistory, get
 
-    public boolean sendImage(String otherUsername, String image);
+    String getFriendList();
 
-    public boolean openChat(String otherUsername);
-    // changed from String[] to String because requesting Data only receieve String
-    public String[] getFriendList();
+    boolean blockUser(String otherUsername);
 
-    public boolean addBlock(String otherUsername);
+    String getBlockList();
 
-    public String[] getBlockList();
+    boolean isFriendsOnly(String otherUsername);
 
-    public boolean isFriendsOnly(String otherUsername);
+    boolean setFriendsOnly(String booleanValue);
 
-    public boolean setFriendsOnly(boolean friendsOnly);
+    boolean setProfilePic(String profilePic);
 
-    public boolean setProfilePic(String profilePic);
+    String getProfilePic();
 
     public boolean logout();
+
+    public boolean disconnect();
 }

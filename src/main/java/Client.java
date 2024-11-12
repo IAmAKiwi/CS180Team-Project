@@ -4,13 +4,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client implements Runnable {
+public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
+    public Socket socket;
 
     public void run() {
         try {
-            Socket socket = new Socket("localhost", 4242);
+            socket = new Socket("localhost", 4242);
             serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             serverWriter = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
@@ -18,10 +19,6 @@ public class Client implements Runnable {
         }
         // Switch based on commands from GUI
 
-    }
-
-    public String getMessage() {
-        return requestData("receiveMessage:");
     }
 
     public boolean sendMessage(String content) {
@@ -43,7 +40,7 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
-    public boolean removeFiend(String friend) {
+    public boolean removeFriend(String friend) {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
     }
@@ -58,6 +55,11 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
+    public boolean blockUser(String otherUsername) {
+        String command = "addBlock:" + otherUsername;
+        return sendCommand(command);
+    }
+
     // String output of requestActive can be "active" or "inactive"
     public boolean requestActive(String otherUser) {
         String command = "requestActive:" + otherUser;
@@ -65,8 +67,8 @@ public class Client implements Runnable {
     }
 
     // the other user
-    public boolean deleteChat(String user) {
-        String command = "deleteChat:" + user;
+    public boolean deleteChat(String otherUser) {
+        String command = "deleteChat:" + otherUser;
         return sendCommand(command);
     }
 
@@ -75,18 +77,13 @@ public class Client implements Runnable {
         return sendCommand(command);
     }
 
-    public String openChat(String otherUsername) {
-        String command = "openChat:" + otherUsername;
+    public String getChat(String otherUsername) {
+        String command = "getChat:" + otherUsername;
         return requestData(command);
     }
 
     public String getFriendList() {
         return requestData("getFriendList:");
-    }
-
-    public boolean addBlock(String otherUsername) {
-        String command = "addBlock:" + otherUsername;
-        return sendCommand(command);
     }
 
     public String getBlockList() {
@@ -103,11 +100,11 @@ public class Client implements Runnable {
     }
 
     public boolean setProfilePic(String profilePic) {
-        return sendCommand("setProfilePic" + profilePic);
+        return sendCommand("setProfilePic:" + profilePic);
     }
 
     public String getProfilePic() {
-        return requestData("getProfilePic");
+        return requestData("getProfilePic:");
     }
 
     public synchronized String requestData(String command) {
@@ -132,13 +129,33 @@ public class Client implements Runnable {
     // Abstraction is good.
     // TODO: format all remaining methods in this fashion
 
-    public boolean receiveLogin(String username, String password) {
-        String command = "receiveLogin:" + username + ":" + password;
+    public boolean login(String username, String password) {
+        String command = "login:" + username + ":" + password;
         return sendCommand(command);
     }
 
-    public boolean receiveLogout() {
-        return sendCommand("receiveLogout");
+    public boolean register(String username, String password) {
+        String command = "register:" + username + ":" + password;
+        return sendCommand(command);
+    }
+
+    public boolean logout() {
+        return sendCommand("logout:");
+    }
+
+    // May not be needed, potentially included in "logout".
+    public boolean disconnect() {
+        boolean disconnected = sendCommand("disconnect:");
+        if (disconnected) {
+            try {
+                socket.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {

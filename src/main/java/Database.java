@@ -158,6 +158,47 @@ public class Database implements DatabaseInterface {
     }
 
     /**
+     * Adds a message to a MessageHistory based upon the message and receiver.
+     * Includes checks for friends only and blocked users
+     * @param message Message to add
+     * @param receiver Username of receiver
+     * @return true if message was added
+     **/
+    public boolean addMessage(Message message, String receiver) {
+        User u1 = this.getUser(message.getSender());
+        User u2 = this.getUser(receiver);
+        ArrayList<String> u1Blocked = u1.getBlocked();
+        ArrayList<String> u2Blocked =u2.getBlocked();
+        if (u1Blocked.contains(receiver) || u2Blocked.contains(message.getSender())) {
+            return false;
+        }
+
+        if (u1.isFriendsOnly()) {
+            ArrayList<String> u1Friends = u1.getFriends();
+            if (!u1Friends.contains(receiver)) {
+                return false;
+            }
+        }
+
+        if (u2.isFriendsOnly()) {
+            ArrayList<String> u2Friends = u2.getFriends();
+            if (!u2Friends.contains(u1.getUsername())) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < this.allChats.size(); i++) {
+            MessageHistory mh = this.allChats.get(i);
+            if (mh.getUsernames()[0].equals(message.getSender()) || mh.getUsernames()[1].equals(receiver)) {
+                mh.addMessage(message);
+                this.allChats.set(i, mh);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Saves all users in the `userList` to a file named `usersHistory.txt`.
      * Each user's information (username, password, first name, last name, bio,
      * and birthday) is written to the file, with fields separated by
