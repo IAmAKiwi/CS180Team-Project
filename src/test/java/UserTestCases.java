@@ -9,7 +9,12 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 
 /**
- * A framework to run public test cases for User.
+ * A framework to run public test cases for Database
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ *         lab sec 12
+ *
+ * @version Nov 2, 2024
  */
 
 @RunWith(Enclosed.class)
@@ -28,7 +33,7 @@ public class UserTestCases {
 
     public static class TestCase {
         @Test(timeout = 1000)
-        public void UserTest() {
+        public void userTest() {
             // Testing name/password setting.
             User u1 = new User("test1", "test1");
             User u2 = new User("test2", "test2");

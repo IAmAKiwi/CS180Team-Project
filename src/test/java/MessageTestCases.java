@@ -7,7 +7,12 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 
 /**
- * A framework to run public test cases for User.
+ * A framework to run public test cases for Message
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ *         lab sec 12
+ *
+ * @version Nov 2, 2024
  */
 
 @RunWith(Enclosed.class)
@@ -26,7 +31,7 @@ public class MessageTestCases {
 
     public static class TestCase {
         @Test(timeout = 1000)
-        public void MessageTest() {
+        public void messageTest() {
             Message m1 = new Message("Hello World!", "User1");
             Message m2 = new Message("Goodbye World!", "User2");
             Assert.assertEquals("User1: Hello World!", m1.toString());

@@ -1,4 +1,3 @@
-import java.io.IOException;
 
 public interface ClientInterface {
     void run();
