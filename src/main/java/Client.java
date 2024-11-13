@@ -98,8 +98,8 @@ public class Client implements Runnable, ClientInterface {
         return requestData("getBlockList: ");
     }
 
-    public boolean isFriendsOnly(String otherUsername) {
-        String command = "isFriendsOnly:" + otherUsername;
+    public boolean isFriendsOnly() {
+        String command = "isFriendsOnly: ";
         return sendCommand(command);
     }
 

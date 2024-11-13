@@ -1,22 +1,22 @@
 public interface ServerInterface {
-    public boolean login(String username, String password);
-    public boolean register(String username, String password);
-    public boolean sendMessage(String otherUsername);
-    public boolean sendImage(String otherUsername, String image);
-    public boolean openChat(String otherUsername);
+    public String login(String username, String password);
+    public String register(String username, String password);
+    public String sendMessage(String otherUsername);
+    public String sendImage(String otherUsername, String image);
+    public String openChat(String otherUsername);
 
-    public boolean addFriend(String otherUsername);
-    public String[] getFriendList();
-    public boolean addBlock(String otherUsername);
-    public String[] getBlockList();
-    public boolean removeFriend(String otherUsername);
-    public boolean removeBlock(String otherUsername);
+    public String addFriend(String otherUsername);
+    public String getFriendList();
+    public String addBlock(String otherUsername);
+    public String getBlockList();
+    public String removeFriend(String otherUsername);
+    public String removeBlock(String otherUsername);
 
-    public boolean isFriendsOnly(String otherUsername);
-    public boolean setFriendsOnly(boolean friendsOnly);
+    public String isFriendsOnly(String otherUsername);
+    public String setFriendsOnly(boolean friendsOnly);
 
-    public boolean setProfilePic(String profilePic);
+    public String setProfilePic(String profilePic);
 
-    public boolean logout();
+    public String logout();
 
 }

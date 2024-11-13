@@ -216,6 +216,96 @@ public class Database implements DatabaseInterface {
     }
 
     /**
+     * Adds user 2 as a friend of user 1.
+     * @param user1 user to be changed
+     * @param user2 user to be added
+     * @return if the friend was added (both users must exist)
+     */
+    public boolean addFriend(String user1, String user2) {
+        User u1 = this.getUser(user1);
+        User u2 = this.getUser(user2);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+        u1.addFriend(user2);
+        return true;
+    }
+
+    /**
+     * Returns an array of friends for a user
+     * @param username username of user to get friends of
+     * @return array of friends
+     */
+    public String[] getFriends(String username) {
+        User u = this.getUser(username);
+        if (u == null) {
+            return null;
+        }
+        return u.getFriends().toArray(new String[u.getFriends().size()]);
+    }
+
+    /**
+     * Adds user 2 as a friend of user 1.
+     * @param user1 user to be changed
+     * @param user2 user to be added
+     * @return if the friend was added (both users must exist)
+     */
+    public boolean removeFriend(String user1, String user2) {
+        User u1 = this.getUser(user1);
+        User u2 = this.getUser(user2);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+        u1.removeFriend(user2);
+        return true;
+    }
+
+    /**
+     * Adds user 2 as a block of user 1.
+     * @param user1 user to be changed
+     * @param user2 user to be added
+     * @return if the block was added (both users must exist)
+     */
+    public boolean blockUser(String user1, String user2) {
+        User u1 = this.getUser(user1);
+        User u2 = this.getUser(user2);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+        u1.addBlock(user2);
+        return true;
+    }
+
+    /**
+     * Returns an array of blocks for a user
+     * @param username username of user to get blocks of
+     * @return array of blocks
+     */
+    public String[] getBlockList(String username) {
+        User u = this.getUser(username);
+        if (u == null) {
+            return null;
+        }
+        return u.getBlocked().toArray(new String[u.getBlocked().size()]);
+    }
+
+    /**
+     * Removes user 2 as a block of user 1
+     * @param user1 user to be changed
+     * @param user2 user to be removed
+     * @return if the block was removed (both users must exist)
+     */
+    public boolean unblockUser(String user1, String user2) {
+        User u1 = this.getUser(user1);
+        User u2 = this.getUser(user2);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+        u1.unblock(user2);
+        return true;
+    }
+
+    /**
      * Saves all users in the `userList` to a file named `usersHistory.txt`.
      * Each user's information (username, password, first name, last name, bio,
      * and birthday) is written to the file, with fields separated by

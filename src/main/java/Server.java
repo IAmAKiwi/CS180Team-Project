@@ -51,75 +51,76 @@ public class Server implements Runnable, ServerInterface {
             }
             String command = line.substring(0, line.indexOf(':'));
             String content = line.substring(line.indexOf(':') + 1);
+            String result = "";
             switch (command) {
                 case "login":
-                    login(content);
+                    result = login(content);
                     break;
                 case "register":
-                    register(content);
+                    result = register(content);
                     break;
                 case "getUserList":
-                    getUserList();
+                    result = getUserList();
                     break;
                 case "getChat":
-                    getChat(content);
+                    result = getChat(content);
                     break;
                 case "sendMessage":
-                    sendMessage(content);
+                    result = sendMessage(content);
                     break;
                 case "deleteMessage":
-                    deleteMessage(content);
+                    result = deleteMessage(content);
                     break;
                 case "accessProfile":
-                    accessProfile();
+                    result = accessProfile();
                     break;
                 case "updateProfile":
-                    updateProfile(content);
+                    result = updateProfile(content);
                     break;
                 case "removeFriend":
-                    removeFriend(content);
+                    result = removeFriend(content);
                     break;
                 case "addFriend":
-                    addFriend(content);
+                    result = addFriend(content);
                     break;
                 case "unblockUser":
-                    unblockUser(content);
+                    result = unblockUser(content);
                     break;
                 case "blockUser":
-                    blockUser(content);
+                    result = blockUser(content);
                     break;
                 case "requestActive":
-                    requestActive(content);
+                    result = requestActive(content);
                     break;
                 case "deleteChat":
-                    deleteChat(content);
+                    result = deleteChat(content);
                     break;
                 case "sendImage":
-                    sendImage(content);
+                    result = sendImage(content);
                     break;
                 case "openChat":
-                    openChat(content);
+                    result = openChat(content);
                     break;
                 case "getBlockList":
-                    getBlockList();
+                    result = getBlockList();
                     break;
                 case "getFriendList":
-                    getFriendList();
+                    result =  getFriendList();
                     break;
                 case "isFriendsOnly":
-                    isFriendsOnly(content);
+                    result = isFriendsOnly();
                     break;
                 case "setFriendsOnly":
-                    setFriendsOnly(content);
+                    result = setFriendsOnly(content);
                     break;
                 case "setProfilePic":
-                    setProfilePic(content);
+                    result =  setProfilePic(content);
                     break;
                 case "getProfilePic":
-                    getProfilePic();
+                    result = getProfilePic();
                     break;
                 case "logout":
-                    logout();
+                    result = logout();
                     break;
                 case "disconnect":
                     if (disconnect()) {
@@ -129,7 +130,7 @@ public class Server implements Runnable, ServerInterface {
                 default:
                     throw new IllegalArgumentException("Invalid command: " + command);
             }
-
+            send(result);
         }
     }
 
@@ -137,102 +138,173 @@ public class Server implements Runnable, ServerInterface {
     // (perhaps?)
     // Update this and other methods to be void. Each method will handle writing
     // back information.
-    public boolean login(String content) {
+    public String login(String content) {
         String username = content.substring(0, content.indexOf(':'));
         String password = content.substring(content.indexOf(':') + 1);
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 currentUser = u;
-                return true;
+                return "true";
             }
         }
-        return false;
+        return "false";
     }
 
-    public boolean register(String content) {
+    public String register(String content) {
         String username = content.substring(0, content.indexOf(':'));
         String password = content.substring(content.indexOf(':') + 1);
         if (db.addUser(new User(username, password))) {
             currentUser = new User(username, password);
-            return true;
+            return "true";
         }
-        return false;
+        return "false";
+    }
+
+    /**
+     * Returns a String of usernames of all users.
+     * username:username:etc
+     * @return String of users.
+     */
+    public String getUserList() {
+        ArrayList<User> users = db.getUsers();
+        String userList = "";
+        for (int i = 0; i < users.size(); i++) {
+            userList += users.get(i).getUsername() + ":";
+        }
+        return userList;
+    }
+
+    /**
+     * Returns a String of messages using the toString() of each message in format
+     * username: message[endChar]username: message[endChar] etc.
+     * [endChar] = (char) 29
+     * @param content The username of the other user
+     * @return String of all messages
+     */
+    public String getChat(String content) {
+        ArrayList<Message> messages = db.getMessages(currentUser.getUsername(), content).getMessageHistory();
+        String chat = "";
+        char endChar = (char) 29;
+        for (int i = 0; i < messages.size(); i++) {
+            chat += messages.get(i).toString();
+            chat += endChar;
+        }
+        return chat;
     }
 
     @Override
-    public boolean sendMessage(String content) {
+    public String sendMessage(String content) {
         try {
-            String userTo = content.substring(0, content.indexOf(':'));
+            String userTwo = content.substring(0, content.indexOf(':'));
             String message = content.substring(content.indexOf(':') + 1);
             Message mes = new Message(message, currentUser.getUsername());
-            db.addMessage(mes, userTo);
-            return true;
+            db.addMessage(mes, userTwo);
+            return "true";
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "false";
         }
     }
 
-    public boolean sendImage(String content) {
+    public String sendImage(String content) {
         try {
-            String userTo = content.substring(0, content.indexOf(','));
+            String userTwo = content.substring(0, content.indexOf(','));
             String path = content.substring(content.indexOf(',') + 1);
             db.addPhotos(path);
-            return true;
+            return "true";
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "false";
         }
     }
 
-    public boolean openChat(String otherUsername) {
+    public String openChat(String otherUsername) {
         otherUser = otherUsername;
-        currentChat = db.getChat(currentUser.getUsername(), otherUsername);
-        return true;
+        currentChat = db.getMessages(currentUser.getUsername(), otherUsername);
+        return "true";
     }
 
-    public boolean addFriend(String otherUsername) {
-        return db.addFriend(currentUser.getUsername(), otherUsername);
+    public String addFriend(String otherUsername) {
+        if (db.addFriend(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
     }
 
-    public String[] getFriendList() {
-        return db.getFriends(currentUser.getUsername());
+    /**
+     * Returns a String of usernames of all friends for the current user
+     * username:username:etc
+     * @return String of friends
+     */
+    public String getFriendList() {
+        String[] friends = db.getFriends(currentUser.getUsername());
+        String friendList = "";
+        for (int i = 0; i < friends.length; i++) {
+            friendList += friends[i] + ":";
+        }
+        return friendList;
     }
 
-    public boolean addBlock(String otherUsername) {
-        return db.addBlock(currentUser.getUsername(), otherUsername);
+    public String blockUser(String otherUsername) {
+        if (db.blockUser(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
     }
 
-    public String[] getBlockList() {
-        return db.getBlockList(currentUser.getUsername());
+    /**
+     * Returns a String of usernames of all users blocked by the current user
+     * username:username:etc.
+     * @return
+     */
+    public String getBlockList() {
+        String[] blocks = db.getBlockList(currentUser.getUsername());
+        String blockList = "";
+        for (int i = 0; i < blocks.length; i++) {
+            blockList += blocks[i] + ":";
+        }
+        return blockList;
     }
 
-    public boolean removeFriend(String otherUsername) {
-        return db.removeFriend(currentUser.getUsername(), otherUsername);
+    public String removeFriend(String otherUsername) {
+        if (db.removeFriend(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
     }
 
-    public boolean removeBlock(String otherUsername) {
-        return db.removeBlock(currentUser.getUsername(), otherUsername);
+    public String unblockUser(String otherUsername) {
+        if (db.unblockUser(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
     }
 
-    public boolean isFriendsOnly(String otherUsername) {
-        return db.isFriendsOnly(currentUser.getUsername(), otherUsername);
+    public String isFriendsOnly() {
+        if (currentUser.isFriendsOnly()) {
+            return "true";
+        }
+        return "false";
     }
 
-    public boolean setFriendsOnly(boolean friendsOnly) {
-        return db.setFriendsOnly(currentUser.getUsername(), otherUser, friendsOnly);
+    public String setFriendsOnly(boolean friendsOnly) {
+        currentUser.setFriendsOnly(friendsOnly);
+        return "true";
     }
 
-    public boolean setProfilePic(String profilePic) {
-        return db.setProfilePic(currentUser.getUsername(), profilePic);
+    public String setProfilePic(String profilePic) {
+        if (db.setProfilePic(currentUser.getUsername(), profilePic)) {
+            return "true";
+        }
+        return "false";
     }
 
-    public boolean logout() {
+    public String logout() {
         currentUser = null;
-        return true;
+        return "true";
     }
 
-    public void confirmExecution(Object o) {
+    public void send(String result) {
 
     }
 

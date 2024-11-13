@@ -38,7 +38,7 @@ public interface ClientInterface {
 
     String getBlockList();
 
-    boolean isFriendsOnly(String otherUsername);
+    boolean isFriendsOnly();
 
     boolean setFriendsOnly(String booleanValue);
 
