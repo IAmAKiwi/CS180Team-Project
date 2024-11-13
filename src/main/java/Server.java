@@ -89,8 +89,11 @@ public class Server implements Runnable, ServerInterface {
                 case "blockUser":
                     result = blockUser(content);
                     break;
-                case "requestActive":
-                    result = requestActive(content);
+                // case "requestActive":
+                // result = requestActive(content);
+                // break;
+                case "removeBlock":
+                    result = removeBlock(content);
                     break;
                 case "deleteChat":
                     result = deleteChat(content);
@@ -134,9 +137,9 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    public String requestActive(String user) {
-        return db.requestActive(user);
-    }
+    // public String requestActive(String user) {
+    // return db.requestActive(user);
+    // }
 
     public String deleteMessage(String content) {
         MessageHistory mh = db.getMessages(currentUser.getUsername(), otherUser);
@@ -291,8 +294,8 @@ public class Server implements Runnable, ServerInterface {
 
     public String sendImage(String content) {
         try {
-            String userTwo = content.substring(0, content.indexOf(','));
-            String path = content.substring(content.indexOf(',') + 1);
+            String userTwo = content.substring(0, content.indexOf(':')); // Fix this
+            String path = content.substring(content.indexOf(':') + 1);
             db.addPhotos(path);
             return "true";
         } catch (Exception e) {
@@ -348,6 +351,13 @@ public class Server implements Runnable, ServerInterface {
             blockList += blocks[i] + ":";
         }
         return blockList;
+    }
+
+    public String removeBlock(String otherUsername) {
+        if (db.unblockUser(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
     }
 
     public String removeFriend(String otherUsername) {
