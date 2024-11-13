@@ -30,8 +30,17 @@ public class MessageHistory implements MessageHistoryInterface {
      */
     public MessageHistory(Message message, String recipient) {
         userMessagers = new String[2];
-        userMessagers[0] = recipient;
+        userMessagers[1] = recipient;
+        userMessagers[0] = message.getSender();
         messageHistory.add(message);
+    }
+
+    public String getRecipient() {
+        return userMessagers[1];
+    }
+
+    public String getSender() {
+        return userMessagers[0];
     }
 
     /**
@@ -42,6 +51,10 @@ public class MessageHistory implements MessageHistoryInterface {
     public MessageHistory(String[] users) {
         userMessagers = users;
         messageHistory = new ArrayList<Message>();
+    }
+
+    public void deleteMessage(Message message) {
+        messageHistory.remove(message);
     }
 
     // Getter for messageHistory
@@ -56,6 +69,7 @@ public class MessageHistory implements MessageHistoryInterface {
 
     /**
      * Adds a message to the message history
+     * 
      * @param message Message to be added
      */
     public void addMessage(Message message) {
@@ -74,7 +88,9 @@ public class MessageHistory implements MessageHistoryInterface {
     }
 
     /**
-     * Checks if two MessageHistories are equal (if they are between the same two users).
+     * Checks if two MessageHistories are equal (if they are between the same two
+     * users).
+     * 
      * @param other
      * @return true if they are between the same users.
      */
