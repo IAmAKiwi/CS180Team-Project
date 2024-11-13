@@ -105,16 +105,16 @@ public class Server implements Runnable, ServerInterface {
                     result = getBlockList();
                     break;
                 case "getFriendList":
-                    result =  getFriendList();
+                    result = getFriendList();
                     break;
                 case "isFriendsOnly":
                     result = isFriendsOnly();
                     break;
                 case "setFriendsOnly":
-                    result = setFriendsOnly(content);
+                    result = setFriendsOnly(Boolean.parseBoolean(content));
                     break;
                 case "setProfilePic":
-                    result =  setProfilePic(content);
+                    result = setProfilePic(content);
                     break;
                 case "getProfilePic":
                     result = getProfilePic();
@@ -132,6 +132,87 @@ public class Server implements Runnable, ServerInterface {
             }
             send(result);
         }
+    }
+
+    public String requestActive(String user) {
+        return db.requestActive(user);
+    }
+
+    public String deleteMessage(String content) {
+        MessageHistory mh = db.getMessages(currentUser.getUsername(), otherUser);
+        String sender = content.substring(0, content.indexOf(':'));
+        String message = content.substring(content.indexOf(':') + 1);
+        for (Message m : mh.getMessageHistory()) {
+            if (m.getMessage().equals(message) && m.getSender().equals(sender)) {
+                mh.deleteMessage(m);
+                return "true";
+            }
+        }
+        return "false";
+    }
+
+    public String updateProfile(String content) {
+        char groupSeparator = 29;
+        String[] info = content.split(groupSeparator + "");
+        String oldUsername = info[0];
+        User user = db.getUser(oldUsername);
+        String username = info[1];
+        String password = info[2];
+        String firstName = info[3];
+        String lastName = info[4];
+        String bio = info[5];
+        String[] birthdaystr = info[6].split("/");
+        int[] birthday = new int[3];
+        for (int i = 0; i < 3; i++) {
+            int b = Integer.parseInt(birthdaystr[i]);
+            birthday[i] = b;
+        }
+        String profilePic = info[7];
+        String[] friendsArray = info[8].split(",");
+        ArrayList<String> friends = new ArrayList<String>();
+        for (String friend : friendsArray) {
+            friends.add(friend);
+        }
+        String[] blockedArray = info[9].split(",");
+        ArrayList<String> blocked = new ArrayList<String>();
+        for (String block : blockedArray) {
+            blocked.add(block);
+        }
+        Boolean friendsOnly = Boolean.valueOf(info[10]);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setBio(bio);
+        user.setBirthday(birthday);
+        user.setProfilePic(profilePic);
+        user.setFriends(friends);
+        user.setBlocked(blocked);
+        user.setFriendsOnly(friendsOnly);
+        return "true";
+    }
+
+    public String accessProfile() {
+        return currentUser.toString();
+    }
+
+    public String deleteChat(String user) {
+        db.deleteChat(currentUser.getUsername(), user);
+        return "true";
+    }
+
+    public boolean disconnect() {
+        try {
+            clientSocket.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String getProfilePic() {
+        return db.getUser(currentUser.getUsername()).getProfilePic();
     }
 
     // TODO: disallow a user to be logged into multiple devices simultaneously
@@ -163,6 +244,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all users.
      * username:username:etc
+     * 
      * @return String of users.
      */
     public String getUserList() {
@@ -178,6 +260,7 @@ public class Server implements Runnable, ServerInterface {
      * Returns a String of messages using the toString() of each message in format
      * username: message[endChar]username: message[endChar] etc.
      * [endChar] = (char) 29
+     * 
      * @param content The username of the other user
      * @return String of all messages
      */
@@ -219,7 +302,6 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String openChat(String otherUsername) {
-        otherUser = otherUsername;
         currentChat = db.getMessages(currentUser.getUsername(), otherUsername);
         return "true";
     }
@@ -234,6 +316,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all friends for the current user
      * username:username:etc
+     * 
      * @return String of friends
      */
     public String getFriendList() {
@@ -255,6 +338,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all users blocked by the current user
      * username:username:etc.
+     * 
      * @return
      */
     public String getBlockList() {
@@ -293,10 +377,8 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String setProfilePic(String profilePic) {
-        if (db.setProfilePic(currentUser.getUsername(), profilePic)) {
-            return "true";
-        }
-        return "false";
+        db.getUser(currentUser.getUsername()).setProfilePic(profilePic);
+        return "true";
     }
 
     public String logout() {

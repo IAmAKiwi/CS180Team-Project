@@ -192,9 +192,9 @@ public class User implements UserInterface {
         return profilePic;
     }
 
-    // public void setProfilePic(String profilePic) {
-    // this.profilePic = profilePic;
-    // }
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
 
     public ArrayList<String> getFriends() {
         return friends;

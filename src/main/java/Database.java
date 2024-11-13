@@ -138,8 +138,8 @@ public class Database implements DatabaseInterface {
         for (MessageHistory mh : this.allChats) {
             if (mh.equals(new MessageHistory(new String[] { user1, user2 }))) {
                 return mh;
-                }
             }
+        }
 
         return null;
     }
@@ -169,7 +169,8 @@ public class Database implements DatabaseInterface {
     /**
      * Adds a message to a MessageHistory based upon the message and receiver.
      * Includes checks for friends only and blocked users
-     * @param message Message to add
+     * 
+     * @param message  Message to add
      * @param receiver Username of receiver
      * @return true if message was added
      **/
@@ -177,7 +178,7 @@ public class Database implements DatabaseInterface {
         User u1 = this.getUser(message.getSender());
         User u2 = this.getUser(receiver);
         ArrayList<String> u1Blocked = u1.getBlocked();
-        ArrayList<String> u2Blocked =u2.getBlocked();
+        ArrayList<String> u2Blocked = u2.getBlocked();
 
         if (u1Blocked.contains(receiver) || u2Blocked.contains(message.getSender())) {
             return false;
@@ -199,9 +200,9 @@ public class Database implements DatabaseInterface {
 
         for (int i = 0; i < this.allChats.size(); i++) {
             synchronized (this.messageKey) {
-            MessageHistory mh = this.allChats.get(i);
-            if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
-                mh.addMessage(message);
+                MessageHistory mh = this.allChats.get(i);
+                if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
+                    mh.addMessage(message);
                     this.allChats.set(i, mh);
                 }
                 return true;
@@ -217,6 +218,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a friend of user 1.
+     * 
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
@@ -233,6 +235,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Returns an array of friends for a user
+     * 
      * @param username username of user to get friends of
      * @return array of friends
      */
@@ -246,6 +249,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a friend of user 1.
+     * 
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
@@ -262,6 +266,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a block of user 1.
+     * 
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the block was added (both users must exist)
@@ -278,6 +283,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Returns an array of blocks for a user
+     * 
      * @param username username of user to get blocks of
      * @return array of blocks
      */
@@ -291,6 +297,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Removes user 2 as a block of user 1
+     * 
      * @param user1 user to be changed
      * @param user2 user to be removed
      * @return if the block was removed (both users must exist)
@@ -357,7 +364,8 @@ public class Database implements DatabaseInterface {
                         }
                         if (users.getBirthday() != null && users.getBirthday().length == 3) {
                             bfr.write("Birthday: ");
-                            bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " " + users.getBirthday()[2]); // fix
+                            bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " "
+                                    + users.getBirthday()[2]); // fix
                             bfr.write(fileSeparator);
                         }
                     }
@@ -368,6 +376,17 @@ public class Database implements DatabaseInterface {
             }
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    public void deleteChat(String user1, String user2) {
+        for (int i = 0; i < this.allChats.size(); i++) {
+            synchronized (this.messageKey) {
+                MessageHistory mh = this.allChats.get(i);
+                if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
+                    this.allChats.remove(i);
+                }
+            }
         }
     }
 
@@ -426,14 +445,14 @@ public class Database implements DatabaseInterface {
         // Writes output to the file.
         try (FileWriter fw = new FileWriter(messagesFile, false)) {
             synchronized (this.messageKey) {
-            for (MessageHistory mh : this.allChats) {
-                fw.write(fileSeparator);
-                fw.write(mh.toString() + "\n");
-                for (Message m : mh.getMessageHistory()) {
-                    fw.write(m.toString() + groupSeparator + "\n");
+                for (MessageHistory mh : this.allChats) {
+                    fw.write(fileSeparator);
+                    fw.write(mh.toString() + "\n");
+                    for (Message m : mh.getMessageHistory()) {
+                        fw.write(m.toString() + groupSeparator + "\n");
+                    }
                 }
-            }
-            fw.write(fileSeparator);
+                fw.write(fileSeparator);
             }
         } catch (Exception e) {
             return false;
