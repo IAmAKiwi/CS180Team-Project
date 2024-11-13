@@ -130,7 +130,7 @@ public class Server implements Runnable, ServerInterface {
                 default:
                     throw new IllegalArgumentException("Invalid command: " + command);
             }
-            send(result);
+            send(result, writer);
         }
     }
 
@@ -304,8 +304,9 @@ public class Server implements Runnable, ServerInterface {
         return "true";
     }
 
-    public void send(String result) {
-
+    public void send(String result, PrintWriter writer) {
+        writer.println(result);
+        writer.flush();
     }
 
     public static void main(String[] args) {
