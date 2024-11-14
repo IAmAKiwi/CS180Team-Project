@@ -117,8 +117,7 @@ public class Database implements DatabaseInterface {
                 return u;
             }
         }
-        User noEqual = new User();
-        return noEqual;
+        return null;
     }
 
     /**
@@ -177,6 +176,11 @@ public class Database implements DatabaseInterface {
     public boolean addMessage(Message message, String receiver) {
         User u1 = this.getUser(message.getSender());
         User u2 = this.getUser(receiver);
+
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+
         ArrayList<String> u1Blocked = u1.getBlocked();
         ArrayList<String> u2Blocked = u2.getBlocked();
 
@@ -204,8 +208,8 @@ public class Database implements DatabaseInterface {
                 if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
+                    return true;
                 }
-                return true;
             }
         }
 

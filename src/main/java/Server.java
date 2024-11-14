@@ -90,17 +90,11 @@ public class Server implements Runnable, ServerInterface {
                 // case "requestActive":
                 // result = requestActive(content);
                 // break;
-                case "removeBlock":
-                    result = removeBlock(content);
-                    break;
                 case "deleteChat":
                     result = deleteChat(content);
                     break;
                 case "sendImage":
                     result = sendImage(content);
-                    break;
-                case "openChat":
-                    result = openChat(content);
                     break;
                 case "getBlockList":
                     result = getBlockList();
@@ -282,8 +276,7 @@ public class Server implements Runnable, ServerInterface {
             String userTwo = content.substring(0, content.indexOf(':'));
             String message = content.substring(content.indexOf(':') + 1);
             Message mes = new Message(message, currentUser.getUsername());
-            db.addMessage(mes, userTwo);
-            return "true";
+            return String.valueOf(db.addMessage(mes, userTwo));
         } catch (Exception e) {
             e.printStackTrace();
             return "false";
@@ -302,10 +295,6 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    public String openChat(String otherUsername) {
-        currentChat = db.getMessages(currentUser.getUsername(), otherUsername);
-        return "true";
-    }
 
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {
@@ -349,13 +338,6 @@ public class Server implements Runnable, ServerInterface {
             blockList += blocks[i] + ":";
         }
         return blockList;
-    }
-
-    public String removeBlock(String otherUsername) {
-        if (db.unblockUser(currentUser.getUsername(), otherUsername)) {
-            return "true";
-        }
-        return "false";
     }
 
     public String removeFriend(String otherUsername) {

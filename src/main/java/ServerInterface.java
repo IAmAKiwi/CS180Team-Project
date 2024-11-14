@@ -7,8 +7,6 @@ public interface ServerInterface {
 
     public String sendImage(String content);
 
-    public String openChat(String otherUsername);
-
     public String addFriend(String otherUsername);
 
     public String getFriendList();
@@ -19,7 +17,7 @@ public interface ServerInterface {
 
     public String removeFriend(String otherUsername);
 
-    public String removeBlock(String otherUsername);
+    public String unblockUser(String otherUsername);
 
     public String isFriendsOnly();
 

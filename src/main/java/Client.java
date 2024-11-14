@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
@@ -20,7 +21,93 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public void run() {
-
+        while (true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                String line = sc.nextLine();
+                if (line == null) {
+                    break;
+                }
+                String command = line.substring(0, line.indexOf(':'));
+                String[] content = line.substring(line.indexOf(':') + 1).split(":");
+                String result = "";
+                switch (command) {
+                    case "login":
+                        result = String.valueOf(login(content[0], content[1]));
+                        break;
+                    case "register":
+                        result = String.valueOf(register(content[0], content[1]));
+                        break;
+                    case "getUserList":
+                        result = getUserList();
+                        break;
+                    case "getChat":
+                        result = getChat(content[0]);
+                        break;
+                    case "sendMessage":
+                        result = String.valueOf(sendMessage(content[0] + ":" + content[1]));
+                        break;
+                    case "deleteMessage":
+                        result = String.valueOf(deleteMessage(content[0] + ":" + content[1]));
+                        break;
+                    case "accessProfile":
+                        result = accessProfile();
+                        break;
+                    case "updateProfile":
+                        result = String.valueOf(updateProfile(content[0]));
+                        break;
+                    case "removeFriend":
+                        result = String.valueOf(removeFriend(content[0]));
+                        break;
+                    case "addFriend":
+                        result = String.valueOf(addFriend(content[0]));
+                        break;
+                    case "unblockUser":
+                        result = String.valueOf(unblockUser(content[0]));
+                        break;
+                    case "blockUser":
+                        result = String.valueOf(blockUser(content[0]));
+                        break;
+                    // case "requestActive":
+                    // result = requestActive(content);
+                    // break;
+                    case "deleteChat":
+                        result = String.valueOf(deleteChat(content[0]));
+                        break;
+                    case "sendImage":
+                        result = String.valueOf(sendImage(content[0], content[1]));
+                        break;
+                    case "getBlockList":
+                        result = getBlockList();
+                        break;
+                    case "getFriendList":
+                        result = getFriendList();
+                        break;
+                    case "isFriendsOnly":
+                        result = String.valueOf(isFriendsOnly());
+                        break;
+                    case "setFriendsOnly":
+                        result = String.valueOf(setFriendsOnly(content[0]));
+                        break;
+                    case "setProfilePic":
+                        result = String.valueOf(setProfilePic(content[0]));
+                        break;
+                    case "getProfilePic":
+                        result = getProfilePic();
+                        break;
+                    case "logout":
+                        result = String.valueOf(logout());
+                        break;
+                    case "disconnect":
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid command: " + command);
+                }
+                System.out.println(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // Getusers

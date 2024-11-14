@@ -30,6 +30,7 @@ public class MessageHistory implements MessageHistoryInterface {
      */
     public MessageHistory(Message message, String recipient) {
         userMessagers = new String[2];
+        messageHistory = new ArrayList<Message>();
         userMessagers[1] = recipient;
         userMessagers[0] = message.getSender();
         messageHistory.add(message);

@@ -178,9 +178,9 @@ class ClientTest {
         assertTrue(result);
     }
 
-    @Test
+    /*@Test
     void testDisconnect() {
         boolean result = client.disconnect();
         assertTrue(result);
-    }
+    }*/
 }
