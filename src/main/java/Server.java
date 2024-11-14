@@ -15,8 +15,6 @@ import java.util.ArrayList;
  */
 
 public class Server implements Runnable, ServerInterface {
-    public static Object userKey = new Object(); // Synchronization used for Users access
-    public static Object messageKey = new Object(); // Synchronization used for Messages access
     private static ServerSocket serverSocket;
     private static Database db;
     private Socket clientSocket;
