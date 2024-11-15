@@ -31,6 +31,8 @@ public class Server implements Runnable, ServerInterface {
         clientSocket = socket;
     }
 
+    public Server() {}
+
     public void run() {
         BufferedReader reader = null;
         PrintWriter writer = null;
@@ -137,8 +139,6 @@ public class Server implements Runnable, ServerInterface {
                 send(result, writer);
             }
         }
-        db.saveMessages();
-        db.saveUsers();
     }
 
     // public String requestActive(String user) {
@@ -253,7 +253,7 @@ public class Server implements Runnable, ServerInterface {
     // Update this and other methods to be void. Each method will handle writing
     // back information.
     public String login(String content) {
-        String[] credentials = content.split(String.valueOf(GS));
+        String[] credentials = splitContent(content);
         String username = credentials[0];
         String password = credentials[1];
         for (User u : db.getUsers()) {
@@ -266,7 +266,7 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String register(String content) {
-        String[] credentials = content.split(String.valueOf(GS));
+        String[] credentials = splitContent(content);
         String username = credentials[0];
         String password = credentials[1];
         if (db.addUser(new User(username, password))) {
@@ -313,7 +313,7 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String sendMessage(String content) {
         try {
-            String[] parts = content.split(String.valueOf((char) 29));
+            String[] parts = splitContent(content);
             String userTwo = parts[0];
             String message = parts[1];
             Message mes = new Message(message, currentUser.getUsername());
@@ -326,7 +326,7 @@ public class Server implements Runnable, ServerInterface {
 
     public String sendImage(String content) {
         try {
-            String[] parts = content.split(String.valueOf((char) 29));
+            String[] parts = splitContent(content);
             String userTwo = parts[0];
             String path = parts[1];
             db.addPhotos(path);
@@ -455,7 +455,9 @@ public class Server implements Runnable, ServerInterface {
         db = new Database();
         db.loadMessages();
         db.loadUsers();
-        Runtime.getRuntime().addShutdownHook(new Thread(new DataSaver(db)));
+        if (!(args.length > 0)) {
+            Runtime.getRuntime().addShutdownHook(new Thread(new DataSaver(db)));
+        }
 
         try {
             serverSocket = new ServerSocket(4242);
