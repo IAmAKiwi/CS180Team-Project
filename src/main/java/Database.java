@@ -309,6 +309,11 @@ public class Database implements DatabaseInterface {
         if (u1 == null || u2 == null) {
             return false;
         }
+
+        if (!u1.getBlocked().contains(user2)) {
+            return false;
+        }
+
         u1.unblock(user2);
         return true;
     }
