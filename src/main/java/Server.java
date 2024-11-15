@@ -31,7 +31,8 @@ public class Server implements Runnable, ServerInterface {
         clientSocket = socket;
     }
 
-    public Server() {}
+    public Server() {
+    }
 
     public void run() {
         BufferedReader reader = null;

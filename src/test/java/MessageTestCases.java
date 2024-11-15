@@ -31,12 +31,48 @@ public class MessageTestCases {
 
     public static class TestCase {
         @Test(timeout = 1000)
-        public void messageTest() {
+        public void testBasicMessage() {
             Message m1 = new Message("Hello World!", "User1");
             Message m2 = new Message("Goodbye World!", "User2");
             Assert.assertEquals("User1: Hello World!", m1.toString());
             Assert.assertEquals("User2", m2.getSender());
             Assert.assertEquals("Goodbye World!", m2.getMessage());
+        }
+
+        @Test(timeout = 1000)
+        public void testEmptyMessage() {
+            Message m = new Message("", "User1");
+            Assert.assertEquals("", m.getMessage());
+            Assert.assertEquals("User1: ", m.toString());
+        }
+
+        @Test(timeout = 1000)
+        public void testNullMessage() {
+            Message m = new Message();
+            Assert.assertNull(m.getMessage());
+            Assert.assertNull(m.getSender());
+        }
+
+        @Test(timeout = 1000)
+        public void testLongMessage() {
+            StringBuilder longMsg = new StringBuilder();
+            for (int i = 0; i < 1000; i++) {
+                longMsg.append("a");
+            }
+            Message m = new Message(longMsg.toString(), "User1");
+            Assert.assertEquals(1000, m.getMessage().length());
+        }
+
+        @Test(timeout = 1000)
+        public void testSpecialCharacters() {
+            Message m = new Message("Hello\n\t\r!@#$%^&*()", "User1");
+            Assert.assertEquals("Hello\n\t\r!@#$%^&*()", m.getMessage());
+        }
+
+        @Test(timeout = 1000)
+        public void testUnicodeCharacters() {
+            Message m = new Message("Hello 世界!", "User1");
+            Assert.assertEquals("Hello 世界!", m.getMessage());
         }
     }
 }
