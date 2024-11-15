@@ -1,4 +1,3 @@
-
 public interface ClientInterface {
     void run();
 
@@ -6,7 +5,7 @@ public interface ClientInterface {
 
     boolean sendCommand(String command); // General case for all commands
 
-    boolean login(String username, String password); // Login command
+    boolean login(String content); // Login command with combined username:password
 
     String getUserList();
 
@@ -22,7 +21,7 @@ public interface ClientInterface {
 
     boolean deleteChat(String user); // delete chat, otherUser
 
-    boolean sendImage(String otherUsername, String imagePath); // Send image. otherUser:imagePath
+    boolean sendImage(String content); // Send image. otherUser:imagePath
 
     String accessProfile(); // get profile information
 
@@ -46,7 +45,9 @@ public interface ClientInterface {
 
     String getProfilePic();
 
-    public boolean logout();
+    boolean register(String content); // Register command with combined username:password
 
-    public boolean disconnect();
+    boolean logout();
+
+    boolean disconnect();
 }

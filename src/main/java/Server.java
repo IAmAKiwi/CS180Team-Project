@@ -2,6 +2,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Typical use flow of a client/server connection:
@@ -17,10 +18,11 @@ import java.util.ArrayList;
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
-    private Socket clientSocket;
-    private User currentUser;
+    protected Socket clientSocket;
+    protected User currentUser;
     private String otherUser;
     private MessageHistory currentChat; // Maybe, have to update our chat a bunch.
+    private char GS = (char) 29;
 
     public Server(Socket socket) {
         clientSocket = socket;
@@ -141,9 +143,10 @@ public class Server implements Runnable, ServerInterface {
     // }
 
     public String deleteMessage(String content) {
-        MessageHistory mh = db.getMessages(currentUser.getUsername(), otherUser);
-        String sender = content.substring(0, content.indexOf(':'));
-        String message = content.substring(content.indexOf(':') + 1);
+        String[] parts = content.split(String.valueOf((char) 29));
+        String sender = parts[0];
+        String message = parts[1];
+        MessageHistory mh = db.getMessages(currentUser.getUsername(), sender);
         for (Message m : mh.getMessageHistory()) {
             if (m.getMessage().equals(message) && m.getSender().equals(sender)) {
                 mh.deleteMessage(m);
@@ -246,8 +249,9 @@ public class Server implements Runnable, ServerInterface {
     // Update this and other methods to be void. Each method will handle writing
     // back information.
     public String login(String content) {
-        String username = content.substring(0, content.indexOf(':'));
-        String password = content.substring(content.indexOf(':') + 1);
+        String[] credentials = content.split(":");
+        String username = credentials[0];
+        String password = credentials[1];
         for (User u : db.getUsers()) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 currentUser = u;
@@ -258,8 +262,9 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String register(String content) {
-        String username = content.substring(0, content.indexOf(':'));
-        String password = content.substring(content.indexOf(':') + 1);
+        String[] credentials = content.split(String.valueOf(GS));
+        String username = credentials[0];
+        String password = credentials[1];
         if (db.addUser(new User(username, password))) {
             currentUser = new User(username, password);
             return "true";
@@ -304,8 +309,9 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String sendMessage(String content) {
         try {
-            String userTwo = content.substring(0, content.indexOf(':'));
-            String message = content.substring(content.indexOf(':') + 1);
+            String[] parts = content.split(String.valueOf((char) 29));
+            String userTwo = parts[0];
+            String message = parts[1];
             Message mes = new Message(message, currentUser.getUsername());
             return String.valueOf(db.addMessage(mes, userTwo));
         } catch (Exception e) {
@@ -316,8 +322,9 @@ public class Server implements Runnable, ServerInterface {
 
     public String sendImage(String content) {
         try {
-            String userTwo = content.substring(0, content.indexOf(':')); // Fix this
-            String path = content.substring(content.indexOf(':') + 1);
+            String[] parts = content.split(String.valueOf((char) 29));
+            String userTwo = parts[0];
+            String path = parts[1];
             db.addPhotos(path);
             return "true";
         } catch (Exception e) {
@@ -325,7 +332,6 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
 
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {
@@ -412,6 +418,58 @@ public class Server implements Runnable, ServerInterface {
         writer.flush();
     }
 
+    // public static void main(String[] args) {
+    // db = new Database();
+    // db.loadMessages();
+    // db.loadUsers();
+
+    // try {
+    // serverSocket = new ServerSocket(4242);
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+
+    // while (true) {
+    // try {
+    // Socket socket = serverSocket.accept();
+    // new Thread(new Server(socket)).start();
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    // }
+
+    // }
+
+    // Add these getter/setter methods for testing
+    public static void setDatabase(Database database) {
+        db = database;
+    }
+
+    public static Database getDatabase() {
+        return db;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
+
+    public void setClientSocket(Socket socket) {
+        this.clientSocket = socket;
+    }
+
+    public Socket getClientSocket() {
+        return this.clientSocket;
+    }
+
+    // Helper method to split content with group separator
+    private String[] splitContent(String content) {
+        return content.split(String.valueOf((char) 29));
+    }
+
     public static void main(String[] args) {
         db = new Database();
         db.loadMessages();
@@ -423,15 +481,6 @@ public class Server implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                new Thread(new Server(socket)).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        // sendMessage example: username[GS]message
     }
 }
