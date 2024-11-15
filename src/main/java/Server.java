@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Whenever a
  *
  */
-
+// TODO: add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
@@ -36,8 +36,6 @@ public class Server implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: implement server
-        // Client will send commands to server based on the GUI
 
         boolean running = true;
         String line = "";

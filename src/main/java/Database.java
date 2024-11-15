@@ -343,8 +343,8 @@ public class Database implements DatabaseInterface {
             // Use try-with-resources for BufferedWriter
             try (BufferedWriter bfr = new BufferedWriter(new FileWriter(f))) {
                 synchronized (this.userKey) {
-                    bfr.write(fileSeparator);
                     for (User users : userList) {
+                        bfr.write(fileSeparator);
                         bfr.write("username: ");
                         bfr.write(users.getUsername());
                         bfr.write(groupSeparator);
@@ -370,11 +370,35 @@ public class Database implements DatabaseInterface {
                             bfr.write("Birthday: ");
                             bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " "
                                     + users.getBirthday()[2]); // fix
-                            bfr.write(fileSeparator);
+                            bfr.write(groupSeparator);
                         }
+                        if (users.getProfilePic() != null) {
+                            bfr.write("Profile Picture: ");
+                            bfr.write(users.getProfilePic());
+                            bfr.write(groupSeparator);
+                        }
+                        if (!users.getFriends().isEmpty()) {
+                            bfr.write("Friends: ");
+                            for (String friend : users.getFriends()) {
+                                bfr.write(friend);
+                                bfr.write(":");
+                            }
+                            bfr.write(groupSeparator);
+                        }
+                        if (!users.getBlocked().isEmpty()) {
+                            bfr.write("Blocks: ");
+                            for (String blocked : users.getBlocked()) {
+                                bfr.write(blocked);
+                                bfr.write(":");
+                            }
+                            bfr.write(groupSeparator);
+                        }
+                        bfr.write("Friends Only: ");
+                        bfr.write("" + users.isFriendsOnly());
+                        bfr.write(groupSeparator);
+                        bfr.write(fileSeparator);
                         bfr.write('\n');
                     }
-                    bfr.write(fileSeparator);
                     return true;
                 }
             }
@@ -404,6 +428,7 @@ public class Database implements DatabaseInterface {
      * @return true if users were successfully loaded from the file, false if
      *         the file does not exist or an error occurs during reading.
      */
+    //TODO: rewrite this to include profile information! (while it has another group separator before a file separator)
     @Override
     public boolean loadUsers() {
         File f = new File("usersHistory.txt");
@@ -414,6 +439,10 @@ public class Database implements DatabaseInterface {
         try (BufferedReader bfr = new BufferedReader(new FileReader(f))) {
             String line;
             while ((line = bfr.readLine()) != null) {
+                String temp;
+                while (line.charAt(line.length() - 1) != fileSeparator && bfr.ready()) {
+                    line += bfr.readLine();
+                }
                 String[] elements = line.split(String.valueOf(groupSeparator));
                 if (elements.length < 2)
                     continue;
@@ -421,6 +450,54 @@ public class Database implements DatabaseInterface {
                 String username = elements[0].replace("username: ", "").trim();
                 String password = elements[1].replace("password: ", "").trim();
                 User user = new User(username, password);
+
+                for (int i = 2; i < elements.length - 1; i++) {
+                    String command = elements[i].substring(0, elements[i].indexOf(":"));
+                    String value = elements[i].substring(elements[i].indexOf(":") + 1).trim();
+                    switch (command) {
+                        case "First Name":
+                            user.setFirstName(value);
+                            break;
+                        case "Last Name":
+                            user.setLastName(value);
+                            break;
+                        case "Bio":
+                            user.setBio(value);
+                            break;
+                        case "Birthday":
+                            String[] birthday = value.split(" ");
+                            int[] birthdayInt = new int[birthday.length];
+                            for (int j = 0; j < birthday.length; j++) {
+                                birthdayInt[j] = Integer.parseInt(birthday[j]);
+                            }
+                            user.setBirthday(birthdayInt);
+                            break;
+                        case "Profile Picture":
+                            user.setProfilePic(value);
+                            break;
+                        case "Friends":
+                            String[] friends = value.split(":");
+                            ArrayList<String> friendsList = new ArrayList<String>();
+                            for (String friend : friends) {
+                                friendsList.add(friend);
+                            }
+                            user.setFriends(friendsList);
+                            break;
+                        case "Blocks":
+                            String[] blocked = value.split(":");
+                            ArrayList<String> blockedList = new ArrayList<String>();
+                            for (String block : blocked) {
+                                blockedList.add(block);
+                            }
+                            user.setBlocked(blockedList);
+                            break;
+                        case "Friends Only":
+                            user.setFriendsOnly(Boolean.valueOf(value));
+                            break;
+                    default:
+                        continue;
+                    }
+                }
                 this.userList.add(user);
             }
             return true;

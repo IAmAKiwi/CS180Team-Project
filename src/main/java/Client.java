@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-
+// TODO: add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
@@ -162,7 +162,7 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public boolean blockUser(String otherUsername) {
-        String command = "addBlock:" + otherUsername;
+        String command = "blockUser:" + otherUsername;
         return sendCommand(command);
     }
 
