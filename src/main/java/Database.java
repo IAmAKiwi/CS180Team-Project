@@ -372,9 +372,9 @@ public class Database implements DatabaseInterface {
                                     + users.getBirthday()[2]); // fix
                             bfr.write(fileSeparator);
                         }
+                        bfr.write('\n');
                     }
                     bfr.write(fileSeparator);
-                    bfr.newLine();
                     return true;
                 }
             }

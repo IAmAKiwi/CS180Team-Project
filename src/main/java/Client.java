@@ -21,7 +21,8 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public void run() {
-        while (true) {
+        boolean running = true;
+        while (running) {
             try {
                 Scanner sc = new Scanner(System.in);
                 String line = sc.nextLine();
@@ -99,6 +100,10 @@ public class Client implements Runnable, ClientInterface {
                         result = String.valueOf(logout());
                         break;
                     case "disconnect":
+                        result = String.valueOf(disconnect());
+                        if (result.equals("true")) {
+                            running = false;
+                        }
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid command: " + command);
@@ -218,7 +223,7 @@ public class Client implements Runnable, ClientInterface {
 
     // May not be needed, potentially included in "logout".
     public boolean disconnect() {
-        boolean disconnected = sendCommand("disconnect: ");
+        boolean disconnected = requestData("disconnect: ") == null;
         if (disconnected) {
             try {
                 socket.close();

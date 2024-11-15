@@ -120,13 +120,19 @@ public class Server implements Runnable, ServerInterface {
                 case "disconnect":
                     if (disconnect()) {
                         running = false;
+                    } else {
+                        result = "false";
                     }
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid command: " + command);
             }
-            send(result, writer);
+            if (result != null) {
+                send(result, writer);
+            }
         }
+        db.saveMessages();
+        db.saveUsers();
     }
 
     // public String requestActive(String user) {
