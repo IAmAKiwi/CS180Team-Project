@@ -101,17 +101,14 @@ public class MessageHistory implements MessageHistoryInterface {
             return false;
         } else if (!(other instanceof MessageHistory)) {
             return false;
-        } else {
-            MessageHistory mh = (MessageHistory) other;
-            if ((mh.userMessagers[0].equals(this.userMessagers[0])) ||
-                    (mh.userMessagers[1].equals(this.userMessagers[0]))) {
-                if ((mh.userMessagers[0].equals(this.userMessagers[1])) ||
-                        (mh.userMessagers[1].equals(this.userMessagers[1]))) {
-                    return true;
-                }
-            }
         }
-        return false;
+
+        MessageHistory mh = (MessageHistory) other;
+        // Check if both users match (in either order)
+        return (mh.userMessagers[0].equals(this.userMessagers[0]) && mh.userMessagers[1].equals(this.userMessagers[1]))
+                ||
+                (mh.userMessagers[0].equals(this.userMessagers[1])
+                        && mh.userMessagers[1].equals(this.userMessagers[0]));
     }
 
     /**

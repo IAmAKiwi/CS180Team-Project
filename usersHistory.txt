@@ -1,4 +1,2 @@
-username: user1password: Password1$First Name: JackLast Name: ShieldsBio: Hi i am jackson!Birthday: 9 15 2005Friends: user3:Blocks: user1:Friends Only: true
-username: user2password: Password2$Friends: user1:Friends Only: false
-username: user3password: Password3$Blocks: user1:Friends Only: false
-username: williampassword: Password!1Friends Only: false
+username: PeterBuiCspassword: Buiilding20122006$First Name: PeterLast Name: BuiBio: I am a studentBirthday: 10 15 2001Profile Picture: profile.jpgFriends Only: false
+username: Foxpassword: IamFox123$Friends Only: false

@@ -50,6 +50,7 @@ public class Database implements DatabaseInterface {
         synchronized (userKey) {
             if (this.validateNewUser(user)) {
                 this.userList.add(user);
+                // this.saveUsers(); // just for testing
                 return true;
             }
         }
@@ -89,6 +90,14 @@ public class Database implements DatabaseInterface {
     @Override
     public ArrayList<MessageHistory> getAllChats() {
         return this.allChats;
+    }
+
+    /**
+     * @return userList of Users
+     * 
+     */
+    public ArrayList<User> getUserList() {
+        return this.userList;
     }
 
     /**
@@ -156,6 +165,7 @@ public class Database implements DatabaseInterface {
         if (messageHistory.getUsernames().length == 2) {
             synchronized (this.messageKey) {
                 this.allChats.add(messageHistory);
+                // this.saveMessages(); // just for testing
             }
             return true;
         }
@@ -205,6 +215,7 @@ public class Database implements DatabaseInterface {
                 if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
+                    // this.saveMessages(); // just for testing
                     return true;
                 }
             }
@@ -213,8 +224,9 @@ public class Database implements DatabaseInterface {
         MessageHistory mh = new MessageHistory(message, receiver);
         synchronized (this.messageKey) {
             this.allChats.add(mh);
+            // this.saveMessages(); // just for testing
+            return true;
         }
-        return true;
     }
 
     /**
@@ -425,7 +437,8 @@ public class Database implements DatabaseInterface {
      * @return true if users were successfully loaded from the file, false if
      *         the file does not exist or an error occurs during reading.
      */
-    //TODO: rewrite this to include profile information! (while it has another group separator before a file separator)
+    // TODO: rewrite this to include profile information! (while it has another
+    // group separator before a file separator)
     @Override
     public boolean loadUsers() {
         File f = new File("usersHistory.txt");
@@ -491,8 +504,8 @@ public class Database implements DatabaseInterface {
                         case "Friends Only":
                             user.setFriendsOnly(Boolean.valueOf(value));
                             break;
-                    default:
-                        continue;
+                        default:
+                            continue;
                     }
                 }
                 this.userList.add(user);
@@ -549,7 +562,7 @@ public class Database implements DatabaseInterface {
         if (!messagesFile.exists()) {
             return false;
         }
-        // Writes output to the file.
+        // Reads the file.
         try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
             ArrayList<Message> messages = new ArrayList<>();
             String line = br.readLine();
@@ -587,6 +600,7 @@ public class Database implements DatabaseInterface {
                 }
             }
         } catch (Exception e) {
+            System.out.println("Error loading messages: ");
             return false;
         }
         return true;

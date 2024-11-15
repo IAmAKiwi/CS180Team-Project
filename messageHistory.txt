@@ -1,8 +1,0 @@
-user1 user2
-user1: Hello
-user2: Hi there!
-user2: please?
-user3 user1
-user3: firstmessage
-user1: secondmessage
-
