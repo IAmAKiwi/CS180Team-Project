@@ -72,8 +72,11 @@ public class Server implements Runnable, ServerInterface {
                 case "accessProfile":
                     result = accessProfile();
                     break;
-                case "updateProfile":
-                    result = updateProfile(content);
+                //case "updateProfile":
+                    //result = updateProfile(content);
+                    //break;
+                case "saveProfile":
+                    result = saveProfile(content);
                     break;
                 case "removeFriend":
                     result = removeFriend(content);
@@ -152,6 +155,7 @@ public class Server implements Runnable, ServerInterface {
         return "false";
     }
 
+    @Deprecated
     public String updateProfile(String content) {
         char groupSeparator = 29;
         String[] info = content.split(groupSeparator + "");
@@ -190,6 +194,29 @@ public class Server implements Runnable, ServerInterface {
         user.setFriends(friends);
         user.setBlocked(blocked);
         user.setFriendsOnly(friendsOnly);
+        return "true";
+    }
+
+    public String saveProfile(String content)
+    {
+        /*
+         * Format input as:
+         * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/YYYYGSprofilepicGSfriendsonly
+         */
+        String[] fields = content.split((char)29 + "");
+        User user = db.getUser(fields[0]);
+        user.setFirstName(fields[1]);
+        user.setLastName(fields[2]);
+        user.setBio(fields[3]);
+        String[] birthdaystr = fields[4].split("/");
+        int[] birthday = new int[3];
+        for (int i = 0; i < 3; i++) {
+            int b = Integer.parseInt(birthdaystr[i]);
+            birthday[i] = b;
+        }
+        user.setBirthday(birthday);
+        user.setProfilePic(fields[5]);
+        user.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
         return "true";
     }
 
