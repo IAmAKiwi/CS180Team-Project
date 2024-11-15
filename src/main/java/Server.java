@@ -416,6 +416,7 @@ public class Server implements Runnable, ServerInterface {
         db = new Database();
         db.loadMessages();
         db.loadUsers();
+        Runtime.getRuntime().addShutdownHook(new Thread(new DataSaver(db)));
 
         try {
             serverSocket = new ServerSocket(4242);
