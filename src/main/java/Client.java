@@ -4,11 +4,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
 // TODO: add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
     public Socket socket;
+    private String result; // for testing
+
+    public String getResult() {
+        return result;
+    }
 
     public Client() {
         try {
@@ -29,71 +35,95 @@ public class Client implements Runnable, ClientInterface {
                 if (line == null) {
                     break;
                 }
+                char groupSeparator = 29;
+                // take in the command that the GUI sends, differentiation by the word before
+                // the first colon
                 String command = line.substring(0, line.indexOf(':'));
-                String[] content = line.substring(line.indexOf(':') + 1).split(":");
+                // split the rest of the line into an array of arguments, separated by
+                // colons
+                String content = line.substring(line.indexOf(':') + 1);
                 String result = "";
                 switch (command) {
                     case "login":
-                        result = String.valueOf(login(content[0], content[1]));
+                        // Login example: login:username[groupSeparator]password
+                        result = String.valueOf(login(content));
                         break;
                     case "register":
-                        result = String.valueOf(register(content[0], content[1]));
+                        // Register example: register:username[groupSeparator]password
+                        result = String.valueOf(register(content));
                         break;
                     case "getUserList":
+                        // Get user list example: getUserList:
                         result = getUserList();
                         break;
                     case "getChat":
-                        result = getChat(content[0]);
+                        // Get chat example: getChat:username
+                        result = getChat(line);
                         break;
                     case "sendMessage":
-                        result = String.valueOf(sendMessage(content[0] + ":" + content[1]));
+                        // Message example: sendMessage:username[groupSeparator]message
+                        result = String.valueOf(sendMessage(content));
                         break;
                     case "deleteMessage":
-                        result = String.valueOf(deleteMessage(content[0] + ":" + content[1]));
+                        // Delete message example: deleteMessage[groupSeparator]message
+                        result = String.valueOf(deleteMessage(content));
                         break;
                     case "accessProfile":
+                        // Access profile example: accessProfile:
                         result = accessProfile();
                         break;
                     case "saveProfile":
                         result = String.valueOf(saveProfile(content));
                         break;
                     case "removeFriend":
-                        result = String.valueOf(removeFriend(content[0]));
+                        // Remove friend example: removeFriend:friend
+                        result = String.valueOf(removeFriend(content));
                         break;
                     case "addFriend":
-                        result = String.valueOf(addFriend(content[0]));
+                        // Add friend example: addFriend:friend
+                        result = String.valueOf(addFriend(content));
                         break;
                     case "unblockUser":
-                        result = String.valueOf(unblockUser(content[0]));
+                        // Unblock user example: unblockUser:user
+                        result = String.valueOf(unblockUser(content));
                         break;
                     case "blockUser":
-                        result = String.valueOf(blockUser(content[0]));
+                        // Block user example: blockUser:user
+                        result = String.valueOf(blockUser(content));
                         break;
                     // case "requestActive":
                     // result = requestActive(content);
                     // break;
                     case "deleteChat":
-                        result = String.valueOf(deleteChat(content[0]));
+                        // Delete chat example: deleteChat:username
+                        result = String.valueOf(deleteChat(content));
                         break;
                     case "sendImage":
-                        result = String.valueOf(sendImage(content[0], content[1]));
+                        // Send image example: sendImage:username[groupSeparator]imagePath
+                        result = String.valueOf(sendImage(content));
                         break;
                     case "getBlockList":
+                        // Get block list example: getBlockList:
                         result = getBlockList();
                         break;
                     case "getFriendList":
+                        // Get friend list example: getFriendList:
                         result = getFriendList();
                         break;
                     case "isFriendsOnly":
+                        // Is friends only example: isFriendsOnly:
                         result = String.valueOf(isFriendsOnly());
                         break;
                     case "setFriendsOnly":
-                        result = String.valueOf(setFriendsOnly(content[0]));
+                        // Set friends only example: setFriendsOnly:booleanValue
+                        result = String.valueOf(setFriendsOnly(content));
                         break;
                     case "setProfilePic":
-                        result = String.valueOf(setProfilePic(content[0]));
+                        // Set profile pic example: setProfilePic:profilePicPath
+                        result = String.valueOf(setProfilePic(content));
                         break;
                     case "getProfilePic":
+                        // Get profile pic example: getProfilePic:
                         result = getProfilePic();
                         break;
                     case "logout":
@@ -137,8 +167,7 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean saveProfile(String[] content) {
         String command = "saveProfile:";
-        for (String element : content)
-        {
+        for (String element : content) {
             command += element + ":";
         }
         return sendCommand(command.substring(0, command.length() - 1));
@@ -176,8 +205,8 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
-    public boolean sendImage(String otherUsername, String imagePath) {
-        String command = "sendImage:" + otherUsername + "," + imagePath;
+    public boolean sendImage(String content) {
+        String command = "sendImage:" + content;
         return sendCommand(command);
     }
 
@@ -211,13 +240,13 @@ public class Client implements Runnable, ClientInterface {
         return requestData("getProfilePic: ");
     }
 
-    public boolean login(String username, String password) {
-        String command = "login:" + username + ":" + password;
+    public boolean login(String content) {
+        String command = "login:" + content;
         return sendCommand(command);
     }
 
-    public boolean register(String username, String password) {
-        String command = "register:" + username + ":" + password;
+    public boolean register(String content) {
+        String command = "register:" + content;
         return sendCommand(command);
     }
 
@@ -261,8 +290,6 @@ public class Client implements Runnable, ClientInterface {
     // In addition, use the above functions to send and read the commands.
     // Abstraction is good.
     // TODO: format all remaining methods in this fashion
-
-
 
     public static void main(String[] args) {
         Thread t = new Thread(new Client());
