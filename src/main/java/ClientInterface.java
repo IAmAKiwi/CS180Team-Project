@@ -26,7 +26,7 @@ public interface ClientInterface {
 
     String accessProfile(); // get profile information
 
-    boolean updateProfile(String content); // update profile information very complicated format!!!
+    boolean saveProfile(String[] content); // update profile information very complicated format!!!
 
     boolean requestActive(String otherUser);
 

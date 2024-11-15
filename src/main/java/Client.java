@@ -54,10 +54,8 @@ public class Client implements Runnable, ClientInterface {
                     case "accessProfile":
                         result = accessProfile();
                         break;
-                    case "updateProfile":
-                        // format this content string as:
-                        // oldusername:newusername:password:
-                        result = String.valueOf(updateProfile(content));
+                    case "saveProfile":
+                        result = String.valueOf(saveProfile(content));
                         break;
                     case "removeFriend":
                         result = String.valueOf(removeFriend(content[0]));
@@ -137,8 +135,8 @@ public class Client implements Runnable, ClientInterface {
         return requestData("accessProfile: ");
     }
 
-    public boolean updateProfile(String[] content) {
-        String command = "updateProfile:";
+    public boolean saveProfile(String[] content) {
+        String command = "saveProfile:";
         for (String element : content)
         {
             command += element + ":";
