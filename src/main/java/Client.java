@@ -258,8 +258,6 @@ public class Client implements Runnable, ClientInterface {
     // Abstraction is good.
     // TODO: format all remaining methods in this fashion
 
-
-
     public static void main(String[] args) {
         Thread t = new Thread(new Client());
         t.start();

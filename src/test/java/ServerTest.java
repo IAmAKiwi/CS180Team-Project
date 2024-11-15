@@ -29,16 +29,11 @@ public class ServerTest {
         mockUser = mock(User.class);
         mockMessageHistory = mock(MessageHistory.class);
 
-        // mock socket input and output streams
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
         when(mockSocket.getOutputStream()).thenReturn(new ByteArrayOutputStream());
 
         server = new Server(mockSocket);
-        // DOESNT WORK SINCE ITS NOT VISIBLE
-        // currentUser and clientSocket aren't visible either and need getters/setters
-        // none of this matters when we switch to scanners
-        Server.db = mockDatabase; 
-
+        Server.setDatabase(mockDatabase);
     }
 
     @AfterEach
@@ -52,9 +47,11 @@ public class ServerTest {
         String password = "testPass";
         String command = "login:" + username + ":" + password;
 
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {{
-            add(mockUser);
-        }});
+        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
+            {
+                add(mockUser);
+            }
+        });
         when(mockUser.getUsername()).thenReturn(username);
         when(mockUser.getPassword()).thenReturn(password);
 
@@ -66,9 +63,11 @@ public class ServerTest {
     public void testLoginFailure() {
         String command = "login:wrongUser:wrongPass";
 
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {{
-            add(mockUser);
-        }});
+        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
+            {
+                add(mockUser);
+            }
+        });
         when(mockUser.getUsername()).thenReturn("testUser");
         when(mockUser.getPassword()).thenReturn("testPass");
 
@@ -121,12 +120,15 @@ public class ServerTest {
         String result = server.sendMessage(command);
         assertEquals("false", result);
     }
+
     @Test
     public void testGetUserList() {
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {{
-            add(new User("user1", "pass1"));
-            add(new User("user2", "pass2"));
-        }});
+        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
+            {
+                add(new User("user1", "pass1"));
+                add(new User("user2", "pass2"));
+            }
+        });
 
         String result = server.getUserList();
         assertEquals("user1:user2:", result);
@@ -195,9 +197,9 @@ public class ServerTest {
         assertEquals("true", result);
     }
 
-        @Test
+    @Test
     public void testGetFriendList() {
-        when(mockDatabase.getFriends(anyString())).thenReturn(new String[]{"friend1", "friend2"});
+        when(mockDatabase.getFriends(anyString())).thenReturn(new String[] { "friend1", "friend2" });
 
         String result = server.getFriendList();
         assertEquals("friend1:friend2:", result);
@@ -205,13 +207,48 @@ public class ServerTest {
 
     @Test
     public void testGetBlockList() {
-        when(mockDatabase.getBlockList(anyString())).thenReturn(new String[]{"block1", "block2"});
+        when(mockDatabase.getBlockList(anyString())).thenReturn(new String[] { "block1", "block2" });
 
         String result = server.getBlockList();
         assertEquals("block1:block2:", result);
     }
+
+    @Test
+    public void testGetChatWithValidUsers() {
+        String otherUser = "testUser2";
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(new Message("Hello", "testUser1"));
+
+        when(mockMessageHistory.getMessageHistory()).thenReturn(messages);
+        when(mockDatabase.getMessages(anyString(), eq(otherUser))).thenReturn(mockMessageHistory);
+
+        String result = server.getChat(otherUser);
+        assertEquals("testUser1: Hello" + (char) 29, result);
+    }
+
+    @Test
+    public void testBlockUserSuccess() {
+        String userToBlock = "blockedUser";
+        when(mockDatabase.blockUser(anyString(), eq(userToBlock))).thenReturn(true);
+
+        String result = server.blockUser(userToBlock);
+        assertEquals("true", result);
+    }
+
+    @Test
+    public void testUnblockUserSuccess() {
+        String userToUnblock = "unblockedUser";
+        when(mockDatabase.unblockUser(anyString(), eq(userToUnblock))).thenReturn(true);
+
+        String result = server.unblockUser(userToUnblock);
+        assertEquals("true", result);
+    }
+
+    @Test
+    public void testSetFriendsOnlySuccess() {
+        server.setCurrentUser(mockUser);
+        String result = server.setFriendsOnly(true);
+        assertEquals("true", result);
+        verify(mockUser).setFriendsOnly(true);
+    }
 }
-
-
-
-

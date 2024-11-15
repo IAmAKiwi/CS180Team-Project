@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
-    private Socket clientSocket;
-    private User currentUser;
+    protected Socket clientSocket;
+    protected User currentUser;
     private String otherUser;
     private MessageHistory currentChat; // Maybe, have to update our chat a bunch.
 
@@ -36,8 +36,6 @@ public class Server implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: implement server
-        // Client will send commands to server based on the GUI
 
         boolean running = true;
         String line = "";
@@ -291,7 +289,7 @@ public class Server implements Runnable, ServerInterface {
 
     public String sendImage(String content) {
         try {
-            String userTwo = content.substring(0, content.indexOf(':')); // Fix this
+            String userTwo = content.substring(0, content.indexOf(':'));
             String path = content.substring(content.indexOf(':') + 1);
             db.addPhotos(path);
             return "true";
@@ -300,7 +298,6 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
 
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {
@@ -407,5 +404,30 @@ public class Server implements Runnable, ServerInterface {
             }
         }
 
+    }
+
+    // Add these getter/setter methods for testing
+    public static void setDatabase(Database database) {
+        db = database;
+    }
+
+    public static Database getDatabase() {
+        return db;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
+
+    public void setClientSocket(Socket socket) {
+        this.clientSocket = socket;
+    }
+
+    public Socket getClientSocket() {
+        return this.clientSocket;
     }
 }
