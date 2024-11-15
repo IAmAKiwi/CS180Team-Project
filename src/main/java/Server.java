@@ -481,6 +481,15 @@ public class Server implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                new Thread(new Server(socket)).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // sendMessage example: username[GS]message
     }
 }
