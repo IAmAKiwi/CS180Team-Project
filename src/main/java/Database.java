@@ -20,9 +20,9 @@ import javax.swing.JLabel;
  * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
-    private static Object userKey;
-    private static Object messageKey;
-    private static Object photoKey;
+    private final static Object userKey = new Object();
+    private final static Object messageKey = new Object();
+    private final static Object photoKey = new Object();
     private ArrayList<User> userList;
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
@@ -37,9 +37,6 @@ public class Database implements DatabaseInterface {
         this.userList = new ArrayList<>();
         this.allChats = new ArrayList<>();
         this.photosPath = new ArrayList<>();
-        this.userKey = new Object();
-        this.messageKey = new Object();
-        this.photoKey = new Object();
     }
 
     /**
@@ -50,7 +47,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean addUser(User user) {
-        synchronized (this.userKey) {
+        synchronized (userKey) {
             if (this.validateNewUser(user)) {
                 this.userList.add(user);
                 return true;
@@ -342,7 +339,7 @@ public class Database implements DatabaseInterface {
 
             // Use try-with-resources for BufferedWriter
             try (BufferedWriter bfr = new BufferedWriter(new FileWriter(f))) {
-                synchronized (this.userKey) {
+                synchronized (userKey) {
                     for (User users : userList) {
                         bfr.write(fileSeparator);
                         bfr.write("username: ");
@@ -714,7 +711,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setUsersList(ArrayList<User> userList) {
-        synchronized (this.userKey) {
+        synchronized (userKey) {
             this.userList = userList;
         }
     }
