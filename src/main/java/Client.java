@@ -165,12 +165,9 @@ public class Client implements Runnable, ClientInterface {
         return requestData("accessProfile: ");
     }
 
-    public boolean saveProfile(String[] content) {
-        String command = "saveProfile:";
-        for (String element : content) {
-            command += element + ":";
-        }
-        return sendCommand(command.substring(0, command.length() - 1));
+    public boolean saveProfile(String content) {
+        String command = "saveProfile:" + content;
+        return sendCommand(command);
     }
 
     public boolean removeFriend(String friend) {
