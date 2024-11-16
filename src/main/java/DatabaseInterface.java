@@ -52,6 +52,15 @@ public interface DatabaseInterface {
      */
     MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException;
 
+
+    /**
+     * Deletes the message history between two users.
+     *
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the message history was deleted successfully, false otherwise.
+     * */
+    public boolean deleteChat(String user1, String user2);
     /**
      * Saves the current list of users to persistent storage.
      * 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
+    private static int clientCount = 0;
     protected Socket clientSocket;
     protected User currentUser;
     private String otherUser;
@@ -119,6 +120,7 @@ public class Server implements Runnable, ServerInterface {
                 case "disconnect":
                     if (disconnect()) {
                         running = false;
+                        clientCount--;
                     } else {
                         result = "false";
                     }
@@ -222,8 +224,10 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String deleteChat(String user) {
-        db.deleteChat(currentUser.getUsername(), user);
-        return "true";
+        if (db.deleteChat(currentUser.getUsername(), user)) {
+            return "true";
+        };
+        return "false";
     }
 
     public boolean disconnect() {
@@ -460,11 +464,11 @@ public class Server implements Runnable, ServerInterface {
         try {
             while (true) {
                 Socket socket = serverSocket.accept();
+                clientCount++;
                 new Thread(new Server(socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // sendMessage example: username[GS]message
     }
 }

@@ -61,9 +61,11 @@ public class Database implements DatabaseInterface {
     @Override
     public boolean validateNewUser(User user) {
         // Check for unique username
-        for (User u : this.userList) {
-            if (u.getUsername().equals(user.getUsername())) {
-                return false;
+        synchronized (USER_KEY) {
+            for (User u : this.userList) {
+                if (u.getUsername().equals(user.getUsername())) {
+                    return false;
+                }
             }
         }
         
@@ -84,15 +86,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public ArrayList<MessageHistory> getAllChats() {
-        return this.allChats;
-    }
-
-    /**
-     * @return userList of Users
-     * 
-     */
-    public ArrayList<User> getUserList() {
-        return this.userList;
+        synchronized (MESSAGE_KEY) {
+            return this.allChats;
+        }
     }
 
     /**
@@ -100,7 +96,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public ArrayList<User> getUsers() {
-        return this.userList;
+        synchronized (USER_KEY) {
+            return this.userList;
+        }
     }
 
     /**
@@ -113,9 +111,11 @@ public class Database implements DatabaseInterface {
     public User getUser(String username) {
         // if User implements Comparable, we can sort userList and make this more
         // efficient
-        for (User u : this.userList) {
-            if (u.getUsername().equals(username)) {
-                return u;
+        synchronized (USER_KEY) {
+            for (User u : this.userList) {
+                if (u.getUsername().equals(username)) {
+                    return u;
+                }
             }
         }
         return null;
@@ -135,9 +135,11 @@ public class Database implements DatabaseInterface {
             throw new IllegalArgumentException("No such self-messaging history.");
         }
 
-        for (MessageHistory mh : this.allChats) {
-            if (mh.equals(new MessageHistory(new String[] { user1, user2 }))) {
-                return mh;
+        synchronized (MESSAGE_KEY) {
+            for (MessageHistory mh : this.allChats) {
+                if (mh.equals(new MessageHistory(new String[]{user1, user2}))) {
+                    return mh;
+                }
             }
         }
 
@@ -152,9 +154,11 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean addMessageHistory(MessageHistory messageHistory) {
-        for (MessageHistory mh : this.allChats) {
-            if (mh.equals(messageHistory)) {
-                return false;
+        synchronized (MESSAGE_KEY) {
+            for (MessageHistory mh : this.allChats) {
+                if (mh.equals(messageHistory)) {
+                    return false;
+                }
             }
         }
         if (messageHistory.getUsernames().length == 2) {
@@ -162,6 +166,19 @@ public class Database implements DatabaseInterface {
                 this.allChats.add(messageHistory);
             }
             return true;
+        }
+        return false;
+    }
+
+    public boolean deleteChat(String user1, String user2) {
+        synchronized (MESSAGE_KEY) {
+        for (int i = 0; i < this.allChats.size(); i++) {
+                MessageHistory mh = this.allChats.get(i);
+                if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
+                    this.allChats.remove(i);
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -203,8 +220,8 @@ public class Database implements DatabaseInterface {
             }
         }
 
+        synchronized (MESSAGE_KEY) {
         for (int i = 0; i < this.allChats.size(); i++) {
-            synchronized (MESSAGE_KEY) {
                 MessageHistory mh = this.allChats.get(i);
                 if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
@@ -410,17 +427,6 @@ public class Database implements DatabaseInterface {
             }
         } catch (IOException e) {
             return false;
-        }
-    }
-
-    public void deleteChat(String user1, String user2) {
-        for (int i = 0; i < this.allChats.size(); i++) {
-            synchronized (MESSAGE_KEY) {
-                MessageHistory mh = this.allChats.get(i);
-                if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
-                    this.allChats.remove(i);
-                }
-            }
         }
     }
 
@@ -760,7 +766,9 @@ public class Database implements DatabaseInterface {
 
     @Override
     public ArrayList<String> getPhotos() {
-        return photosPath;
+        synchronized (PHOTO_KEY) {
+            return photosPath;
+        }
     }
 
     /**

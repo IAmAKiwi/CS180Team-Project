@@ -29,6 +29,8 @@ This class implements the `DatabaseInterface` and contains methods to manage use
 - `ArrayList<User>`: Stores the list of users.
 - `ArrayList<MessageHistory>`: Stores all chat histories.
 - `ArrayList<String>`: Manages the paths to user photos.
+- `Object`: Key objects used for synchronization. 
+- `char`: chars used for file I/O
 
 ### Methods
 
@@ -39,12 +41,25 @@ This class implements the `DatabaseInterface` and contains methods to manage use
 - **getUser(String username)**: Retrieves a user by their username.
 - **getMessages(String user1, String user2)**: Retrieves the message history between two users.
 - **addMessageHistory(MessageHistory messageHistory)**: Adds a message history to the chat records.
+- **deleteChat(String user1, String user2)**: Deletes the message history between two users.
+- **addMessage(Message message, String receiver)**: Adds a message to a message history.
+- **addFriend(String user1, String user2)**: Adds a friend to a user's friends list
+- **getFriends(String username)**: Retrieves a list of friends for a user.
+- **removeFriend(String user1, String user2)**: Removes a friend from a user's friends list.
+- **blockUser(String user)**: Adds a user to the blocked list.
+- **getBlockList(String username)**: Retrieves a list of blocked users for a user (if existing)
+- **unblockUser(String user1, String user2)**: Removes a user from a user's blocked list.
 - **saveUsers()**: Saves the list of users to a file named `usersHistory.txt`.
 - **loadUsers()**: Loads users from the `usersHistory.txt` file.
 - **saveMessages()**: Saves all message histories to a file named `messageHistory.txt`.
 - **loadMessages()**: Loads message histories from the `messageHistory.txt` file.
 - **loadPhotos()**: Loads photo paths from `UsersPhotos.txt`.
 - **savePhotos()**: Saves current photo paths to `UsersPhotos.txt`.
+- **addPhotos(String path)**: Adds a new photo path to the database.
+- **displayPhotos(String path)**: Displays a photo from a given path (if existing)
+- **getPhotos()**: Retrieves the list of photo paths associated with the database
+- **setUsersList(ArrayList<User> newUserList)**: Sets the list of users for the database.
+- **setAllChats(ArrayList<MessageHistory> allChats)**: Sets the list of all chat histories for the database.
 
 ## Usage
 
@@ -374,6 +389,22 @@ The `SimpleDIYTester` class provides a way to:
    - Set privacy settings with the "friendsOnly" mode.
 3. **Data Saving**: After entering all desired data, the program saves the user profile to the `Database` and writes to `usersHistory.txt`.
 4. **Completion Message**: Once completed, a message confirms the user’s data has been saved.
+
+## ServerClientIOTestCases
+
+This java class, `ServerClientIOTestCases` uses JUnit to help test server functionality and IO.
+
+### Key Features
+
+- **Server and Client IO Testing**: Will use a network connection between Server and Client to execute
+- **Test Cases**: Will use JUnit to test Server and Client IO
+
+### How to use IMPORTANT
+
+- **Run Server WITH ARGUMENTS**: java Server.java "args". Running with arguments prevents the results being saved
+- **Run ServerClientIOTestCases**: It will automatically connect to the running server and run the tests using IO.
+- **Ending test**: Server must be forced to stop at this point. Normally it automatically saves on forced stop.
+Future versions will include a GUI to stop the server. 
 
 ## Dependencies
 

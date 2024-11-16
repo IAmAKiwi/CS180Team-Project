@@ -144,7 +144,8 @@ class ServerClientIOTestCases {
         assertTrue(client.deleteMessage("newUser" + groupSeparator + "hello"));
         assertFalse(client.deleteMessage("newUser" + groupSeparator + "hello"));
         assertEquals("testUser: we are not friends" + groupSeparator, client.getChat("newUser"));
-        client.deleteChat("newUser");
+        assertTrue(client.deleteChat("newUser"));
+        assertFalse(client.deleteChat("newUser"));
         assertEquals("", (client.getChat("newUser")));
     }
 
