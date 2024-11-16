@@ -7,17 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Typical use flow of a client/server connection:
- * Client connects to server.
- * Client either logs in or registers. (should not have to check if they are
- * logged in, should be done implicitly by GUI)
- * Client opens a chat (server sends back the data to display)
- * Client sends a message (server updates the data)
- * Whenever a
  *
  */
-// TODO: add methods to set first name, last name, bio, birthday, profile pic,
-// friends, blocks separately.
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
@@ -96,9 +87,6 @@ public class Server implements Runnable, ServerInterface {
                 case "blockUser":
                     result = blockUser(content);
                     break;
-                // case "requestActive":
-                // result = requestActive(content);
-                // break;
                 case "deleteChat":
                     result = deleteChat(content);
                     break;
@@ -142,19 +130,17 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    // public String requestActive(String user) {
-    // return db.requestActive(user);
-    // }
-
     public String deleteMessage(String content) {
         String[] parts = content.split(String.valueOf(GS));
         String receiver = parts[0];
         String message = parts[1];
         MessageHistory mh = db.getMessages(currentUser.getUsername(), receiver);
+        if (mh == null) {
+            return "false";
+        }
         for (Message m : mh.getMessageHistory()) {
             if (m.getMessage().equals(message)) {
                 mh.deleteMessage(m);
-                db.saveMessages(); // just for testing
                 return "true";
             }
         }
@@ -211,6 +197,9 @@ public class Server implements Runnable, ServerInterface {
          */
         String[] fields = content.split((char) 29 + "");
         User user = db.getUser(fields[0]);
+        if (user == null) {
+            return "false";
+        }
         user.setFirstName(fields[1]);
         user.setLastName(fields[2]);
         user.setBio(fields[3]);
@@ -301,7 +290,11 @@ public class Server implements Runnable, ServerInterface {
      * @return String of all messages
      */
     public String getChat(String content) {
-        ArrayList<Message> messages = db.getMessages(currentUser.getUsername(), content).getMessageHistory();
+        MessageHistory mh = db.getMessages(currentUser.getUsername(), content);
+        if (mh == null) {
+            return "";
+        }
+        ArrayList<Message> messages = mh.getMessageHistory();
         String chat = "";
         char endChar = (char) 29;
         for (int i = 0; i < messages.size(); i++) {

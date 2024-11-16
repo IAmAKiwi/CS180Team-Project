@@ -48,6 +48,4 @@ public interface ClientInterface {
     boolean setProfilePic(String profilePic);
 
     String getProfilePic();
-
-    boolean requestActive(String otherUser);
 }
