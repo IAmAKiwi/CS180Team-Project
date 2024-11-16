@@ -100,5 +100,48 @@ public class UserTestCases {
             Assert.assertEquals("pic.jpg", u.getProfilePic());
             Assert.assertTrue(u.isFriendsOnly());
         }
+
+        @Test(timeout = 1000)
+        public void testInvalidBirthdayArray() {
+            User u = new User("test", "test");
+            u.setBirthday(new int[] { 1, 1 }); // Too short
+            Assert.assertNull(u.getBirthday());
+            u.setBirthday(new int[] { 1, 1, 1, 1 }); // Too long
+            Assert.assertNull(u.getBirthday());
+        }
+
+        @Test(timeout = 1000)
+        public void testRemoveFriendAndBlock() {
+            User u = new User("test", "test");
+            u.addFriend("friend1");
+            u.addBlock("blocked1");
+            u.removeFriend("friend1");
+            u.unblock("blocked1");
+            Assert.assertEquals(0, u.getFriends().size());
+            Assert.assertEquals(0, u.getBlocked().size());
+        }
+
+        @Test(timeout = 1000)
+        public void testSettersWithNullValues() {
+            User u = new User("test", "test");
+            u.setFirstName(null);
+            u.setLastName(null);
+            u.setBio(null);
+            u.setProfilePic(null);
+            Assert.assertNull(u.getFirstName());
+            Assert.assertNull(u.getLastName());
+            Assert.assertNull(u.getBio());
+            Assert.assertNull(u.getProfilePic());
+        }
+
+        @Test(timeout = 1000)
+        public void testToStringFormat() {
+            User u = new User("test", "test");
+            u.setFirstName("John");
+            u.setLastName("Doe");
+            String toString = u.toString();
+            Assert.assertTrue(toString.contains("John"));
+            Assert.assertTrue(toString.contains("Doe"));
+        }
     }
 }

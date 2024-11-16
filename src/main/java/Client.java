@@ -10,10 +10,10 @@ public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
     public Socket socket;
-    private String result; // for testing
+    private String resultt; // for testing
 
     public String getResult() {
-        return result;
+        return resultt;
     }
 
     public Client() {

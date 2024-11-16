@@ -90,5 +90,38 @@ public class MessageHistoryTestCases {
             }
             Assert.assertEquals(1000, mh.getMessageHistory().size());
         }
+
+        @Test(timeout = 1000)
+        public void testMultipleUsersMessageHistory() {
+            String[] users = { "User1", "User2", "User3" };
+            MessageHistory mh = new MessageHistory(users);
+            Assert.assertEquals(3, mh.getUsernames().length);
+        }
+
+        @Test(timeout = 1000)
+        public void testMessageHistoryWithNullMessage() {
+            String[] users = { "User1", "User2" };
+            MessageHistory mh = new MessageHistory(users);
+            mh.addMessage(null);
+            Assert.assertEquals(1, mh.getMessageHistory().size());
+        }
+
+        @Test(timeout = 1000)
+        public void testDeleteNonExistentMessage() {
+            String[] users = { "User1", "User2" };
+            MessageHistory mh = new MessageHistory(users);
+            Message m1 = new Message("Hello", "User1");
+            mh.deleteMessage(m1);
+            Assert.assertEquals(0, mh.getMessageHistory().size());
+        }
+
+        @Test(timeout = 1000)
+        public void testMessageHistoryConstructorWithMessage() {
+            Message firstMessage = new Message("Hello", "User1");
+            MessageHistory mh = new MessageHistory(firstMessage, "User2");
+            Assert.assertEquals("User1", mh.getSender());
+            Assert.assertEquals("User2", mh.getRecipient());
+            Assert.assertEquals(1, mh.getMessageHistory().size());
+        }
     }
 }

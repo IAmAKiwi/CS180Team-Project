@@ -74,5 +74,31 @@ public class MessageTestCases {
             Message m = new Message("Hello 世界!", "User1");
             Assert.assertEquals("Hello 世界!", m.getMessage());
         }
+
+        @Test(timeout = 1000)
+        public void testMessageWithOnlySpaces() {
+            Message m = new Message("   ", "User1");
+            Assert.assertEquals("   ", m.getMessage());
+            Assert.assertEquals("User1:    ", m.toString());
+        }
+
+        @Test(timeout = 1000)
+        public void testMessageWithMultipleLines() {
+            Message m = new Message("Line1\nLine2\nLine3", "User1");
+            Assert.assertEquals("Line1\nLine2\nLine3", m.getMessage());
+        }
+
+        @Test(timeout = 1000)
+        public void testMessageWithEmptySender() {
+            Message m = new Message("Hello", "");
+            Assert.assertEquals("", m.getSender());
+            Assert.assertEquals(": Hello", m.toString());
+        }
+
+        @Test(timeout = 1000)
+        public void testMessageWithNullSender() {
+            Message m = new Message("Hello", null);
+            Assert.assertNull(m.getSender());
+        }
     }
 }

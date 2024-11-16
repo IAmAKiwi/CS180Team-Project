@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -70,8 +71,8 @@ class DatabaseTestCases {
     // attempts to retrieve a non-existent user which should be default
     void testGetUserNonExistentUser() {
         User defaultUser = db.getUser("nonexistent");
-        assertNotNull(defaultUser);
-        assertNull(defaultUser.getUsername()); // assuming default user has null username and password
+        // default user should be null
+        assertNull(defaultUser);
     }
 
     @Test
@@ -245,7 +246,7 @@ class DatabaseTestCases {
     @Test
     void testLoadMessagesFileInput() throws IOException {
         // sample message history, please change if needed
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempMessageFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("messageHistory.txt"))) {
             writer.write((char) 28 + "user1 user2\n"); // start with users and char
             writer.write("user1: Hello" + (char) 29 + "\n"); // message
             writer.write("user2: Hi there!" + (char) 29 + "\n"); // message
@@ -272,5 +273,49 @@ class DatabaseTestCases {
         assertEquals("user1", messages.get(0).getSender());
         assertEquals("Hi there!", messages.get(1).getMessage());
         assertEquals("user2", messages.get(1).getSender());
+    }
+
+    @Test
+    void testAddMessageWithBlockedUser() {
+        User user1 = new User("user1", "Password1$");
+        User user2 = new User("user2", "Password2$");
+        db.addUser(user1);
+        db.addUser(user2);
+        user1.addBlock("user2");
+        
+        Message message = new Message("Hello", "user1");
+        assertFalse(db.addMessage(message, "user2"));
+    }
+
+    @Test
+    void testAddMessageWithFriendsOnlyMode() {
+        User user1 = new User("user1", "Password1$");
+        User user2 = new User("user2", "Password2$");
+        db.addUser(user1);
+        db.addUser(user2);
+        user1.setFriendsOnly(true);
+        
+        Message message = new Message("Hello", "user1");
+        assertFalse(db.addMessage(message, "user2"));
+    }
+
+    @Test
+    void testGetMessagesNonExistentUsers() {
+        MessageHistory mh = db.getMessages("nonexistent1", "nonexistent2");
+        assertNull(mh);
+    }
+
+    @Test
+    void testLoadUsersWithInvalidFormat() {
+        // Create a temporary file with invalid format
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("usersHistory.txt"));
+            writer.write("invalid format data");
+            writer.close();
+            
+            assertFalse(db.loadUsers());
+        } catch (IOException e) {
+            fail("IOException occurred");
+        }
     }
 }

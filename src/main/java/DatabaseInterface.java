@@ -157,4 +157,56 @@ public interface DatabaseInterface {
      * @param allChats An ArrayList of MessageHistory objects to be set.
      */
     void setAllChats(ArrayList<MessageHistory> allChats);
+
+    /**
+     * Adds a friend to the database.
+     * 
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the friend was added successfully, false otherwise.
+     */
+    boolean addFriend(String user1, String user2);
+
+    /**
+     * Retrieves a list of friends for a user.
+     * 
+     * @param username The username of the user.
+     * @return An array of strings representing the usernames of the user's friends.
+     */
+    String[] getFriends(String username);
+
+    /**
+     * Removes a friend from the database.
+     * 
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the friend was removed successfully, false otherwise.
+     */
+    boolean removeFriend(String user1, String user2);
+
+    /**
+     * Blocks a user in the database.
+     * 
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the user was blocked successfully, false otherwise.
+     */
+    boolean blockUser(String user1, String user2);
+
+    /**
+     * Retrieves a list of blocked users for a user.
+     * 
+     * @param username The username of the user.
+     * @return An array of strings representing the usernames of the user's blocked users.
+     */
+    String[] getBlockList(String username);
+
+    /**
+     * Unblocks a user in the database.
+     * 
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the user was unblocked successfully, false otherwise.
+     */
+    boolean unblockUser(String user1, String user2);
 }
