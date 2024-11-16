@@ -1,35 +1,35 @@
 public interface ServerInterface {
     // User authentication
-    String login(String content);
-    String register(String content);
+    String login(String content); // username [groupSeparator] password
+    String register(String content); // username [groupSeparator] password
     String logout();
     boolean disconnect();
     
     // User management
-    String getUserList();
-    String accessProfile();
-    String saveProfile(String content);
+    String getUserList(); // username [groupSeparator] username [groupSeparator] etc
+    String accessProfile(); // username [groupSeparator] first name [groupSeparator] etc
+    String saveProfile(String content); // username [groupSeparator] first name [groupSeparator] etc (above)
     
     // Messaging
-    String sendMessage(String content);
-    String deleteMessage(String content);
-    String getChat(String otherUsername);
-    String deleteChat(String user);
-    String sendImage(String content);
+    String sendMessage(String content); // otherUsername [groupSeparator] message
+    String deleteMessage(String content); // otherUsername [groupSeparator] message
+    String getChat(String otherUsername); // otherUsername
+    String deleteChat(String user); // otherUsername
+    String sendImage(String content); // path
     
     // Friend management
-    String removeFriend(String friend);
-    String addFriend(String friend);
-    String getFriendList();
+    String removeFriend(String friend); // friendUsername
+    String addFriend(String friend); // friendUsername
+    String getFriendList(); // username [groupSeparator] username [groupSeparator] etc
     
     // Block management
-    String unblockUser(String user);
-    String blockUser(String otherUsername);
-    String getBlockList();
+    String unblockUser(String user); // blockUsername
+    String blockUser(String otherUsername); // blockUsername
+    String getBlockList(); // username [groupSeparator] username [groupSeparator] etc
     
     // Settings
-    String isFriendsOnly();
-    String setFriendsOnly(boolean friendsOnly);
-    String setProfilePic(String profilePic);
-    String getProfilePic();
+    String isFriendsOnly(); // true or false
+    String setFriendsOnly(boolean friendsOnly); // true or false
+    String setProfilePic(String profilePic); // path
+    String getProfilePic(); // path
 }
