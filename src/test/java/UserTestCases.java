@@ -33,41 +33,115 @@ public class UserTestCases {
 
     public static class TestCase {
         @Test(timeout = 1000)
-        public void userTest() {
-            // Testing name/password setting.
+        public void testBasicUser() {
             User u1 = new User("test1", "test1");
             User u2 = new User("test2", "test2");
             Assert.assertEquals("test1", u1.getUsername());
             Assert.assertEquals("test2", u2.getPassword());
+        }
 
-            // Testing adding friends and blocks
+        @Test(timeout = 1000)
+        public void testFriendsAndBlocks() {
+            User u1 = new User("test1", "test1");
             u1.addBlock("badGuy");
             u1.addFriend("bestie");
             u1.addFriend("bestie2");
-            ArrayList<String> arr = new ArrayList<>();
-            arr.add("bestie");
-            arr.add("bestie2");
-            Assert.assertArrayEquals(arr.toArray(), u1.getFriends().toArray());
+            ArrayList<String> friends = new ArrayList<>();
+            friends.add("bestie");
+            friends.add("bestie2");
+            Assert.assertArrayEquals(friends.toArray(), u1.getFriends().toArray());
             Assert.assertEquals(2, u1.getFriends().size());
             Assert.assertEquals(1, u1.getBlocked().size());
+        }
 
-            // Testing bio/birthday/friendsOnly/removing friends.
+        @Test(timeout = 1000)
+        public void testUserProfile() {
+            User u2 = new User("test2", "test2");
             u2.setBio("test bio");
             u2.setBirthday(new int[] { 9, 15, 2005 });
-            u2.setBirthday(new int[] { 9, 15, 2025 });
             u2.setFriendsOnly(true);
-            u2.addFriend("fakeBestie");
-            u2.removeFriend("fakeBestie");
-            u2.addBlock("bestie");
-            u2.unblock("bestie");
-
             Assert.assertEquals("test bio", u2.getBio());
             Assert.assertArrayEquals(new int[] { 9, 15, 2005 }, u2.getBirthday());
             Assert.assertTrue(u2.isFriendsOnly());
-            int[] arr2 = new int[] { 9, 15, 2005 };
-            Assert.assertArrayEquals(arr2, u2.getBirthday());
-            Assert.assertEquals(0, u2.getFriends().size());
-            Assert.assertEquals(0, u2.getBlocked().size());
+        }
+
+        @Test(timeout = 1000)
+        public void testInvalidBirthday() {
+            User u = new User("test", "test");
+            u.setBirthday(new int[] { 13, 32, 2025 }); // Invalid month and day
+            Assert.assertNull(u.getBirthday());
+        }
+
+        @Test(timeout = 1000)
+        public void testEmptyUser() {
+            User u = new User();
+            Assert.assertNull(u.getUsername());
+            Assert.assertNull(u.getPassword());
+            Assert.assertNotNull(u.getFriends());
+            Assert.assertNotNull(u.getBlocked());
+        }
+
+        @Test(timeout = 1000)
+        public void testDuplicateFriends() {
+            User u = new User("test", "test");
+            u.addFriend("friend1");
+            u.addFriend("friend1");
+            Assert.assertEquals(2, u.getFriends().size()); // ArrayList allows duplicates
+        }
+
+        @Test(timeout = 1000)
+        public void testCompleteUserProfile() {
+            User u = new User("test", "test", "John", "Doe", "Bio",
+                    new int[] { 1, 1, 2000 }, "pic.jpg",
+                    new ArrayList<>(), new ArrayList<>(), true);
+            Assert.assertEquals("John", u.getFirstName());
+            Assert.assertEquals("Doe", u.getLastName());
+            Assert.assertEquals("Bio", u.getBio());
+            Assert.assertEquals("pic.jpg", u.getProfilePic());
+            Assert.assertTrue(u.isFriendsOnly());
+        }
+
+        @Test(timeout = 1000)
+        public void testInvalidBirthdayArray() {
+            User u = new User("test", "test");
+            u.setBirthday(new int[] { 1, 1 }); // Too short
+            Assert.assertNull(u.getBirthday());
+            u.setBirthday(new int[] { 1, 1, 1, 1 }); // Too long
+            Assert.assertNull(u.getBirthday());
+        }
+
+        @Test(timeout = 1000)
+        public void testRemoveFriendAndBlock() {
+            User u = new User("test", "test");
+            u.addFriend("friend1");
+            u.addBlock("blocked1");
+            u.removeFriend("friend1");
+            u.unblock("blocked1");
+            Assert.assertEquals(0, u.getFriends().size());
+            Assert.assertEquals(0, u.getBlocked().size());
+        }
+
+        @Test(timeout = 1000)
+        public void testSettersWithNullValues() {
+            User u = new User("test", "test");
+            u.setFirstName(null);
+            u.setLastName(null);
+            u.setBio(null);
+            u.setProfilePic(null);
+            Assert.assertNull(u.getFirstName());
+            Assert.assertNull(u.getLastName());
+            Assert.assertNull(u.getBio());
+            Assert.assertNull(u.getProfilePic());
+        }
+
+        @Test(timeout = 1000)
+        public void testToStringFormat() {
+            User u = new User("test", "test");
+            u.setFirstName("John");
+            u.setLastName("Doe");
+            String toString = u.toString();
+            Assert.assertTrue(toString.contains("John"));
+            Assert.assertTrue(toString.contains("Doe"));
         }
     }
 }

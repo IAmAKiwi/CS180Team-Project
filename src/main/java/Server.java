@@ -1,8 +1,10 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Typical use flow of a client/server connection:
@@ -14,7 +16,8 @@ import java.util.Scanner;
  * Whenever a
  *
  */
-// TODO: add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
+// TODO: add methods to set first name, last name, bio, birthday, profile pic,
+// friends, blocks separately.
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
@@ -28,7 +31,8 @@ public class Server implements Runnable, ServerInterface {
         clientSocket = socket;
     }
 
-    public Server() {}
+    public Server() {
+    }
 
     public void run() {
         BufferedReader reader = null;
@@ -74,9 +78,9 @@ public class Server implements Runnable, ServerInterface {
                 case "accessProfile":
                     result = accessProfile();
                     break;
-                //case "updateProfile":
-                    //result = updateProfile(content);
-                    //break;
+                // case "updateProfile":
+                // result = updateProfile(content);
+                // break;
                 case "saveProfile":
                     result = saveProfile(content);
                     break;
@@ -143,13 +147,14 @@ public class Server implements Runnable, ServerInterface {
     // }
 
     public String deleteMessage(String content) {
-        String[] parts = content.split(String.valueOf((char) 29));
-        String sender = parts[0];
+        String[] parts = content.split(String.valueOf(GS));
+        String receiver = parts[0];
         String message = parts[1];
-        MessageHistory mh = db.getMessages(currentUser.getUsername(), sender);
+        MessageHistory mh = db.getMessages(currentUser.getUsername(), receiver);
         for (Message m : mh.getMessageHistory()) {
-            if (m.getMessage().equals(message) && m.getSender().equals(sender)) {
+            if (m.getMessage().equals(message)) {
                 mh.deleteMessage(m);
+                db.saveMessages(); // just for testing
                 return "true";
             }
         }
@@ -198,13 +203,13 @@ public class Server implements Runnable, ServerInterface {
         return "true";
     }
 
-    public String saveProfile(String content)
-    {
+    public String saveProfile(String content) {
         /*
          * Format input as:
-         * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/YYYYGSprofilepicGSfriendsonly
+         * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/
+         * YYYYGSprofilepicGSfriendsonly
          */
-        String[] fields = content.split((char)29 + "");
+        String[] fields = content.split((char) 29 + "");
         User user = db.getUser(fields[0]);
         user.setFirstName(fields[1]);
         user.setLastName(fields[2]);
@@ -282,7 +287,7 @@ public class Server implements Runnable, ServerInterface {
         ArrayList<User> users = db.getUsers();
         String userList = "";
         for (int i = 0; i < users.size(); i++) {
-            userList += users.get(i).getUsername() + ":";
+            userList += users.get(i).getUsername() + GS;
         }
         return userList;
     }
@@ -418,29 +423,6 @@ public class Server implements Runnable, ServerInterface {
         writer.flush();
     }
 
-    // public static void main(String[] args) {
-    // db = new Database();
-    // db.loadMessages();
-    // db.loadUsers();
-
-    // try {
-    // serverSocket = new ServerSocket(4242);
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-
-    // while (true) {
-    // try {
-    // Socket socket = serverSocket.accept();
-    // new Thread(new Server(socket)).start();
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    // }
-
-    // }
-
-    // Add these getter/setter methods for testing
     public static void setDatabase(Database database) {
         db = database;
     }

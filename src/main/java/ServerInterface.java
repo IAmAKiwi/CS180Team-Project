@@ -1,30 +1,35 @@
 public interface ServerInterface {
-    public String login(String content);
-
-    public String register(String content);
-
-    public String sendMessage(String otherUsername);
-
-    public String sendImage(String content);
-
-    public String addFriend(String otherUsername);
-
-    public String getFriendList();
-
-    public String blockUser(String otherUsername);
-
-    public String getBlockList();
-
-    public String removeFriend(String otherUsername);
-
-    public String unblockUser(String otherUsername);
-
-    public String isFriendsOnly();
-
-    public String setFriendsOnly(boolean friendsOnly);
-
-    public String setProfilePic(String profilePic);
-
-    public String logout();
-
+    // User authentication
+    String login(String content);
+    String register(String content);
+    String logout();
+    boolean disconnect();
+    
+    // User management
+    String getUserList();
+    String accessProfile();
+    String saveProfile(String content);
+    
+    // Messaging
+    String sendMessage(String content);
+    String deleteMessage(String content);
+    String getChat(String otherUsername);
+    String deleteChat(String user);
+    String sendImage(String content);
+    
+    // Friend management
+    String removeFriend(String friend);
+    String addFriend(String friend);
+    String getFriendList();
+    
+    // Block management
+    String unblockUser(String user);
+    String blockUser(String otherUsername);
+    String getBlockList();
+    
+    // Settings
+    String isFriendsOnly();
+    String setFriendsOnly(boolean friendsOnly);
+    String setProfilePic(String profilePic);
+    String getProfilePic();
 }

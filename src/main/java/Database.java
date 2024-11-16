@@ -50,6 +50,7 @@ public class Database implements DatabaseInterface {
         synchronized (userKey) {
             if (this.validateNewUser(user)) {
                 this.userList.add(user);
+                // this.saveUsers(); // just for testing
                 return true;
             }
         }
@@ -89,6 +90,14 @@ public class Database implements DatabaseInterface {
     @Override
     public ArrayList<MessageHistory> getAllChats() {
         return this.allChats;
+    }
+
+    /**
+     * @return userList of Users
+     * 
+     */
+    public ArrayList<User> getUserList() {
+        return this.userList;
     }
 
     /**
@@ -156,6 +165,7 @@ public class Database implements DatabaseInterface {
         if (messageHistory.getUsernames().length == 2) {
             synchronized (this.messageKey) {
                 this.allChats.add(messageHistory);
+                // this.saveMessages(); // just for testing
             }
             return true;
         }
@@ -205,6 +215,7 @@ public class Database implements DatabaseInterface {
                 if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
+                    // this.saveMessages(); // just for testing
                     return true;
                 }
             }
@@ -213,8 +224,9 @@ public class Database implements DatabaseInterface {
         MessageHistory mh = new MessageHistory(message, receiver);
         synchronized (this.messageKey) {
             this.allChats.add(mh);
+            // this.saveMessages(); // just for testing
+            return true;
         }
-        return true;
     }
 
     /**
@@ -430,7 +442,6 @@ public class Database implements DatabaseInterface {
      * @return true if users were successfully loaded from the file, false if
      *         the file does not exist or an error occurs during reading.
      */
-    //TODO: rewrite this to include profile information! (while it has another group separator before a file separator)
     @Override
     public boolean loadUsers() {
         File f = new File("usersHistory.txt");
@@ -441,66 +452,116 @@ public class Database implements DatabaseInterface {
         try (BufferedReader bfr = new BufferedReader(new FileReader(f))) {
             String line;
             while ((line = bfr.readLine()) != null) {
-                String temp;
-                while (line.charAt(line.length() - 1) != fileSeparator && bfr.ready()) {
-                    line += bfr.readLine();
-                }
-                String[] elements = line.split(String.valueOf(groupSeparator));
-                if (elements.length < 2)
-                    continue;
-
-                String username = elements[0].replace("username: ", "").trim();
-                String password = elements[1].replace("password: ", "").trim();
-                User user = new User(username, password);
-
-                for (int i = 2; i < elements.length - 1; i++) {
-                    String command = elements[i].substring(0, elements[i].indexOf(":"));
-                    String value = elements[i].substring(elements[i].indexOf(":") + 1).trim();
-                    switch (command) {
-                        case "First Name":
-                            user.setFirstName(value);
-                            break;
-                        case "Last Name":
-                            user.setLastName(value);
-                            break;
-                        case "Bio":
-                            user.setBio(value);
-                            break;
-                        case "Birthday":
-                            String[] birthday = value.split(" ");
-                            int[] birthdayInt = new int[birthday.length];
-                            for (int j = 0; j < birthday.length; j++) {
-                                birthdayInt[j] = Integer.parseInt(birthday[j]);
-                            }
-                            user.setBirthday(birthdayInt);
-                            break;
-                        case "Profile Picture":
-                            user.setProfilePic(value);
-                            break;
-                        case "Friends":
-                            String[] friends = value.split(":");
-                            ArrayList<String> friendsList = new ArrayList<String>();
-                            for (String friend : friends) {
-                                friendsList.add(friend);
-                            }
-                            user.setFriends(friendsList);
-                            break;
-                        case "Blocks":
-                            String[] blocked = value.split(":");
-                            ArrayList<String> blockedList = new ArrayList<String>();
-                            for (String block : blocked) {
-                                blockedList.add(block);
-                            }
-                            user.setBlocked(blockedList);
-                            break;
-                        case "Friends Only":
-                            user.setFriendsOnly(Boolean.valueOf(value));
-                            break;
-                    default:
+                try {
+                    // Skip empty lines
+                    if (line.trim().isEmpty()) {
                         continue;
                     }
+
+                    // Check for minimum required format
+                    if (!line.contains("username:") || !line.contains("password:")) {
+                        System.out.println("Invalid format: missing username or password");
+                        return false;
+                    }
+
+                    String temp;
+                    while (line.charAt(line.length() - 1) != fileSeparator && bfr.ready()) {
+                        temp = bfr.readLine();
+                        if (temp == null) break;
+                        line += temp;
+                    }
+
+                    String[] elements = line.split(String.valueOf(groupSeparator));
+                    if (elements.length < 2) {
+                        System.out.println("Invalid format: insufficient elements");
+                        return false; // maybe change this to continue
+                    }
+
+                    // Extract username and password with error checking
+                    String username = null;
+                    String password = null;
+                    try {
+                        username = elements[0].replace("username: ", "").trim();
+                        password = elements[1].replace("password: ", "").trim();
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid format: malformed username/password");
+                        return false;
+                    }
+
+                    if (username.isEmpty() || password.isEmpty()) {
+                        System.out.println("Invalid format: empty username or password");
+                        return false;
+                    }
+
+                    User user = new User(username, password);
+
+                    // Process optional fields
+                    for (int i = 2; i < elements.length - 1; i++) {
+                        try {
+                            String[] parts = elements[i].split(":");
+                            if (parts.length < 2) continue;
+                            
+                            String command = parts[0].trim();
+                            String value = parts[1].trim();
+
+                            switch (command) {
+                                case "First Name":
+                                    user.setFirstName(value);
+                                    break;
+                                case "Last Name":
+                                    user.setLastName(value);
+                                    break;
+                                case "Bio":
+                                    user.setBio(value);
+                                    break;
+                                case "Birthday":
+                                    try {
+                                        String[] birthday = value.split(" ");
+                                        int[] birthdayInt = new int[3];
+                                        for (int j = 0; j < 3; j++) {
+                                            birthdayInt[j] = Integer.parseInt(birthday[j]);
+                                        }
+                                        user.setBirthday(birthdayInt);
+                                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                        System.out.println("Invalid birthday format");
+                                    }
+                                    break;
+                                case "Profile Picture":
+                                    user.setProfilePic(value);
+                                    break;
+                                case "Friends":
+                                    String[] friends = value.split(":");
+                                    ArrayList<String> friendsList = new ArrayList<>();
+                                    for (String friend : friends) {
+                                        if (!friend.trim().isEmpty()) {
+                                            friendsList.add(friend);
+                                        }
+                                    }
+                                    user.setFriends(friendsList);
+                                    break;
+                                case "Blocks":
+                                    String[] blocked = value.split(":");
+                                    ArrayList<String> blockedList = new ArrayList<>();
+                                    for (String block : blocked) {
+                                        if (!block.trim().isEmpty()) {
+                                            blockedList.add(block);
+                                        }
+                                    }
+                                    user.setBlocked(blockedList);
+                                    break;
+                                case "Friends Only":
+                                    user.setFriendsOnly(Boolean.parseBoolean(value));
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error processing optional field: " + e.getMessage());
+                        }
+                    }
+                    this.userList.add(user);
+                } catch (Exception e) {
+                    System.out.println("Error processing line: " + e.getMessage());
+                    return false; // MAYBE change this to continue
                 }
-                this.userList.add(user);
             }
             return true;
         } catch (IOException e) {
@@ -554,7 +615,7 @@ public class Database implements DatabaseInterface {
         if (!messagesFile.exists()) {
             return false;
         }
-        // Writes output to the file.
+        // Reads the file.
         try (BufferedReader br = new BufferedReader(new FileReader(messagesFile))) {
             ArrayList<Message> messages = new ArrayList<>();
             String line = br.readLine();
@@ -592,6 +653,7 @@ public class Database implements DatabaseInterface {
                 }
             }
         } catch (Exception e) {
+            System.out.println("Error loading messages: ");
             return false;
         }
         return true;

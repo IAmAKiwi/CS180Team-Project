@@ -1,37 +1,41 @@
 public interface ClientInterface {
     void run();
 
-    String requestData(String command); // General case for all requests
+    String requestData(String command);
 
-    boolean sendCommand(String command); // General case for all commands
+    boolean sendCommand(String command);
 
-    boolean login(String content); // Login command with combined username:password
+    boolean login(String content);
+
+    boolean register(String content);
+
+    boolean logout();
+
+    boolean disconnect();
 
     String getUserList();
 
-    boolean sendMessage(String content); // Update message history. otherUser:message
+    String accessProfile();
 
-    boolean removeFriend(String friend); // remove friend
+    boolean saveProfile(String content);
 
-    boolean addFriend(String friend); // add friend
+    boolean sendMessage(String content);
 
-    boolean unblockUser(String user); // unblock user
+    boolean deleteMessage(String content);
 
-    boolean deleteMessage(String content); // delete message, otherUser:message
+    String getChat(String otherUsername);
 
-    boolean deleteChat(String user); // delete chat, otherUser
+    boolean deleteChat(String user);
 
-    boolean sendImage(String content); // Send image. otherUser:imagePath
+    boolean sendImage(String content);
 
-    String accessProfile(); // get profile information
+    boolean removeFriend(String friend);
 
-    boolean saveProfile(String content); // update profile information very complicated format!!!
-
-    boolean requestActive(String otherUser);
-
-    String getChat(String otherUsername); // Open a messageHistory, get
+    boolean addFriend(String friend);
 
     String getFriendList();
+
+    boolean unblockUser(String user);
 
     boolean blockUser(String otherUsername);
 
@@ -45,9 +49,5 @@ public interface ClientInterface {
 
     String getProfilePic();
 
-    boolean register(String content); // Register command with combined username:password
-
-    boolean logout();
-
-    boolean disconnect();
+    boolean requestActive(String otherUser);
 }
