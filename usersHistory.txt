@@ -1,2 +1,1 @@
-username: user1password: Password1$Friends Only: false
-username: user2password: Password2$Friends Only: false
+invalid format data

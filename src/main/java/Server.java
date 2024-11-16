@@ -7,25 +7,20 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Typical use flow of a client/server connection:
- * Client connects to server.
- * Client either logs in or registers. (should not have to check if they are
- * logged in, should be done implicitly by GUI)
- * Client opens a chat (server sends back the data to display)
- * Client sends a message (server updates the data)
- * Whenever a
+ * Server class that handles client connections and processes client requests.
+ * Manages user authentication, messaging, and other social media features.
  *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @version Nov 2, 2024
  */
-// TODO: add methods to set first name, last name, bio, birthday, profile pic,
-// friends, blocks separately.
 public class Server implements Runnable, ServerInterface {
     private static ServerSocket serverSocket;
     private static Database db;
     protected Socket clientSocket;
     protected User currentUser;
     private String otherUser;
-    private MessageHistory currentChat; // Maybe, have to update our chat a bunch.
-    private char GS = (char) 29;
+    private MessageHistory currentChat;
+    private final char groupSeparatorChar = (char) 29;
 
     public Server(Socket socket) {
         clientSocket = socket;
@@ -142,12 +137,8 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    // public String requestActive(String user) {
-    // return db.requestActive(user);
-    // }
-
     public String deleteMessage(String content) {
-        String[] parts = content.split(String.valueOf(GS));
+        String[] parts = content.split(String.valueOf(groupSeparatorChar));
         String receiver = parts[0];
         String message = parts[1];
         MessageHistory mh = db.getMessages(currentUser.getUsername(), receiver);
@@ -249,10 +240,6 @@ public class Server implements Runnable, ServerInterface {
         return db.getUser(currentUser.getUsername()).getProfilePic();
     }
 
-    // TODO: disallow a user to be logged into multiple devices simultaneously
-    // (perhaps?)
-    // Update this and other methods to be void. Each method will handle writing
-    // back information.
     public String login(String content) {
         String[] credentials = splitContent(content);
         String username = credentials[0];
@@ -287,7 +274,7 @@ public class Server implements Runnable, ServerInterface {
         ArrayList<User> users = db.getUsers();
         String userList = "";
         for (int i = 0; i < users.size(); i++) {
-            userList += users.get(i).getUsername() + GS;
+            userList += users.get(i).getUsername() + groupSeparatorChar;
         }
         return userList;
     }
@@ -449,7 +436,7 @@ public class Server implements Runnable, ServerInterface {
 
     // Helper method to split content with group separator
     private String[] splitContent(String content) {
-        return content.split(String.valueOf((char) 29));
+        return content.split(String.valueOf(groupSeparatorChar));
     }
 
     public static void main(String[] args) {

@@ -4,8 +4,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-
-// TODO: add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
+/**
+ * Class that handles all of the client-side functionality.
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
+ *
+ * @version Nov 2, 2024
+ */
+// add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
@@ -286,7 +293,11 @@ public class Client implements Runnable, ClientInterface {
     // NO SPACES!!
     // In addition, use the above functions to send and read the commands.
     // Abstraction is good.
-    // TODO: format all remaining methods in this fashion
+    // format all remaining methods in this fashion
+
+    public boolean updateProfile(String content) {
+        return sendCommand("updateProfile:" + content);
+    }
 
     public static void main(String[] args) {
         Thread t = new Thread(new Client());

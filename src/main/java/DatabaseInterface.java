@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 
 /**
- * This interface defines the essential operations for a database management
- * system
- * related to users, messages, and photos within the application.
+ * Interface that defines the required methods for Database implementation.
+ * Handles data persistence and retrieval for the social media platform.
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @version Nov 2, 2024
  */
 public interface DatabaseInterface {
 

@@ -117,7 +117,7 @@ class ClientTest {
 
     @Test
     void testSendImage() {
-        boolean result = client.sendImage("user", "/path/to/image");
+        boolean result = client.sendImage("user" + (char)29 + "/path/to/image");
         assertTrue(result);
     }
 
@@ -165,13 +165,13 @@ class ClientTest {
 
     @Test
     void testLogin() {
-        boolean result = client.login("username", "password");
+        boolean result = client.login("username" + (char)29 + "password");
         assertTrue(result);
     }
 
     @Test
     void testRegister() {
-        boolean result = client.register("newUser", "newPass");
+        boolean result = client.register("newUser" + (char)29 + "newPass");
         assertTrue(result);
     }
 
@@ -185,7 +185,7 @@ class ClientTest {
     void testLoginWithInvalidCredentials() {
         try {
             when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.login("wrongUser", "wrongPass");
+            boolean result = client.login("wrongUser" + (char)29 + "wrongPass");
             assertFalse(result);
         } catch (IOException e) {
             fail("IOException occurred: " + e.getMessage());
@@ -196,7 +196,7 @@ class ClientTest {
     void testRegisterWithExistingUsername() {
         try {
             when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.register("existingUser", "password123");
+            boolean result = client.register("existingUser" + (char)29 + "password123");
             assertFalse(result);
         } catch (IOException e) {
             fail("IOException occurred: " + e.getMessage());
@@ -235,7 +235,7 @@ class ClientTest {
 
     @Test
     void testSendImageWithInvalidPath() {
-        boolean result = client.sendImage("user", "invalid/path/to/image");
+        boolean result = client.sendImage("user" + (char)29 + "invalid/path/to/image");
         assertFalse(result);
     }
 
@@ -295,7 +295,7 @@ class ClientTest {
         try {
             // Test register with existing username
             when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean registerResult = client.register("existingUser", "password123");
+            boolean registerResult = client.register("existingUser" + (char)29 + "password123");
             assertFalse(registerResult);
 
             // Test disconnect with IOException

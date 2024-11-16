@@ -1,3 +1,10 @@
+/**
+ * Interface that defines the required methods for Server implementation.
+ * Specifies the contract for handling client requests and managing server operations.
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @version Nov 2, 2024
+ */
 public interface ServerInterface {
     // User authentication
     String login(String content);
