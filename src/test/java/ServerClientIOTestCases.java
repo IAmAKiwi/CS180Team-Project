@@ -136,4 +136,32 @@ class ServerClientIOTestCases {
         assertTrue(client.sendMessage("newUser" + groupSeparator + "we are not friends"));
     }
 
+    @Test
+    @Order(8)
+    public void testDeletion() {
+        assertEquals("testUser: hello" + groupSeparator + "testUser: we are not friends" + groupSeparator,
+                client.getChat("newUser"));
+        assertTrue(client.deleteMessage("newUser" + groupSeparator + "hello"));
+        assertFalse(client.deleteMessage("newUser" + groupSeparator + "hello"));
+        assertEquals("testUser: we are not friends" + groupSeparator, client.getChat("newUser"));
+        client.deleteChat("newUser");
+        assertEquals("", (client.getChat("newUser")));
+    }
+
+    /*
+     * Format input as:
+     * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/
+     * YYYYGSprofilepicGSfriendsonly
+     */
+    @Test
+    @Order(9)
+    public void testProfile() {
+        assertTrue(client.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
+                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
+                "profile.png" + groupSeparator + "true"));
+        assertEquals("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
+                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
+                "profile.png" + groupSeparator + "true", client.accessProfile());
+    }
+
 }

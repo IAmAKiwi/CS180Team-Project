@@ -98,9 +98,6 @@ public class Client implements Runnable, ClientInterface {
                         // Block user example: blockUser:user
                         result = String.valueOf(blockUser(content));
                         break;
-                    // case "requestActive":
-                    // result = requestActive(content);
-                    // break;
                     case "deleteChat":
                         // Delete chat example: deleteChat:username
                         result = String.valueOf(deleteChat(content));
@@ -194,12 +191,6 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean blockUser(String otherUsername) {
         String command = "blockUser:" + otherUsername;
-        return sendCommand(command);
-    }
-
-    // String output of requestActive can be "active" or "inactive"
-    public boolean requestActive(String otherUser) {
-        String command = "requestActive:" + otherUser;
         return sendCommand(command);
     }
 

@@ -7,55 +7,39 @@
  * @version Nov 2, 2024
  */
 public interface ClientInterface {
-    void run();
+    void run(); // to be overridden in GUI
 
-    String requestData(String command);
-
-    boolean sendCommand(String command);
-
-    boolean login(String content);
-
-    boolean register(String content);
-
+    // User authentication
+    boolean login(String content); // username [groupSeparator] password
+    boolean register(String content); // username [groupSeparator] password
     boolean logout();
-
     boolean disconnect();
 
-    String getUserList();
+    // User management
+    String getUserList(); // username [groupSeparator] username [groupSeparator] etc
+    String accessProfile(); // username [groupSeparator] first name [groupSeparator] last name [groupSeparator] etc
+    boolean saveProfile(String content); // username [groupSeparator] first name [groupSeparator] etc (above)
 
-    String accessProfile();
+    // Messaging
+    boolean sendMessage(String content); // otherUsername [groupSeparator] message
+    boolean deleteMessage(String content); // otherUsername [groupSeparator] message
+    String getChat(String otherUsername); // otherUsername
+    boolean deleteChat(String user); // otherUsername
+    boolean sendImage(String content); // otherUsername [groupSeparator] path
 
-    boolean saveProfile(String content);
+    // Friend management
+    boolean removeFriend(String friend); // friendUsername
+    boolean addFriend(String friend); // friendUsername
+    String getFriendList(); // friendUsername [groupSeparator] friendUsername [groupSeparator] etc
 
-    boolean sendMessage(String content);
+    // Block management
+    boolean unblockUser(String user); // blockedUsername
+    boolean blockUser(String otherUsername); // blockedUsername
+    String getBlockList(); // blockedUsername [groupSeparator] blockedUsername [groupSeparator] etc
 
-    boolean deleteMessage(String content);
-
-    String getChat(String otherUsername);
-
-    boolean deleteChat(String user);
-
-    boolean sendImage(String content);
-
-    boolean removeFriend(String friend);
-
-    boolean addFriend(String friend);
-
-    String getFriendList();
-
-    boolean unblockUser(String user);
-
-    boolean blockUser(String otherUsername);
-
-    String getBlockList();
-
+    // Settings
     boolean isFriendsOnly();
-
-    boolean setFriendsOnly(String booleanValue);
-
-    boolean setProfilePic(String profilePic);
-
+    boolean setFriendsOnly(String booleanValue); // "true" or "false"
+    boolean setProfilePic(String profilePic); // path
     String getProfilePic();
-
-    boolean requestActive(String otherUser);
 }

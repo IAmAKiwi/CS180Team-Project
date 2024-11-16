@@ -113,15 +113,9 @@ public class User implements UserInterface {
             birthdayVal1 = this.birthday[1];
             birthdayVal2 = this.birthday[2];
         }
-        // Database db = new Database();
-        // User user = new User(this.username, this.password);
-        // if (!db.validateNewUser(user)) {
-        //     this.password = "null";
-        // }
-        return String.format("%s,%s,%s,%s,%s,%d/%d/%d,%s,%s,%s,%b".replace(",", "" + (char)29),
-                this.username, this.password, this.firstName, this.lastName,
-                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic,
-                this.friends.toString(), this.blocked.toString(), this.friendsOnly);
+        return String.format("%s,%s,%s,%s,%d/%d/%d,%s,%b".replace(",", "" + (char)29),
+                this.username, this.firstName, this.lastName,
+                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic, this.friendsOnly);
     }
 
     // After here are simple constructors that define
