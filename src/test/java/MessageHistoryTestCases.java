@@ -9,11 +9,10 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 
 /**
- * A framework to run public test cases for MessageHistory
+ * A framework to run public test cases for MessageHistory.
+ * Tests the functionality of message history management between users.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
- *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
  * @version Nov 2, 2024
  */
 @RunWith(Enclosed.class)
@@ -30,7 +29,11 @@ public class MessageHistoryTestCases {
         }
     }
 
-    public static class TestCase {
+    /**
+     * Test case class that implements MessageHistoryTestInterface.
+     * Contains all test methods for MessageHistory functionality.
+     */
+    public static class TestCase implements MessageHistoryTestInterface {
         @Test(timeout = 1000)
         public void testBasicMessageHistory() {
             ArrayList<Message> messageHistory = new ArrayList<>();

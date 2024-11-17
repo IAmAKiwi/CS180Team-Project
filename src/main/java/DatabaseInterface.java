@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 
 /**
- * This interface defines the essential operations for a database management
- * system
- * related to users, messages, and photos within the application.
+ * Interface that defines the required methods for Database implementation.
+ * Handles data persistence and retrieval for the social media platform.
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @version Nov 2, 2024
  */
 public interface DatabaseInterface {
 
@@ -50,6 +52,15 @@ public interface DatabaseInterface {
      */
     MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException;
 
+
+    /**
+     * Deletes the message history between two users.
+     *
+     * @param user1 The username of the first user.
+     * @param user2 The username of the second user.
+     * @return true if the message history was deleted successfully, false otherwise.
+     * */
+    public boolean deleteChat(String user1, String user2);
     /**
      * Saves the current list of users to persistent storage.
      * 

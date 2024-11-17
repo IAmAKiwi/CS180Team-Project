@@ -20,9 +20,9 @@ import javax.swing.JLabel;
  * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
-    private final static Object userKey = new Object();
-    private final static Object messageKey = new Object();
-    private final static Object photoKey = new Object();
+    private final static Object USER_KEY = new Object();
+    private final static Object MESSAGE_KEY = new Object();
+    private final static Object PHOTO_KEY = new Object();
     private ArrayList<User> userList;
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
@@ -47,14 +47,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean addUser(User user) {
-        synchronized (userKey) {
-            if (this.validateNewUser(user)) {
-                this.userList.add(user);
-                // this.saveUsers(); // just for testing
-                return true;
-            }
+        synchronized (USER_KEY) {
+            return validateNewUser(user) && userList.add(user);
         }
-        return false;
     }
 
     /**
@@ -65,23 +60,25 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean validateNewUser(User user) {
-        // verifies that a username unique from all
-        // current others was provided.
-        for (User u : this.userList) {
-            if (u.getUsername().equals(user.getUsername())) {
-                return false;
+        // Check for unique username
+        synchronized (USER_KEY) {
+            for (User u : this.userList) {
+                if (u.getUsername().equals(user.getUsername())) {
+                    return false;
+                }
             }
         }
+        
+        // Check if password contains username
         if (user.getPassword().toLowerCase().contains(user.getUsername().toLowerCase())) {
             return false;
-        } else if (!user.getPassword().matches(".*[A-Z].*") || !user.getPassword().matches(".*[a-z].*")
-                || !user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
-            return false;
-        } else if (user.getPassword().length() < 6) {
-            return false;
         }
-        return true;
-
+        
+        // Check password requirements
+        return user.getPassword().matches(".*[A-Z].*") 
+               && user.getPassword().matches(".*[a-z].*")
+               && user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")
+               && user.getPassword().length() >= 6;
     }
 
     /**
@@ -89,15 +86,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public ArrayList<MessageHistory> getAllChats() {
-        return this.allChats;
-    }
-
-    /**
-     * @return userList of Users
-     * 
-     */
-    public ArrayList<User> getUserList() {
-        return this.userList;
+        synchronized (MESSAGE_KEY) {
+            return this.allChats;
+        }
     }
 
     /**
@@ -105,7 +96,9 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public ArrayList<User> getUsers() {
-        return this.userList;
+        synchronized (USER_KEY) {
+            return this.userList;
+        }
     }
 
     /**
@@ -118,9 +111,11 @@ public class Database implements DatabaseInterface {
     public User getUser(String username) {
         // if User implements Comparable, we can sort userList and make this more
         // efficient
-        for (User u : this.userList) {
-            if (u.getUsername().equals(username)) {
-                return u;
+        synchronized (USER_KEY) {
+            for (User u : this.userList) {
+                if (u.getUsername().equals(username)) {
+                    return u;
+                }
             }
         }
         return null;
@@ -140,9 +135,11 @@ public class Database implements DatabaseInterface {
             throw new IllegalArgumentException("No such self-messaging history.");
         }
 
-        for (MessageHistory mh : this.allChats) {
-            if (mh.equals(new MessageHistory(new String[] { user1, user2 }))) {
-                return mh;
+        synchronized (MESSAGE_KEY) {
+            for (MessageHistory mh : this.allChats) {
+                if (mh.equals(new MessageHistory(new String[]{user1, user2}))) {
+                    return mh;
+                }
             }
         }
 
@@ -157,17 +154,31 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean addMessageHistory(MessageHistory messageHistory) {
-        for (MessageHistory mh : this.allChats) {
-            if (mh.equals(messageHistory)) {
-                return false;
+        synchronized (MESSAGE_KEY) {
+            for (MessageHistory mh : this.allChats) {
+                if (mh.equals(messageHistory)) {
+                    return false;
+                }
             }
         }
         if (messageHistory.getUsernames().length == 2) {
-            synchronized (this.messageKey) {
+            synchronized (MESSAGE_KEY) {
                 this.allChats.add(messageHistory);
-                // this.saveMessages(); // just for testing
             }
             return true;
+        }
+        return false;
+    }
+
+    public boolean deleteChat(String user1, String user2) {
+        synchronized (MESSAGE_KEY) {
+        for (int i = 0; i < this.allChats.size(); i++) {
+                MessageHistory mh = this.allChats.get(i);
+                if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
+                    this.allChats.remove(i);
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -209,22 +220,20 @@ public class Database implements DatabaseInterface {
             }
         }
 
+        synchronized (MESSAGE_KEY) {
         for (int i = 0; i < this.allChats.size(); i++) {
-            synchronized (this.messageKey) {
                 MessageHistory mh = this.allChats.get(i);
                 if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
-                    // this.saveMessages(); // just for testing
                     return true;
                 }
             }
         }
 
         MessageHistory mh = new MessageHistory(message, receiver);
-        synchronized (this.messageKey) {
+        synchronized (MESSAGE_KEY) {
             this.allChats.add(mh);
-            // this.saveMessages(); // just for testing
             return true;
         }
     }
@@ -343,7 +352,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean saveUsers() {
-        // TODO: write to a backup file the contents of userList
+        // write to a backup file the contents of userList
         try {
             File f = new File("usersHistory.txt");
             if (!f.exists()) {
@@ -356,7 +365,7 @@ public class Database implements DatabaseInterface {
 
             // Use try-with-resources for BufferedWriter
             try (BufferedWriter bfr = new BufferedWriter(new FileWriter(f))) {
-                synchronized (userKey) {
+                synchronized (USER_KEY) {
                     for (User users : userList) {
                         bfr.write(fileSeparator);
                         bfr.write("username: ");
@@ -418,17 +427,6 @@ public class Database implements DatabaseInterface {
             }
         } catch (IOException e) {
             return false;
-        }
-    }
-
-    public void deleteChat(String user1, String user2) {
-        for (int i = 0; i < this.allChats.size(); i++) {
-            synchronized (this.messageKey) {
-                MessageHistory mh = this.allChats.get(i);
-                if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
-                    this.allChats.remove(i);
-                }
-            }
         }
     }
 
@@ -588,7 +586,7 @@ public class Database implements DatabaseInterface {
         }
         // Writes output to the file.
         try (FileWriter fw = new FileWriter(messagesFile, false)) {
-            synchronized (this.messageKey) {
+            synchronized (MESSAGE_KEY) {
                 for (MessageHistory mh : this.allChats) {
                     fw.write(fileSeparator);
                     fw.write(mh.toString() + "\n");
@@ -704,7 +702,7 @@ public class Database implements DatabaseInterface {
                 }
             }
             try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))) {
-                synchronized (this.photoKey) {
+                synchronized (PHOTO_KEY) {
                     for (String path : photosPath) {
                         bfw.write(path + "\n");
                     }
@@ -723,7 +721,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void addPhotos(String path) {
-        synchronized (this.photoKey) {
+        synchronized (PHOTO_KEY) {
             photosPath.add(path);
         }
     }
@@ -761,25 +759,27 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setPhotos(ArrayList<String> photoPath) {
-        synchronized (this.photoKey) {
+        synchronized (PHOTO_KEY) {
             this.photosPath = photoPath;
         }
     }
 
     @Override
     public ArrayList<String> getPhotos() {
-        return photosPath;
+        synchronized (PHOTO_KEY) {
+            return photosPath;
+        }
     }
 
     /**
      * Sets the list of users.
      *
-     * @param userList An ArrayList of User objects to be set.
+     * @param newUserList An ArrayList of User objects to be set.
      */
     @Override
-    public void setUsersList(ArrayList<User> userList) {
-        synchronized (userKey) {
-            this.userList = userList;
+    public void setUsersList(ArrayList<User> newUserList) {
+        synchronized (USER_KEY) {
+            this.userList = newUserList;
         }
     }
 
@@ -790,7 +790,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public void setAllChats(ArrayList<MessageHistory> allChats) {
-        synchronized (this.messageKey) {
+        synchronized (MESSAGE_KEY) {
             this.allChats = allChats;
         }
     }

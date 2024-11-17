@@ -172,7 +172,7 @@ class DatabaseTestCases {
     @Test
     // checks that the saveUsers method creates usersHistory.txt if it doesn’t exist
     // otherwise
-    void testSaveUsers_CreatesFileIfNotExists() {
+    void testSaveUsersCreatesFileIfNotExists() {
         db.saveUsers();
         File file = new File("usersHistory.txt");
         assertTrue(file.exists());

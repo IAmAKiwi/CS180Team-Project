@@ -113,10 +113,9 @@ public class User implements UserInterface {
             birthdayVal1 = this.birthday[1];
             birthdayVal2 = this.birthday[2];
         }
-        return String.format("%s,%s,%s,%s,%s,%d/%d/%d,%s,%s,%s,%b".replace(",", ""+ (char)29),
-                this.username, this.password, this.firstName, this.lastName,
-                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic,
-                this.friends.toString(), this.blocked.toString(), this.friendsOnly);
+        return String.format("%s,%s,%s,%s,%d/%d/%d,%s,%b".replace(",", "" + (char)29),
+                this.username, this.firstName, this.lastName,
+                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic, this.friendsOnly);
     }
 
     // After here are simple constructors that define
@@ -129,8 +128,8 @@ public class User implements UserInterface {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String newUsername) {
+        this.username = newUsername;
     }
 
     public String getPassword() {
@@ -212,20 +211,20 @@ public class User implements UserInterface {
         this.blocked = blocked;
     }
 
-    public void addFriend(String username) {
-        friends.add(username);
+    public void addFriend(String friendName) {
+        friends.add(friendName);
     }
 
-    public void removeFriend(String username) {
-        friends.remove(username);
+    public void removeFriend(String friendName) {
+        friends.remove(friendName);
     }
 
-    public void addBlock(String username) {
-        blocked.add(username);
+    public void addBlock(String blockedUsername) {
+        blocked.add(blockedUsername);
     }
 
-    public void unblock(String username) {
-        blocked.remove(username); // double check if this is right
+    public void unblock(String blockedUsername) {
+        blocked.remove(blockedUsername);
     }
 
     public boolean isFriendsOnly() {

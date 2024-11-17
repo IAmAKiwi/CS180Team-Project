@@ -7,11 +7,10 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 
 /**
- * A framework to run public test cases for Message
+ * A framework to run public test cases for Message.
+ * Tests the creation, modification, and validation of messages.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- *         lab sec 12
- *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
  * @version Nov 2, 2024
  */
 
@@ -29,7 +28,11 @@ public class MessageTestCases {
         }
     }
 
-    public static class TestCase {
+    /**
+     * Inner test class that implements MessageTestInterface.
+     * Contains all test methods for Message functionality.
+     */
+    public static class TestCase implements MessageTestInterface {
         @Test(timeout = 1000)
         public void testBasicMessage() {
             Message m1 = new Message("Hello World!", "User1");
