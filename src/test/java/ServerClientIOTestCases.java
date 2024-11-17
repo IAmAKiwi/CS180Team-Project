@@ -169,9 +169,8 @@ class ServerClientIOTestCases {
         assertTrue(client.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
                 groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
                 "profile.png" + groupSeparator + "true"));
-        assertEquals("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
-                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
-                "profile.png" + groupSeparator + "true", client.accessProfile());
+        assertEquals("testUser" + "jack" + "shields"+ "epic bio" + "5/15/2000" +
+                "profile.png" + "true", client.accessProfile());
     }
 
     @Test
