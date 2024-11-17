@@ -63,8 +63,8 @@ class ServerClientIOTestCases {
     @Order(2)
     public void testReLogin() {
         client.logout();
-        boolean login = client.login("newUser" + groupSeparator + "newPass1$");
-        assertTrue(login);
+        assertFalse(client.login("newUser" + groupSeparator + "wrongPass1$"));
+        assertTrue(client.login("newUser" + groupSeparator + "newPass1$"));
     }
 
     @Test

@@ -405,6 +405,14 @@ This java class, `ServerClientIOTestCases` uses JUnit to help test server functi
 - **Run ServerClientIOTestCases**: It will automatically connect to the running server and run the tests using IO.
 - **Ending test**: Server must be forced to stop at this point. Normally it automatically saves on forced stop.
 Future versions will include a GUI to stop the server. 
+- **Potential issues**: 
+  - If the server is not running, the test will fail.
+  - Many test methods depend on previous tests to run successfully. The @Order tag
+will help with this. Do not run methods individually out of order.
+  - Running the test multiple times in a row will cause it to fail. Server must be reset to 
+purge the data. 
+  - If server is not run without arguments it will save the data to a file. This can cause 
+issues if the test is run multiple times. It is recommended to run with arguments.
 
 ## Dependencies
 
