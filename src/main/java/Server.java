@@ -199,24 +199,50 @@ public class Server implements Runnable, ServerInterface {
          * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/
          * YYYYGSprofilepicGSfriendsonly
          */
-        String[] fields = content.split((char) 29 + "");
-        User user = db.getUser(fields[0]);
-        if (user == null) {
+        try {
+            String[] fields = content.split((char) 29 + "");
+            User user = db.getUser(fields[0]);
+            if (user == null) {
+                return "false";
+            }
+            
+            // Store original birthday to check if validation passed
+            int[] originalBirthday = user.getBirthday();
+            
+            user.setFirstName(fields[1]);
+            user.setLastName(fields[2]);
+            user.setBio(fields[3]);
+            
+            // Birthday validation
+            String[] birthdaystr = fields[4].split("/");
+            if (birthdaystr.length != 3) {
+                return "false";
+            }
+            
+            int[] birthday = new int[3];
+            try {
+                for (int i = 0; i < 3; i++) {
+                    birthday[i] = Integer.parseInt(birthdaystr[i]);
+                }
+                
+                // Use User's setBirthday method for validation
+                user.setBirthday(birthday);
+                
+                // If birthday didn't change, validation failed
+                if (user.getBirthday() == null || 
+                    (originalBirthday != null && user.getBirthday() == originalBirthday)) {
+                    return "false";
+                }
+            } catch (NumberFormatException e) {
+                return "false";
+            }
+            
+            user.setProfilePic(fields[5]);
+            user.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
+            return "true";
+        } catch (Exception e) {
             return "false";
         }
-        user.setFirstName(fields[1]);
-        user.setLastName(fields[2]);
-        user.setBio(fields[3]);
-        String[] birthdaystr = fields[4].split("/");
-        int[] birthday = new int[3];
-        for (int i = 0; i < 3; i++) {
-            int b = Integer.parseInt(birthdaystr[i]);
-            birthday[i] = b;
-        }
-        user.setBirthday(birthday);
-        user.setProfilePic(fields[5]);
-        user.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
-        return "true";
     }
 
     public String accessProfile() {
@@ -224,10 +250,19 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String deleteChat(String user) {
-        if (db.deleteChat(currentUser.getUsername(), user)) {
-            return "true";
-        };
-        return "false";
+        try {
+            // Check if user is logged in
+            if (currentUser == null) {
+                return "false";
+            }
+            
+            if (db.deleteChat(currentUser.getUsername(), user)) {
+                return "true";
+            }
+            return "false";
+        } catch (Exception e) {
+            return "false";
+        }
     }
 
     public boolean disconnect() {
@@ -258,14 +293,21 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String register(String content) {
-        String[] credentials = splitContent(content);
-        String username = credentials[0];
-        String password = credentials[1];
-        if (db.addUser(new User(username, password))) {
-            currentUser = new User(username, password);
-            return "true";
+        try {
+            String[] credentials = splitContent(content);
+            if (credentials.length < 2) {
+                return "false";
+            }
+            String username = credentials[0];
+            String password = credentials[1];
+            if (db.addUser(new User(username, password))) {
+                currentUser = new User(username, password);
+                return "true";
+            }
+            return "false";
+        } catch (Exception e) {
+            return "false";
         }
-        return "false";
     }
 
     /**
@@ -310,12 +352,27 @@ public class Server implements Runnable, ServerInterface {
     public String sendMessage(String content) {
         try {
             String[] parts = splitContent(content);
+            // Check if we have both recipient and message
+            if (parts.length < 2) {
+                return "false";
+            }
+            
             String userTwo = parts[0];
             String message = parts[1];
+            
+            // Check for self-messaging
+            if (currentUser != null && userTwo.equals(currentUser.getUsername())) {
+                return "false";
+            }
+            
+            // Check for null/empty message
+            if (message == null || message.isEmpty() || message.contains("\0")) {
+                return "false";
+            }
+            
             Message mes = new Message(message, currentUser.getUsername());
             return String.valueOf(db.addMessage(mes, userTwo));
         } catch (Exception e) {
-            e.printStackTrace();
             return "false";
         }
     }
@@ -444,7 +501,14 @@ public class Server implements Runnable, ServerInterface {
 
     // Helper method to split content with group separator
     private String[] splitContent(String content) {
-        return content.split(String.valueOf(groupSeparatorChar));
+        if (content == null || content.isEmpty()) {
+            return new String[0];
+        }
+        try {
+            return content.split(String.valueOf(groupSeparatorChar));
+        } catch (Exception e) {
+            return new String[0];
+        }
     }
 
     public static void main(String[] args) {

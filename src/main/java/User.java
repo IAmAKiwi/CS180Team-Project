@@ -100,22 +100,23 @@ public class User implements UserInterface {
         this.friendsOnly = friendsOnly;
     }
 
+    @Override
     public String toString() {
-        int birthdayVal0;
-        int birthdayVal1;
-        int birthdayVal2;
-        if ((this.birthday == null) || (this.birthday.length != 3)) {
-            birthdayVal0 = 0;
-            birthdayVal1 = 0;
-            birthdayVal2 = 0;
-        } else {
-            birthdayVal0 = this.birthday[0];
-            birthdayVal1 = this.birthday[1];
-            birthdayVal2 = this.birthday[2];
+        StringBuilder sb = new StringBuilder();
+        sb.append(username != null ? username : "");
+        sb.append(firstName != null ? firstName : "");
+        sb.append(lastName != null ? lastName : "");
+        sb.append(bio != null ? bio : "");
+        
+        if (birthday != null) {
+            sb.append(birthday[0]).append("/")
+              .append(birthday[1]).append("/")
+              .append(birthday[2]);
         }
-        return String.format("%s,%s,%s,%s,%d/%d/%d,%s,%b".replace(",", "" + (char)29),
-                this.username, this.firstName, this.lastName,
-                this.bio, birthdayVal0, birthdayVal1, birthdayVal2, this.profilePic, this.friendsOnly);
+        
+        sb.append(profilePic != null ? profilePic : "");
+        sb.append(friendsOnly);
+        return sb.toString();
     }
 
     // After here are simple constructors that define

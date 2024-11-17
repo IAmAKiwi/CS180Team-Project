@@ -268,15 +268,16 @@ public class Client implements Runnable, ClientInterface {
         try {
             serverWriter.println(command);
             serverWriter.flush();
-            return serverReader.readLine();
+            String response = serverReader.readLine();
+            return response != null ? response : "false";
         } catch (IOException ioe) {
-            return null;
+            return "false";
         }
     }
 
-    // maybe add synchronized or not
     public synchronized boolean sendCommand(String command) {
-        return Boolean.parseBoolean(this.requestData(command).trim()); // The trim is key.
+        String response = this.requestData(command);
+        return response != null && Boolean.parseBoolean(response.trim());
     }
 
     // IMPORTANT!! Command format is lowercase command name, colon (:), arguments

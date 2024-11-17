@@ -1,18 +1,16 @@
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /**
  * A framework to run public test cases for Server and Client IO.
@@ -56,13 +54,14 @@ class ServerClientIOTestCases {
         client.logout();
         boolean result = client.register("newUser" + groupSeparator + "newPass1$");
         assertTrue(result);
+        client.login("testUser" + groupSeparator + "testPass1$");
+        client.deleteChat("newUser");
     }
 
     // Log out of the registered user, then log back in to test login.
     @Test
     @Order(2)
     public void testReLogin() {
-        client.logout();
         assertFalse(client.login("newUser" + groupSeparator + "wrongPass1$"));
         assertTrue(client.login("newUser" + groupSeparator + "newPass1$"));
     }
@@ -70,15 +69,20 @@ class ServerClientIOTestCases {
     @Test
     @Order(3)
     public void testSendMessage() {
+        client.deleteChat("newUser");
+        
         boolean sent = client.sendMessage("newUser" + groupSeparator + "hello");
         assertTrue(sent);
+        
+        String chat = client.getChat("newUser");
+        assertEquals("testUser: hello" + groupSeparator, chat);
     }
 
     @Test
     @Order(4)
     public void testGetChat() {
         String chat = client.getChat("newUser");
-        assertEquals("testUser: hello", chat.trim());
+        assertEquals("testUser: hello" + groupSeparator, chat);
     }
 
     @Test
@@ -139,14 +143,19 @@ class ServerClientIOTestCases {
     @Test
     @Order(8)
     public void testDeletion() {
+        String currentChat = client.getChat("newUser");
         assertEquals("testUser: hello" + groupSeparator + "testUser: we are not friends" + groupSeparator,
-                client.getChat("newUser"));
+                currentChat);
+        
         assertTrue(client.deleteMessage("newUser" + groupSeparator + "hello"));
         assertFalse(client.deleteMessage("newUser" + groupSeparator + "hello"));
-        assertEquals("testUser: we are not friends" + groupSeparator, client.getChat("newUser"));
+        
+        currentChat = client.getChat("newUser");
+        assertEquals("testUser: we are not friends" + groupSeparator, currentChat);
+        
         assertTrue(client.deleteChat("newUser"));
         assertFalse(client.deleteChat("newUser"));
-        assertEquals("", (client.getChat("newUser")));
+        assertEquals("", client.getChat("newUser"));
     }
 
     /*
@@ -163,6 +172,143 @@ class ServerClientIOTestCases {
         assertEquals("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
                 groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
                 "profile.png" + groupSeparator + "true", client.accessProfile());
+    }
+
+    @Test
+    @Order(10)
+    public void testInvalidRegistration() {
+        // Test weak passwords
+        assertFalse(client.register("user1" + groupSeparator + "weak")); // too short
+        assertFalse(client.register("user1" + groupSeparator + "nospecial123")); // no special char
+        assertFalse(client.register("user1" + groupSeparator + "nouppercase1!")); // no uppercase
+        assertFalse(client.register("user1" + groupSeparator + "NOLOWERCASE1!")); // no lowercase
+        
+        // Test duplicate username
+        assertFalse(client.register("testUser" + groupSeparator + "ValidPass1!"));
+        
+        // Test empty fields
+        assertFalse(client.register("" + groupSeparator + "ValidPass1!"));
+        assertFalse(client.register("user1" + groupSeparator + ""));
+    }
+
+    @Test
+    @Order(11)
+    public void testMessageValidation() {
+        // Test empty message
+        assertFalse(client.sendMessage("newUser" + groupSeparator + ""));
+        
+        // Test null character in message
+        assertFalse(client.sendMessage("newUser" + groupSeparator + "test\0message"));
+        
+        // Test messaging non-existent user
+        assertFalse(client.sendMessage("nonexistentUser" + groupSeparator + "hello"));
+    }
+
+    @Test
+    @Order(12)
+    public void testProfileValidation() {
+        // Test invalid birthday formats
+        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator + 
+            "Doe" + groupSeparator + "Bio" + groupSeparator + "13/1/2000" + groupSeparator + 
+            "pic.jpg" + groupSeparator + "false")); // invalid month
+            
+        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator + 
+            "Doe" + groupSeparator + "Bio" + groupSeparator + "12/32/2000" + groupSeparator + 
+            "pic.jpg" + groupSeparator + "false")); // invalid day
+            
+        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator + 
+            "Doe" + groupSeparator + "Bio" + groupSeparator + "12/25/2025" + groupSeparator + 
+            "pic.jpg" + groupSeparator + "false")); // future date
+    }
+
+    @Test
+    @Order(13)
+    public void testMultiUserChat() {
+        // Clear any existing chats first
+        client.deleteChat("newUser");
+        client.deleteChat("user3");
+        
+        // Register user3 if not exists
+        client.logout();
+        client.register("user3" + groupSeparator + "Pass3$");
+        
+        // Log back in as testUser
+        client.login("testUser" + groupSeparator + "testPass1$");
+        
+        // Reset user state
+        client.setFriendsOnly("false");
+        
+        // Clear any blocks
+        String blocks = client.getBlockList();
+        if (blocks.contains("newUser")) {
+            client.unblockUser("newUser");
+        }
+        if (blocks.contains("user3")) {
+            client.unblockUser("user3");
+        }
+        
+        // Send new messages
+        assertTrue(client.sendMessage("newUser" + groupSeparator + "test message 1"));
+        assertTrue(client.sendMessage("user3" + groupSeparator + "test message 2"));
+        
+        // Get and verify chats
+        String chatWithNewUser = client.getChat("newUser");
+        String chatWithUser3 = client.getChat("user3");
+        
+        assertTrue(chatWithNewUser.contains("test message 1"));
+        assertTrue(chatWithUser3.contains("test message 2"));
+        assertFalse(chatWithNewUser.contains("test message 2")); // Verify messages don't cross-contaminate
+        assertFalse(chatWithUser3.contains("test message 1"));
+    }
+
+    @Test
+    @Order(14)
+    public void testBlockedUserInteractions() {
+        // Clear any existing blocks first
+        String blocks = client.getBlockList();
+        if (blocks.contains("user3")) {
+            client.unblockUser("user3");
+        }
+        
+        // Block user3
+        assertTrue(client.blockUser("user3"));
+        
+        // Switch to user3 and verify blocked behavior
+        client.logout();
+        client.login("user3" + groupSeparator + "Pass3$");
+        assertFalse(client.sendMessage("testUser" + groupSeparator + "blocked message"));
+        assertFalse(client.addFriend("testUser"));
+        
+        // Switch back and verify reverse blocking
+        client.logout();
+        client.login("testUser" + groupSeparator + "testPass1$");
+        assertFalse(client.sendMessage("user3" + groupSeparator + "message to blocked"));
+    }
+
+    @Test
+    @Order(15)
+    public void testFriendsOnlyModeInteractions() {
+        // Reset state
+        client.setFriendsOnly("false");
+        String blocks = client.getBlockList();
+        if (blocks.contains("newUser")) {
+            client.unblockUser("newUser");
+        }
+        
+        // Enable friends only mode and add friend
+        assertTrue(client.setFriendsOnly("true"));
+        assertTrue(client.addFriend("newUser"));
+        
+        // Test messaging
+        assertTrue(client.sendMessage("newUser" + groupSeparator + "friend message"));
+        assertFalse(client.sendMessage("user3" + groupSeparator + "non-friend message"));
+        
+        // Remove friend and verify
+        assertTrue(client.removeFriend("newUser"));
+        assertFalse(client.sendMessage("newUser" + groupSeparator + "after unfriend"));
+        
+        // Clean up
+        client.setFriendsOnly("false");
     }
 
 }

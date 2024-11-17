@@ -60,6 +60,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean validateNewUser(User user) {
+        
         // Check for unique username
         synchronized (USER_KEY) {
             for (User u : this.userList) {
@@ -69,16 +70,25 @@ public class Database implements DatabaseInterface {
             }
         }
         
-        // Check if password contains username
+        // Check if username or password is null/empty
+        if (user.getUsername() == null || user.getUsername().isEmpty() ||
+            user.getPassword() == null || user.getPassword().isEmpty()) {
+            return false;
+        }
+        
+        // Check if password contains username (case insensitive)
         if (user.getPassword().toLowerCase().contains(user.getUsername().toLowerCase())) {
             return false;
         }
         
         // Check password requirements
-        return user.getPassword().matches(".*[A-Z].*") 
-               && user.getPassword().matches(".*[a-z].*")
-               && user.getPassword().matches(".*[!@#$%^&*(),.?\":{}|<>].*")
-               && user.getPassword().length() >= 6;
+        String password = user.getPassword();
+        boolean lengthOk = password.length() >= 6;
+        boolean hasUpper = password.matches(".*[A-Z].*");
+        boolean hasLower = password.matches(".*[a-z].*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+        
+        return lengthOk && hasUpper && hasLower && hasSpecial;
     }
 
     /**
@@ -245,12 +255,31 @@ public class Database implements DatabaseInterface {
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
      */
+    @Override
     public boolean addFriend(String user1, String user2) {
         User u1 = this.getUser(user1);
         User u2 = this.getUser(user2);
+        
+        // Check if either user doesn't exist
         if (u1 == null || u2 == null) {
             return false;
         }
+        
+        // Prevent self-friending
+        if (user1.equals(user2)) {
+            return false;
+        }
+        
+        // Check if already friends
+        if (u1.getFriends().contains(user2)) {
+            return false;
+        }
+
+        // Check if either user has blocked the other
+        if (u1.getBlocked().contains(user2) || u2.getBlocked().contains(user1)) {
+            return false;
+        }
+        
         u1.addFriend(user2);
         return true;
     }
