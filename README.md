@@ -411,7 +411,7 @@ Future versions will include a GUI to stop the server.
 will help with this. Do not run methods individually out of order.
   - Running the test multiple times in a row will cause it to fail. Server must be reset to 
 purge the data. 
-  - If server is not run without arguments it will save the data to a file. This can cause 
+  - If server is not run with arguments it will save the data to a file. This can cause 
 issues if the test is run multiple times. It is recommended to run with arguments.
 
 ## Dependencies
