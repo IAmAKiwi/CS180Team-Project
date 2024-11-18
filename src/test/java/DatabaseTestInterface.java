@@ -1,3 +1,4 @@
+import java.io.IOException;
 /**
  * Interface defining test cases for Database class.
  *
@@ -12,10 +13,10 @@ public interface DatabaseTestInterface {
     void testGetUsers();
     void testGetMessagesValidConversation();
     void testGetMessagesSelfMessagingException();
-    void testSaveUsersFileOutput();
+    void testSaveUsersFileOutput() throws IOException;
     void testSaveUsersCreatesFileIfNotExists();
-    void testSaveMessagesFileOutput();
-    void testLoadMessagesFileInput();
+    void testSaveMessagesFileOutput() throws IOException;
+    void testLoadMessagesFileInput() throws IOException;
     void testAddMessageWithBlockedUser();
     void testAddMessageWithFriendsOnlyMode();
     void testGetMessagesNonExistentUsers();

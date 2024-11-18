@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 /**
  * A framework to run public test cases for Database
@@ -26,7 +25,7 @@ import org.junit.jupiter.api.Test;
  *
  * @version Nov 2, 2024
  */
-class DatabaseTestCases {
+class DatabaseTestCases implements DatabaseTestInterface {
     private Database db;
     private File tempFile;
     private File tempMessageFile;
@@ -40,26 +39,24 @@ class DatabaseTestCases {
         tempMessageFile.deleteOnExit();
     }
 
-    @Test
-    // Verifies that adding a user with a unique username succeeds
-    // and that adding a user with a duplicate username fails
-    void testAddUserUniqueUsername() {
+    @Override
+    public void testAddUserUniqueUsername() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user1", "Password2$");
         assertTrue(db.addUser(user1));
         assertFalse(db.addUser(user2)); // expecting false as username is not unique
     }
 
-    @Test
+    @Override
     // checks that the validation method fails if the password contains the username
-    void testValidateNewUserUsernameInPassword() {
+    public void testValidateNewUserUsernameInPassword() {
         User user = new User("user", "userpassword");
         assertFalse(db.validateNewUser(user)); // should return false if password contains username
     }
 
-    @Test
+    @Override
     // adds a user and retrieves it to verify getter
-    void testGetUserExistingUser() {
+    public void testGetUserExistingUser() {
         User user = new User("user1", "Password1$");
         db.addUser(user);
         User gottenUser = db.getUser("user1");
@@ -67,17 +64,17 @@ class DatabaseTestCases {
         assertEquals(user.getPassword(), gottenUser.getPassword());
     }
 
-    @Test
+    @Override
     // attempts to retrieve a non-existent user which should be default
-    void testGetUserNonExistentUser() {
+    public void testGetUserNonExistentUser() {
         User defaultUser = db.getUser("nonexistent");
         // default user should be null
         assertNull(defaultUser);
     }
 
-    @Test
+    @Override
     // adds multiple users and gets the list to verify its size and contents
-    void testGetUsers() {
+    public void testGetUsers() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -88,9 +85,9 @@ class DatabaseTestCases {
         assertTrue(users.contains(user2));
     }
 
-    @Test
+    @Override
     // simulates a conversation between two users and verifies it can be retrieved
-    void testGetMessagesValidConversation() {
+    public void testGetMessagesValidConversation() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -104,18 +101,18 @@ class DatabaseTestCases {
         assertArrayEquals(new String[] { "user1", "user2" }, retrievedHistory.getUsernames());
     }
 
-    @Test
+    @Override
     // checks if self messaging throws exception
-    void testGetMessagesSelfMessagingException() {
+    public void testGetMessagesSelfMessagingException() {
         db.addUser(new User("user1", "Password1$"));
         // assertThrows(IllegalArgumentException.class, () -> db.getMessages("user1",
         // "user1"));
     }
 
-    @Test
+    @Override
     // adds and saves users and verifies that the correct data was written to the
     // file
-    void testSaveUsersFileOutput() throws IOException {
+    public void testSaveUsersFileOutput() throws IOException {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -169,18 +166,20 @@ class DatabaseTestCases {
         }
     }
 
-    @Test
+    @Override
     // checks that the saveUsers method creates usersHistory.txt if it doesn’t exist
     // otherwise
-    void testSaveUsersCreatesFileIfNotExists() {
+    public void testSaveUsersCreatesFileIfNotExists() {
         db.saveUsers();
         File file = new File("usersHistory.txt");
         assertTrue(file.exists());
         file.delete();
     }
 
-    @Test
-    void testSaveMessagesFileOutput() throws IOException {
+    @Override
+    // creates a message history and verifies that the correct data was written to the
+    // file
+    public void testSaveMessagesFileOutput() throws IOException {
         // create a MessageHistory with some messages
         MessageHistory messageHistory = new MessageHistory();
         messageHistory.setUserMessagers(new String[] { "user1", "user2" });
@@ -243,8 +242,9 @@ class DatabaseTestCases {
         }
     }
 
-    @Test
-    void testLoadMessagesFileInput() throws IOException {
+    @Override
+    // loads a message history and verifies that the correct data was read
+    public void testLoadMessagesFileInput() throws IOException {
         // sample message history, please change if needed
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("messageHistory.txt"))) {
             writer.write((char) 28 + "user1 user2\n"); // start with users and char
@@ -275,8 +275,9 @@ class DatabaseTestCases {
         assertEquals("user2", messages.get(1).getSender());
     }
 
-    @Test
-    void testAddMessageWithBlockedUser() {
+    @Override
+    // checks that a message with a blocked user is not added
+    public void testAddMessageWithBlockedUser() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -287,8 +288,9 @@ class DatabaseTestCases {
         assertFalse(db.addMessage(message, "user2"));
     }
 
-    @Test
-    void testAddMessageWithFriendsOnlyMode() {
+    @Override
+    // checks that a message with a user in friends only mode is not added
+    public void testAddMessageWithFriendsOnlyMode() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -299,14 +301,16 @@ class DatabaseTestCases {
         assertFalse(db.addMessage(message, "user2"));
     }
 
-    @Test
-    void testGetMessagesNonExistentUsers() {
+    @Override
+    // checks that a message with non-existent users is not added
+    public void testGetMessagesNonExistentUsers() {
         MessageHistory mh = db.getMessages("nonexistent1", "nonexistent2");
         assertNull(mh);
     }
 
-    @Test
-    void testLoadUsersWithInvalidFormat() {
+    @Override
+    // checks that the loadUsers method returns false if the format is invalid
+    public void testLoadUsersWithInvalidFormat() {
         // Create a temporary file with invalid format
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("usersHistory.txt"));
