@@ -116,6 +116,14 @@ public interface DatabaseInterface {
     public boolean addMessage(Message message, String receiver);
 
     /**
+     * Deletes a message from a MessageHistory based upon the message and receiver.
+     *
+     * @param message  Message to add
+     * @param receiver Username of receiver
+     * @return true if message was added
+     **/
+    public boolean deleteMessage(Message message, String receiver);
+    /**
      * Loads photos associated with users or messages from persistent storage.
      *
      * @return true if photos were loaded successfully, false otherwise.
