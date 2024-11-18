@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DatabaseTestCases" time="0.176" tests="15" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DatabaseTestCases" time="0.112" tests="15" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\peter\AppData\Local\Temp\surefire8215217680640974937\surefirebooter-20241116131447050_3.jar C:\Users\peter\AppData\Local\Temp\surefire8215217680640974937 2024-11-16T13-14-46_912-jvmRun1 surefire-20241116131447050_1tmp surefire_0-20241116131447050_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\peter\AppData\Local\Temp\surefire14255371712257982951\surefirebooter-20241117212404457_3.jar C:\Users\peter\AppData\Local\Temp\surefire14255371712257982951 2024-11-17T21-24-04_368-jvmRun1 surefire-20241117212404457_1tmp surefire_0-20241117212404457_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="DatabaseTestCases"/>
     <property name="surefire.test.class.path" value="C:\Users\peter\Github\CS180Team-Project\target\test-classes;C:\Users\peter\Github\CS180Team-Project\target\classes;C:\Users\peter\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\peter\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\peter\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\peter\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;C:\Users\peter\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\peter\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\peter\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\peter\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\peter\.m2\repository\org\testng\testng\7.7.0\testng-7.7.0.jar;C:\Users\peter\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\peter\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\peter\.m2\repository\org\webjars\jquery\3.6.1\jquery-3.6.1.jar;C:\Users\peter\.m2\repository\org\mockito\mockito-core\4.0.0\mockito-core-4.0.0.jar;C:\Users\peter\.m2\repository\net\bytebuddy\byte-buddy\1.11.19\byte-buddy-1.11.19.jar;C:\Users\peter\.m2\repository\net\bytebuddy\byte-buddy-agent\1.11.19\byte-buddy-agent-1.11.19.jar;C:\Users\peter\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\peter\AppData\Local\Temp\surefire8215217680640974937\surefirebooter-20241116131447050_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\peter\AppData\Local\Temp\surefire14255371712257982951\surefirebooter-20241117212404457_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>
@@ -60,22 +60,22 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="testGetMessagesSelfMessagingException" classname="DatabaseTestCases" time="0.079"/>
-  <testcase name="testGetMessagesNonExistentUsers" classname="DatabaseTestCases" time="0.006"/>
-  <testcase name="testAddUserUniqueUsername" classname="DatabaseTestCases" time="0.003"/>
-  <testcase name="testGetUsers" classname="DatabaseTestCases" time="0.003"/>
-  <testcase name="testLoadMessagesFileInput" classname="DatabaseTestCases" time="0.007"/>
-  <testcase name="testValidateNewUserUsernameInPassword" classname="DatabaseTestCases" time="0.003"/>
+  <testcase name="testGetMessagesSelfMessagingException" classname="DatabaseTestCases" time="0.052"/>
+  <testcase name="testGetMessagesNonExistentUsers" classname="DatabaseTestCases" time="0.003"/>
+  <testcase name="testAddUserUniqueUsername" classname="DatabaseTestCases" time="0.004"/>
+  <testcase name="testGetUsers" classname="DatabaseTestCases" time="0.002"/>
+  <testcase name="testLoadMessagesFileInput" classname="DatabaseTestCases" time="0.005"/>
+  <testcase name="testValidateNewUserUsernameInPassword" classname="DatabaseTestCases" time="0.001"/>
   <testcase name="testLoadUsersWithInvalidFormat" classname="DatabaseTestCases" time="0.004">
     <system-out><![CDATA[Invalid format: missing username or password
 ]]></system-out>
   </testcase>
-  <testcase name="testGetMessagesValidConversation" classname="DatabaseTestCases" time="0.004"/>
-  <testcase name="testSaveMessagesFileOutput" classname="DatabaseTestCases" time="0.004"/>
-  <testcase name="testGetUserNonExistentUser" classname="DatabaseTestCases" time="0.002"/>
-  <testcase name="testSaveUsers_CreatesFileIfNotExists" classname="DatabaseTestCases" time="0.002"/>
-  <testcase name="testAddMessageWithBlockedUser" classname="DatabaseTestCases" time="0.003"/>
-  <testcase name="testSaveUsersFileOutput" classname="DatabaseTestCases" time="0.004"/>
-  <testcase name="testGetUserExistingUser" classname="DatabaseTestCases" time="0.003"/>
-  <testcase name="testAddMessageWithFriendsOnlyMode" classname="DatabaseTestCases" time="0.004"/>
+  <testcase name="testGetMessagesValidConversation" classname="DatabaseTestCases" time="0.002"/>
+  <testcase name="testSaveMessagesFileOutput" classname="DatabaseTestCases" time="0.003"/>
+  <testcase name="testGetUserNonExistentUser" classname="DatabaseTestCases" time="0.001"/>
+  <testcase name="testAddMessageWithBlockedUser" classname="DatabaseTestCases" time="0.001"/>
+  <testcase name="testSaveUsersFileOutput" classname="DatabaseTestCases" time="0.002"/>
+  <testcase name="testGetUserExistingUser" classname="DatabaseTestCases" time="0.001"/>
+  <testcase name="testSaveUsersCreatesFileIfNotExists" classname="DatabaseTestCases" time="0.003"/>
+  <testcase name="testAddMessageWithFriendsOnlyMode" classname="DatabaseTestCases" time="0.002"/>
 </testsuite>
