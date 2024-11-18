@@ -16,6 +16,6 @@ public class DataSaver implements Runnable, DataSaverInterface {
     public void run() {
         db.saveMessages();
         db.saveUsers();
-        System.out.println("Data successfully saved"); //for testing
+        System.out.println("Data successfully saved"); // for testing
     }
 }

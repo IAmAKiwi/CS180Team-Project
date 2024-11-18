@@ -1,12 +1,8 @@
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -18,7 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
  * A framework to run public test cases for Server
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- * lab sec 12
+ *         lab sec 12
  * @version Nov 15, 2024
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -83,12 +79,12 @@ class ServerTest {
     @Order(3)
     public void testUserList() {
         String result = server.getUserList();
-        assertEquals("testUser" + groupSeparator +"newUser" + groupSeparator, result);
+        assertEquals("testUser" + groupSeparator + "newUser" + groupSeparator, result);
 
         logout();
         server.register("newUser2" + groupSeparator + "ValidPass2!");
         result = server.getUserList();
-        assertEquals("testUser" + groupSeparator +"newUser" + groupSeparator +"newUser2" + groupSeparator,
+        assertEquals("testUser" + groupSeparator + "newUser" + groupSeparator + "newUser2" + groupSeparator,
                 result);
     }
 
@@ -105,7 +101,6 @@ class ServerTest {
         result = Boolean.parseBoolean(server.sendMessage("testUser" + groupSeparator + "hello"));
         chat = server.getChat("testUser");
         assertEquals("testUser: hello" + groupSeparator + "newUser: hello" + groupSeparator, chat);
-
 
         // Failed to send messages.
         result = Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "hello"));
@@ -160,9 +155,10 @@ class ServerTest {
     @Test
     @Order(9)
     public void testProfile() {
-        assertTrue(Boolean.parseBoolean(server.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
-                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
-                "profile.png" + groupSeparator + "true")));
+        assertTrue(Boolean
+                .parseBoolean(server.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
+                        groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
+                        "profile.png" + groupSeparator + "true")));
         assertEquals("testUser" + "jack" + "shields" + "epic bio" + "5/15/2000" +
                 "profile.png" + "true", server.accessProfile());
     }
@@ -173,7 +169,8 @@ class ServerTest {
         logout();
         // Test weak passwords
         assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "weak"))); // too short
-        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "nospecial123"))); // no special char
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "nospecial123"))); // no special
+                                                                                                       // char
         assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "nouppercase1!"))); // no uppercase
         assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "NOLOWERCASE1!"))); // no lowercase
 

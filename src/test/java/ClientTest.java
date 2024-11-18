@@ -1,24 +1,33 @@
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
  * A framework to run public test cases for Client
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- * lab sec 12
+ *         lab sec 12
  * @version Nov 17, 2024
  */
-public class ClientTest {
+public class ClientTest implements ClientTestInterface {
     private Client client;
     private Socket mockSocket;
     private PrintWriter mockWriter;
     private BufferedReader mockReader;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         mockSocket = mock(Socket.class);
         mockWriter = mock(PrintWriter.class);
@@ -211,9 +220,16 @@ public class ClientTest {
 
     @Test
     public void testDisconnect() throws IOException {
-        when(mockReader.readLine()).thenReturn(null); // simulate disconnection
+        // Simulate the server closing the connection
+        when(mockReader.readLine()).thenReturn(null);
+
+        // Call the disconnect method
         boolean result = client.disconnect();
-        assertTrue(result);
+
+        // Verify that the socket was closed
         verify(mockSocket).close();
+
+        // Assert that the disconnect method returned true
+        assertTrue(result, "Expected disconnect to return true, but it returned false.");
     }
 }

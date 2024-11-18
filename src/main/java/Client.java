@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
 /**
  * Class that handles all of the client-side functionality.
  *
@@ -12,7 +13,8 @@ import java.util.Scanner;
  *
  * @version Nov 2, 2024
  */
-// add methods to set first name, last name, bio, birthday, profile pic, friends, blocks separately.
+// add methods to set first name, last name, bio, birthday, profile pic,
+// friends, blocks separately.
 public class Client implements Runnable, ClientInterface {
     public BufferedReader serverReader;
     public PrintWriter serverWriter;
@@ -72,7 +74,8 @@ public class Client implements Runnable, ClientInterface {
                         result = String.valueOf(sendMessage(content));
                         break;
                     case "deleteMessage":
-                        // Delete message example: deleteMessage[groupSeparator]message[groupSeparator]otherUser
+                        // Delete message example:
+                        // deleteMessage[groupSeparator]message[groupSeparator]otherUser
                         result = String.valueOf(deleteMessage(content));
                         break;
                     case "accessProfile":
@@ -251,17 +254,15 @@ public class Client implements Runnable, ClientInterface {
 
     // May not be needed, potentially included in "logout".
     public boolean disconnect() {
-        boolean disconnected = requestData("disconnect: ") == null;
-        if (disconnected) {
-            try {
+        try {
+            if (socket != null && !socket.isClosed()) {
                 socket.close();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-                return false;
             }
             return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public synchronized String requestData(String command) {

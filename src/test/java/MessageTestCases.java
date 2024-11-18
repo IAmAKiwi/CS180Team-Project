@@ -10,7 +10,8 @@ import org.junit.runner.notification.Failure;
  * A framework to run public test cases for Message.
  * Tests the creation, modification, and validation of messages.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 

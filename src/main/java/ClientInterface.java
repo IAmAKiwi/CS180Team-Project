@@ -2,7 +2,7 @@
  * Interface that handles all of the client-side functionality.
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- * 12
+ *         12
  * @version Nov 2, 2024
  */
 public interface ClientInterface {
@@ -20,7 +20,8 @@ public interface ClientInterface {
     // User management
     String getUserList(); // username [groupSeparator] username [groupSeparator] etc
 
-    String accessProfile(); // username [groupSeparator] first name [groupSeparator] last name [groupSeparator] etc
+    String accessProfile(); // username [groupSeparator] first name [groupSeparator] last name
+                            // [groupSeparator] etc
 
     boolean saveProfile(String content); // username [groupSeparator] first name [groupSeparator] etc (above)
 

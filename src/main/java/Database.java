@@ -15,7 +15,7 @@ import javax.swing.JLabel;
  * Manages all loading, saving, and accessing of data and some data validation.
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- * 12
+ *         12
  * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
@@ -146,7 +146,7 @@ public class Database implements DatabaseInterface {
 
         synchronized (MESSAGE_KEY) {
             for (MessageHistory mh : this.allChats) {
-                if (mh.equals(new MessageHistory(new String[]{user1, user2}))) {
+                if (mh.equals(new MessageHistory(new String[] { user1, user2 }))) {
                     return mh;
                 }
             }
@@ -232,7 +232,7 @@ public class Database implements DatabaseInterface {
         synchronized (MESSAGE_KEY) {
             for (int i = 0; i < this.allChats.size(); i++) {
                 MessageHistory mh = this.allChats.get(i);
-                if (mh.equals(new MessageHistory(new String[]{message.getSender(), receiver}))) {
+                if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
                     return true;
@@ -405,7 +405,7 @@ public class Database implements DatabaseInterface {
      * created.
      *
      * @return true if users were successfully saved to the file, false if an
-     * exception occurred.
+     *         exception occurred.
      */
     @Override
     public boolean saveUsers() {
@@ -495,7 +495,7 @@ public class Database implements DatabaseInterface {
      * a new `User` object is created and added to the `userList`.
      *
      * @return true if users were successfully loaded from the file, false if
-     * the file does not exist or an error occurs during reading.
+     *         the file does not exist or an error occurs during reading.
      */
     @Override
     public boolean loadUsers() {
@@ -522,7 +522,8 @@ public class Database implements DatabaseInterface {
                     String temp;
                     while (line.charAt(line.length() - 1) != fileSeparator && bfr.ready()) {
                         temp = bfr.readLine();
-                        if (temp == null) break;
+                        if (temp == null)
+                            break;
                         line += temp;
                     }
 
@@ -554,7 +555,8 @@ public class Database implements DatabaseInterface {
                     for (int i = 2; i < elements.length - 1; i++) {
                         try {
                             String[] parts = elements[i].split(":");
-                            if (parts.length < 2) continue;
+                            if (parts.length < 2)
+                                continue;
 
                             String command = parts[0].trim();
                             String value = parts[1].trim();
@@ -720,7 +722,7 @@ public class Database implements DatabaseInterface {
      * Reads each line in the file as a separate path and adds it to the list.
      *
      * @return true if the photo paths were successfully loaded, false if an error
-     * occurred.
+     *         occurred.
      */
     @Override
     public boolean loadPhotos() {
@@ -745,7 +747,7 @@ public class Database implements DatabaseInterface {
      * Each path is written to a new line in the file.
      *
      * @return true if the photo paths were successfully saved, false if an error
-     * occurred.
+     *         occurred.
      */
     @Override
     public boolean savePhotos() {

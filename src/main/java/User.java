@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * the username and password.
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- * 12
+ *         12
  * @version Nov 2, 2024
  */
 public class User implements UserInterface {
@@ -72,8 +72,8 @@ public class User implements UserInterface {
      * @param friendsOnly
      */
     public User(String username, String password, String firstName, String lastName,
-                String bio, int[] birthday, String profilePic, ArrayList<String> friends,
-                ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException {
+            String bio, int[] birthday, String profilePic, ArrayList<String> friends,
+            ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException {
         if (birthday != null) {
             if (birthday.length != 3) {
                 throw new IllegalArgumentException("Illegal size of \"birthday\" parameter");

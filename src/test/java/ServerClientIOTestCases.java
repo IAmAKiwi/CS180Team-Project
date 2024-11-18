@@ -2,11 +2,9 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -16,9 +14,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 /**
  * A framework to run public test cases for Server and Client IO.
- *
- * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- * lab sec 12
+ * This class tests the interaction between the client and server,
+ * ensuring that all functionalities such as registration, login,
+ * messaging, and user management work as expected.
+ * 
+ * The tests are ordered to ensure dependencies are respected.
+ * 
  * @version Nov 15, 2024
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,6 +27,11 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     char groupSeparator = (char) 29;
     static Client client;
 
+    /**
+     * Sets up the client and registers a test user before all tests.
+     * 
+     * @throws IOException if an I/O error occurs when setting up the client.
+     */
     @BeforeAll
     public static void setUp() throws IOException {
         client = new Client();
@@ -33,22 +39,36 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         client.logout();
     }
 
+    /**
+     * Disconnects the client after all tests are completed.
+     * 
+     * @throws IOException if an I/O error occurs when disconnecting the client.
+     */
     @AfterAll
     public static void tearDown() throws IOException {
         client.disconnect();
     }
 
+    /**
+     * Logs in as the test user before each test.
+     */
     @BeforeEach
     public void login() {
         client.login("testUser" + groupSeparator + "testPass1$");
     }
 
+    /**
+     * Logs out the test user after each test.
+     */
     @AfterEach
     public void logout() {
         client.logout();
     }
 
-    // Test if register is successful.
+    /**
+     * Tests user registration functionality.
+     * Ensures that a new user can be registered successfully.
+     */
     @Test
     @Order(1)
     public void testRegister() {
@@ -59,7 +79,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         client.deleteChat("newUser");
     }
 
-    // Log out of the registered user, then log back in to test login.
+    /**
+     * Tests re-login functionality.
+     * Ensures that a user can log in with correct credentials and fails with incorrect ones.
+     */
     @Test
     @Order(2)
     public void testReLogin() {
@@ -67,6 +90,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         assertTrue(client.login("newUser" + groupSeparator + "newPass1$"));
     }
 
+    /**
+     * Tests message sending functionality.
+     * Ensures that a message can be sent and retrieved correctly.
+     */
     @Test
     @Order(3)
     public void testSendMessage() {
@@ -79,6 +106,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         assertEquals("testUser: hello" + groupSeparator, chat);
     }
 
+    /**
+     * Tests chat retrieval functionality.
+     * Ensures that the chat history can be retrieved correctly.
+     */
     @Test
     @Order(4)
     public void testGetChat() {
@@ -86,35 +117,38 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         assertEquals("testUser: hello" + groupSeparator, chat);
     }
 
+    /**
+     * Tests friend management functionality.
+     * Ensures that friends can be added and removed correctly.
+     */
     @Test
     @Order(5)
     public void testFriends() {
-        // test adding and removing friends
         assertTrue(client.addFriend("newUser"));
         String friends = client.getFriendList();
         assertTrue(friends.contains("newUser"));
         assertTrue(client.removeFriend("newUser"));
 
-        // test adding and removing non-existent friends
         assertFalse(client.addFriend("nobody"));
         assertFalse(client.removeFriend("nobody"));
     }
 
+    /**
+     * Tests block management functionality.
+     * Ensures that users can be blocked and unblocked correctly.
+     */
     @Test
     @Order(6)
     public void testBlocks() {
-        // test blocking
         assertTrue(client.blockUser("newUser"));
         String blocks = client.getBlockList();
         assertTrue(blocks.contains("newUser"));
 
-        // test messaging blocked users from either client
         assertFalse(client.sendMessage("newUser" + groupSeparator + "we are blocked"));
         client.logout();
         client.login("newUser" + groupSeparator + "newPass1$");
         assertFalse(client.sendMessage("testUser" + groupSeparator + "we are blocked"));
 
-        // make sure this block is empty, though it should still fail.
         assertFalse(client.unblockUser("newUser"));
 
         assertFalse(client.blockUser("nobody"));
@@ -123,12 +157,15 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         client.logout();
         client.login("testUser" + groupSeparator + "testPass1$");
 
-        // test unblocking
         assertTrue(client.unblockUser("newUser"));
         blocks = client.getBlockList();
         assertFalse(blocks.contains("newUser"));
     }
 
+    /**
+     * Tests friends-only mode functionality.
+     * Ensures that messaging is restricted when friends-only mode is enabled.
+     */
     @Test
     @Order(7)
     public void testFriendsOnly() {
@@ -141,6 +178,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         assertTrue(client.sendMessage("newUser" + groupSeparator + "we are not friends"));
     }
 
+    /**
+     * Tests message and chat deletion functionality.
+     * Ensures that messages and chats can be deleted correctly.
+     */
     @Test
     @Order(8)
     public void testDeletion() {
@@ -159,10 +200,9 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
         assertEquals("", client.getChat("newUser"));
     }
 
-    /*
-     * Format input as:
-     * usernameGSfirstnameGSlastnameGSbioGSbirthdayasMM/DD/
-     * YYYYGSprofilepicGSfriendsonly
+    /**
+     * Tests profile management functionality.
+     * Ensures that user profiles can be saved and accessed correctly.
      */
     @Test
     @Order(9)
@@ -174,72 +214,72 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
                 "profile.png" + "true", client.accessProfile());
     }
 
+    /**
+     * Tests invalid registration scenarios.
+     * Ensures that registration fails with weak passwords, duplicate usernames, and empty fields.
+     */
     @Test
     @Order(10)
     public void testInvalidRegistration() {
         logout();
-        // Test weak passwords
-        assertFalse(client.register("user1" + groupSeparator + "weak")); // too short
-        assertFalse(client.register("user1" + groupSeparator + "nospecial123")); // no special char
-        assertFalse(client.register("user1" + groupSeparator + "nouppercase1!")); // no uppercase
-        assertFalse(client.register("user1" + groupSeparator + "NOLOWERCASE1!")); // no lowercase
+        assertFalse(client.register("user1" + groupSeparator + "weak"));
+        assertFalse(client.register("user1" + groupSeparator + "nospecial123"));
+        assertFalse(client.register("user1" + groupSeparator + "nouppercase1!"));
+        assertFalse(client.register("user1" + groupSeparator + "NOLOWERCASE1!"));
 
-        // Test duplicate username
         assertFalse(client.register("testUser" + groupSeparator + "ValidPass1!"));
 
-        // Test empty fields
         assertFalse(client.register("" + groupSeparator + "ValidPass1!"));
         assertFalse(client.register("user1" + groupSeparator + ""));
     }
 
+    /**
+     * Tests message validation scenarios.
+     * Ensures that invalid messages are not sent.
+     */
     @Test
     @Order(11)
     public void testMessageValidation() {
-        // Test empty message
         assertFalse(client.sendMessage("newUser" + groupSeparator + ""));
-
-        // Test null character in message
         assertFalse(client.sendMessage("newUser" + groupSeparator + "test\0message"));
-
-        // Test messaging non-existent user
         assertFalse(client.sendMessage("nonexistentUser" + groupSeparator + "hello"));
     }
 
+    /**
+     * Tests profile validation scenarios.
+     * Ensures that invalid profile data is not saved.
+     */
     @Test
     @Order(12)
     public void testProfileValidation() {
-        // Test invalid birthday formats
         assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
                 "Doe" + groupSeparator + "Bio" + groupSeparator + "13/1/2000" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false")); // invalid month
-
+                "pic.jpg" + groupSeparator + "false"));
         assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
                 "Doe" + groupSeparator + "Bio" + groupSeparator + "12/32/2000" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false")); // invalid day
-
+                "pic.jpg" + groupSeparator + "false"));
         assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
                 "Doe" + groupSeparator + "Bio" + groupSeparator + "12/25/2025" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false")); // future date
+                "pic.jpg" + groupSeparator + "false"));
     }
 
+    /**
+     * Tests multi-user chat functionality.
+     * Ensures that messages can be sent and received correctly between multiple users.
+     */
     @Test
     @Order(13)
     public void testMultiUserChat() {
-        // Clear any existing chats first
         client.deleteChat("newUser");
         client.deleteChat("user3");
 
-        // Register user3 if not exists
         client.logout();
         client.register("user3" + groupSeparator + "Pass3$");
 
-        // Log back in as testUser
         client.login("testUser" + groupSeparator + "testPass1$");
 
-        // Reset user state
         client.setFriendsOnly("false");
 
-        // Clear any blocks
         String blocks = client.getBlockList();
         if (blocks.contains("newUser")) {
             client.unblockUser("newUser");
@@ -248,68 +288,64 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
             client.unblockUser("user3");
         }
 
-        // Send new messages
         assertTrue(client.sendMessage("newUser" + groupSeparator + "test message 1"));
         assertTrue(client.sendMessage("user3" + groupSeparator + "test message 2"));
 
-        // Get and verify chats
         String chatWithNewUser = client.getChat("newUser");
         String chatWithUser3 = client.getChat("user3");
 
         assertTrue(chatWithNewUser.contains("test message 1"));
         assertTrue(chatWithUser3.contains("test message 2"));
-        assertFalse(chatWithNewUser.contains("test message 2")); // Verify messages don't cross-contaminate
+        assertFalse(chatWithNewUser.contains("test message 2"));
         assertFalse(chatWithUser3.contains("test message 1"));
     }
 
+    /**
+     * Tests blocked user interactions.
+     * Ensures that blocked users cannot send messages or add friends.
+     */
     @Test
     @Order(14)
     public void testBlockedUserInteractions() {
-        // Clear any existing blocks first
         String blocks = client.getBlockList();
         if (blocks.contains("user3")) {
             client.unblockUser("user3");
         }
 
-        // Block user3
         assertTrue(client.blockUser("user3"));
 
-        // Switch to user3 and verify blocked behavior
         client.logout();
         client.login("user3" + groupSeparator + "Pass3$");
         assertFalse(client.sendMessage("testUser" + groupSeparator + "blocked message"));
         assertFalse(client.addFriend("testUser"));
 
-        // Switch back and verify reverse blocking
         client.logout();
         client.login("testUser" + groupSeparator + "testPass1$");
         assertFalse(client.sendMessage("user3" + groupSeparator + "message to blocked"));
     }
 
+    /**
+     * Tests friends-only mode interactions.
+     * Ensures that messaging is restricted to friends when friends-only mode is enabled.
+     */
     @Test
     @Order(15)
     public void testFriendsOnlyModeInteractions() {
-        // Reset state
         client.setFriendsOnly("false");
         String blocks = client.getBlockList();
         if (blocks.contains("newUser")) {
             client.unblockUser("newUser");
         }
 
-        // Enable friends only mode and add friend
         assertTrue(client.setFriendsOnly("true"));
         assertTrue(client.addFriend("newUser"));
 
-        // Test messaging
         assertTrue(client.sendMessage("newUser" + groupSeparator + "friend message"));
         assertFalse(client.sendMessage("user3" + groupSeparator + "non-friend message"));
 
-        // Remove friend and verify
         assertTrue(client.removeFriend("newUser"));
         assertFalse(client.sendMessage("newUser" + groupSeparator + "after unfriend"));
 
-        // Clean up
         client.setFriendsOnly("false");
     }
-
 }

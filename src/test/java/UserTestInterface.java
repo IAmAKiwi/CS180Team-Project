@@ -1,7 +1,8 @@
 /**
  * Interface defining test cases for User class.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 public interface UserTestInterface {
@@ -24,4 +25,4 @@ public interface UserTestInterface {
     void testUserWithProfilePic();
 
     void testUserToStringWithNulls();
-} 
+}

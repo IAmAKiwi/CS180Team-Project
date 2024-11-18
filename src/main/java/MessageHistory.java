@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 /**
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- * 12
+ *         12
  * @version Nov 2, 2024
  */
 public class MessageHistory implements MessageHistoryInterface {

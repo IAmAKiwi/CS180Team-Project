@@ -4,7 +4,8 @@ import java.util.ArrayList;
  * Interface that defines the required methods for MessageHistory objects.
  * Handles the storage and management of messages between users.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 public interface MessageHistoryInterface {

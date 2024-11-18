@@ -1,7 +1,8 @@
 /**
  * Interface defining test cases for Database class.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 public interface DatabaseTestInterface {
@@ -34,4 +35,4 @@ public interface DatabaseTestInterface {
     void testGetMessagesNonExistentUsers();
 
     void testLoadUsersWithInvalidFormat();
-} 
+}

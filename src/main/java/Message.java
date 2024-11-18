@@ -2,7 +2,8 @@
  * Class that represents a message in the social media platform.
  * Contains the message content and sender information.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 public class Message implements MessageInterface {

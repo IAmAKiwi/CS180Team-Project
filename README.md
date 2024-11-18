@@ -77,6 +77,14 @@ This project provides a comprehensive framework for a messaging application, inc
 
 - Manages the storage and management of messages between users.
 
+#### 7. **ClientInterface**
+
+- Defines methods for client-side operations and server communication.
+
+#### 8. **ServerInterface**
+
+- Defines methods for server-side operations and client requests.
+
 ## Test Framework
 
 ### Test Classes

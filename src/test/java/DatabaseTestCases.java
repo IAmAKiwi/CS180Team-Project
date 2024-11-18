@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ import org.junit.jupiter.api.Test;
  * A framework to run public test cases for Database
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- * lab sec 12
+ *         lab sec 12
  * @version Nov 2, 2024
  */
 class DatabaseTestCases implements DatabaseTestInterface {
@@ -96,12 +95,12 @@ class DatabaseTestCases implements DatabaseTestInterface {
         db.addUser(user1);
         db.addUser(user2);
         MessageHistory messageHistory = new MessageHistory();
-        messageHistory.setUserMessagers(new String[]{"user1", "user2"});
+        messageHistory.setUserMessagers(new String[] { "user1", "user2" });
         db.addMessageHistory(messageHistory); // directly adding to create a chat history
 
         MessageHistory retrievedHistory = db.getMessages("user1", "user2");
         assertNotNull(retrievedHistory);
-        assertArrayEquals(new String[]{"user1", "user2"}, retrievedHistory.getUsernames());
+        assertArrayEquals(new String[] { "user1", "user2" }, retrievedHistory.getUsernames());
     }
 
     @Test
@@ -183,7 +182,7 @@ class DatabaseTestCases implements DatabaseTestInterface {
     public void testSaveMessagesFileOutput() {
         // create a MessageHistory with some messages
         MessageHistory messageHistory = new MessageHistory();
-        messageHistory.setUserMessagers(new String[]{"user1", "user2"});
+        messageHistory.setUserMessagers(new String[] { "user1", "user2" });
 
         Message message1 = new Message("Hello", "user1");
         Message message2 = new Message("Hi there!", "user2");
@@ -264,7 +263,7 @@ class DatabaseTestCases implements DatabaseTestInterface {
         // specifies the first conversation in MessageHistory
         MessageHistory loadedHistory = allChats.get(0);
         String[] usernames = loadedHistory.getUsernames();
-        assertArrayEquals(new String[]{"user1", "user2"}, usernames);
+        assertArrayEquals(new String[] { "user1", "user2" }, usernames);
 
         // makes sure messages exist in MessageHistory
         ArrayList<Message> messages = loadedHistory.getMessageHistory();
