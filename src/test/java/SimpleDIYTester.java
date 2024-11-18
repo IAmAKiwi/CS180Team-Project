@@ -4,8 +4,7 @@ import java.util.Scanner;
  * A framework to run give illustrations for Database
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- *         lab sec 12
- *
+ * lab sec 12
  * @version Nov 2, 2024
  */
 public class SimpleDIYTester {

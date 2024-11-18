@@ -5,10 +5,9 @@ import java.util.ArrayList;
  * Class that contains all information that a User of
  * the social media platform could store, including
  * the username and password.
- * 
+ *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
- * 
+ * 12
  * @version Nov 2, 2024
  */
 public class User implements UserInterface {
@@ -40,7 +39,7 @@ public class User implements UserInterface {
 
     /**
      * Typical barebones constructor
-     * 
+     *
      * @param username The username used to construct the new User.
      * @param password The password used to construct the new User.
      */
@@ -60,7 +59,7 @@ public class User implements UserInterface {
     /**
      * More comprehensive constructor for use in loadUsers from Database.
      * Use nulls in uninitiatied parameters.
-     * 
+     *
      * @param username
      * @param password
      * @param firstName
@@ -73,8 +72,8 @@ public class User implements UserInterface {
      * @param friendsOnly
      */
     public User(String username, String password, String firstName, String lastName,
-            String bio, int[] birthday, String profilePic, ArrayList<String> friends,
-            ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException {
+                String bio, int[] birthday, String profilePic, ArrayList<String> friends,
+                ArrayList<String> blocked, boolean friendsOnly) throws IllegalArgumentException {
         if (birthday != null) {
             if (birthday.length != 3) {
                 throw new IllegalArgumentException("Illegal size of \"birthday\" parameter");
@@ -107,13 +106,13 @@ public class User implements UserInterface {
         sb.append(firstName != null ? firstName : "");
         sb.append(lastName != null ? lastName : "");
         sb.append(bio != null ? bio : "");
-        
+
         if (birthday != null) {
             sb.append(birthday[0]).append("/")
-              .append(birthday[1]).append("/")
-              .append(birthday[2]);
+                    .append(birthday[1]).append("/")
+                    .append(birthday[2]);
         }
-        
+
         sb.append(profilePic != null ? profilePic : "");
         sb.append(friendsOnly);
         return sb.toString();

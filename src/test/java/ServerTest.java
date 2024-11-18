@@ -1,254 +1,204 @@
-import org.junit.jupiter.api.*;
-import org.mockito.*;
-import java.io.*;
-import java.net.Socket;
-import java.util.ArrayList;
+import java.io.IOException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 
-public class ServerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    private Server server;
-    private Socket mockSocket;
-    private BufferedReader mockReader;
-    private PrintWriter mockWriter;
-    private Database mockDatabase;
-    private User mockUser;
-    private MessageHistory mockMessageHistory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
+/**
+ * A framework to run public test cases for Server
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ * lab sec 12
+ * @version Nov 15, 2024
+ */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class ServerTest {
+    public static char groupSeparator = (char) 29;
+    public static Server server;
+
+    @BeforeAll
+    public static void setUp() {
+        server = new Server();
+        server.setDatabase(new Database());
+        server.register("testUser" + groupSeparator + "ValidPass1!");
+        server.logout();
+    }
 
     @BeforeEach
-    public void setUp() throws IOException {
-        mockSocket = mock(Socket.class);
-        mockReader = mock(BufferedReader.class);
-        mockWriter = mock(PrintWriter.class);
-        mockDatabase = mock(Database.class);
-        mockUser = mock(User.class);
-        mockMessageHistory = mock(MessageHistory.class);
-
-        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
-        when(mockSocket.getOutputStream()).thenReturn(new ByteArrayOutputStream());
-
-        server = new Server(mockSocket);
-        Server.setDatabase(mockDatabase);
+    public void login() {
+        server.login("testUser" + groupSeparator + "ValidPass1!");
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
-        mockSocket.close();
+    public void logout() {
+        server.logout();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        server = null;
     }
 
     @Test
-    public void testLoginSuccess() throws IOException {
-        String username = "testUser";
-        String password = "testPass";
-        String command = "login:" + username + ":" + password;
+    @Order(1)
+    public void testRegister() {
+        logout();
+        boolean result = Boolean.parseBoolean(server.register("newUser" + groupSeparator + "ValidPass2!"));
+        assertTrue(result);
+        logout();
 
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
-            {
-                add(mockUser);
-            }
-        });
-        when(mockUser.getUsername()).thenReturn(username);
-        when(mockUser.getPassword()).thenReturn(password);
+        result = Boolean.parseBoolean(server.register("newUser" + groupSeparator + "ValidPass2!"));
+        assertFalse(result);
 
-        String result = server.login(command);
-        assertEquals("true", result);
+        result = Boolean.parseBoolean(server.register("newUser" + groupSeparator + "InvalidPass1!"));
+        assertFalse(result);
     }
 
     @Test
-    public void testLoginFailure() {
-        String command = "login:wrongUser:wrongPass";
+    @Order(2)
+    public void testLoginAndLogout() {
+        logout();
+        boolean result = Boolean.parseBoolean(server.login("newUser" + groupSeparator + "ValidPass2!"));
+        assertTrue(result);
+        logout();
 
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
-            {
-                add(mockUser);
-            }
-        });
-        when(mockUser.getUsername()).thenReturn("testUser");
-        when(mockUser.getPassword()).thenReturn("testPass");
+        result = Boolean.parseBoolean(server.login("newUser" + groupSeparator + "InvalidPass1!"));
+        assertFalse(result);
 
-        String result = server.login(command);
-        assertEquals("false", result);
-    }
-
-    @Test
-    public void testRegisterSuccess() {
-        String username = "newUser";
-        String password = "newPass";
-        String command = "register:" + username + ":" + password;
-
-        when(mockDatabase.addUser(any(User.class))).thenReturn(true);
-
-        String result = server.register(command);
-        assertEquals("true", result);
-    }
-
-    @Test
-    public void testRegisterFailure() {
-        String command = "register:existingUser:password";
-
-        when(mockDatabase.addUser(any(User.class))).thenReturn(false);
-
-        String result = server.register(command);
-        assertEquals("false", result);
-    }
-
-    @Test
-    public void testSendMessageSuccess() {
-        String sender = "senderUser";
-        String receiver = "receiverUser";
-        String message = "Hello there!";
-        String command = "sendMessage:" + receiver + ":" + message;
-
-        when(mockUser.getUsername()).thenReturn(sender);
-        when(mockDatabase.addMessage(any(Message.class), eq(receiver))).thenReturn(true);
-
-        String result = server.sendMessage(command);
-        assertEquals("true", result);
-    }
-
-    @Test
-    public void testSendMessageFailure() {
-        String command = "sendMessage:receiverUser:Message content";
-
-        when(mockDatabase.addMessage(any(Message.class), anyString())).thenReturn(false);
-
-        String result = server.sendMessage(command);
-        assertEquals("false", result);
-    }
-
-    @Test
-    public void testGetUserList() {
-        when(mockDatabase.getUsers()).thenReturn(new ArrayList<User>() {
-            {
-                add(new User("user1", "pass1"));
-                add(new User("user2", "pass2"));
-            }
-        });
-
-        String result = server.getUserList();
-        assertEquals("user1:user2:", result);
-    }
-
-    @Test
-    public void testGetChat() {
-        String otherUsername = "friend";
-        String command = "getChat:" + otherUsername;
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(new Message("Hi", "user1"));
-        messages.add(new Message("Hello", "friend"));
-
-        when(mockDatabase.getMessages(anyString(), eq(otherUsername))).thenReturn(mockMessageHistory);
-        when(mockMessageHistory.getMessageHistory()).thenReturn(messages);
-
-        String result = server.getChat(command);
-        assertEquals("user1: Hi" + (char) 29 + "friend: Hello" + (char) 29, result);
-    }
-
-    @Test
-    public void testUpdateProfile() {
-        String command = "updateProfile:oldUser:newUser:newPass:First:Last:bio:12/31/2000:profilePic:user1,user2:block1:block2:true";
-        when(mockDatabase.getUser("oldUser")).thenReturn(mockUser);
-
-        String result = server.updateProfile(command);
-        verify(mockUser).setUsername("newUser");
-        verify(mockUser).setPassword("newPass");
-        verify(mockUser).setFirstName("First");
-        verify(mockUser).setLastName("Last");
-        verify(mockUser).setBio("bio");
-        assertEquals("true", result);
-    }
-
-    @Test
-    public void testLogout() {
-        server.currentUser = mockUser;
-        String result = server.logout();
-        assertNull(server.currentUser);
-        assertEquals("true", result);
-    }
-
-    @Test
-    public void testDisconnect() throws IOException {
-        server.clientSocket = mockSocket;
-        boolean result = server.disconnect();
-        verify(mockSocket).close();
+        result = Boolean.parseBoolean(server.login("testUser" + groupSeparator + "ValidPass1!"));
         assertTrue(result);
     }
 
     @Test
-    public void testBlockUser() {
-        String command = "blockUser:otherUser";
-        when(mockDatabase.blockUser(anyString(), eq("otherUser"))).thenReturn(true);
+    @Order(3)
+    public void testUserList() {
+        String result = server.getUserList();
+        assertEquals("testUser" + groupSeparator +"newUser" + groupSeparator, result);
 
-        String result = server.blockUser(command);
-        assertEquals("true", result);
+        logout();
+        server.register("newUser2" + groupSeparator + "ValidPass2!");
+        result = server.getUserList();
+        assertEquals("testUser" + groupSeparator +"newUser" + groupSeparator +"newUser2" + groupSeparator,
+                result);
     }
 
     @Test
-    public void testUnblockUser() {
-        String command = "unblockUser:otherUser";
-        when(mockDatabase.unblockUser(anyString(), eq("otherUser"))).thenReturn(true);
+    @Order(4)
+    public void testChatting() {
+        // Successfully sent messages back and forth.
+        boolean result = Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "hello"));
+        assertTrue(result);
+        String chat = server.getChat("newUser");
+        assertEquals("testUser: hello" + groupSeparator, chat);
+        logout();
+        server.login("newUser" + groupSeparator + "ValidPass2!");
+        result = Boolean.parseBoolean(server.sendMessage("testUser" + groupSeparator + "hello"));
+        chat = server.getChat("testUser");
+        assertEquals("testUser: hello" + groupSeparator + "newUser: hello" + groupSeparator, chat);
 
-        String result = server.unblockUser(command);
-        assertEquals("true", result);
+
+        // Failed to send messages.
+        result = Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "hello"));
+        assertFalse(result);
+
+        result = Boolean.parseBoolean(server.sendMessage("fakeUser" + groupSeparator + "hello"));
+        assertFalse(result);
+
+        result = Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + ""));
+        assertFalse(result);
+
+        result = Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "hello\0world"));
+        assertFalse(result);
     }
 
     @Test
-    public void testGetFriendList() {
-        when(mockDatabase.getFriends(anyString())).thenReturn(new String[] { "friend1", "friend2" });
-
-        String result = server.getFriendList();
-        assertEquals("friend1:friend2:", result);
+    @Order(5)
+    public void testDeleteMessage() {
+        boolean result = Boolean.parseBoolean(server.deleteMessage("testUser: hello" +
+                groupSeparator + "newUser"));
+        assertTrue(result);
+        result = Boolean.parseBoolean(server.deleteMessage("testUser: hello" + groupSeparator + "newUser"));
+        assertFalse(result);
     }
 
     @Test
-    public void testGetBlockList() {
-        when(mockDatabase.getBlockList(anyString())).thenReturn(new String[] { "block1", "block2" });
+    @Order(6)
+    public void testFriends() {
+        // test adding and removing friends
+        assertTrue(Boolean.parseBoolean(server.addFriend("newUser")));
+        String friends = server.getFriendList();
+        assertTrue(friends.contains("newUser"));
+        assertTrue(Boolean.parseBoolean(server.removeFriend("newUser")));
 
-        String result = server.getBlockList();
-        assertEquals("block1:block2:", result);
+        // test adding and removing non-existent friends
+        assertFalse(Boolean.parseBoolean(server.addFriend("nobody")));
+        assertFalse(Boolean.parseBoolean(server.removeFriend("nobody")));
     }
 
     @Test
-    public void testGetChatWithValidUsers() {
-        String otherUser = "testUser2";
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(new Message("Hello", "testUser1"));
+    @Order(7)
+    public void testFriendsOnly() {
+        assertTrue(Boolean.parseBoolean(server.setFriendsOnly(true)));
 
-        when(mockMessageHistory.getMessageHistory()).thenReturn(messages);
-        when(mockDatabase.getMessages(anyString(), eq(otherUser))).thenReturn(mockMessageHistory);
+        assertFalse(Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "we are friends")));
 
-        String result = server.getChat(otherUser);
-        assertEquals("testUser1: Hello" + (char) 29, result);
+        assertTrue(Boolean.parseBoolean(server.setFriendsOnly(false)));
+
+        assertTrue(Boolean.parseBoolean(server.sendMessage("newUser" + groupSeparator + "we are not friends")));
     }
 
     @Test
-    public void testBlockUserSuccess() {
-        String userToBlock = "blockedUser";
-        when(mockDatabase.blockUser(anyString(), eq(userToBlock))).thenReturn(true);
-
-        String result = server.blockUser(userToBlock);
-        assertEquals("true", result);
+    @Order(9)
+    public void testProfile() {
+        assertTrue(Boolean.parseBoolean(server.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
+                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
+                "profile.png" + groupSeparator + "true")));
+        assertEquals("testUser" + "jack" + "shields" + "epic bio" + "5/15/2000" +
+                "profile.png" + "true", server.accessProfile());
     }
 
     @Test
-    public void testUnblockUserSuccess() {
-        String userToUnblock = "unblockedUser";
-        when(mockDatabase.unblockUser(anyString(), eq(userToUnblock))).thenReturn(true);
+    @Order(10)
+    public void testInvalidRegistration() {
+        logout();
+        // Test weak passwords
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "weak"))); // too short
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "nospecial123"))); // no special char
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "nouppercase1!"))); // no uppercase
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "NOLOWERCASE1!"))); // no lowercase
 
-        String result = server.unblockUser(userToUnblock);
-        assertEquals("true", result);
+        // Test duplicate username
+        assertFalse(Boolean.parseBoolean(server.register("testUser" + groupSeparator + "ValidPass1!")));
+
+        // Test empty fields
+        assertFalse(Boolean.parseBoolean(server.register("" + groupSeparator + "ValidPass1!")));
+        assertFalse(Boolean.parseBoolean(server.register("user1" + groupSeparator + "")));
     }
 
     @Test
-    public void testSetFriendsOnlySuccess() {
-        server.setCurrentUser(mockUser);
-        String result = server.setFriendsOnly(true);
-        assertEquals("true", result);
-        verify(mockUser).setFriendsOnly(true);
+    @Order(11)
+    public void testProfileValidation() {
+        // Test invalid birthday formats
+        assertFalse(Boolean.parseBoolean(server.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                "Doe" + groupSeparator + "Bio" + groupSeparator + "13/1/2000" + groupSeparator +
+                "pic.jpg" + groupSeparator + "false"))); // invalid month
+
+        assertFalse(Boolean.parseBoolean(server.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                "Doe" + groupSeparator + "Bio" + groupSeparator + "12/32/2000" + groupSeparator +
+                "pic.jpg" + groupSeparator + "false"))); // invalid day
+
+        assertFalse(Boolean.parseBoolean(server.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                "Doe" + groupSeparator + "Bio" + groupSeparator + "12/25/2025" + groupSeparator +
+                "pic.jpg" + groupSeparator + "false"))); // future date
     }
 }

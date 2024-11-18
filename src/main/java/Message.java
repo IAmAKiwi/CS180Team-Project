@@ -11,7 +11,6 @@ public class Message implements MessageInterface {
     private String senderUsername;
 
     /**
-     * 
      * Default constructor.
      */
     public Message() {
@@ -21,7 +20,7 @@ public class Message implements MessageInterface {
 
     /**
      * Main constructor for the class Message.
-     * 
+     *
      * @param contents       The text that makes up the Message.
      * @param senderUsername The username of the User that sent this Message.
      */
@@ -31,7 +30,6 @@ public class Message implements MessageInterface {
     }
 
     /**
-     * 
      * Getter for the contents of this Message.
      */
     public String getMessage() {
@@ -39,7 +37,6 @@ public class Message implements MessageInterface {
     }
 
     /**
-     * 
      * Getter for the username of the sender of this Message.
      */
     public String getSender() {
@@ -47,7 +44,6 @@ public class Message implements MessageInterface {
     }
 
     /**
-     *
      * toString method for Message. It is in File Format.
      */
     @Override

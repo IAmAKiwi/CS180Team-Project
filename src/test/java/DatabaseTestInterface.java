@@ -1,4 +1,3 @@
-import java.io.IOException;
 /**
  * Interface defining test cases for Database class.
  *
@@ -7,18 +6,32 @@ import java.io.IOException;
  */
 public interface DatabaseTestInterface {
     void testAddUserUniqueUsername();
+
     void testValidateNewUserUsernameInPassword();
+
     void testGetUserExistingUser();
+
     void testGetUserNonExistentUser();
+
     void testGetUsers();
+
     void testGetMessagesValidConversation();
+
     void testGetMessagesSelfMessagingException();
-    void testSaveUsersFileOutput() throws IOException;
+
+    void testSaveUsersFileOutput();
+
     void testSaveUsersCreatesFileIfNotExists();
-    void testSaveMessagesFileOutput() throws IOException;
-    void testLoadMessagesFileInput() throws IOException;
+
+    void testSaveMessagesFileOutput();
+
+    void testLoadMessagesFileInput();
+
     void testAddMessageWithBlockedUser();
+
     void testAddMessageWithFriendsOnlyMode();
+
     void testGetMessagesNonExistentUsers();
+
     void testLoadUsersWithInvalidFormat();
 } 
