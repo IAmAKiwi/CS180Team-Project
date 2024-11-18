@@ -111,6 +111,18 @@ This project provides a comprehensive framework for a messaging application, inc
 
 - **Purpose**: Ensures correct management of chat histories and message ordering.
 
+#### 5. **UserTestCases**
+
+- **Purpose**: Tests user creation, validation, and management.
+
+#### 6. **ServerTestCases**
+
+- **Purpose**: Tests server operations, including client handling and message management.
+
+#### 7. **ClientTestCases**
+
+- **Purpose**: Tests client operations, including server communication and user interactions.
+
 ## Client-Server Interaction
 
 ### How It Works
@@ -136,6 +148,65 @@ This project provides a comprehensive framework for a messaging application, inc
    - Open your IDE and locate the `ServerClientIOTestCases` class.
    - Click the "Run" button to execute the test cases.
    - The tests will automatically connect to the running server and validate the functionality.
+
+### Detailed Testing Information
+
+1. **Test Setup**
+   - Each test initializes a new Client instance that connects to localhost:4242
+   - Server runs on a separate thread to handle concurrent connections
+   - Tests use a group separator character (ASCII 29) to delimit complex messages
+
+2. **Communication Protocol**
+   ```
+   Client -> Server: command:content
+   Server -> Client: result
+   ```
+   Where:
+   - `command` is a lowercase string (e.g., "login", "sendMessage")
+   - `content` contains parameters separated by group separator chars
+   - `result` is typically "true"/"false" or requested data
+
+3. **Key Test Categories**
+   - **Authentication Flow**
+     ```
+     register:username[GS]password
+     login:username[GS]password
+     ```
+   
+   - **Messaging Operations**
+     ```
+     sendMessage:recipient[GS]messageContent
+     getChat:otherUsername
+     deleteMessage:messageContent[GS]otherUser
+     ```
+   
+   - **User Management**
+     ```
+     addFriend:username
+     blockUser:username
+     setFriendsOnly:true/false
+     ```
+
+4. **Error Handling Tests**
+   - Malformed commands
+   - Invalid credentials
+   - Missing parameters
+   - Concurrent access
+   - Network interruptions
+   - Invalid message formats
+
+5. **Test Data Persistence**
+   - Server can be started with "args" to prevent data persistence
+   - Tests verify data consistency across sessions
+   - Message histories maintain order and integrity
+
+6. **Performance Considerations**
+   - Tests include multi-user scenarios
+   - Verify thread safety of shared resources
+   - Monitor memory usage during large message exchanges
+   - Test connection timeouts and cleanup
+
+
 
 ## Authors
 
