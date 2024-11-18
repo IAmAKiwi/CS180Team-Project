@@ -148,8 +148,8 @@ class ServerClientIOTestCases {
         assertEquals("testUser: hello" + groupSeparator + "testUser: we are not friends" + groupSeparator,
                 currentChat);
 
-        assertTrue(client.deleteMessage("newUser" + groupSeparator + "hello"));
-        assertFalse(client.deleteMessage("newUser" + groupSeparator + "hello"));
+        assertTrue(client.deleteMessage("testUser: hello" + groupSeparator + "newUser"));
+        assertFalse(client.deleteMessage("testUser: hello" + groupSeparator + "hello"));
 
         currentChat = client.getChat("newUser");
         assertEquals("testUser: we are not friends" + groupSeparator, currentChat);
@@ -177,6 +177,7 @@ class ServerClientIOTestCases {
     @Test
     @Order(10)
     public void testInvalidRegistration() {
+        logout();
         // Test weak passwords
         assertFalse(client.register("user1" + groupSeparator + "weak")); // too short
         assertFalse(client.register("user1" + groupSeparator + "nospecial123")); // no special char

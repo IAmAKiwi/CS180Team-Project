@@ -141,7 +141,7 @@ public class Database implements DatabaseInterface {
     @Override
     public MessageHistory getMessages(String user1, String user2) throws IllegalArgumentException {
         if (user1.equals(user2)) {
-            throw new IllegalArgumentException("No such self-messaging history.");
+            return null;
         }
 
         synchronized (MESSAGE_KEY) {
@@ -245,6 +245,35 @@ public class Database implements DatabaseInterface {
             this.allChats.add(mh);
             return true;
         }
+    }
+
+    /**
+     * Deletes a message from a MessageHistory based upon the message and receiver.
+     *
+     * @param message  Message to add
+     * @param receiver Username of receiver
+     * @return true if message was added
+     **/
+    public boolean deleteMessage(Message message, String receiver) {
+        User u1 = this.getUser(message.getSender());
+        User u2 = this.getUser(receiver);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+        MessageHistory mh = this.getMessages(u1.getUsername(), u2.getUsername());
+        if (mh == null) {
+            return false;
+        }
+        synchronized (MESSAGE_KEY) {
+            for (Message m : mh.getMessageHistory()) {
+                if (m.getMessage().equals(message.getMessage()) && m.getSender().equals(message.getSender())) {
+                    mh.deleteMessage(m);
+                    this.allChats.set(this.allChats.indexOf(mh), mh);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

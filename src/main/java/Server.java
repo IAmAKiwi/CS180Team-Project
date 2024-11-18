@@ -16,8 +16,6 @@ public class Server implements Runnable, ServerInterface {
     private static int clientCount = 0;
     protected Socket clientSocket;
     protected User currentUser;
-    private String otherUser;
-    private MessageHistory currentChat;
     private final char groupSeparatorChar = (char) 29;
 
     public Server(Socket socket) {
@@ -134,18 +132,16 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String deleteMessage(String content) {
-        String[] parts = content.split(String.valueOf(groupSeparatorChar));
-        String receiver = parts[0];
-        String message = parts[1];
-        MessageHistory mh = db.getMessages(currentUser.getUsername(), receiver);
-        if (mh == null) {
+        String[] info = content.split(groupSeparatorChar + "");
+        if (info.length != 2 || !info[0].contains(":")) {
             return "false";
         }
-        for (Message m : mh.getMessageHistory()) {
-            if (m.getMessage().equals(message)) {
-                mh.deleteMessage(m);
-                return "true";
-            }
+        String sender = info[0].substring(0, info[0].indexOf(":"));
+        String messageContent = info[0].substring(info[0].indexOf(":") + 2);
+        Message message = new Message(messageContent, sender);
+        String otherUser = info[1];
+        if (db.deleteMessage(message, otherUser)) {
+            return "true";
         }
         return "false";
     }

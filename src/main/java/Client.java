@@ -72,7 +72,7 @@ public class Client implements Runnable, ClientInterface {
                         result = String.valueOf(sendMessage(content));
                         break;
                     case "deleteMessage":
-                        // Delete message example: deleteMessage[groupSeparator]message
+                        // Delete message example: deleteMessage[groupSeparator]message[groupSeparator]otherUser
                         result = String.valueOf(deleteMessage(content));
                         break;
                     case "accessProfile":
