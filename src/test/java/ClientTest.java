@@ -1,309 +1,219 @@
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import java.io.*;
 import java.net.Socket;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-/*
-class ClientTest {
-
+/**
+ * A framework to run public test cases for Client
+ *
+ * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
+ * lab sec 12
+ * @version Nov 17, 2024
+ */
+public class ClientTest {
     private Client client;
     private Socket mockSocket;
-    private BufferedReader mockReader;
     private PrintWriter mockWriter;
+    private BufferedReader mockReader;
 
-    @BeforeEach
-    void setUp() throws IOException {
-        // mocking socket
+    @Before
+    public void setUp() throws IOException {
         mockSocket = mock(Socket.class);
-
-        // mock InputStream and OutputStream
-        InputStream mockInputStream = new ByteArrayInputStream("mocked response".getBytes());
-        OutputStream mockOutputStream = new ByteArrayOutputStream();
-
-        // stubbing the socket's input and output streams
-        when(mockSocket.getInputStream()).thenReturn(mockInputStream);
-        when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-
-        // wrap InputStream and OutputStream in BufferedReader and PrintWriter for the
-        // Client instance
-        mockReader = new BufferedReader(new InputStreamReader(mockInputStream));
-        mockWriter = new PrintWriter(mockOutputStream, true);
+        mockWriter = mock(PrintWriter.class);
+        mockReader = mock(BufferedReader.class);
+        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
+        when(mockSocket.getOutputStream()).thenReturn(new ByteArrayOutputStream());
 
         client = new Client();
         client.socket = mockSocket;
-        client.serverReader = mockReader;
         client.serverWriter = mockWriter;
+        client.serverReader = mockReader;
     }
 
     @Test
-    void testGetUserList() {
-        String response = client.getUserList();
-        assertEquals("mocked response", response);
+    public void testClientConstructor() {
+        try {
+            new Client(); // constructor should not throw exceptions
+        } catch (Exception e) {
+            fail("Constructor threw an exception: " + e.getMessage());
+        }
     }
 
     @Test
-    void testSendMessage() {
-        boolean result = client.sendMessage("Hello");
+    public void testGetUserList() throws IOException {
+        when(mockReader.readLine()).thenReturn("user1:user2:");
+        String result = client.getUserList();
+        verify(mockWriter).println("getUserList: ");
+        assertEquals("user1:user2:", result);
+    }
+
+    @Test
+    public void testSendMessage() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.sendMessage("user1\031Hello!");
+        verify(mockWriter).println("sendMessage:user1\031Hello!");
         assertTrue(result);
     }
 
     @Test
-    void testDeleteMessage() {
-        boolean result = client.deleteMessage("Message to delete");
+    public void testDeleteMessage() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.deleteMessage("user1\031Message1");
+        verify(mockWriter).println("deleteMessage:user1\031Message1");
         assertTrue(result);
     }
 
     @Test
-    void testAccessProfile() {
-        String response = client.accessProfile();
-        assertEquals("mocked response", response);
+    public void testAccessProfile() throws IOException {
+        when(mockReader.readLine()).thenReturn("ProfileData");
+        String result = client.accessProfile();
+        verify(mockWriter).println("accessProfile: ");
+        assertEquals("ProfileData", result);
     }
 
     @Test
-    void testUpdateProfile() {
-        boolean result = client.updateProfile("New profile content");
+    public void testSaveProfile() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.saveProfile("ProfileContent");
+        verify(mockWriter).println("saveProfile:ProfileContent");
         assertTrue(result);
     }
 
     @Test
-    void testRemoveFriend() {
-        boolean result = client.removeFriend("friendUsername");
+    public void testRemoveFriend() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.removeFriend("friend1");
+        verify(mockWriter).println("removeFriend:friend1");
         assertTrue(result);
     }
 
     @Test
-    void testAddFriend() {
-        boolean result = client.addFriend("newFriendUsername");
+    public void testAddFriend() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.addFriend("friend1");
+        verify(mockWriter).println("addFriend:friend1");
         assertTrue(result);
     }
 
     @Test
-    void testUnblockUser() {
-        boolean result = client.unblockUser("blockedUsername");
+    public void testUnblockUser() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.unblockUser("user1");
+        verify(mockWriter).println("unblockUser:user1");
         assertTrue(result);
     }
 
     @Test
-    void testBlockUser() {
-        boolean result = client.blockUser("userToBlock");
+    public void testBlockUser() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.blockUser("user1");
+        verify(mockWriter).println("blockUser:user1");
         assertTrue(result);
     }
 
     @Test
-    void testRequestActive() {
-        boolean result = client.requestActive("activeUser");
+    public void testDeleteChat() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.deleteChat("user1");
+        verify(mockWriter).println("deleteChat:user1");
         assertTrue(result);
     }
 
     @Test
-    void testDeleteChat() {
-        boolean result = client.deleteChat("chatUser");
+    public void testSendImage() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.sendImage("user1\031imagePath");
+        verify(mockWriter).println("sendImage:user1\031imagePath");
         assertTrue(result);
     }
 
     @Test
-    void testSendImage() {
-        boolean result = client.sendImage("user" + (char)29 + "/path/to/image");
-        assertTrue(result);
+    public void testGetChat() throws IOException {
+        when(mockReader.readLine()).thenReturn("ChatData");
+        String result = client.getChat("user1");
+        verify(mockWriter).println("getChat:user1");
+        assertEquals("ChatData", result);
     }
 
     @Test
-    void testGetChat() {
-        String response = client.getChat("chatUser");
-        assertEquals("mocked response", response);
+    public void testGetFriendList() throws IOException {
+        when(mockReader.readLine()).thenReturn("friend1:friend2:");
+        String result = client.getFriendList();
+        verify(mockWriter).println("getFriendList: ");
+        assertEquals("friend1:friend2:", result);
     }
 
     @Test
-    void testGetFriendList() {
-        String response = client.getFriendList();
-        assertEquals("mocked response", response);
+    public void testGetBlockList() throws IOException {
+        when(mockReader.readLine()).thenReturn("user1:user2:");
+        String result = client.getBlockList();
+        verify(mockWriter).println("getBlockList: ");
+        assertEquals("user1:user2:", result);
     }
 
     @Test
-    void testGetBlockList() {
-        String response = client.getBlockList();
-        assertEquals("mocked response", response);
-    }
-
-    @Test
-    void testIsFriendsOnly() {
+    public void testIsFriendsOnly() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
         boolean result = client.isFriendsOnly();
+        verify(mockWriter).println("isFriendsOnly: ");
         assertTrue(result);
     }
 
     @Test
-    void testSetFriendsOnly() {
+    public void testSetFriendsOnly() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
         boolean result = client.setFriendsOnly("true");
+        verify(mockWriter).println("setFriendsOnly:true");
         assertTrue(result);
     }
 
     @Test
-    void testSetProfilePic() {
-        boolean result = client.setProfilePic("/path/to/profilePic");
+    public void testSetProfilePic() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.setProfilePic("path/to/profilePic");
+        verify(mockWriter).println("setProfilePic:path/to/profilePic");
         assertTrue(result);
     }
 
     @Test
-    void testGetProfilePic() {
-        String response = client.getProfilePic();
-        assertEquals("mocked response", response);
+    public void testGetProfilePic() throws IOException {
+        when(mockReader.readLine()).thenReturn("path/to/profilePic");
+        String result = client.getProfilePic();
+        verify(mockWriter).println("getProfilePic: ");
+        assertEquals("path/to/profilePic", result);
     }
 
     @Test
-    void testLogin() {
-        boolean result = client.login("username" + (char)29 + "password");
+    public void testLogin() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.login("username\031password");
+        verify(mockWriter).println("login:username\031password");
         assertTrue(result);
     }
 
     @Test
-    void testRegister() {
-        boolean result = client.register("newUser" + (char)29 + "newPass");
+    public void testRegister() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
+        boolean result = client.register("username\031password");
+        verify(mockWriter).println("register:username\031password");
         assertTrue(result);
     }
 
     @Test
-    void testLogout() {
+    public void testLogout() throws IOException {
+        when(mockReader.readLine()).thenReturn("true");
         boolean result = client.logout();
+        verify(mockWriter).println("logout: ");
         assertTrue(result);
     }
 
     @Test
-    void testLoginWithInvalidCredentials() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.login("wrongUser" + (char)29 + "wrongPass");
-            assertFalse(result);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testRegisterWithExistingUsername() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.register("existingUser" + (char)29 + "password123");
-            assertFalse(result);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testSendMessageWithEmptyMessage() {
-        boolean result = client.sendMessage("");
-        assertFalse(result);
-    }
-
-    @Test
-    void testGetChatWithInvalidUser() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
-            String response = client.getChat("nonexistentUser");
-            assertEquals("", response);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testUpdateProfileWithInvalidData() {
-        boolean result = client.updateProfile("");
-        assertFalse(result);
-    }
-
-    @Test
-    void testDisconnectWithIOException() throws IOException {
-        doThrow(new IOException()).when(mockSocket).close();
+    public void testDisconnect() throws IOException {
+        when(mockReader.readLine()).thenReturn(null); // simulate disconnection
         boolean result = client.disconnect();
-        assertFalse(result);
+        assertTrue(result);
+        verify(mockSocket).close();
     }
-
-    @Test
-    void testSendImageWithInvalidPath() {
-        boolean result = client.sendImage("user" + (char)29 + "invalid/path/to/image");
-        assertFalse(result);
-    }
-
-    @Test
-    void testSetFriendsOnlyWithInvalidValue() {
-        boolean result = client.setFriendsOnly("invalid");
-        assertFalse(result);
-    }
-
-    @Test
-    void testGetProfilePicWithNoImage() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
-            String response = client.getProfilePic();
-            assertEquals("", response);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testRequestActiveWithOfflineUser() {
-        boolean result = client.requestActive("offlineUser");
-        assertFalse(result);
-    }
-
-    @Test
-    void testDeleteChatWithInvalidUser() {
-        boolean result = client.deleteChat("");
-        assertFalse(result);
-    }
-
-    @Test
-    void testBlockAlreadyBlockedUser() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.blockUser("alreadyBlockedUser");
-            assertFalse(result);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testUnblockNotBlockedUser() {
-        try {
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean result = client.unblockUser("notBlockedUser");
-            assertFalse(result);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testDisconnectAndRegister() {
-        try {
-            // Test register with existing username
-            when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream("false".getBytes()));
-            boolean registerResult = client.register("existingUser" + (char)29 + "password123");
-            assertFalse(registerResult);
-
-            // Test disconnect with IOException
-            doThrow(new IOException()).when(mockSocket).close();
-            boolean disconnectResult = client.disconnect();
-            assertFalse(disconnectResult);
-        } catch (IOException e) {
-            fail("IOException occurred: " + e.getMessage());
-        }
-    }
-}*/
+}
