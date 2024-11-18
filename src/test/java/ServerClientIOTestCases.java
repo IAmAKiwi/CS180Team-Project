@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
  * @version Nov 15, 2024
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ServerClientIOTestCases {
+public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     char groupSeparator = (char) 29;
     static Client client;
 
