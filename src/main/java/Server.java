@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
  * @version Nov 2, 2024
  */
@@ -205,38 +204,38 @@ public class Server implements Runnable, ServerInterface {
             if (user == null) {
                 return "false";
             }
-            
+
             // Store original birthday to check if validation passed
             int[] originalBirthday = user.getBirthday();
-            
+
             user.setFirstName(fields[1]);
             user.setLastName(fields[2]);
             user.setBio(fields[3]);
-            
+
             // Birthday validation
             String[] birthdaystr = fields[4].split("/");
             if (birthdaystr.length != 3) {
                 return "false";
             }
-            
+
             int[] birthday = new int[3];
             try {
                 for (int i = 0; i < 3; i++) {
                     birthday[i] = Integer.parseInt(birthdaystr[i]);
                 }
-                
+
                 // Use User's setBirthday method for validation
                 user.setBirthday(birthday);
-                
+
                 // If birthday didn't change, validation failed
-                if (user.getBirthday() == null || 
-                    (originalBirthday != null && user.getBirthday() == originalBirthday)) {
+                if (user.getBirthday() == null ||
+                        (originalBirthday != null && user.getBirthday() == originalBirthday)) {
                     return "false";
                 }
             } catch (NumberFormatException e) {
                 return "false";
             }
-            
+
             user.setProfilePic(fields[5]);
             user.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             return "true";
@@ -255,7 +254,7 @@ public class Server implements Runnable, ServerInterface {
             if (currentUser == null) {
                 return "false";
             }
-            
+
             if (db.deleteChat(currentUser.getUsername(), user)) {
                 return "true";
             }
@@ -313,7 +312,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all users.
      * username:username:etc
-     * 
+     *
      * @return String of users.
      */
     public String getUserList() {
@@ -329,7 +328,7 @@ public class Server implements Runnable, ServerInterface {
      * Returns a String of messages using the toString() of each message in format
      * username: message[endChar]username: message[endChar] etc.
      * [endChar] = (char) 29
-     * 
+     *
      * @param content The username of the other user
      * @return String of all messages
      */
@@ -356,20 +355,20 @@ public class Server implements Runnable, ServerInterface {
             if (parts.length < 2) {
                 return "false";
             }
-            
+
             String userTwo = parts[0];
             String message = parts[1];
-            
+
             // Check for self-messaging
             if (currentUser != null && userTwo.equals(currentUser.getUsername())) {
                 return "false";
             }
-            
+
             // Check for null/empty message
             if (message == null || message.isEmpty() || message.contains("\0")) {
                 return "false";
             }
-            
+
             Message mes = new Message(message, currentUser.getUsername());
             return String.valueOf(db.addMessage(mes, userTwo));
         } catch (Exception e) {
@@ -400,7 +399,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all friends for the current user
      * username:username:etc
-     * 
+     *
      * @return String of friends
      */
     public String getFriendList() {
@@ -422,7 +421,7 @@ public class Server implements Runnable, ServerInterface {
     /**
      * Returns a String of usernames of all users blocked by the current user
      * username:username:etc.
-     * 
+     *
      * @return
      */
     public String getBlockList() {

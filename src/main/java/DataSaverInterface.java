@@ -1,4 +1,3 @@
-public interface DataSaverInterface 
-{
-    public void run();    
+public interface DataSaverInterface {
+    public void run();
 }

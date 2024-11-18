@@ -6,13 +6,22 @@
  */
 public interface MessageTestInterface {
     void testBasicMessage();
+
     void testEmptyMessage();
+
     void testNullMessage();
+
     void testLongMessage();
+
     void testSpecialCharacters();
+
     void testUnicodeCharacters();
+
     void testMessageWithOnlySpaces();
+
     void testMessageWithMultipleLines();
+
     void testMessageWithEmptySender();
+
     void testMessageWithNullSender();
 } 

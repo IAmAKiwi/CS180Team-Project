@@ -11,7 +11,7 @@ import org.junit.runner.notification.Failure;
  * Tests user creation, profile management, and user settings.
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
+ * 12
  * @version Nov 2, 2024
  */
 @RunWith(Enclosed.class)
@@ -89,7 +89,7 @@ public class UserTestCases {
         @Test(timeout = 1000)
         public void testUserWithBirthday() {
             User u = new User("test1", "test1");
-            int[] birthday = { 12, 25, 2000 };
+            int[] birthday = {12, 25, 2000};
             u.setBirthday(birthday);
             Assert.assertArrayEquals(birthday, u.getBirthday());
         }
@@ -97,9 +97,9 @@ public class UserTestCases {
         @Test(timeout = 1000)
         public void testUserWithInvalidBirthday() {
             User u = new User("test1", "test1");
-            int[] invalidMonth = { 13, 25, 2000 };
-            int[] invalidDay = { 12, 32, 2000 };
-            int[] futureYear = { 12, 25, 2025 };
+            int[] invalidMonth = {13, 25, 2000};
+            int[] invalidDay = {12, 32, 2000};
+            int[] futureYear = {12, 25, 2025};
 
             u.setBirthday(invalidMonth);
             Assert.assertNull(u.getBirthday());

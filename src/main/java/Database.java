@@ -15,8 +15,7 @@ import javax.swing.JLabel;
  * Manages all loading, saving, and accessing of data and some data validation.
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
- *
+ * 12
  * @version Nov 2, 2024
  */
 public class Database implements DatabaseInterface {
@@ -60,7 +59,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean validateNewUser(User user) {
-        
+
         // Check for unique username
         synchronized (USER_KEY) {
             for (User u : this.userList) {
@@ -69,25 +68,25 @@ public class Database implements DatabaseInterface {
                 }
             }
         }
-        
+
         // Check if username or password is null/empty
         if (user.getUsername() == null || user.getUsername().isEmpty() ||
-            user.getPassword() == null || user.getPassword().isEmpty()) {
+                user.getPassword() == null || user.getPassword().isEmpty()) {
             return false;
         }
-        
+
         // Check if password contains username (case insensitive)
         if (user.getPassword().toLowerCase().contains(user.getUsername().toLowerCase())) {
             return false;
         }
-        
+
         // Check password requirements
         String password = user.getPassword();
         boolean lengthOk = password.length() >= 6;
         boolean hasUpper = password.matches(".*[A-Z].*");
         boolean hasLower = password.matches(".*[a-z].*");
         boolean hasSpecial = password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
-        
+
         return lengthOk && hasUpper && hasLower && hasSpecial;
     }
 
@@ -113,7 +112,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Accesses a User based on username
-     * 
+     *
      * @param username Username of user
      * @return User with matching username
      */
@@ -133,7 +132,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Returns the MessageHistory from AllChats for two users
-     * 
+     *
      * @param user1 One username in the MessageHistory
      * @param user2 Other username in the MessageHistory
      * @return MessageHistory for the two users
@@ -158,7 +157,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * adds a MessageHistory to AllChats
-     * 
+     *
      * @param messageHistory MessageHistory to add
      * @return true if MessageHistory was added
      */
@@ -182,7 +181,7 @@ public class Database implements DatabaseInterface {
 
     public boolean deleteChat(String user1, String user2) {
         synchronized (MESSAGE_KEY) {
-        for (int i = 0; i < this.allChats.size(); i++) {
+            for (int i = 0; i < this.allChats.size(); i++) {
                 MessageHistory mh = this.allChats.get(i);
                 if (mh.getSender().equals(user1) && mh.getRecipient().equals(user2)) {
                     this.allChats.remove(i);
@@ -196,7 +195,7 @@ public class Database implements DatabaseInterface {
     /**
      * Adds a message to a MessageHistory based upon the message and receiver.
      * Includes checks for friends only and blocked users
-     * 
+     *
      * @param message  Message to add
      * @param receiver Username of receiver
      * @return true if message was added
@@ -231,9 +230,9 @@ public class Database implements DatabaseInterface {
         }
 
         synchronized (MESSAGE_KEY) {
-        for (int i = 0; i < this.allChats.size(); i++) {
+            for (int i = 0; i < this.allChats.size(); i++) {
                 MessageHistory mh = this.allChats.get(i);
-                if (mh.equals(new MessageHistory(new String[] { message.getSender(), receiver }))) {
+                if (mh.equals(new MessageHistory(new String[]{message.getSender(), receiver}))) {
                     mh.addMessage(message);
                     this.allChats.set(i, mh);
                     return true;
@@ -250,7 +249,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a friend of user 1.
-     * 
+     *
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
@@ -259,17 +258,17 @@ public class Database implements DatabaseInterface {
     public boolean addFriend(String user1, String user2) {
         User u1 = this.getUser(user1);
         User u2 = this.getUser(user2);
-        
+
         // Check if either user doesn't exist
         if (u1 == null || u2 == null) {
             return false;
         }
-        
+
         // Prevent self-friending
         if (user1.equals(user2)) {
             return false;
         }
-        
+
         // Check if already friends
         if (u1.getFriends().contains(user2)) {
             return false;
@@ -279,14 +278,14 @@ public class Database implements DatabaseInterface {
         if (u1.getBlocked().contains(user2) || u2.getBlocked().contains(user1)) {
             return false;
         }
-        
+
         u1.addFriend(user2);
         return true;
     }
 
     /**
      * Returns an array of friends for a user
-     * 
+     *
      * @param username username of user to get friends of
      * @return array of friends
      */
@@ -300,7 +299,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a friend of user 1.
-     * 
+     *
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
@@ -317,7 +316,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Adds user 2 as a block of user 1.
-     * 
+     *
      * @param user1 user to be changed
      * @param user2 user to be added
      * @return if the block was added (both users must exist)
@@ -334,7 +333,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Returns an array of blocks for a user
-     * 
+     *
      * @param username username of user to get blocks of
      * @return array of blocks
      */
@@ -348,7 +347,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Removes user 2 as a block of user 1
-     * 
+     *
      * @param user1 user to be changed
      * @param user2 user to be removed
      * @return if the block was removed (both users must exist)
@@ -375,9 +374,9 @@ public class Database implements DatabaseInterface {
      * the `groupSeparator` character, and user entries separated by
      * the `fileSeparator` character. If the file does not exist, it will be
      * created.
-     * 
+     *
      * @return true if users were successfully saved to the file, false if an
-     *         exception occurred.
+     * exception occurred.
      */
     @Override
     public boolean saveUsers() {
@@ -465,9 +464,9 @@ public class Database implements DatabaseInterface {
      * fields separated by the `groupSeparator` character and user entries
      * separated by the `fileSeparator` character. For each valid user entry,
      * a new `User` object is created and added to the `userList`.
-     * 
+     *
      * @return true if users were successfully loaded from the file, false if
-     *         the file does not exist or an error occurs during reading.
+     * the file does not exist or an error occurs during reading.
      */
     @Override
     public boolean loadUsers() {
@@ -527,7 +526,7 @@ public class Database implements DatabaseInterface {
                         try {
                             String[] parts = elements[i].split(":");
                             if (parts.length < 2) continue;
-                            
+
                             String command = parts[0].trim();
                             String value = parts[1].trim();
 
@@ -599,7 +598,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Saves all of the MessageHistories to a file.
-     * 
+     *
      * @return if the messages were properly saved to the file
      */
     @Override
@@ -633,7 +632,7 @@ public class Database implements DatabaseInterface {
 
     /**
      * Loads all of the MessageHistories from a file.
-     * 
+     *
      * @return if the messages were properly loaded from the file
      */
     @Override
@@ -690,9 +689,9 @@ public class Database implements DatabaseInterface {
      * Loads photo paths from a file named `UsersPhotos.txt` and stores them in
      * `photosPath`.
      * Reads each line in the file as a separate path and adds it to the list.
-     * 
+     *
      * @return true if the photo paths were successfully loaded, false if an error
-     *         occurred.
+     * occurred.
      */
     @Override
     public boolean loadPhotos() {
@@ -715,9 +714,9 @@ public class Database implements DatabaseInterface {
      * Saves the current photo paths in `photosPath` to a file named
      * `UsersPhotos.txt`.
      * Each path is written to a new line in the file.
-     * 
+     *
      * @return true if the photo paths were successfully saved, false if an error
-     *         occurred.
+     * occurred.
      */
     @Override
     public boolean savePhotos() {
@@ -758,7 +757,7 @@ public class Database implements DatabaseInterface {
     /**
      * Displays a photo in a new JFrame window using the given file path.
      * The window shows the image and can be closed by the user.
-     * 
+     *
      * @param path The file path of the photo to display.
      */
     @Override

@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -199,7 +200,7 @@ public class ServerTest {
 
     @Test
     public void testGetFriendList() {
-        when(mockDatabase.getFriends(anyString())).thenReturn(new String[] { "friend1", "friend2" });
+        when(mockDatabase.getFriends(anyString())).thenReturn(new String[]{"friend1", "friend2"});
 
         String result = server.getFriendList();
         assertEquals("friend1:friend2:", result);
@@ -207,7 +208,7 @@ public class ServerTest {
 
     @Test
     public void testGetBlockList() {
-        when(mockDatabase.getBlockList(anyString())).thenReturn(new String[] { "block1", "block2" });
+        when(mockDatabase.getBlockList(anyString())).thenReturn(new String[]{"block1", "block2"});
 
         String result = server.getBlockList();
         assertEquals("block1:block2:", result);

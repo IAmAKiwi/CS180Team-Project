@@ -1,16 +1,14 @@
 import java.util.ArrayList;
 
 /**
- * 
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
- * 
+ * 12
  * @version Nov 2, 2024
  */
 public class MessageHistory implements MessageHistoryInterface {
     private String[] userMessagers;
     private ArrayList<Message> messageHistory; // in each element of the arraylist will contain username: content
-                                               // content
+    // content
 
     /**
      * Default constructor
@@ -22,7 +20,7 @@ public class MessageHistory implements MessageHistoryInterface {
 
     /**
      * Typical constructor for a new conversation between two users.
-     * 
+     *
      * @param message   First sent message in the new conversation. Contains one of
      *                  the users' usernames.
      * @param recipient The second messager's username, the receipient of the first
@@ -46,7 +44,7 @@ public class MessageHistory implements MessageHistoryInterface {
 
     /**
      * Alternate constructor that supports more than two users.
-     * 
+     *
      * @param users Array of strings representing some Users' usernames.
      */
     public MessageHistory(String[] users) {
@@ -70,7 +68,7 @@ public class MessageHistory implements MessageHistoryInterface {
 
     /**
      * Adds a message to the message history
-     * 
+     *
      * @param message Message to be added
      */
     public void addMessage(Message message) {
@@ -91,7 +89,7 @@ public class MessageHistory implements MessageHistoryInterface {
     /**
      * Checks if two MessageHistories are equal (if they are between the same two
      * users).
-     * 
+     *
      * @param other
      * @return true if they are between the same users.
      */

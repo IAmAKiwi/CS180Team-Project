@@ -6,13 +6,22 @@
  */
 public interface UserTestInterface {
     void testBasicUser();
+
     void testEmptyUser();
+
     void testNullUser();
+
     void testUserWithProfile();
+
     void testUserWithFriends();
+
     void testUserWithBlocks();
+
     void testUserWithBirthday();
+
     void testUserWithInvalidBirthday();
+
     void testUserWithProfilePic();
+
     void testUserToStringWithNulls();
 } 

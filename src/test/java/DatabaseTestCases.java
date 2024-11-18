@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,11 +23,10 @@ import org.junit.jupiter.api.Test;
  * A framework to run public test cases for Database
  *
  * @author William Thain, Fox Christiansen, Jackson Shields, Bui Dinh Tuan Anh:
- *         lab sec 12
- *
+ * lab sec 12
  * @version Nov 2, 2024
  */
-class DatabaseTestCases {
+class DatabaseTestCases implements DatabaseTestInterface {
     private Database db;
     private File tempFile;
     private File tempMessageFile;
@@ -43,7 +43,7 @@ class DatabaseTestCases {
     @Test
     // Verifies that adding a user with a unique username succeeds
     // and that adding a user with a duplicate username fails
-    void testAddUserUniqueUsername() {
+    public void testAddUserUniqueUsername() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user1", "Password2$");
         assertTrue(db.addUser(user1));
@@ -52,14 +52,14 @@ class DatabaseTestCases {
 
     @Test
     // checks that the validation method fails if the password contains the username
-    void testValidateNewUserUsernameInPassword() {
+    public void testValidateNewUserUsernameInPassword() {
         User user = new User("user", "userpassword");
         assertFalse(db.validateNewUser(user)); // should return false if password contains username
     }
 
     @Test
     // adds a user and retrieves it to verify getter
-    void testGetUserExistingUser() {
+    public void testGetUserExistingUser() {
         User user = new User("user1", "Password1$");
         db.addUser(user);
         User gottenUser = db.getUser("user1");
@@ -69,7 +69,7 @@ class DatabaseTestCases {
 
     @Test
     // attempts to retrieve a non-existent user which should be default
-    void testGetUserNonExistentUser() {
+    public void testGetUserNonExistentUser() {
         User defaultUser = db.getUser("nonexistent");
         // default user should be null
         assertNull(defaultUser);
@@ -77,7 +77,7 @@ class DatabaseTestCases {
 
     @Test
     // adds multiple users and gets the list to verify its size and contents
-    void testGetUsers() {
+    public void testGetUsers() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -90,23 +90,23 @@ class DatabaseTestCases {
 
     @Test
     // simulates a conversation between two users and verifies it can be retrieved
-    void testGetMessagesValidConversation() {
+    public void testGetMessagesValidConversation() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
         db.addUser(user2);
         MessageHistory messageHistory = new MessageHistory();
-        messageHistory.setUserMessagers(new String[] { "user1", "user2" });
+        messageHistory.setUserMessagers(new String[]{"user1", "user2"});
         db.addMessageHistory(messageHistory); // directly adding to create a chat history
 
         MessageHistory retrievedHistory = db.getMessages("user1", "user2");
         assertNotNull(retrievedHistory);
-        assertArrayEquals(new String[] { "user1", "user2" }, retrievedHistory.getUsernames());
+        assertArrayEquals(new String[]{"user1", "user2"}, retrievedHistory.getUsernames());
     }
 
     @Test
     // checks if self messaging throws exception
-    void testGetMessagesSelfMessagingException() {
+    public void testGetMessagesSelfMessagingException() {
         db.addUser(new User("user1", "Password1$"));
         // assertThrows(IllegalArgumentException.class, () -> db.getMessages("user1",
         // "user1"));
@@ -115,7 +115,7 @@ class DatabaseTestCases {
     @Test
     // adds and saves users and verifies that the correct data was written to the
     // file
-    void testSaveUsersFileOutput() throws IOException {
+    public void testSaveUsersFileOutput() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
@@ -172,7 +172,7 @@ class DatabaseTestCases {
     @Test
     // checks that the saveUsers method creates usersHistory.txt if it doesn’t exist
     // otherwise
-    void testSaveUsersCreatesFileIfNotExists() {
+    public void testSaveUsersCreatesFileIfNotExists() {
         db.saveUsers();
         File file = new File("usersHistory.txt");
         assertTrue(file.exists());
@@ -180,10 +180,10 @@ class DatabaseTestCases {
     }
 
     @Test
-    void testSaveMessagesFileOutput() throws IOException {
+    public void testSaveMessagesFileOutput() {
         // create a MessageHistory with some messages
         MessageHistory messageHistory = new MessageHistory();
-        messageHistory.setUserMessagers(new String[] { "user1", "user2" });
+        messageHistory.setUserMessagers(new String[]{"user1", "user2"});
 
         Message message1 = new Message("Hello", "user1");
         Message message2 = new Message("Hi there!", "user2");
@@ -244,13 +244,15 @@ class DatabaseTestCases {
     }
 
     @Test
-    void testLoadMessagesFileInput() throws IOException {
+    public void testLoadMessagesFileInput() {
         // sample message history, please change if needed
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("messageHistory.txt"))) {
             writer.write((char) 28 + "user1 user2\n"); // start with users and char
             writer.write("user1: Hello" + (char) 29 + "\n"); // message
             writer.write("user2: Hi there!" + (char) 29 + "\n"); // message
             writer.write((char) 28 + "\n"); // end with char
+        } catch (IOException e) {
+            fail("IOException occurred");
         }
 
         // calls method then creates ArrayList containing newly updated allChats
@@ -262,7 +264,7 @@ class DatabaseTestCases {
         // specifies the first conversation in MessageHistory
         MessageHistory loadedHistory = allChats.get(0);
         String[] usernames = loadedHistory.getUsernames();
-        assertArrayEquals(new String[] { "user1", "user2" }, usernames);
+        assertArrayEquals(new String[]{"user1", "user2"}, usernames);
 
         // makes sure messages exist in MessageHistory
         ArrayList<Message> messages = loadedHistory.getMessageHistory();
@@ -276,43 +278,43 @@ class DatabaseTestCases {
     }
 
     @Test
-    void testAddMessageWithBlockedUser() {
+    public void testAddMessageWithBlockedUser() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
         db.addUser(user2);
         user1.addBlock("user2");
-        
+
         Message message = new Message("Hello", "user1");
         assertFalse(db.addMessage(message, "user2"));
     }
 
     @Test
-    void testAddMessageWithFriendsOnlyMode() {
+    public void testAddMessageWithFriendsOnlyMode() {
         User user1 = new User("user1", "Password1$");
         User user2 = new User("user2", "Password2$");
         db.addUser(user1);
         db.addUser(user2);
         user1.setFriendsOnly(true);
-        
+
         Message message = new Message("Hello", "user1");
         assertFalse(db.addMessage(message, "user2"));
     }
 
     @Test
-    void testGetMessagesNonExistentUsers() {
+    public void testGetMessagesNonExistentUsers() {
         MessageHistory mh = db.getMessages("nonexistent1", "nonexistent2");
         assertNull(mh);
     }
 
     @Test
-    void testLoadUsersWithInvalidFormat() {
+    public void testLoadUsersWithInvalidFormat() {
         // Create a temporary file with invalid format
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("usersHistory.txt"));
             writer.write("invalid format data");
             writer.close();
-            
+
             assertFalse(db.loadUsers());
         } catch (IOException e) {
             fail("IOException occurred");

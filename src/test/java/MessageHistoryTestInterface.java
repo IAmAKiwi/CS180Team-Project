@@ -6,13 +6,22 @@
  */
 public interface MessageHistoryTestInterface {
     void testBasicMessageHistory();
+
     void testEmptyMessageHistory();
+
     void testDeleteMessage();
+
     void testMessageHistoryEquality();
+
     void testNullMessageHistory();
+
     void testLargeMessageHistory();
+
     void testMultipleUsersMessageHistory();
+
     void testMessageHistoryWithNullMessage();
+
     void testDeleteNonExistentMessage();
+
     void testMessageHistoryConstructorWithMessage();
 } 

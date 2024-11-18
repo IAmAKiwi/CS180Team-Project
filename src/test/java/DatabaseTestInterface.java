@@ -6,18 +6,32 @@
  */
 public interface DatabaseTestInterface {
     void testAddUserUniqueUsername();
+
     void testValidateNewUserUsernameInPassword();
+
     void testGetUserExistingUser();
+
     void testGetUserNonExistentUser();
+
     void testGetUsers();
+
     void testGetMessagesValidConversation();
+
     void testGetMessagesSelfMessagingException();
+
     void testSaveUsersFileOutput();
+
     void testSaveUsersCreatesFileIfNotExists();
+
     void testSaveMessagesFileOutput();
+
     void testLoadMessagesFileInput();
+
     void testAddMessageWithBlockedUser();
+
     void testAddMessageWithFriendsOnlyMode();
+
     void testGetMessagesNonExistentUsers();
+
     void testLoadUsersWithInvalidFormat();
 } 
