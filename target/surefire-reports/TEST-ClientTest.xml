@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="ClientTest" time="0.618" tests="23" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="ClientTest" time="0.666" tests="23" errors="0" skipped="0" failures="0">
   <properties>
+    <property name="jpda.address" value="65508"/>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
@@ -10,12 +11,13 @@
     <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="user.timezone" value="America/Indianapolis"/>
+    <property name="forkMode" value="once"/>
     <property name="os.name" value="Windows 11"/>
     <property name="java.vm.specification.version" value="22"/>
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\peter\AppData\Local\Temp\surefire8753399073807316225\surefirebooter-20241117230512176_3.jar C:\Users\peter\AppData\Local\Temp\surefire8753399073807316225 2024-11-17T23-05-12_076-jvmRun1 surefire-20241117230512176_1tmp surefire_0-20241117230512176_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\peter\AppData\Local\Temp\surefire10319011794229698989\surefirebooter-20241125215452153_3.jar C:\Users\peter\AppData\Local\Temp\surefire10319011794229698989 2024-11-25T21-54-52_043-jvmRun1 surefire-20241125215452153_1tmp surefire_0-20241125215452153_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="ClientTest"/>
     <property name="surefire.test.class.path" value="C:\Users\peter\Github\CS180Team-Project\target\test-classes;C:\Users\peter\Github\CS180Team-Project\target\classes;C:\Users\peter\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\peter\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\peter\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\peter\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;C:\Users\peter\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\peter\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\peter\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\peter\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\peter\.m2\repository\org\testng\testng\7.7.0\testng-7.7.0.jar;C:\Users\peter\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\peter\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\peter\.m2\repository\org\webjars\jquery\3.6.1\jquery-3.6.1.jar;C:\Users\peter\.m2\repository\org\mockito\mockito-core\4.0.0\mockito-core-4.0.0.jar;C:\Users\peter\.m2\repository\net\bytebuddy\byte-buddy\1.11.19\byte-buddy-1.11.19.jar;C:\Users\peter\.m2\repository\net\bytebuddy\byte-buddy-agent\1.11.19\byte-buddy-agent-1.11.19.jar;C:\Users\peter\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
@@ -31,7 +33,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\peter\AppData\Local\Temp\surefire8753399073807316225\surefirebooter-20241117230512176_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\peter\AppData\Local\Temp\surefire10319011794229698989\surefirebooter-20241125215452153_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>
@@ -42,6 +44,7 @@
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="jpda.listen" value="true"/>
     <property name="maven.ext.class.path" value="C:\Users\peter\.cursor\extensions\oracle.oracle-java-23.0.0\nbcode\java\maven-nblib\netbeans-eventspy.jar"/>
     <property name="localRepository" value="C:\Users\peter\.m2\repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
@@ -59,8 +62,9 @@
     <property name="java.vm.version" value="22.0.2+9-70"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="66.0"/>
+    <property name="maven.surefire.debug" value="-agentlib:jdwp=transport=dt_socket,server=n,address=65508"/>
   </properties>
-  <testcase name="testDeleteMessage" classname="ClientTest" time="0.491">
+  <testcase name="testDeleteMessage" classname="ClientTest" time="0.531">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -148,7 +152,7 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testLogin" classname="ClientTest" time="0.006">
+  <testcase name="testLogin" classname="ClientTest" time="0.005">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -236,7 +240,7 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testClientConstructor" classname="ClientTest" time="0.008">
+  <testcase name="testClientConstructor" classname="ClientTest" time="0.007">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -581,7 +585,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testRemoveFriend" classname="ClientTest" time="0.005">
+  <testcase name="testRemoveFriend" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -845,7 +849,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testRegister" classname="ClientTest" time="0.003">
+  <testcase name="testRegister" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -933,7 +937,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testSendMessage" classname="ClientTest" time="0.002">
+  <testcase name="testSendMessage" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1021,7 +1025,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testUnblockUser" classname="ClientTest" time="0.003">
+  <testcase name="testUnblockUser" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1109,7 +1113,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testAddFriend" classname="ClientTest" time="0.003">
+  <testcase name="testAddFriend" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1373,7 +1377,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testDeleteChat" classname="ClientTest" time="0.003">
+  <testcase name="testDeleteChat" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1461,7 +1465,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testGetUserList" classname="ClientTest" time="0.004">
+  <testcase name="testGetUserList" classname="ClientTest" time="0.003">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1901,7 +1905,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testGetBlockList" classname="ClientTest" time="0.004">
+  <testcase name="testGetBlockList" classname="ClientTest" time="0.002">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -1989,7 +1993,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testIsFriendsOnly" classname="ClientTest" time="0.003">
+  <testcase name="testIsFriendsOnly" classname="ClientTest" time="0.008">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
@@ -2077,7 +2081,7 @@ java.net.ConnectException: Connection refused: connect
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testSetFriendsOnly" classname="ClientTest" time="0.003">
+  <testcase name="testSetFriendsOnly" classname="ClientTest" time="0.004">
     <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
 	at java.base/sun.nio.ch.Net.connect0(Native Method)
 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
