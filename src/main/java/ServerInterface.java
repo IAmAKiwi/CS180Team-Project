@@ -57,7 +57,4 @@ public interface ServerInterface {
     String setProfilePic(String profilePic); // path
 
     String getProfilePic(); // path
-
-    // // Handle client disconnection
-    // void handleClientDisconnection();
 }
