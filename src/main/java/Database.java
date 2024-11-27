@@ -100,6 +100,21 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    public String[] getAllUserChats(String username) {
+        synchronized (MESSAGE_KEY) {
+            String[] chatList = new String[this.allChats.size()];
+            for (int i = 0; i < this.allChats.size(); i++) {
+                MessageHistory mh = this.allChats.get(i);
+                if (mh.getSender().equals(username)) {
+                    chatList[i] = mh.getRecipient();
+                } else if (mh.getRecipient().equals(username)) {
+                    chatList[i] = mh.getSender();
+                }
+            }
+            return chatList;
+        }
+    }
+
     /**
      * @return userList of Users
      */

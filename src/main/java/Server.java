@@ -61,6 +61,12 @@ public class Server implements Runnable, ServerInterface {
                 case "getChat":
                     result = getChat(content);
                     break;
+                case "getChatList":
+                    result = getChatList();
+                    break;
+                case "createChat":
+                    result = createChat(content);
+                    break;
                 case "sendMessage":
                     result = sendMessage(content);
                     break;
@@ -342,6 +348,27 @@ public class Server implements Runnable, ServerInterface {
             chat += endChar;
         }
         return chat;
+    }
+
+    public String getChatList() {
+        String[] chats = db.getAllUserChats(currentUser.getUsername());
+        String chatList = "";
+        for (int i = 0; i < chats.length; i++) {
+            chatList += chats[i] + groupSeparatorChar;
+        }
+        return chatList;
+    }
+
+    public String createChat(String content) {
+        try {
+            String[] parts = splitContent(content);
+            String userTwo = parts[0];
+            String[] users = {currentUser.getUsername(), userTwo};
+            MessageHistory mh = new MessageHistory(users);
+            return String.valueOf(db.addMessageHistory(mh));
+        } catch (Exception e) {
+            return "false";
+        }
     }
 
     @Override

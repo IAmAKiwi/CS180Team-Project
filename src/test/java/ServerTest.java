@@ -164,8 +164,10 @@ class ServerTest {
                 + "jack" + groupSeparator + "shields" +
                 groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
                 "profile.png" + groupSeparator + "true")));
-        assertEquals("testUser" + "jack" + "shields" + "epic bio" + "5/15/2000" +
-                "profile.png" + "true", server.accessProfile());
+        assertEquals("username: testUser" + groupSeparator + "firstName: jack" + groupSeparator +
+                "lastName: shields" + groupSeparator + "bio: epic bio" + groupSeparator +
+                "birthday: 5/15/2000" + groupSeparator +  "profilePic: profile.png" + groupSeparator +
+                "friendsOnly: true" + groupSeparator, server.accessProfile());
     }
 
     @Test

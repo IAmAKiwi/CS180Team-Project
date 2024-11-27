@@ -125,6 +125,7 @@ public class UserTestCases {
         public void testUserToStringWithNulls() {
             User u = new User("test1", "test1");
             String result = u.toString();
+            System.out.println(result);
             Assert.assertTrue("toString should contain username", result.contains("test1"));
             Assert.assertTrue("toString should handle null fields gracefully",
                     result.contains("") || !result.contains("null"));

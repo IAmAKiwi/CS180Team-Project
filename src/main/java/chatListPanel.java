@@ -191,7 +191,7 @@ public class chatListPanel extends JPanel {
     }
     
     private void showNewChatDialog() {
-        String[] users = client.getUserList().split(":");
+        String[] users = client.getUserList().split("" + (char) 29);
         String selectedUser = (String) JOptionPane.showInputDialog(
             this,
             "Select a user to chat with:",
@@ -203,7 +203,10 @@ public class chatListPanel extends JPanel {
         );
         
         if (selectedUser != null) {
-            addChat(selectedUser);
+            if (client.getChat(selectedUser).isEmpty()) {
+                addChat(selectedUser);
+                client.createChat(selectedUser);
+            }
             chatList.setSelectedValue(selectedUser, true);
         }
     }

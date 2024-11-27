@@ -102,19 +102,22 @@ public class User implements UserInterface {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(username != null ? username : "");
-        sb.append(firstName != null ? firstName : "");
-        sb.append(lastName != null ? lastName : "");
-        sb.append(bio != null ? bio : "");
+        char endChar = (char) 29;
+        sb.append("username: ").append(username != null ? username : "").append(endChar);
+        sb.append("firstName: ").append(firstName != null ? firstName : "").append(endChar);
+        sb.append("lastName: ").append(lastName != null ? lastName : "").append(endChar);
+        sb.append("bio: ").append(bio != null ? bio : "").append(endChar);
 
+        sb.append("birthday: ");
         if (birthday != null) {
             sb.append(birthday[0]).append("/")
                     .append(birthday[1]).append("/")
                     .append(birthday[2]);
         }
+        sb.append(endChar);
 
-        sb.append(profilePic != null ? profilePic : "");
-        sb.append(friendsOnly);
+        sb.append("profilePic: ").append(profilePic != null ? profilePic : "").append(endChar);
+        sb.append("friendsOnly: ").append(friendsOnly).append(endChar);
         return sb.toString();
     }
 

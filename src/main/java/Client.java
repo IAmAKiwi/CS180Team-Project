@@ -69,6 +69,14 @@ public class Client implements Runnable, ClientInterface {
                         // Get chat example: getChat:username
                         result = getChat(line);
                         break;
+                    case "getChatList":
+                        // Get chat list example: getChatList:
+                        result = getChatList();
+                        break;
+                    case "createChat":
+                        // Create chat example: createChat:username
+                        result = String.valueOf(createChat(content));
+                        break;
                     case "sendMessage":
                         // Message example: sendMessage:username[groupSeparator]message
                         result = String.valueOf(sendMessage(content));
@@ -211,6 +219,15 @@ public class Client implements Runnable, ClientInterface {
     public String getChat(String otherUsername) {
         String command = "getChat:" + otherUsername;
         return requestData(command);
+    }
+
+    public String getChatList() {
+        return requestData("getChatList: ");
+    }
+
+    public boolean createChat(String otherUsername) {
+        String command = "createChat:" + otherUsername;
+        return sendCommand(command);
     }
 
     public String getFriendList() {

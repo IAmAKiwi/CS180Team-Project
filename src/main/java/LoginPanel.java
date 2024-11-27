@@ -20,6 +20,8 @@ public class LoginPanel extends JComponent
     private Client client;
     private LoginPanel loginPanel;
     private JLabel message;
+    private String username;
+    private String password;
 
     public LoginPanel(Client client)
     {
@@ -78,7 +80,9 @@ public class LoginPanel extends JComponent
                 if (client.login(usernameField.getText() + (char)29 + String.valueOf(passwordField.getPassword())))
                 {
                     //Successful login
-
+                    username = usernameField.getText();
+                    password = String.valueOf(passwordField.getPassword());
+                    frame.setVisible(false);
                     frame.dispose();
                     
                 }
@@ -95,7 +99,9 @@ public class LoginPanel extends JComponent
                 if (client.register(usernameField.getText() + (char)29 + String.valueOf(passwordField.getPassword())))
                 {
                     //Successful registry (and login?)
-
+                    username = usernameField.getText();
+                    password = String.valueOf(passwordField.getPassword());
+                    frame.setVisible(false);
                     frame.dispose();
                 }
                 else
@@ -110,6 +116,22 @@ public class LoginPanel extends JComponent
         }
     
     };
+
+    public Client getClient() {
+        return client;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isDone() {
+        return !frame.isVisible();
+    }
 
     // for temporary testing
     //public static void main(String[] args) {
