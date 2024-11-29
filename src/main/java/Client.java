@@ -32,6 +32,7 @@ public class Client implements Runnable, ClientInterface {
             serverWriter = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(0);
         }
     }
 
@@ -284,12 +285,19 @@ public class Client implements Runnable, ClientInterface {
 
     public synchronized String requestData(String command) {
         try {
+            if (!socket.isConnected()) {
+                throw new IOException("Socket is closed");
+            }
             serverWriter.println(command);
             serverWriter.flush();
             String response = serverReader.readLine();
-            return response != null ? response : "false";
+            if (response == null) {
+                throw new IOException("Socket is closed");
+            }
+            return response;
         } catch (IOException ioe) {
-            return "false";
+            ioe.printStackTrace();
+            return null;
         }
     }
 

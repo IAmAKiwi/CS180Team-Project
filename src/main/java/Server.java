@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -42,101 +43,102 @@ public class Server implements Runnable, ServerInterface {
         while (running) {
             try {
                 line = reader.readLine();
+            } catch (SocketException e) {
+                running = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (line == null) {
-                break;
-            }
-            String command = line.substring(0, line.indexOf(':'));
-            String content = line.substring(line.indexOf(':') + 1);
-            String result = "";
-            switch (command) {
-                case "login":
-                    result = login(content);
-                    break;
-                case "register":
-                    result = register(content);
-                    break;
-                case "getUserList":
-                    result = getUserList();
-                    break;
-                case "getChat":
-                    result = getChat(content);
-                    break;
-                case "getChatList":
-                    result = getChatList();
-                    break;
-                case "createChat":
-                    result = createChat(content);
-                    break;
-                case "sendMessage":
-                    result = sendMessage(content);
-                    break;
-                case "deleteMessage":
-                    result = deleteMessage(content);
-                    break;
-                case "accessProfile":
-                    result = accessProfile();
-                    break;
-                // case "updateProfile":
-                // result = updateProfile(content);
-                // break;
-                case "saveProfile":
-                    result = saveProfile(content);
-                    break;
-                case "removeFriend":
-                    result = removeFriend(content);
-                    break;
-                case "addFriend":
-                    result = addFriend(content);
-                    break;
-                case "unblockUser":
-                    result = unblockUser(content);
-                    break;
-                case "blockUser":
-                    result = blockUser(content);
-                    break;
-                case "deleteChat":
-                    result = deleteChat(content);
-                    break;
-                case "sendImage":
-                    result = sendImage(content);
-                    break;
-                case "getBlockList":
-                    result = getBlockList();
-                    break;
-                case "getFriendList":
-                    result = getFriendList();
-                    break;
-                case "isFriendsOnly":
-                    result = isFriendsOnly();
-                    break;
-                case "setFriendsOnly":
-                    result = setFriendsOnly(Boolean.parseBoolean(content));
-                    break;
-                case "setProfilePic":
-                    result = setProfilePic(content);
-                    break;
-                case "getProfilePic":
-                    result = getProfilePic();
-                    break;
-                case "logout":
-                    result = logout();
-                    break;
-                case "disconnect":
-                    if (disconnect()) {
-                        running = false;
-                        clientCount--;
-                    } else {
-                        result = "false";
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid command: " + command);
-            }
-            if (result != null) {
-                send(result, writer);
+            if (line != null && !line.isEmpty()) {
+                String command = line.substring(0, line.indexOf(':'));
+                String content = line.substring(line.indexOf(':') + 1);
+                String result = "";
+                switch (command) {
+                    case "login":
+                        result = login(content);
+                        break;
+                    case "register":
+                        result = register(content);
+                        break;
+                    case "getUserList":
+                        result = getUserList();
+                        break;
+                    case "getChat":
+                        result = getChat(content);
+                        break;
+                    case "getChatList":
+                        result = getChatList();
+                        break;
+                    case "createChat":
+                        result = createChat(content);
+                        break;
+                    case "sendMessage":
+                        result = sendMessage(content);
+                        break;
+                    case "deleteMessage":
+                        result = deleteMessage(content);
+                        break;
+                    case "accessProfile":
+                        result = accessProfile();
+                        break;
+                    // case "updateProfile":
+                    // result = updateProfile(content);
+                    // break;
+                    case "saveProfile":
+                        result = saveProfile(content);
+                        break;
+                    case "removeFriend":
+                        result = removeFriend(content);
+                        break;
+                    case "addFriend":
+                        result = addFriend(content);
+                        break;
+                    case "unblockUser":
+                        result = unblockUser(content);
+                        break;
+                    case "blockUser":
+                        result = blockUser(content);
+                        break;
+                    case "deleteChat":
+                        result = deleteChat(content);
+                        break;
+                    case "sendImage":
+                        result = sendImage(content);
+                        break;
+                    case "getBlockList":
+                        result = getBlockList();
+                        break;
+                    case "getFriendList":
+                        result = getFriendList();
+                        break;
+                    case "isFriendsOnly":
+                        result = isFriendsOnly();
+                        break;
+                    case "setFriendsOnly":
+                        result = setFriendsOnly(Boolean.parseBoolean(content));
+                        break;
+                    case "setProfilePic":
+                        result = setProfilePic(content);
+                        break;
+                    case "getProfilePic":
+                        result = getProfilePic();
+                        break;
+                    case "logout":
+                        result = logout();
+                        break;
+                    case "disconnect":
+                        if (disconnect()) {
+                            running = false;
+                            clientCount--;
+                        } else {
+                            result = "false";
+                        }
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid command: " + command);
+                }
+                if (result != null) {
+                    send(result, writer);
+                }
             }
         }
     }

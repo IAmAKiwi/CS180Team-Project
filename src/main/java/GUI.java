@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class GUI implements Runnable {
     private JFrame frame;
@@ -27,7 +26,6 @@ public class GUI implements Runnable {
         updateProfilePanel();
         chatListPanel = new chatListPanel(client);
         refreshChats();
-        scheduleUpdates();
         frame.add(chatListPanel, BorderLayout.WEST);
         //frame.add(chatPanel, BorderLayout.CENTER);
         frame.add(profilePanel, BorderLayout.EAST);
@@ -41,16 +39,25 @@ public class GUI implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         updateGUI();
         frame.setVisible(true);
+        scheduleUpdates();
     }
 
     public void refreshChats() {
         String chats = client.getChatList();
+        if (chats == null) {
+            disconnect();
+            return;
+        }
         String[] chatsArray = chats.split("" + (char) 29);
         chatListPanel.refreshChats(chatsArray);
     }
 
     public void updateProfilePanel() {
         String profile = client.accessProfile();
+        if (profile == null) {
+            disconnect();
+            return;
+        }
         String[] profileParts = profile.split("" + (char) 29);
 
         String username = profileParts[0].substring(profileParts[0].indexOf(":") + 1);
@@ -82,12 +89,13 @@ public class GUI implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
+                if (loginPanel == null) {
+                    return;
+                }
                 updateGUI();
             }
         });
-        if (frame.isVisible()) {
-            timer.start();
-        }
+        timer.start();
     }
 
 
@@ -99,6 +107,13 @@ public class GUI implements Runnable {
 
     public void logout() {
         client.logout();
+        this.loginPanel = null;
+        frame.setVisible(false);
+        frame.dispose();
+    }
+
+    public void disconnect() {
+        client.disconnect();
         this.loginPanel = null;
         frame.setVisible(false);
         frame.dispose();
