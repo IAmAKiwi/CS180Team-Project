@@ -145,7 +145,6 @@ public class chatListPanel extends JPanel {
         public Component getListCellRendererComponent(
                 JList<? extends String> list, String username,
                 int index, boolean isSelected, boolean cellHasFocus) {
-            
             // Set content
             nameLabel.setText(username);
             lastMessageLabel.setText(getLastMessage(username));
@@ -172,7 +171,7 @@ public class chatListPanel extends JPanel {
             // Parse and return last message preview
             return chat != null ? chat.substring(0, Math.min(30, chat.length())) + "..." : "";
         }
-        
+
         private String getLastMessageTime(String username) {
             // Get and format last message timestamp
             return "12:34 PM"; // Replace with actual timestamp

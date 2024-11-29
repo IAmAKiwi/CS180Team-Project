@@ -45,6 +45,9 @@ public class Server implements Runnable, ServerInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if (line == null) {
+                break;
+            }
             String command = line.substring(0, line.indexOf(':'));
             String content = line.substring(line.indexOf(':') + 1);
             String result = "";

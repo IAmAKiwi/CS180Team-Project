@@ -8,7 +8,7 @@ import java.awt.event.*;
  * 
  * @version Nov 24, 2024
  */
-public class LoginPanel extends JComponent
+public class LoginPanel extends JComponent implements Runnable
 {
     private JFrame frame;
     private Container content;
@@ -28,12 +28,15 @@ public class LoginPanel extends JComponent
         super();
         this.client = client;
         loginPanel = this;
+    }
+
+    public void run() {
         frame = new JFrame("Login/Register");
         content = frame.getContentPane();
         content.setLayout(new BorderLayout());
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
-        
+
         usernameField = new JTextField(10);
         passwordField = new JPasswordField(10);
         loginButton = new JButton("Login");
@@ -62,9 +65,9 @@ public class LoginPanel extends JComponent
         contentPanel.add(loginButton);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPanel.add(registerButton);
-        
+
         content.add(contentPanel, BorderLayout.CENTER);
-        
+
         frame.setSize(650, 400);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +87,7 @@ public class LoginPanel extends JComponent
                     password = String.valueOf(passwordField.getPassword());
                     frame.setVisible(false);
                     frame.dispose();
-                    
+                    loginPanel = null;
                 }
                 else
                 {
@@ -103,6 +106,7 @@ public class LoginPanel extends JComponent
                     password = String.valueOf(passwordField.getPassword());
                     frame.setVisible(false);
                     frame.dispose();
+                    loginPanel = null;
                 }
                 else
                 {
@@ -130,7 +134,7 @@ public class LoginPanel extends JComponent
     }
 
     public boolean isDone() {
-        return !frame.isVisible();
+        return loginPanel == null;
     }
 
     // for temporary testing

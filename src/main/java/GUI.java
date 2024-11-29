@@ -4,30 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class GUI {
-    private CardLayout cardLayout;
-    private GUI gui;
+public class GUI implements Runnable {
     private JFrame frame;
     private chatListPanel chatListPanel;
     private LoginPanel loginPanel;
     //private chatPanel chatPanel;
     private profilePanel profilePanel;
-    private JTabbedPane tabbedPane;
+    private JButton logoutButton;
     private Client client;
 
-    public GUI() {
-        gui = this;
-        cardLayout = new CardLayout();
+    public GUI(LoginPanel loginPanel) {
+        this.loginPanel = loginPanel;
+    }
+
+    public void run() {
         frame = new JFrame("Chatter");
-        client = new Client();
-        loginPanel = new LoginPanel(client);
-        do  {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } while (!loginPanel.isDone());
+        logoutButton = new JButton("Logout");
         client = loginPanel.getClient();
         String username = loginPanel.getUsername();
         //chatPanel = new chatPanel(client);
@@ -35,18 +27,19 @@ public class GUI {
         updateProfilePanel();
         chatListPanel = new chatListPanel(client);
         refreshChats();
-        tabbedPane = new JTabbedPane();
         scheduleUpdates();
-        gui.start();
-    }
-
-    public void start() {
         frame.add(chatListPanel, BorderLayout.WEST);
         //frame.add(chatPanel, BorderLayout.CENTER);
         frame.add(profilePanel, BorderLayout.EAST);
+        logoutButton.addActionListener(e -> logout());
+        frame.add(logoutButton, BoxLayout.LINE_AXIS);
+        JPanel logoutPanel = new JPanel(new BorderLayout(0, 0));
+        logoutPanel.add(logoutButton, BorderLayout.LINE_END);
+        frame.add(logoutPanel, BorderLayout.SOUTH);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        updateGUI();
         frame.setVisible(true);
     }
 
@@ -54,14 +47,6 @@ public class GUI {
         String chats = client.getChatList();
         String[] chatsArray = chats.split("" + (char) 29);
         chatListPanel.refreshChats(chatsArray);
-    }
-
-    public void addChat(String chat) {
-        chatListPanel.addChat(chat);
-    }
-
-    public void removeChat(String chat) {
-        chatListPanel.removeChat(chat);
     }
 
     public void updateProfilePanel() {
@@ -96,32 +81,54 @@ public class GUI {
         Timer timer = new Timer(5000, new ActionListener() { // Check every 5 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fetch new data or perform updates
-                updateData();
                 // Update GUI components
                 updateGUI();
             }
         });
-        timer.start();
+        if (frame.isVisible()) {
+            timer.start();
+        }
     }
 
-    public void updateData() {
-        // Fetch new data or perform updates
-    }
 
     public void updateGUI() {
-        // TODO: fix the selection
         updateProfilePanel();
         refreshChats();
 
     }
 
     public void logout() {
+        client.logout();
+        this.loginPanel = null;
+        frame.setVisible(false);
+        frame.dispose();
+    }
 
+    public boolean isDone() {
+        return loginPanel == null;
     }
 
     public static void main(String[] args) {
-        new GUI();
+        while (true) {
+            LoginPanel loginPanel = new LoginPanel(new Client());
+            SwingUtilities.invokeLater(loginPanel);
+            while (!loginPanel.isDone()) { // Wait for login panel to finish
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            GUI gui = new GUI(loginPanel);
+            SwingUtilities.invokeLater(gui);
+            while (!gui.isDone()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }
