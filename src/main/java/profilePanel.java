@@ -4,23 +4,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class profilePanel extends JPanel {
+    private GridBagConstraints constraints;
     private JLabel usernameLabel;
     private JLabel firstNameLabel;
     private JLabel lastNameLabel;
     private JLabel bioLabel;
     private JLabel birthdayLabel;
     private JLabel friendsOnlyLabel;
+    private JScrollPane friendsListScrollPane;
+    private JTextArea friendsList;
+    private JScrollPane blocksListScrollPane;
+    private JTextArea blocksList;
     private JButton editButton;
     private Client client;
 
     public profilePanel(String username, Client client) {
         this.client = client;
+        this.setLayout(new GridBagLayout());
+        constraints = new GridBagConstraints();
+        constraints.anchor = GridBagConstraints.NORTHWEST;
         usernameLabel = new JLabel(username);
         firstNameLabel = new JLabel();
         lastNameLabel = new JLabel();
         bioLabel = new JLabel();
         birthdayLabel = new JLabel();
         friendsOnlyLabel = new JLabel();
+        friendsList = new JTextArea(5, 10);
+        friendsList.setEditable(false);
+        friendsListScrollPane = new JScrollPane(friendsList);
+        blocksList = new JTextArea(5, 10);
+        blocksList.setEditable(false);
+        blocksListScrollPane = new JScrollPane(blocksList);
         editButton = new JButton("Edit");
         createComponents();
         addComponentsToPanel();
@@ -36,27 +50,113 @@ public class profilePanel extends JPanel {
         birthdayLabel.setText(birthday);
         friendsOnlyLabel.setText(friendsOnly);
     }
+
+    public void updateFriendsAndBlocks(String[] friends, String[] blocks) {
+        friendsList.setText("");
+        blocksList.setText("");
+        for (String friend : friends) {
+            friendsList.append(friend + "\n");
+        }
+        for (String block : blocks) {
+            blocksList.append(block + "\n");
+        }
+    }
+
     private void createComponents() {
+        Font font = new Font("Arial", Font.PLAIN, 16);
         usernameLabel = new JLabel(usernameLabel.getText());
+        usernameLabel.setFont(font);
         firstNameLabel = new JLabel(firstNameLabel.getText());
+        firstNameLabel.setFont(font);
         lastNameLabel = new JLabel(lastNameLabel.getText());
+        lastNameLabel.setFont(font);
         bioLabel = new JLabel(bioLabel.getText());
+        bioLabel.setFont(font);
         birthdayLabel = new JLabel(birthdayLabel.getText());
+        birthdayLabel.setFont(font);
         friendsOnlyLabel = new JLabel(friendsOnlyLabel.getText());
+        friendsOnlyLabel.setFont(font);
+        friendsList.setFont(font);
+        blocksList.setFont(font);
         editButton = new JButton("Edit");
     }
 
     private void addComponentsToPanel() {
-        this.add(usernameLabel);
-        this.add(firstNameLabel);
-        this.add(lastNameLabel);
-        this.add(bioLabel);
-        this.add(birthdayLabel);
-        this.add(friendsOnlyLabel);
-        this.add(editButton);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.ipady = 10;
+        constraints.ipadx = 5;
+
+        JLabel temp = new JLabel("Username:");
+        Font f = new Font("Arial", Font.BOLD, 16);
+
+        temp.setFont(f);
+        this.add(temp, constraints);
+
+        temp = new JLabel("First Name:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Last Name:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Bio:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Birthday:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Messages limited to friends:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Friends:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        temp = new JLabel("Blocked Users:");
+        temp.setFont(f);
+        constraints.gridy++;
+        this.add(temp, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+
+        this.add(usernameLabel, constraints);
+
+        constraints.gridy++;
+        this.add(firstNameLabel, constraints);
+
+        constraints.gridy++;
+        this.add(lastNameLabel, constraints);
+
+        constraints.gridy++;
+        this.add(bioLabel, constraints);
+
+        constraints.gridy++;
+        this.add(birthdayLabel, constraints);
+
+        constraints.gridy++;
+        this.add(friendsOnlyLabel, constraints);
+
+        constraints.gridy++;
+        this.add(friendsListScrollPane, constraints);
+
+        constraints.gridy++;
+        this.add(blocksListScrollPane, constraints);
     }
 
     private void editProfile() {
+        // TODO: add cancel button
         // Create a new dialog to edit the profile
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         JDialog editDialog = new JDialog(frame, "Edit Profile", true);

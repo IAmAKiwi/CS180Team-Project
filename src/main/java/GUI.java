@@ -36,7 +36,12 @@ public class GUI implements Runnable {
         frame.add(logoutPanel, BorderLayout.SOUTH);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                logout();
+                disconnect();
+            }
+        });
         updateGUI();
         frame.setVisible(true);
         scheduleUpdates();
@@ -69,8 +74,15 @@ public class GUI implements Runnable {
         String friendsOnly = profileParts[6].substring(profileParts[6].indexOf(":") + 1);
 
         profilePanel.refreshProfile(username, firstName, lastName, bio, birthday, profilePic, friendsOnly);
-        frame.repaint();
     }
+
+    public void updateFriendsAndBlocks() {
+        String friends = client.getFriendList();
+        String[] friendsArray = friends.split("" + (char) 29);
+        String blocks = client.getBlockList();
+        String[] blocksArray = blocks.split("" + (char) 29);
+        profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
+        }
 
     public void updateChat() {
         //chatPanel.updateChat(chat);
@@ -101,6 +113,7 @@ public class GUI implements Runnable {
 
     public void updateGUI() {
         updateProfilePanel();
+        updateFriendsAndBlocks();
         refreshChats();
 
     }
@@ -114,8 +127,8 @@ public class GUI implements Runnable {
 
     public void disconnect() {
         client.disconnect();
-        this.loginPanel = null;
         frame.setVisible(false);
+        this.loginPanel = null;
         frame.dispose();
     }
 

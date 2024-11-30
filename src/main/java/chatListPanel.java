@@ -1,25 +1,6 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.RenderingHints;
+import java.awt.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -76,7 +57,7 @@ public class chatListPanel extends JPanel {
         setPreferredSize(new Dimension(250, getHeight()));
         
         // Search field styling
-        searchField.setPreferredSize(new Dimension(200, 30));
+        searchField.setPreferredSize(new Dimension(100, 30));
         searchField.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(200, 200, 200)),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
@@ -191,6 +172,68 @@ public class chatListPanel extends JPanel {
     
     private void showNewChatDialog() {
         String[] users = client.getUserList().split("" + (char) 29);
+        JFrame newChatDialog = new JFrame("Select User");
+        newChatDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newChatDialog.setSize(550, 100);
+        newChatDialog.setLocationRelativeTo(this.getParent());
+
+        JComboBox<String> userComboBox = new JComboBox<>(users);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(0, 0, 0));
+
+        JButton addFriendButton = new JButton("Add/Remove Friend");
+        JButton blockButton = new JButton("Block/Unblock");
+        JButton openChatButton = new JButton("Open Chat");
+        JButton cancelButton = new JButton("Cancel");
+
+
+        addFriendButton.addActionListener(e -> {
+            String selectedUser = (String) userComboBox.getSelectedItem();
+            if (selectedUser != null) {
+                if (client.getFriendList().contains(selectedUser)) {
+                    client.removeFriend(selectedUser);
+                } else {
+                    client.addFriend(selectedUser);
+                }
+            }
+            newChatDialog.dispose();
+        });
+
+        blockButton.addActionListener(e -> {
+            String selectedUser = (String) userComboBox.getSelectedItem();
+            if (selectedUser != null) {
+                if (client.getBlockList().contains(selectedUser)) {
+                    client.unblockUser(selectedUser);
+                } else {
+                    client.blockUser(selectedUser);
+                }
+            }
+            newChatDialog.dispose();
+        });
+
+        openChatButton.addActionListener(e -> {
+            String selectedUser = (String) userComboBox.getSelectedItem();
+            if (client.getChat(selectedUser).isEmpty()) {
+                addChat(selectedUser);
+                client.createChat(selectedUser);
+            }
+            chatList.setSelectedValue(selectedUser, true);
+            newChatDialog.dispose();
+        });
+
+        cancelButton.addActionListener(e -> newChatDialog.dispose());
+
+        buttonPanel.add(addFriendButton);
+        buttonPanel.add(blockButton);
+        buttonPanel.add(openChatButton);
+        buttonPanel.add(cancelButton);
+
+        newChatDialog.add(buttonPanel, BorderLayout.SOUTH);
+        newChatDialog.add(userComboBox, BorderLayout.CENTER);
+
+        newChatDialog.setVisible(true);
+
+        /*
         String selectedUser = (String) JOptionPane.showInputDialog(
             this,
             "Select a user to chat with:",
@@ -200,14 +243,14 @@ public class chatListPanel extends JPanel {
             users,
             users[0]
         );
-        
+
         if (selectedUser != null) {
             if (client.getChat(selectedUser).isEmpty()) {
                 addChat(selectedUser);
                 client.createChat(selectedUser);
             }
             chatList.setSelectedValue(selectedUser, true);
-        }
+        }*/
     }
 
     private void addUnreadIndicator(String username, int count) {

@@ -435,7 +435,7 @@ public class Server implements Runnable, ServerInterface {
         String[] friends = db.getFriends(currentUser.getUsername());
         String friendList = "";
         for (int i = 0; i < friends.length; i++) {
-            friendList += friends[i] + ":";
+            friendList += friends[i] + groupSeparatorChar;
         }
         return friendList;
     }

@@ -41,7 +41,7 @@ public class LoginPanel extends JComponent implements Runnable
         passwordField = new JPasswordField(10);
         loginButton = new JButton("Login");
         registerButton = new JButton("Register");
-        message = new JLabel("Insert our message here");
+        message = new JLabel("Please login or register");
 
         usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
