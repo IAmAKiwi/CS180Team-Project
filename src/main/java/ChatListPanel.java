@@ -1,12 +1,17 @@
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.time.Instant;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import java.util.Date;
+import java.time.Instant;
+
 
 public class ChatListPanel extends JPanel {
     private boolean searching = false;
@@ -37,7 +42,7 @@ public class ChatListPanel extends JPanel {
         
         // Create new chat button with icon
         newChatButton = new JButton("New Chat");
-        newChatButton.setIcon(new ImageIcon("C:/Users/peter/Github/CS180Team-Project/images/icons8-add-to-chat-50.png")); // Add your icon
+        newChatButton.setIcon(new ImageIcon("./images/icons8-add-to-chat-50.png")); // Add your icon
     }
     
     private void setupLayout() {
@@ -175,7 +180,29 @@ public class ChatListPanel extends JPanel {
 
         private String getLastMessageTime(String username) {
             // Get and format last message timestamp
-            return "12:34 PM"; // Replace with actual timestamp
+            String chat = (client.getChat(username));
+            String lastMessageString = chat.substring((chat.substring(0, chat.length() - 2)).indexOf((char)26));
+            //String content = lastMessageString.substring(lastMessageString.indexOf(" "));
+            String[] arguments = lastMessageString.split(":");
+            Message msg = new Message(arguments[1], arguments[2], Long.parseLong(arguments[0]));
+            Date currTime = Date.from(Instant.now());
+            Date msgTime = msg.getTimeStamp();
+            if (String.format("%Y%j", currTime, currTime).equals(
+                String.format("%Y%j", msgTime, msgTime)))
+            {
+                return String.format("%l:%M %T", msgTime, msgTime, msgTime);
+            }
+            int currYearDay = Integer.parseInt(String.format("%Y%j", currTime, currTime));
+            int msgYearDay = Integer.parseInt(String.format("%Y%j", msgTime, msgTime));
+            if (msgYearDay == currYearDay - 1)
+            {
+                return "Yesterday";
+            }
+            if (((currYearDay - 7) < msgYearDay) && (msgYearDay < (currYearDay - 1)))
+            {
+                return String.format("%A", msgYearDay);
+            }
+            return String.format("%e %b %Y", msgYearDay, msgYearDay, msgYearDay);
         }
     }
     
