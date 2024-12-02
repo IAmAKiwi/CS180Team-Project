@@ -8,6 +8,9 @@
  */
 public class Message implements MessageInterface {
 
+    /*private String date;
+    private String time;*/
+
     private String contents;
     private String senderUsername;
 
@@ -50,5 +53,6 @@ public class Message implements MessageInterface {
     @Override
     public String toString() {
         return String.format("%s: %s", this.senderUsername, this.contents);
+        // return String.format(%s:%s:%s: %s, this.date, this.time, this.senderUsername, this.contents);
     }
 }

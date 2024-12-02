@@ -32,7 +32,6 @@ public class Client implements Runnable, ClientInterface {
             serverWriter = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(0);
         }
     }
 

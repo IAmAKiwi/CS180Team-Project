@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class profilePanel extends JPanel {
+public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
     private JLabel usernameLabel;
     private JLabel firstNameLabel;
@@ -18,7 +18,7 @@ public class profilePanel extends JPanel {
     private JButton editButton;
     private Client client;
 
-    public profilePanel(String username, Client client) {
+    public ProfilePanel(String username, Client client) {
         this.client = client;
         this.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();

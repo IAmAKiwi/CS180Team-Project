@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -6,14 +8,15 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class chatListPanel extends JPanel {
+public class ChatListPanel extends JPanel {
+    private boolean searching = false;
     private JList<String> chatList;
     private DefaultListModel<String> listModel;
     private JButton newChatButton;
     private JTextField searchField;
     private Client client;
     
-    public chatListPanel(Client client) {
+    public ChatListPanel(Client client) {
         this.client = client;
         initializeComponents();
         setupLayout();
@@ -81,6 +84,19 @@ public class chatListPanel extends JPanel {
             public void removeUpdate(DocumentEvent e) { filterChats(); }
             public void changedUpdate(DocumentEvent e) { filterChats(); }
         });
+
+        searchField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                filterChats();
+                searching = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                searching = false;
+            }
+        });
         
         // New chat button action
         newChatButton.addActionListener(e -> showNewChatDialog());
@@ -127,6 +143,10 @@ public class chatListPanel extends JPanel {
                 JList<? extends String> list, String username,
                 int index, boolean isSelected, boolean cellHasFocus) {
             // Set content
+            if (username == null || username.isEmpty()) {
+                listModel.clear();
+                return this;
+            }
             nameLabel.setText(username);
             lastMessageLabel.setText(getLastMessage(username));
             timeLabel.setText(getLastMessageTime(username));
@@ -163,7 +183,7 @@ public class chatListPanel extends JPanel {
         String searchText = searchField.getText().toLowerCase();
         listModel.clear();
         
-        for (String chat : client.getUserList().split(":")) {
+        for (String chat : client.getUserList().split("" + (char) 29)) {
             if (chat.toLowerCase().contains(searchText)) {
                 listModel.addElement(chat);
             }
@@ -281,9 +301,15 @@ public class chatListPanel extends JPanel {
     
     // Public methods
     public void refreshChats(String[] chats) {
-        listModel.clear();
-        for (String chat : chats) {
-            listModel.addElement(chat);
+        if (searchField.getText().trim().isEmpty() && !searching && chatList.isSelectionEmpty()) {
+            listModel.clear();
+            if (chats != null) {
+                for (String chat : chats) {
+                    if (chat != null) {
+                        listModel.addElement(chat);
+                    }
+                }
+            }
         }
     }
     
