@@ -386,35 +386,158 @@ public class LoginPanel extends JComponent implements Runnable {
     ActionListener actionListener = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
-                if (client.login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
-                    // Successful login
-                    username = usernameField.getText();
-                    password = String.valueOf(passwordField.getPassword());
-                    frame.setVisible(false);
+                try {
+                    if (client.login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
+                        // Successful login
+                        username = usernameField.getText();
+                        password = String.valueOf(passwordField.getPassword());
+                        frame.setVisible(false);
+                        frame.dispose();
+                        loginPanel = null;
+                    } else {
+                        // Unsuccessful login
+                        passwordField.setText("");
+                        JOptionPane.showMessageDialog(null, "Invalid username or password", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException ex) {
                     frame.dispose();
                     loginPanel = null;
-                } else {
-                    // Unsuccessful login
-                    passwordField.setText("");
-                    JOptionPane.showMessageDialog(null, "Invalid username or password", "Error",
-                            JOptionPane.ERROR_MESSAGE);
                 }
             } else if (e.getSource() == registerButton) {
-                if (client
-                        .register(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
+                /*if (client.register(usernameField.getText() +
+                        (char) 29 + String.valueOf(passwordField.getPassword()))) {
                     // Successful registry (and login?)
                     username = usernameField.getText();
                     password = String.valueOf(passwordField.getPassword());
-                    frame.setVisible(false);
-                    frame.dispose();
-                    loginPanel = null;
-                } else {
-                    // Unsuccessful registry
-                    passwordField.setText("");
-                    usernameField.setText("");
-                    JOptionPane.showMessageDialog(null, "Invalid, unavailable, or insecure username or password",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                    frame.setVisible(false);*/
+
+                // Create a new dialog to edit the profile
+                JDialog editDialog = new JDialog(frame, "New Profile", true);
+                editDialog.addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        client = null;
+                        editDialog.dispose();
+                        frame.setVisible(false);
+                        frame.dispose();
+                        loginPanel = null;
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                    }
+
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+                    }
+
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+                    }
+                });
+
+                // Create fields to edit the profile
+                JTextField usernameField = new JTextField("", 20);
+                JPasswordField passwordField = new JPasswordField("", 20);
+                passwordField.setEchoChar('•');
+                JTextField firstNameField = new JTextField("", 20);
+                JTextField lastNameField = new JTextField("", 20);
+                JTextField bioField = new JTextField("", 20);
+                JTextField birthdayFieldMonth = new JTextField("", 20);
+                JTextField birthdayFieldDay = new JTextField("", 20);
+                JTextField birthdayFieldYear = new JTextField("", 20);
+                JCheckBox friendsOnlyCheckBox = new JCheckBox("Messages limited to friends?",
+                        false);
+
+                // Create a panel to hold the fields
+                JPanel editPanel = new JPanel();
+                editPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                editPanel.setLayout(new GridLayout(9, 2));
+
+                // Add the fields to the panel
+                editPanel.add(new JLabel("Username:"));
+                editPanel.add(usernameField);
+                editPanel.add(new JLabel("Password:"));
+                editPanel.add(passwordField);
+                editPanel.add(new JLabel("First Name:"));
+                editPanel.add(firstNameField);
+                editPanel.add(new JLabel("Last Name:"));
+                editPanel.add(lastNameField);
+                editPanel.add(new JLabel("Bio:"));
+                editPanel.add(bioField);
+                editPanel.add(new JLabel("Birth Month (MM):"));
+                editPanel.add(birthdayFieldMonth);
+                editPanel.add(new JLabel("Birth Day (DD):"));
+                editPanel.add(birthdayFieldDay);
+                editPanel.add(new JLabel("Birth Year (YYYY):"));
+                editPanel.add(birthdayFieldYear);
+                editPanel.add(new JLabel("Friends Only:"));
+                editPanel.add(friendsOnlyCheckBox);
+
+                // Create a button to save the changes
+                JButton saveButton = new JButton("Save");
+                saveButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            if (client.register(usernameField.getText() + (char) 29 +
+                                    String.valueOf(passwordField.getText()))) {
+                                // Save the changes
+                                char groupSeparator = (char) 29;
+                                String content = usernameField.getText().trim() + groupSeparator + firstNameField.getText().trim() +
+                                        groupSeparator + lastNameField.getText().trim() + groupSeparator + bioField.getText().trim() +
+                                        groupSeparator + birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
+                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" + groupSeparator +
+                                        ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
+                                System.out.println(content);
+                                if (client.saveProfile(content)) {
+                                    editDialog.dispose();
+                                } else {
+                                    // Show an error message
+                                    JOptionPane.showMessageDialog(null, "Invalid profile information, " +
+                                            "try again", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                // Unsuccessful registry
+                                passwordField.setText("");
+                                usernameField.setText("");
+                                JOptionPane.showMessageDialog(null, "Invalid, unavailable, or insecure username or password",
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (Exception ex) {
+                            frame.dispose();
+                            loginPanel = null;
+                        }
+                    }
+                });
+
+                // Add the panel and button to the dialog
+                editDialog.add(editPanel, BorderLayout.CENTER);
+                editDialog.add(saveButton, BorderLayout.SOUTH);
+
+                // Set the size of the dialog
+                editDialog.setSize(500, 600);
+
+                // Center the dialog
+                editDialog.setLocationRelativeTo(frame);
+
+                // Make the dialog visible
+                editDialog.setVisible(true);
+
+                frame.dispose();
+                loginPanel = null;
             }
         }
     };
@@ -433,5 +556,14 @@ public class LoginPanel extends JComponent implements Runnable {
 
     public boolean isDone() {
         return loginPanel == null;
+    }
+
+    public boolean isConnected() {
+        try {
+            client.login("");
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 }

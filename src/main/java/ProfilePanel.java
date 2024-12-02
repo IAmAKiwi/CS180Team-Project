@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
@@ -178,6 +179,7 @@ public class ProfilePanel extends JPanel {
 
         // Create a panel to hold the fields
         JPanel editPanel = new JPanel();
+        editPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         editPanel.setLayout(new GridLayout(7, 2));
 
         // Add the fields to the panel
@@ -207,19 +209,24 @@ public class ProfilePanel extends JPanel {
                         groupSeparator + birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
                         + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" + groupSeparator +
                         ((Boolean)friendsOnlyCheckBox.isSelected()).toString().trim();
-                if (client.saveProfile(content)) {
-                    firstNameLabel.setText(firstNameField.getText().trim());
-                    lastNameLabel.setText(lastNameField.getText().trim());
-                    bioLabel.setText(bioField.getText().trim());
-                    birthdayLabel.setText(birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
-                            + "/" + birthdayFieldYear.getText().trim());
-                    friendsOnlyLabel.setText(((Boolean)friendsOnlyCheckBox.isSelected()).toString().trim());
-                    // Close the dialog
-                    editDialog.dispose();
-                } else {
-                    // Show an error message
-                    JOptionPane.showMessageDialog(null, "Invalid profile information, " +
-                                    "try again", "Error", JOptionPane.ERROR_MESSAGE);
+                try {
+                    if (client.saveProfile(content)) {
+                        firstNameLabel.setText(firstNameField.getText().trim());
+                        lastNameLabel.setText(lastNameField.getText().trim());
+                        bioLabel.setText(bioField.getText().trim());
+                        birthdayLabel.setText(birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
+                                + "/" + birthdayFieldYear.getText().trim());
+                        friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
+                        // Close the dialog
+                        editDialog.dispose();
+                    } else {
+                        // Show an error message
+                        JOptionPane.showMessageDialog(null, "Invalid profile information, " +
+                                "try again", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection Failed",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

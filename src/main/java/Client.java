@@ -25,14 +25,10 @@ public class Client implements Runnable, ClientInterface {
         return resultt;
     }
 
-    public Client() {
-        try {
-            socket = new Socket("localhost", 4242);
-            serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            serverWriter = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Client() throws IOException {
+        socket = new Socket("localhost", 4242);
+        serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        serverWriter = new PrintWriter(socket.getOutputStream(), true);
     }
 
     public void run() {
@@ -162,110 +158,110 @@ public class Client implements Runnable, ClientInterface {
 
     // Getusers
 
-    public String getUserList() {
+    public String getUserList() throws IOException {
         return requestData("getUserList: ");
     }
 
-    public boolean sendMessage(String content) {
+    public boolean sendMessage(String content) throws IOException {
         String command = "sendMessage:" + content; //
         return sendCommand(command);
     }
 
-    public boolean deleteMessage(String content) {
+    public boolean deleteMessage(String content) throws IOException{
         String command = "deleteMessage:" + content;
         return sendCommand(command);
     }
 
-    public String accessProfile() {
+    public String accessProfile() throws IOException {
         return requestData("accessProfile: ");
     }
 
-    public boolean saveProfile(String content) {
+    public boolean saveProfile(String content) throws IOException {
         String command = "saveProfile:" + content;
         return sendCommand(command);
     }
 
-    public boolean removeFriend(String friend) {
+    public boolean removeFriend(String friend) throws IOException{
         String command = "removeFriend:" + friend;
         return sendCommand(command);
     }
 
-    public boolean addFriend(String friend) {
+    public boolean addFriend(String friend) throws IOException {
         String command = "addFriend:" + friend;
         return sendCommand(command);
     }
 
-    public boolean unblockUser(String user) {
+    public boolean unblockUser(String user) throws IOException{
         String command = "unblockUser:" + user;
         return sendCommand(command);
     }
 
-    public boolean blockUser(String otherUsername) {
+    public boolean blockUser(String otherUsername) throws IOException{
         String command = "blockUser:" + otherUsername;
         return sendCommand(command);
     }
 
     // the other user
-    public boolean deleteChat(String otherUser) {
+    public boolean deleteChat(String otherUser) throws IOException{
         String command = "deleteChat:" + otherUser;
         return sendCommand(command);
     }
 
-    public boolean sendImage(String content) {
+    public boolean sendImage(String content) throws IOException{
         String command = "sendImage:" + content;
         return sendCommand(command);
     }
 
-    public String getChat(String otherUsername) {
+    public String getChat(String otherUsername) throws IOException {
         String command = "getChat:" + otherUsername;
         return requestData(command);
     }
 
-    public String getChatList() {
+    public String getChatList() throws IOException {
         return requestData("getChatList: ");
     }
 
-    public boolean createChat(String otherUsername) {
+    public boolean createChat(String otherUsername) throws IOException{
         String command = "createChat:" + otherUsername;
         return sendCommand(command);
     }
 
-    public String getFriendList() {
+    public String getFriendList() throws IOException {
         return requestData("getFriendList: ");
     }
 
-    public String getBlockList() {
+    public String getBlockList() throws IOException {
         return requestData("getBlockList: ");
     }
 
-    public boolean isFriendsOnly() {
+    public boolean isFriendsOnly() throws IOException {
         String command = "isFriendsOnly: ";
         return sendCommand(command);
     }
 
-    public boolean setFriendsOnly(String booleanValue) {
+    public boolean setFriendsOnly(String booleanValue) throws IOException {
         return sendCommand("setFriendsOnly:" + booleanValue);
     }
 
-    public boolean setProfilePic(String profilePic) {
+    public boolean setProfilePic(String profilePic) throws IOException{
         return sendCommand("setProfilePic:" + profilePic);
     }
 
-    public String getProfilePic() {
+    public String getProfilePic() throws IOException {
         return requestData("getProfilePic: ");
     }
 
-    public boolean login(String content) {
+    public boolean login(String content) throws IOException {
         String command = "login:" + content;
         return sendCommand(command);
     }
 
-    public boolean register(String content) {
+    public boolean register(String content) throws IOException {
         String command = "register:" + content;
         return sendCommand(command);
     }
 
-    public boolean logout() {
+    public boolean logout() throws IOException {
         return sendCommand("logout: ");
     }
 
@@ -282,25 +278,20 @@ public class Client implements Runnable, ClientInterface {
         }
     }
 
-    public synchronized String requestData(String command) {
-        try {
-            if (!socket.isConnected()) {
-                throw new IOException("Socket is closed");
-            }
-            serverWriter.println(command);
-            serverWriter.flush();
-            String response = serverReader.readLine();
-            if (response == null) {
-                throw new IOException("Socket is closed");
-            }
-            return response;
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return null;
+    public synchronized String requestData(String command) throws IOException {
+        if (!socket.isConnected()) {
+            throw new IOException("Socket is closed");
         }
+        serverWriter.println(command);
+        serverWriter.flush();
+        String response = serverReader.readLine();
+        if (response == null) {
+            throw new IOException("Socket is closed");
+        }
+        return response;
     }
 
-    public synchronized boolean sendCommand(String command) {
+    public synchronized boolean sendCommand(String command) throws IOException {
         String response = this.requestData(command);
         return response != null && Boolean.parseBoolean(response.trim());
     }
@@ -312,13 +303,18 @@ public class Client implements Runnable, ClientInterface {
     // Abstraction is good.
     // format all remaining methods in this fashion
 
-    public boolean updateProfile(String content) {
+    public boolean updateProfile(String content) throws IOException {
         return sendCommand("updateProfile:" + content);
     }
 
     public static void main(String[] args) {
-        Thread t = new Thread(new Client());
-        t.start();
+        try {
+            Thread t = new Thread(new Client());
+            t.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

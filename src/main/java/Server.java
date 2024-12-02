@@ -208,44 +208,43 @@ public class Server implements Runnable, ServerInterface {
          */
         try {
             String[] fields = content.split((char) 29 + "");
-            User user = db.getUser(fields[0]);
-            if (user == null) {
+            if (currentUser == null) {
                 return "false";
             }
 
             // Store original birthday to check if validation passed
-            int[] originalBirthday = user.getBirthday();
+            int[] originalBirthday = currentUser.getBirthday();
 
-            user.setFirstName(fields[1]);
-            user.setLastName(fields[2]);
-            user.setBio(fields[3]);
+            currentUser.setFirstName(fields[1]);
+            currentUser.setLastName(fields[2]);
+            currentUser.setBio(fields[3]);
 
             // Birthday validation
-            String[] birthdaystr = fields[4].split("/");
-            if (birthdaystr.length != 3) {
+            String[] birthdayStr = fields[4].split("/");
+            if (birthdayStr.length != 3) {
                 return "false";
             }
 
             int[] birthday = new int[3];
             try {
                 for (int i = 0; i < 3; i++) {
-                    birthday[i] = Integer.parseInt(birthdaystr[i]);
+                    birthday[i] = Integer.parseInt(birthdayStr[i]);
                 }
 
                 // Use User's setBirthday method for validation
-                user.setBirthday(birthday);
+                currentUser.setBirthday(birthday);
 
                 // If birthday didn't change, validation failed
-                if (user.getBirthday() == null ||
-                        (originalBirthday != null && user.getBirthday() == originalBirthday)) {
+                if (currentUser.getBirthday() == null ||
+                        (originalBirthday != null && currentUser.getBirthday() == originalBirthday)) {
                     return "false";
                 }
             } catch (NumberFormatException e) {
                 return "false";
             }
 
-            user.setProfilePic(fields[5]);
-            user.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
+            currentUser.setProfilePic(fields[5]);
+            currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             return "true";
         } catch (Exception e) {
             return "false";
@@ -287,6 +286,9 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String login(String content) {
+        if (content == null || content.isEmpty()) {
+            return "false";
+        }
         String[] credentials = splitContent(content);
         String username = credentials[0];
         String password = credentials[1];
