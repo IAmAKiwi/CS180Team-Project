@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServerGUI implements Runnable {
+    private int port = -1;
+    private String host;
     private ServerSocket serverSocket;
     private boolean running = false;
     private Thread serverThread;
@@ -22,6 +24,46 @@ public class ServerGUI implements Runnable {
 
     public ServerGUI(Server server) {
         this.server = server;
+        JFrame f = new JFrame();
+        JLabel portLabel = new JLabel("Port:");
+        JLabel hostLabel = new JLabel("Host:");
+        JTextArea portField = new JTextArea();
+        portField.setRows(1);
+        JTextArea hostField = new JTextArea();
+        hostField.setRows(1);
+        portField.setText("4242");
+        hostField.setText("localhost");
+
+        JButton done = new JButton("Done");
+        done.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    port = Integer.parseInt(portField.getText());
+                    host = hostField.getText();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid port number",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                f.dispose();
+            }
+        });
+
+        f.setLayout(new GridLayout(3, 2, 10, 10));
+        f.add(portLabel);
+        f.add(portField);
+        f.add(hostLabel);
+        f.add(hostField);
+        f.add(done);
+        f.setSize(300, 200);
+        f.setLocationRelativeTo(null);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+    }
+
+    public boolean isReady() {
+        return port != -1;
     }
 
     public void run() {
@@ -138,6 +180,15 @@ public class ServerGUI implements Runnable {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new ServerGUI(new Server()));
+        Server server = new Server();
+        ServerGUI gui = new ServerGUI(server);
+        while (!gui.isReady()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        SwingUtilities.invokeLater(gui);
     }
 }
