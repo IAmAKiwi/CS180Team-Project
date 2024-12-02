@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0002ec70-00fd-4523-8bb9-a2c2ecfda7b2" name="Changes" comment="Added a bit of documentation to MessagehistorytestCases and MessageTestCases." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;IAmAKiwi&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IAmAKiwi/CS180Team-Project.git&quot;,
+    &quot;accountId&quot;: &quot;c55d8980-cfd8-4c54-80a8-d8814497e905&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2nwKSzXyF8xRxfTF2ytEmDT5x4g" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MessageHistoryTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MessageTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UserTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/jacksonshields/IdeaProjects/CS180Team-Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.MessageHistoryTestCases$TestCase.MessageHistoryTest">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="CS180Team-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MessageHistoryTestCases" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MessageHistoryTestCases" />
+      <module name="CS180Team-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MessageTestCases" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MessageTestCases" />
+      <module name="CS180Team-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserTestCases" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="UserTestCases" />
+      <module name="CS180Team-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MessageHistoryTestCases$TestCase.MessageHistoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CS180Team-Project" />
+      <option name="PACKAGE_NAME" value="MessageHistoryTestCases" />
+      <option name="MAIN_CLASS_NAME" value="MessageHistoryTestCases$TestCase" />
+      <option name="METHOD_NAME" value="MessageHistoryTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MessageHistoryTestCases$TestCase.MessageHistoryTest" />
+        <item itemvalue="Application.MessageHistoryTestCases" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.MessageTestCases" />
+        <item itemvalue="Application.UserTestCases" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0002ec70-00fd-4523-8bb9-a2c2ecfda7b2" name="Changes" comment="" />
+      <created>1729878702075</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729878702075</updated>
+      <workItem from="1729878703107" duration="4367000" />
+      <workItem from="1730305746197" duration="433000" />
+      <workItem from="1730306186636" duration="2134000" />
+      <workItem from="1730308458894" duration="13710000" />
+      <workItem from="1730398152452" duration="1000" />
+      <workItem from="1730398173079" duration="2770000" />
+      <workItem from="1730476888547" duration="26000" />
+      <workItem from="1730476939598" duration="8000" />
+      <workItem from="1730477148934" duration="229000" />
+      <workItem from="1730477388896" duration="103000" />
+      <workItem from="1730477697563" duration="945000" />
+      <workItem from="1730478665498" duration="3029000" />
+      <workItem from="1730585423126" duration="4288000" />
+    </task>
+    <task id="LOCAL-00001" summary="Created files for the interfaces of Database, MessageHistory, Message, User, and UserProfile.">
+      <option name="closed" value="true" />
+      <created>1729881641107</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729881641107</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added methods to each interface. Many include classes that we must implement but do not exist as of now. Many of these methods are temporary/to be considered for implementation.">
+      <option name="closed" value="true" />
+      <created>1729882786115</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1729882786116</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Created a MessageFileExample.txt file to show how to format our MessageHistory File. Created a toString method in Message in the format of username: message.">
+      <option name="closed" value="true" />
+      <created>1730309978279</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730309978279</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Test to get User Pushed.">
+      <option name="closed" value="true" />
+      <created>1730311085775</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730311085775</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed a missing bracket on a method in Database and reformatted accordingly. Also has beginnings of file stuff.">
+      <option name="closed" value="true" />
+      <created>1730311416240</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1730311416240</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added a fileSeparator and groupSeparator to the database.">
+      <option name="closed" value="true" />
+      <created>1730312057541</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730312057541</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Hopefully fixing formatting issues. Also has a finished verision of saveMessages and a half-finsihed loadMessages.">
+      <option name="closed" value="true" />
+      <created>1730313501409</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730313501409</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Hopefully fixing formatting issues. Also has a finished verision of saveMessages and a half-finished loadMessages.">
+      <option name="closed" value="true" />
+      <created>1730313968774</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730313968774</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Debuggging please help us god.">
+      <option name="closed" value="true" />
+      <created>1730314272204</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1730314272204</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Updated the save and load messageHistory methods of Database. Fixed the interfaces and classes so there were no errors/everything was contained in both properly.">
+      <option name="closed" value="true" />
+      <created>1730323380338</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730323380338</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fixed Database issue">
+      <option name="closed" value="true" />
+      <created>1730398573129</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730398573129</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Slight changes to User and UserInterface classes for formatting purposes (birthday and friendsOnly). Created a UserTestCases file. Tests most functionality.">
+      <option name="closed" value="true" />
+      <created>1730480007655</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1730480007655</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Fixed compile error in loadUsers by putting BufferedReader in a try/catch with resources block. Should not change any functionality.">
+      <option name="closed" value="true" />
+      <created>1730480354266</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1730480354266</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Created MessageTestCases and slightly adjusted Message and Database to reformat the toString to a more legible format.">
+      <option name="closed" value="true" />
+      <created>1730481455019</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1730481455019</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Created MessageHistoryTestCases and added test cases for most functionalities of MessageHistory class">
+      <option name="closed" value="true" />
+      <created>1730481921578</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1730481921578</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fixed writing birthdays.">
+      <option name="closed" value="true" />
+      <created>1730586064848</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1730586064848</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added documentation for the Database class besides the loadUsers() and saveUsers() methods.">
+      <option name="closed" value="true" />
+      <created>1730592237720</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730592237720</updated>
+    </task>
+    <task id="LOCAL-00018" summary="More robust documentation for some of MessageHistory">
+      <option name="closed" value="true" />
+      <created>1730592369374</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1730592369374</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added a bit of documentation to MessagehistorytestCases and MessageTestCases.">
+      <option name="closed" value="true" />
+      <created>1730592547056</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1730592547056</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Created files for the interfaces of Database, MessageHistory, Message, User, and UserProfile." />
+    <MESSAGE value="Added methods to each interface. Many include classes that we must implement but do not exist as of now. Many of these methods are temporary/to be considered for implementation." />
+    <MESSAGE value="Created a MessageFileExample.txt file to show how to format our MessageHistory File. Created a toString method in Message in the format of username: message." />
+    <MESSAGE value="Test to get User Pushed." />
+    <MESSAGE value="Fixed a missing bracket on a method in Database and reformatted accordingly. Also has beginnings of file stuff." />
+    <MESSAGE value="Added a fileSeparator and groupSeparator to the database." />
+    <MESSAGE value="Hopefully fixing formatting issues. Also has a finished verision of saveMessages and a half-finsihed loadMessages." />
+    <MESSAGE value="Hopefully fixing formatting issues. Also has a finished verision of saveMessages and a half-finished loadMessages." />
+    <MESSAGE value="Debuggging please help us god." />
+    <MESSAGE value="Updated the save and load messageHistory methods of Database. Fixed the interfaces and classes so there were no errors/everything was contained in both properly." />
+    <MESSAGE value="Fixed Database issue" />
+    <MESSAGE value="Slight changes to User and UserInterface classes for formatting purposes (birthday and friendsOnly). Created a UserTestCases file. Tests most functionality." />
+    <MESSAGE value="Fixed compile error in loadUsers by putting BufferedReader in a try/catch with resources block. Should not change any functionality." />
+    <MESSAGE value="Created MessageTestCases and slightly adjusted Message and Database to reformat the toString to a more legible format." />
+    <MESSAGE value="Created MessageHistoryTestCases and added test cases for most functionalities of MessageHistory class" />
+    <MESSAGE value="fixed writing birthdays." />
+    <MESSAGE value="Added documentation for the Database class besides the loadUsers() and saveUsers() methods." />
+    <MESSAGE value="More robust documentation for some of MessageHistory" />
+    <MESSAGE value="Added a bit of documentation to MessagehistorytestCases and MessageTestCases." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a bit of documentation to MessagehistorytestCases and MessageTestCases." />
+  </component>
+</project>
