@@ -164,6 +164,9 @@ public class ServerGUI implements Runnable {
             public void actionPerformed(ActionEvent e) {
                 if (running) {
                     System.out.println("Stopping server and saving data...");
+                    System.out.println("Saving data...");
+                    db.saveMessages();
+                    db.saveUsers();
                     serverThread.interrupt();
                     running = false;
                     System.out.println("Stopping client connections...");
@@ -174,8 +177,6 @@ public class ServerGUI implements Runnable {
                             eIO.printStackTrace();
                         }
                     }
-                    db.saveMessages();
-                    db.saveUsers();
                     System.out.println("Closing server socket...");
                     try {
                         serverSocket.close();
