@@ -1,2 +1,3 @@
 username: user1password: Password1$First Name: firstLast Name: lastBio: bioBirthday: 1 1 2001Profile Picture: profile.pngFriends Only: true
 username: user3password: Password3$Friends Only: false
+username: Buiildingpassword: Thanos20122006$Friends Only: false
