@@ -42,6 +42,9 @@ public class ServerGUI implements Runnable {
             public void actionPerformed(ActionEvent e) {
                 try {
                     port = Integer.parseInt(portField.getText());
+                    if (port < 0 || port > 65535) {
+                        throw new NumberFormatException();
+                    }
                     host = hostField.getText();
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Invalid port number",
