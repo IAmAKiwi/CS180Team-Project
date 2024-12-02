@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Interface that handles all of the client-side functionality.
  *
@@ -9,53 +11,53 @@ public interface ClientInterface {
     void run(); // to be overridden in GUI
 
     // User authentication
-    boolean login(String content); // username [groupSeparator] password
+    boolean login(String content) throws IOException; // username [groupSeparator] password
 
-    boolean register(String content); // username [groupSeparator] password
+    boolean register(String content) throws IOException; // username [groupSeparator] password
 
-    boolean logout();
+    boolean logout() throws IOException;
 
-    boolean disconnect();
+    boolean disconnect() throws IOException;
 
     // User management
-    String getUserList(); // username [groupSeparator] username [groupSeparator] etc
+    String getUserList() throws IOException; // username [groupSeparator] username [groupSeparator] etc
 
-    String accessProfile(); // username [groupSeparator] first name [groupSeparator] last name
-                            // [groupSeparator] etc
+    String accessProfile() throws IOException; // username [groupSeparator] first name [groupSeparator] last name
+                                               // [groupSeparator] etc
 
-    boolean saveProfile(String content); // username [groupSeparator] first name [groupSeparator] etc (above)
+    boolean saveProfile(String content) throws IOException; // username [groupSeparator] first name [groupSeparator] etc (above)
 
     // Messaging
-    boolean sendMessage(String content); // otherUsername [groupSeparator] message
+    boolean sendMessage(String content) throws IOException; // otherUsername [groupSeparator] message
 
-    boolean deleteMessage(String content); // otherUsername [groupSeparator] message
+    boolean deleteMessage(String content) throws IOException; // otherUsername [groupSeparator] message
 
-    String getChat(String otherUsername); // otherUsername
+    String getChat(String otherUsername) throws IOException; // otherUsername
 
-    boolean deleteChat(String user); // otherUsername
+    boolean deleteChat(String user) throws IOException; // otherUsername
 
-    boolean sendImage(String content); // otherUsername [groupSeparator] path
+    boolean sendImage(String content) throws IOException; // otherUsername [groupSeparator] path
 
     // Friend management
-    boolean removeFriend(String friend); // friendUsername
+    boolean removeFriend(String friend) throws IOException; // friendUsername
 
-    boolean addFriend(String friend); // friendUsername
+    boolean addFriend(String friend) throws IOException; // friendUsername
 
-    String getFriendList(); // friendUsername [groupSeparator] friendUsername [groupSeparator] etc
+    String getFriendList() throws IOException; // friendUsername [groupSeparator] friendUsername [groupSeparator] etc
 
     // Block management
-    boolean unblockUser(String user); // blockedUsername
+    boolean unblockUser(String user) throws IOException; // blockedUsername
 
-    boolean blockUser(String otherUsername); // blockedUsername
+    boolean blockUser(String otherUsername) throws IOException; // blockedUsername
 
-    String getBlockList(); // blockedUsername [groupSeparator] blockedUsername [groupSeparator] etc
+    String getBlockList() throws IOException; // blockedUsername [groupSeparator] blockedUsername [groupSeparator] etc
 
     // Settings
-    boolean isFriendsOnly();
+    boolean isFriendsOnly() throws IOException;
 
-    boolean setFriendsOnly(String booleanValue); // "true" or "false"
+    boolean setFriendsOnly(String booleanValue) throws IOException; // "true" or "false"
 
-    boolean setProfilePic(String profilePic); // path
+    boolean setProfilePic(String profilePic) throws IOException; // path
 
-    String getProfilePic();
+    String getProfilePic() throws IOException;
 }
