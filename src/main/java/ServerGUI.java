@@ -59,6 +59,7 @@ public class ServerGUI implements Runnable {
         f.add(portField);
         f.add(hostLabel);
         f.add(hostField);
+        f.add(new Box(0));
         f.add(done);
         f.setSize(300, 200);
         f.setLocationRelativeTo(null);
