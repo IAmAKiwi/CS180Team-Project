@@ -82,8 +82,12 @@ public class profilePanel extends JPanel {
     }
 
     private void addComponentsToPanel() {
+        constraints.gridx = 1;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        this.add(editButton, constraints);
         constraints.gridx = 0;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         constraints.ipady = 10;
         constraints.ipadx = 5;
 
@@ -129,7 +133,7 @@ public class profilePanel extends JPanel {
         this.add(temp, constraints);
 
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
 
         this.add(usernameLabel, constraints);
 
