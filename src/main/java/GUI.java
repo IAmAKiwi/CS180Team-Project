@@ -115,7 +115,6 @@ public class GUI implements Runnable {
         updateProfilePanel();
         updateFriendsAndBlocks();
         refreshChats();
-
     }
 
     public void logout() {
