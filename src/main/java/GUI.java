@@ -5,10 +5,10 @@ import java.awt.event.ActionListener;
 
 public class GUI implements Runnable {
     private JFrame frame;
-    private chatListPanel chatListPanel;
+    private ChatListPanel chatListPanel;
     private LoginPanel loginPanel;
     //private chatPanel chatPanel;
-    private profilePanel profilePanel;
+    private ProfilePanel profilePanel;
     private JButton logoutButton;
     private Client client;
 
@@ -22,9 +22,9 @@ public class GUI implements Runnable {
         client = loginPanel.getClient();
         String username = loginPanel.getUsername();
         //chatPanel = new chatPanel(client);
-        profilePanel = new profilePanel(username, client);
+        profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
-        chatListPanel = new chatListPanel(client);
+        chatListPanel = new ChatListPanel(client);
         refreshChats();
         frame.add(chatListPanel, BorderLayout.WEST);
         //frame.add(chatPanel, BorderLayout.CENTER);
@@ -49,10 +49,6 @@ public class GUI implements Runnable {
 
     public void refreshChats() {
         String chats = client.getChatList();
-        if (chats == null) {
-            disconnect();
-            return;
-        }
         String[] chatsArray = chats.split("" + (char) 29);
         chatListPanel.refreshChats(chatsArray);
     }
@@ -97,7 +93,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(5000, new ActionListener() { // Check every 5 seconds
+        Timer timer = new Timer(1000, new ActionListener() { // Check every 5 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components

@@ -10,6 +10,9 @@ import java.time.Instant;
  */
 public class Message implements MessageInterface {
 
+    /*private String date;
+    private String time;*/
+
     private String contents;
     private String senderUsername;
     private Date timeStamp;
