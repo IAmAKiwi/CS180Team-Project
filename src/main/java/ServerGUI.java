@@ -26,7 +26,9 @@ public class ServerGUI implements Runnable {
         this.server = server;
         JFrame f = new JFrame();
         JLabel portLabel = new JLabel("Port:");
+        portLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
         JLabel hostLabel = new JLabel("Host:");
+        hostLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
         JTextArea portField = new JTextArea();
         portField.setRows(1);
         JTextArea hostField = new JTextArea();
@@ -44,6 +46,8 @@ public class ServerGUI implements Runnable {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Invalid port number",
                             "Error", JOptionPane.ERROR_MESSAGE);
+                    portField.setText("4242");
+                    hostField.setText("localhost");
                     return;
                 }
                 f.dispose();
