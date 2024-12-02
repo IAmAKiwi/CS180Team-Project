@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
-public class profilePanel extends JPanel {
+public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
     private JLabel usernameLabel;
     private JLabel firstNameLabel;
@@ -300,6 +303,7 @@ public class profilePanel extends JPanel {
 
         // Create a panel to hold the fields
         JPanel editPanel = new JPanel();
+        editPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         editPanel.setLayout(new GridLayout(7, 2));
         // Add the fields to the panel
         editPanel.add(new JLabel("First Name:"));

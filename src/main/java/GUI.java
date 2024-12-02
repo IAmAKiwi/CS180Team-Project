@@ -2,13 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GUI implements Runnable {
     private JFrame frame;
-    private chatListPanel chatListPanel;
+    private ChatListPanel chatListPanel;
     private LoginPanel loginPanel;
     //private chatPanel chatPanel;
-    private profilePanel profilePanel;
+    private ProfilePanel profilePanel;
     private JButton logoutButton;
     private Client client;
 
@@ -20,11 +21,24 @@ public class GUI implements Runnable {
         frame = new JFrame("Chatter");
         logoutButton = new JButton("Logout");
         client = loginPanel.getClient();
+        if (client == null) {
+            frame.setVisible(false);
+            this.loginPanel = null;
+            frame.dispose();
+            return;
+        }
+        if (!isConnected()) {
+            displayError("Connection Lost");
+            frame.setVisible(false);
+            this.loginPanel = null;
+            frame.dispose();
+            return;
+        }
         String username = loginPanel.getUsername();
         //chatPanel = new chatPanel(client);
-        profilePanel = new profilePanel(username, client);
+        profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
-        chatListPanel = new chatListPanel(client);
+        chatListPanel = new ChatListPanel(client);
         refreshChats();
         frame.add(chatListPanel, BorderLayout.WEST);
         //frame.add(chatPanel, BorderLayout.CENTER);
@@ -48,8 +62,10 @@ public class GUI implements Runnable {
     }
 
     public void refreshChats() {
-        String chats = client.getChatList();
-        if (chats == null) {
+        String chats = "";
+        try {
+            chats = client.getChatList();
+        } catch (IOException e) {
             disconnect();
             return;
         }
@@ -58,7 +74,13 @@ public class GUI implements Runnable {
     }
 
     public void updateProfilePanel() {
-        String profile = client.accessProfile();
+        String profile = "";
+        try {
+            profile = client.accessProfile();
+        } catch (IOException e) {
+            disconnect();
+            return;
+        }
         if (profile == null) {
             disconnect();
             return;
@@ -77,9 +99,21 @@ public class GUI implements Runnable {
     }
 
     public void updateFriendsAndBlocks() {
-        String friends = client.getFriendList();
+        String friends;
+        try {
+            friends = client.getFriendList();
+        } catch (IOException e) {
+            disconnect();
+            return;
+        }
         String[] friendsArray = friends.split("" + (char) 29);
-        String blocks = client.getBlockList();
+        String blocks;
+        try {
+            blocks = client.getBlockList();
+        } catch (IOException e) {
+            disconnect();
+            return;
+        }
         String[] blocksArray = blocks.split("" + (char) 29);
         profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
         }
@@ -97,7 +131,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(5000, new ActionListener() { // Check every 5 seconds
+        Timer timer = new Timer(1000, new ActionListener() { // Check every 5 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
@@ -112,13 +146,24 @@ public class GUI implements Runnable {
 
 
     public void updateGUI() {
+        if (!isConnected()) {
+            displayError("Connection Lost");
+            disconnect();
+            return;
+        }
         updateProfilePanel();
         updateFriendsAndBlocks();
         refreshChats();
     }
 
     public void logout() {
-        client.logout();
+        try {
+            client.logout();
+        } catch (IOException e) {
+            displayError("Connection Lost");
+            disconnect();
+            return;
+        }
         this.loginPanel = null;
         frame.setVisible(false);
         frame.dispose();
@@ -135,9 +180,28 @@ public class GUI implements Runnable {
         return loginPanel == null;
     }
 
+    public boolean isConnected() {
+        try {
+            client.login("");
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
+        LoginPanel loginPanel;
         while (true) {
-            LoginPanel loginPanel = new LoginPanel(new Client());
+            try {
+                loginPanel = new LoginPanel(new Client());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Could not connect to server",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!loginPanel.isConnected()) {
+                return;
+            }
             SwingUtilities.invokeLater(loginPanel);
             while (!loginPanel.isDone()) { // Wait for login panel to finish
                 try {

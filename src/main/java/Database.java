@@ -102,16 +102,16 @@ public class Database implements DatabaseInterface {
 
     public String[] getAllUserChats(String username) {
         synchronized (MESSAGE_KEY) {
-            String[] chatList = new String[this.allChats.size()];
+            ArrayList<String> chatList = new ArrayList<>();
             for (int i = 0; i < this.allChats.size(); i++) {
                 MessageHistory mh = this.allChats.get(i);
                 if (mh.getSender().equals(username)) {
-                    chatList[i] = mh.getRecipient();
+                    chatList.add(mh.getRecipient());
                 } else if (mh.getRecipient().equals(username)) {
-                    chatList[i] = mh.getSender();
+                    chatList.add(mh.getSender());
                 }
             }
-            return chatList;
+            return chatList.toArray(new String[0]);
         }
     }
 
@@ -671,6 +671,7 @@ public class Database implements DatabaseInterface {
                 fw.write(fileSeparator);
             }
         } catch (Exception e) {
+            System.out.println("FAILED: " + e.getMessage());
             return false;
         }
         return true;
@@ -711,7 +712,9 @@ public class Database implements DatabaseInterface {
                 }
                 // Creates a new Message and adds it to the list
                 Message m = new Message(line.substring(line.indexOf(' ') + 1, line.length() - 1),
-                        line.substring(0, line.indexOf(':')));
+                    line.substring(line.indexOf(':') + 1).substring(0, line.substring(line.indexOf(':') + 1).indexOf(':')), 
+                    Long.parseLong(line.substring(0, line.indexOf(':'))));
+                        
                 messages.add(m);
                 line = br.readLine();
 
@@ -725,7 +728,7 @@ public class Database implements DatabaseInterface {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error loading messages: ");
+            System.out.println("Error loading messages: " + e.getMessage());
             return false;
         }
         return true;

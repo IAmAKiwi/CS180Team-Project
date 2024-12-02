@@ -156,6 +156,12 @@ public class ServerGUI implements Runnable {
                     } catch (IOException eIO) {
                         eIO.printStackTrace();
                     }
+                    System.out.println("Reloading data...");
+                    Database db = new Database();
+                    db.loadMessages();
+                    db.loadUsers();
+                    Server.setDatabase(db);
+
                 }
             }
         });
