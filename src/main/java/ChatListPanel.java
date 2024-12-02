@@ -185,7 +185,13 @@ public class ChatListPanel extends JPanel {
 
         private String getLastMessageTime(String username) {
             // Get and format last message timestamp
-            String chat = (client.getChat(username));
+            String chat = "NULL";
+            try {
+                chat = (client.getChat(username));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "FATAL ERROR";
+            }
             String lastMessageString = chat.substring((chat.substring(0, chat.length() - 2)).indexOf((char)26));
             //String content = lastMessageString.substring(lastMessageString.indexOf(" "));
             String[] arguments = lastMessageString.split(":");
