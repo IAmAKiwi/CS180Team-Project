@@ -195,7 +195,7 @@ public class GUI implements Runnable {
 
     public static void main(String[] args) {
         LoginPanel loginPanel;
-        int i = JOptionPane.showConfirmDialog(null, "Auto login to User1 Password1$?",
+        int i = JOptionPane.showConfirmDialog(null, "Auto login to user1 Password1$?",
                 "Auto Login", JOptionPane.YES_NO_OPTION);
         if (i == JOptionPane.YES_OPTION) {
             try {
