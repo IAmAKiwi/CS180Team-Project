@@ -1,7 +1,1 @@
-username: user1password: Password1$First Name: firstLast Name: lastBio: bioBirthday: 1 1 2001Profile Picture: profile.pngFriends Only: true
-<<<<<<< HEAD
-username: user3password: Password3$Friends Only: false
 username: Buiildingpassword: Thanos20122006$Friends Only: false
-=======
-username: user2password: Password2$Friends Only: false
->>>>>>> 6d42044e89005be47a8895c57de18d8251c05ef9

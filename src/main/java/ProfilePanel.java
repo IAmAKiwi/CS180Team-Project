@@ -143,7 +143,7 @@ public class ProfilePanel extends JPanel {
         }
     }
 
-    public profilePanel(String username, Client client) {
+    public ProfilePanel(String username, Client client) {
         this.client = client;
         this.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
@@ -332,6 +332,7 @@ public class ProfilePanel extends JPanel {
                         groupSeparator + birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
                         + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" + groupSeparator +
                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
+                try {
                 if (client.saveProfile(content)) {
                     firstNameLabel.setText(firstNameField.getText().trim());
                     lastNameLabel.setText(lastNameField.getText().trim());
@@ -345,6 +346,9 @@ public class ProfilePanel extends JPanel {
                     // Show an error message
                     JOptionPane.showMessageDialog(null, "Invalid profile information, " +
                             "try again", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
