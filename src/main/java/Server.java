@@ -56,6 +56,9 @@ public class Server implements Runnable, ServerInterface {
                     case "login":
                         result = login(content);
                         break;
+                    case "isLoggedIn":
+                        result = isLoggedIn();
+                        break;
                     case "register":
                         result = register(content);
                         break;
@@ -299,6 +302,13 @@ public class Server implements Runnable, ServerInterface {
             }
         }
         return "false";
+    }
+
+    public String isLoggedIn() {
+        if (currentUser == null) {
+            return "false";
+        }
+        return "true";
     }
 
     public String register(String content) {

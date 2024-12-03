@@ -52,6 +52,9 @@ public class Client implements Runnable, ClientInterface {
                     case "login":
                         // Login example: login:username[groupSeparator]password
                         result = String.valueOf(login(content));
+                    case "isLoggedIn":
+                        // Is logged in example: isLoggedIn:
+                        result = String.valueOf(isLoggedIn());
                         break;
                     case "register":
                         // Register example: register:username[groupSeparator]password
@@ -253,6 +256,11 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean login(String content) throws IOException {
         String command = "login:" + content;
+        return sendCommand(command);
+    }
+
+    public boolean isLoggedIn() throws IOException {
+        String command = "isLoggedIn: ";
         return sendCommand(command);
     }
 

@@ -191,32 +191,70 @@ public class GUI implements Runnable {
 
     public static void main(String[] args) {
         LoginPanel loginPanel;
-        while (true) {
+        int i = JOptionPane.showConfirmDialog(null, "Auto login to User1 Password1$?",
+                "Auto Login", JOptionPane.YES_NO_OPTION);
+        if (i == JOptionPane.YES_OPTION) {
             try {
-                loginPanel = new LoginPanel(new Client());
+                Client client = new Client();
+                client.login("user1" + (char) 29 + "Password1$");
+                loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (!loginPanel.isConnected()) {
-                return;
-            }
-            SwingUtilities.invokeLater(loginPanel);
-            while (!loginPanel.isDone()) { // Wait for login panel to finish
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            while (true) {
+                SwingUtilities.invokeLater(loginPanel);
+                while (!loginPanel.isDone()) { // Wait for login panel to finish
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                GUI gui = new GUI(loginPanel);
+                SwingUtilities.invokeLater(gui);
+                while (!gui.isDone()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                int j = JOptionPane.showConfirmDialog(null, "continue?",
+                        "Auto Login", JOptionPane.YES_NO_OPTION);
+                if (j == JOptionPane.NO_OPTION) {
+                    return;
                 }
             }
-            GUI gui = new GUI(loginPanel);
-            SwingUtilities.invokeLater(gui);
-            while (!gui.isDone()) {
+        } else if (i == JOptionPane.NO_OPTION) {
+            while (true) {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    loginPanel = new LoginPanel(new Client());
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Could not connect to server",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!loginPanel.isConnected()) {
+                    return;
+                }
+                SwingUtilities.invokeLater(loginPanel);
+                while (!loginPanel.isDone()) { // Wait for login panel to finish
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                GUI gui = new GUI(loginPanel);
+                SwingUtilities.invokeLater(gui);
+                while (!gui.isDone()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

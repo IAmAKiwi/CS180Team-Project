@@ -150,6 +150,12 @@ public class LoginPanel extends JComponent implements Runnable {
     }
 
     public void run() {
+        try {
+            if (client.isLoggedIn()) {
+                loginPanel = null;
+                return;
+            }
+        } catch (IOException e) {}
         frame = new JFrame("Login/Register");
         // Get screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -109,7 +109,7 @@ public class ServerGUI implements Runnable {
                         @Override
                         public void run() {
                             while (true) {
-                                Socket socket;
+                                Socket socket = null;
                                 try {
                                     socket = serverSocket.accept();
                                 } catch (IOException eIO) {
