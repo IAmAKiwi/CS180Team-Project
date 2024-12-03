@@ -19,6 +19,8 @@ public class GUI implements Runnable {
 
     public void run() {
         frame = new JFrame("Chatter");
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
         logoutButton = new JButton("Logout");
         client = loginPanel.getClient();
         if (client == null) {
@@ -51,14 +53,25 @@ public class GUI implements Runnable {
             }
         });
         refreshChats();
-        frame.add(chatListPanel, BorderLayout.WEST);
-        frame.add(chatPanel, BorderLayout.CENTER);
-        frame.add(profilePanel, BorderLayout.EAST);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridheight = 100;
+        gbc.weighty = 1;
+        frame.add(chatListPanel, gbc);
+        gbc.weightx = 1;
+        frame.add(chatPanel, gbc);
+        gbc.weightx = .05;
+        gbc.gridx = 4;
+        gbc.gridheight = 0;
+        frame.add(profilePanel, gbc);
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.gridheight = 1;
+        gbc.weighty = 0;
+        gbc.gridy = 100;
         logoutButton.addActionListener(e -> logout());
-        frame.add(logoutButton, BoxLayout.LINE_AXIS);
+        frame.add(logoutButton, gbc);
         JPanel logoutPanel = new JPanel(new BorderLayout(0, 0));
         logoutPanel.add(logoutButton, BorderLayout.LINE_END);
-        frame.add(logoutPanel, BorderLayout.SOUTH);
+        frame.add(logoutPanel, gbc);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {

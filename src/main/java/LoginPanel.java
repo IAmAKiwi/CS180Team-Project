@@ -507,7 +507,6 @@ public class LoginPanel extends JComponent implements Runnable {
                                         groupSeparator + birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
                                         + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" + groupSeparator +
                                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
-                                System.out.println(content);
                                 if (client.saveProfile(content)) {
                                     editDialog.dispose();
                                 } else {
