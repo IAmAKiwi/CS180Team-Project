@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class chatPanel extends JPanel {
     private JTextArea messageHistoryArea; // prior texts display
@@ -37,7 +38,11 @@ public class chatPanel extends JPanel {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sendMessage();
+                try {
+                    sendMessage();
+                } catch (Exception bruh) {
+                    // TODO: handle exception
+                } 
             }
         });
     }
@@ -46,7 +51,7 @@ public class chatPanel extends JPanel {
      * Refreshes the message history area with messages between the current user
      * and the selected user.
      */
-    public void refreshChat(String selectedUser) {
+    public void refreshChat(String selectedUser) throws IOException {
         this.selectedUser = selectedUser;
         String chatHistory = client.getChat(selectedUser); // fetch chat history from the client
         if (chatHistory == null || chatHistory.isEmpty()) {
@@ -60,7 +65,7 @@ public class chatPanel extends JPanel {
     /**
      * sends a message to the selected user and updates the chat history.
      */
-    private void sendMessage() {
+    private void sendMessage() throws IOException {
         String message = messageInputField.getText().trim();
         if (!message.isEmpty() && selectedUser != null) {
             String result = Boolean.toString(client.sendMessage(selectedUser + (char) 29 + message)); // group separator char
