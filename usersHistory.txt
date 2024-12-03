@@ -1,1 +1,2 @@
-username: Buiildingpassword: Thanos20122006$Friends Only: false
+username: user1password: Password1$Friends Only: false
+username: User2password: Password1$Friends Only: false
