@@ -54,6 +54,7 @@ public class chatPanel extends JPanel {
      * and the selected user.
      */
     public void refreshChat(String selectedUser) throws IOException {
+        this.selectedUser = selectedUser;
         String chatHistory = client.getChat(selectedUser);
         if (chatHistory == null || chatHistory.isEmpty()) {
             messageHistoryArea.setText("No messages yet with " + selectedUser + ".");
