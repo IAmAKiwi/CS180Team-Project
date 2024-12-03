@@ -8,7 +8,7 @@ public class GUI implements Runnable {
     private JFrame frame;
     private ChatListPanel chatListPanel;
     private LoginPanel loginPanel;
-    //private chatPanel chatPanel;
+    private chatPanel chatPanel;
     private ProfilePanel profilePanel;
     private JButton logoutButton;
     private Client client;
@@ -35,13 +35,24 @@ public class GUI implements Runnable {
             return;
         }
         String username = loginPanel.getUsername();
-        //chatPanel = new chatPanel(client);
+        chatPanel = new chatPanel(client);
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
         chatListPanel = new ChatListPanel(client);
+        //NEW CHANGE TESTING
+        chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
+            String selectedUser = (String) evt.getNewValue();
+            if (selectedUser != null) {
+                try {
+                    chatPanel.refreshChat(selectedUser);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        });
         refreshChats();
         frame.add(chatListPanel, BorderLayout.WEST);
-        //frame.add(chatPanel, BorderLayout.CENTER);
+        frame.add(chatPanel, BorderLayout.CENTER);
         frame.add(profilePanel, BorderLayout.EAST);
         logoutButton.addActionListener(e -> logout());
         frame.add(logoutButton, BoxLayout.LINE_AXIS);
