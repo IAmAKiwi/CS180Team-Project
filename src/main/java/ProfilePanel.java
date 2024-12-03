@@ -6,13 +6,16 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
+
 public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
     private JLabel usernameLabel;
     private JLabel firstNameLabel;
     private JLabel lastNameLabel;
     private JLabel bioLabel;
-    private JLabel birthdayLabel;
+    private JLabel birthdayMonthLabel;
+    private JLabel birthdayDayLabel;
+    private JLabel birthdayYearLabel;
     private JLabel friendsOnlyLabel;
     private JScrollPane friendsListScrollPane;
     private JTextArea friendsList;
@@ -150,7 +153,9 @@ public class ProfilePanel extends JPanel {
         firstNameLabel = new JLabel();
         lastNameLabel = new JLabel();
         bioLabel = new JLabel();
-        birthdayLabel = new JLabel();
+        birthdayMonthLabel = new JLabel();
+        birthdayDayLabel = new JLabel();
+        birthdayYearLabel = new JLabel();
         friendsOnlyLabel = new JLabel();
         friendsList = new JTextArea(5, 10);
         friendsList.setEditable(false);
@@ -160,17 +165,22 @@ public class ProfilePanel extends JPanel {
         blocksListScrollPane = new JScrollPane(blocksList);
         editButton = new JButton("Edit");
         createComponents();
-        addComponentsToPanel();
+        constraints.gridx = 1;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        this.add(editButton, constraints);
         addActionListeners();
     }
 
-    public void refreshProfile(String username, String firstName, String lastName, String bio, String birthday,
+    public void refreshProfile(String username, String firstName, String lastName, String bio, String month, String day, String year,
             String profilePic, String friendsOnly) {
         usernameLabel.setText(username);
         firstNameLabel.setText(firstName);
         lastNameLabel.setText(lastName);
         bioLabel.setText(bio);
-        birthdayLabel.setText(birthday);
+        birthdayMonthLabel.setText(month);
+        birthdayDayLabel.setText(day);
+        birthdayYearLabel.setText(year);
         friendsOnlyLabel.setText(friendsOnly);
     }
 
@@ -195,8 +205,12 @@ public class ProfilePanel extends JPanel {
         lastNameLabel.setFont(font);
         bioLabel = new JLabel(bioLabel.getText());
         bioLabel.setFont(font);
-        birthdayLabel = new JLabel(birthdayLabel.getText());
-        birthdayLabel.setFont(font);
+        birthdayMonthLabel = new JLabel(birthdayMonthLabel.getText());
+        birthdayMonthLabel.setFont(font);
+        birthdayDayLabel = new JLabel(birthdayDayLabel.getText());
+        birthdayDayLabel.setFont(font);
+        birthdayYearLabel = new JLabel(birthdayYearLabel.getText());
+        birthdayYearLabel.setFont(font);
         friendsOnlyLabel = new JLabel(friendsOnlyLabel.getText());
         friendsOnlyLabel.setFont(font);
         friendsList.setFont(font);
@@ -204,85 +218,8 @@ public class ProfilePanel extends JPanel {
         editButton = new JButton("Edit");
     }
 
-    private void addComponentsToPanel() {
-        constraints.gridx = 1;
-        constraints.insets = new Insets(10, 10, 10, 10);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        this.add(editButton, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.ipady = 10;
-        constraints.ipadx = 5;
-
-        JLabel temp = new JLabel("Username:");
-        Font f = new Font("Arial", Font.BOLD, 16);
-
-        temp.setFont(f);
-        this.add(temp, constraints);
-
-        temp = new JLabel("First Name:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Last Name:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Bio:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Birthday:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Messages limited to friends:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Friends:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        temp = new JLabel("Blocked Users:");
-        temp.setFont(f);
-        constraints.gridy++;
-        this.add(temp, constraints);
-
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-
-        this.add(usernameLabel, constraints);
-
-        constraints.gridy++;
-        this.add(firstNameLabel, constraints);
-
-        constraints.gridy++;
-        this.add(lastNameLabel, constraints);
-
-        constraints.gridy++;
-        this.add(bioLabel, constraints);
-
-        constraints.gridy++;
-        this.add(birthdayLabel, constraints);
-
-        constraints.gridy++;
-        this.add(friendsOnlyLabel, constraints);
-
-        constraints.gridy++;
-        this.add(friendsListScrollPane, constraints);
-
-        constraints.gridy++;
-        this.add(blocksListScrollPane, constraints);
-    }
-
     private void editProfile() {
+        try {
         // TODO: add cancel button
         // Create a new dialog to edit the profile
         JFrame frame = new JFrame("Edit Profile");
@@ -305,6 +242,16 @@ public class ProfilePanel extends JPanel {
         int startY = 250;
         int verticalGap = 25;
 
+        char groupSeparator = (char) 29;
+        String profileInput = client.accessProfile();
+        String[] profileInfo = profileInput.split(groupSeparator + "");
+        // Full Name
+        JLabel fullNameStr = new JLabel(profileInfo[0].substring(profileInfo[0].indexOf(":") + 1) + " "
+                + profileInfo[1].substring(profileInfo[1].indexOf(":") + 1));
+        JLabel firstNameStr = new JLabel(profileInfo[0].substring(profileInfo[0].indexOf(":") + 1));
+        JLabel lastNameStr = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1));
+        JLabel bioStr = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1));
+        JLabel birthdayStr = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1));
         // Full Name
         JLabel fullNameLabel = new JLabel("Donald Trump");
         fullNameLabel.setFont(labelFont);
@@ -329,11 +276,23 @@ public class ProfilePanel extends JPanel {
         bioLabel.setForeground(textColor);
         bioLabel.setBounds(startX, startY + (verticalGap * 3), fieldWidth, fieldHeight);
 
-        // Birthday
-        JLabel birthdayLabel = new JLabel("June 14, 1946");
-        birthdayLabel.setFont(labelFont);
-        birthdayLabel.setForeground(textColor);
-        birthdayLabel.setBounds(startX, startY + (verticalGap * 4), fieldWidth, fieldHeight);
+        // Birthday Month
+        JLabel birthdayMonthLabel = new JLabel("June 14, 1946");
+        birthdayMonthLabel.setFont(labelFont);
+        birthdayMonthLabel.setForeground(textColor);
+        birthdayMonthLabel.setBounds(startX, startY + (verticalGap * 4), fieldWidth, fieldHeight);
+
+        // Birthday Day
+        JLabel birthdayDayLabel = new JLabel("June 14, 1946");
+        birthdayDayLabel.setFont(labelFont);
+        birthdayDayLabel.setForeground(textColor);
+        birthdayDayLabel.setBounds(startX + 10, startY + (verticalGap * 4), fieldWidth, fieldHeight);
+
+        // Birthday Year
+        JLabel birthdayYearLabel = new JLabel("June 14, 1946");
+        birthdayYearLabel.setFont(labelFont);
+        birthdayYearLabel.setForeground(textColor);
+        birthdayYearLabel.setBounds(startX + 20, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
         // After creating imagePanel but before other labels:
         // Stats styling
@@ -531,7 +490,6 @@ public class ProfilePanel extends JPanel {
         JTextField birthdayFieldDay = new JTextField(20);
         rightPanel.add(birthdayFieldDay, gbc);
 
-
         // Birthday
         gbc.gridx = 0;
         gbc.gridy++;
@@ -654,7 +612,7 @@ public class ProfilePanel extends JPanel {
             }
 
             public void updateProfile() {
-                birthdayLabel.setText(birthdayFieldMonth.getText());
+                birthdayMonthLabel.setText(birthdayFieldMonth.getText());
             }
         });
 
@@ -675,7 +633,7 @@ public class ProfilePanel extends JPanel {
             }
 
             public void updateProfile() {
-                birthdayLabel.setText(birthdayFieldDay.getText());
+                birthdayDayLabel.setText(birthdayFieldDay.getText());
             }
         });
 
@@ -696,7 +654,7 @@ public class ProfilePanel extends JPanel {
             }
 
             public void updateProfile() {
-                birthdayLabel.setText(birthdayFieldYear.getText());
+                birthdayYearLabel.setText(birthdayFieldYear.getText());
             }
         });
 
@@ -720,49 +678,50 @@ public class ProfilePanel extends JPanel {
         mainPanel.add(firstNameLabel);
         mainPanel.add(lastNameLabel);
         mainPanel.add(bioLabel);
-        mainPanel.add(birthdayLabel);
+        mainPanel.add(birthdayMonthLabel);
+        mainPanel.add(birthdayDayLabel);
+        mainPanel.add(birthdayYearLabel);
         mainPanel.add(blackBackground);
         mainPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         // Add the panel and button to the dialog
         frame.add(mainPanel);
 
-         // Create a button to save the changes
-         JButton saveButton = new JButton("Save");
-         saveButton.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-         // Save the changes
-         char groupSeparator = (char) 29;
-         String content = usernameLabel.getText().trim() + groupSeparator +
-         firstNameField.getText().trim() +
-         groupSeparator + lastNameField.getText().trim() + groupSeparator +
-         bioField.getText().trim() +
-         groupSeparator + birthdayFieldMonth.getText().trim() + "/" +
-         birthdayFieldDay.getText().trim()
-         + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" +
-         groupSeparator +
-         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
-         try {
-         if (client.saveProfile(content)) {
-         firstNameLabel.setText(firstNameField.getText().trim());
-         lastNameLabel.setText(lastNameField.getText().trim());
-         bioLabel.setText(bioField.getText().trim());
-         birthdayLabel.setText(birthdayFieldMonth.getText().trim() + "/" +
-         birthdayFieldDay.getText().trim()
-         + "/" + birthdayFieldYear.getText().trim());
-         friendsOnlyLabel.setText(((Boolean)
-         friendsOnlyCheckBox.isSelected()).toString().trim());
-         // Close the dialog
-         frame.dispose();
-         } else {
-         // Show an error message
-         JOptionPane.showMessageDialog(null, "Invalid profile information, " +
-         "try again", "Error", JOptionPane.ERROR_MESSAGE);
-         }
-         } catch (IOException ex) {
-         ex.printStackTrace();
-         }
-         }
-         });
+        // Create a button to save the changes
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Save the changes
+                char groupSeparator = (char) 29;
+                String content = usernameLabel.getText().trim() + groupSeparator +
+                        firstNameField.getText().trim() +
+                        groupSeparator + lastNameField.getText().trim() + groupSeparator +
+                        bioField.getText().trim() +
+                        groupSeparator + birthdayFieldMonth.getText().trim() + "/" +
+                        birthdayFieldDay.getText().trim()
+                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" +
+                        groupSeparator +
+                        ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
+                try {
+                    if (client.saveProfile(content)) {
+                        firstNameLabel.setText(firstNameField.getText().trim());
+                        lastNameLabel.setText(lastNameField.getText().trim());
+                        bioLabel.setText(bioField.getText().trim());
+                        birthdayMonthLabel.setText(birthdayFieldMonth.getText().trim());
+                        birthdayDayLabel.setText(birthdayFieldDay.getText().trim());
+                        birthdayYearLabel.setText(birthdayFieldYear.getText().trim());
+                        friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
+                        // Close the dialog
+                        frame.dispose();
+                    } else {
+                        // Show an error message
+                        JOptionPane.showMessageDialog(null, "Invalid profile information, " +
+                                "try again", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         // frame.add(editPanel, BorderLayout.CENTER);
         frame.add(saveButton, BorderLayout.SOUTH);
 
@@ -776,6 +735,9 @@ public class ProfilePanel extends JPanel {
 
         // Make the dialog visible
         frame.setVisible(true);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }
 
     private void addActionListeners() {

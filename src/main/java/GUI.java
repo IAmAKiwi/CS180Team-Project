@@ -92,10 +92,14 @@ public class GUI implements Runnable {
         String lastName = profileParts[2].substring(profileParts[2].indexOf(":") + 1);
         String bio = profileParts[3].substring(profileParts[3].indexOf(":") + 1);
         String birthday = profileParts[4].substring(profileParts[4].indexOf(":") + 1);
+        String[] birthdayParts = birthday.split("/");
+        String day = birthdayParts[1];
+        String month = birthdayParts[0];
+        String year = birthdayParts[2];
         String profilePic = profileParts[5].substring(profileParts[5].indexOf(":") + 1);
         String friendsOnly = profileParts[6].substring(profileParts[6].indexOf(":") + 1);
 
-        profilePanel.refreshProfile(username, firstName, lastName, bio, birthday, profilePic, friendsOnly);
+        profilePanel.refreshProfile(username, firstName, lastName, bio, month, day, year, profilePic, friendsOnly);
     }
 
     public void updateFriendsAndBlocks() {
@@ -196,7 +200,7 @@ public class GUI implements Runnable {
         if (i == JOptionPane.YES_OPTION) {
             try {
                 Client client = new Client();
-                client.login("user1" + (char) 29 + "Password1$");
+                client.login("User2" + (char) 29 + "Password1$");
                 loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
