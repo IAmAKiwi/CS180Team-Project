@@ -1,13 +1,11 @@
 import javax.swing.*;
-
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-
+import java.util.*;
+import java.io.*;
 public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
     private JLabel usernameLabel;
@@ -290,68 +288,6 @@ public class ProfilePanel extends JPanel {
         JFrame frame = new JFrame("Edit Profile");
         // JDialog editDialog = new JDialog(frame, "Edit Profile", true);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Create fields to edit the profile
-        JTextField firstNameField = new JTextField(firstNameLabel.getText(), 20);
-        JTextField lastNameField = new JTextField(lastNameLabel.getText(), 20);
-        JTextField bioField = new JTextField(bioLabel.getText(), 20);
-        JTextField birthdayFieldMonth = new JTextField("", 20);
-        JTextField birthdayFieldDay = new JTextField("", 20);
-        JTextField birthdayFieldYear = new JTextField("", 20);
-        JCheckBox friendsOnlyCheckBox = new JCheckBox("Messages limited to friends?",
-                Boolean.parseBoolean(friendsOnlyLabel.getText()));
-
-        // Create a panel to hold the fields
-        JPanel editPanel = new JPanel();
-        editPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        editPanel.setLayout(new GridLayout(7, 2));
-        // Add the fields to the panel
-        editPanel.add(new JLabel("First Name:"));
-        editPanel.add(firstNameField);
-        editPanel.add(new JLabel("Last Name:"));
-        editPanel.add(lastNameField);
-        editPanel.add(new JLabel("Bio:"));
-        editPanel.add(bioField);
-        editPanel.add(new JLabel("Birth Month (MM):"));
-        editPanel.add(birthdayFieldMonth);
-        editPanel.add(new JLabel("Birth Day (DD):"));
-        editPanel.add(birthdayFieldDay);
-        editPanel.add(new JLabel("Birth Year (YYYY):"));
-        editPanel.add(birthdayFieldYear);
-        editPanel.add(new JLabel("Friends Only:"));
-        editPanel.add(friendsOnlyCheckBox);
-
-        // Create a button to save the changes
-        JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Save the changes
-                char groupSeparator = (char) 29;
-                String content = usernameLabel.getText().trim() + groupSeparator + firstNameField.getText().trim() +
-                        groupSeparator + lastNameField.getText().trim() + groupSeparator + bioField.getText().trim() +
-                        groupSeparator + birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
-                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" + groupSeparator +
-                        ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
-                try {
-                if (client.saveProfile(content)) {
-                    firstNameLabel.setText(firstNameField.getText().trim());
-                    lastNameLabel.setText(lastNameField.getText().trim());
-                    bioLabel.setText(bioField.getText().trim());
-                    birthdayLabel.setText(birthdayFieldMonth.getText().trim() + "/" + birthdayFieldDay.getText().trim()
-                            + "/" + birthdayFieldYear.getText().trim());
-                    friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
-                    // Close the dialog
-                    frame.dispose();
-                } else {
-                    // Show an error message
-                    JOptionPane.showMessageDialog(null, "Invalid profile information, " +
-                            "try again", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         JPanel mainPanel = new JPanel(null);
         JPanel blackBackground = new JPanel();
@@ -531,6 +467,246 @@ public class ProfilePanel extends JPanel {
 
         // Add grid panel to main panel
         mainPanel.add(gridPanel);
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBounds((int) (screenSize.width / 2.5), 0, screenSize.width - (int) (screenSize.width / 2.5),
+                screenSize.height);
+        mainPanel.add(rightPanel);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Full Name
+        JLabel fullName = new JLabel("Full Name:");
+        rightPanel.add(fullName, gbc);
+        gbc.gridx = 1;
+        JTextField fullNameField = new JTextField(20);
+        rightPanel.add(fullNameField, gbc);
+
+        // First Name
+        gbc.gridx = 0; // Reset to first column
+        gbc.gridy++;
+        JLabel firstName = new JLabel("First Name:");
+        rightPanel.add(firstName, gbc);
+        gbc.gridx = 1;
+        JTextField firstNameField = new JTextField(20);
+        rightPanel.add(firstNameField, gbc);
+
+        // Last Name
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel lastName = new JLabel("Last Name:");
+        rightPanel.add(lastName, gbc);
+        gbc.gridx = 1;
+        JTextField lastNameField = new JTextField(20);
+        rightPanel.add(lastNameField, gbc);
+
+        // Bio
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel bio = new JLabel("Bio:");
+        rightPanel.add(bio, gbc);
+        gbc.gridx = 1;
+        JTextField bioField = new JTextField(20);
+        rightPanel.add(bioField, gbc);
+
+        // Birthday
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel birthdayMonth = new JLabel("Birth Month:");
+        rightPanel.add(birthdayMonth, gbc);
+        gbc.gridx = 1;
+        JTextField birthdayFieldMonth = new JTextField(20);
+        rightPanel.add(birthdayFieldMonth, gbc);
+
+        // Birthday
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel birthdayDay = new JLabel("Birth Day:");
+        rightPanel.add(birthdayDay, gbc);
+        gbc.gridx = 1;
+        JTextField birthdayFieldDay = new JTextField(20);
+        rightPanel.add(birthdayFieldDay, gbc);
+
+
+        // Birthday
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel birthdayYear = new JLabel("Birthday:");
+        rightPanel.add(birthdayYear, gbc);
+        gbc.gridx = 1;
+        JTextField birthdayFieldYear = new JTextField(20);
+        rightPanel.add(birthdayFieldYear, gbc);
+
+        // Friends Only
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel friendsOnly = new JLabel("Messages limited to friends:");
+        rightPanel.add(friendsOnly, gbc);
+        gbc.gridx = 1;
+        JCheckBox friendsOnlyCheckBox = new JCheckBox();
+        rightPanel.add(friendsOnlyCheckBox, gbc);
+
+        // Add listeners to update profile on the left in real-time
+
+        // Add listeners to update profile on the left in real-time
+        fullNameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                fullNameLabel.setText(fullNameField.getText());
+            }
+        });
+
+        firstNameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                firstNameLabel.setText(firstNameField.getText());
+            }
+        });
+
+        lastNameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                lastNameLabel.setText(lastNameField.getText());
+            }
+        });
+
+        bioField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                bioLabel.setText(bioField.getText());
+            }
+        });
+
+        birthdayFieldMonth.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                birthdayLabel.setText(birthdayFieldMonth.getText());
+            }
+        });
+
+        birthdayFieldDay.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                birthdayLabel.setText(birthdayFieldDay.getText());
+            }
+        });
+
+        birthdayFieldYear.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateProfile();
+            }
+
+            public void updateProfile() {
+                birthdayLabel.setText(birthdayFieldYear.getText());
+            }
+        });
+
+        friendsOnlyCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                friendsOnlyLabel.setText(friendsOnlyCheckBox.isSelected() ? "Yes" : "No");
+            }
+        });
+
         // Add buttons to panel
         mainPanel.add(addFriendButton);
         mainPanel.add(blockButton);
@@ -549,6 +725,44 @@ public class ProfilePanel extends JPanel {
         mainPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         // Add the panel and button to the dialog
         frame.add(mainPanel);
+
+         // Create a button to save the changes
+         JButton saveButton = new JButton("Save");
+         saveButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         // Save the changes
+         char groupSeparator = (char) 29;
+         String content = usernameLabel.getText().trim() + groupSeparator +
+         firstNameField.getText().trim() +
+         groupSeparator + lastNameField.getText().trim() + groupSeparator +
+         bioField.getText().trim() +
+         groupSeparator + birthdayFieldMonth.getText().trim() + "/" +
+         birthdayFieldDay.getText().trim()
+         + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" +
+         groupSeparator +
+         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
+         try {
+         if (client.saveProfile(content)) {
+         firstNameLabel.setText(firstNameField.getText().trim());
+         lastNameLabel.setText(lastNameField.getText().trim());
+         bioLabel.setText(bioField.getText().trim());
+         birthdayLabel.setText(birthdayFieldMonth.getText().trim() + "/" +
+         birthdayFieldDay.getText().trim()
+         + "/" + birthdayFieldYear.getText().trim());
+         friendsOnlyLabel.setText(((Boolean)
+         friendsOnlyCheckBox.isSelected()).toString().trim());
+         // Close the dialog
+         frame.dispose();
+         } else {
+         // Show an error message
+         JOptionPane.showMessageDialog(null, "Invalid profile information, " +
+         "try again", "Error", JOptionPane.ERROR_MESSAGE);
+         }
+         } catch (IOException ex) {
+         ex.printStackTrace();
+         }
+         }
+         });
         // frame.add(editPanel, BorderLayout.CENTER);
         frame.add(saveButton, BorderLayout.SOUTH);
 
