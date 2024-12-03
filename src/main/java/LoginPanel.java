@@ -499,7 +499,7 @@ public class LoginPanel extends JComponent implements Runnable {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             if (client.register(usernameField.getText() + (char) 29 +
-                                    String.valueOf(passwordField.getText()))) {
+                                    String.valueOf(passwordField.getPassword()))) {
                                 // Save the changes
                                 char groupSeparator = (char) 29;
                                 String content = usernameField.getText().trim() + groupSeparator + firstNameField.getText().trim() +

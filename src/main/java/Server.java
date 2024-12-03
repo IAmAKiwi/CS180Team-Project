@@ -83,9 +83,6 @@ public class Server implements Runnable, ServerInterface {
                     case "accessProfile":
                         result = accessProfile();
                         break;
-                    // case "updateProfile":
-                    // result = updateProfile(content);
-                    // break;
                     case "saveProfile":
                         result = saveProfile(content);
                         break;
@@ -145,7 +142,7 @@ public class Server implements Runnable, ServerInterface {
             }
         }
     }
-
+    @Override
     public String deleteMessage(String content) {
         String[] info = content.split(groupSeparatorChar + "");
         if (info.length != 2 || !info[0].contains(":")) {
@@ -160,49 +157,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "false";
     }
-
-    @Deprecated
-    public String updateProfile(String content) {
-        char groupSeparator = 29;
-        String[] info = content.split(groupSeparator + "");
-        String oldUsername = info[0];
-        User user = db.getUser(oldUsername);
-        String username = info[1];
-        String password = info[2];
-        String firstName = info[3];
-        String lastName = info[4];
-        String bio = info[5];
-        String[] birthdaystr = info[6].split("/");
-        int[] birthday = new int[3];
-        for (int i = 0; i < 3; i++) {
-            int b = Integer.parseInt(birthdaystr[i]);
-            birthday[i] = b;
-        }
-        String profilePic = info[7];
-        String[] friendsArray = info[8].split(",");
-        ArrayList<String> friends = new ArrayList<String>();
-        for (String friend : friendsArray) {
-            friends.add(friend);
-        }
-        String[] blockedArray = info[9].split(",");
-        ArrayList<String> blocked = new ArrayList<String>();
-        for (String block : blockedArray) {
-            blocked.add(block);
-        }
-        Boolean friendsOnly = Boolean.valueOf(info[10]);
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setBio(bio);
-        user.setBirthday(birthday);
-        user.setProfilePic(profilePic);
-        user.setFriends(friends);
-        user.setBlocked(blocked);
-        user.setFriendsOnly(friendsOnly);
-        return "true";
-    }
-
+    @Override
     public String saveProfile(String content) {
         /*
          * Format input as:
@@ -248,16 +203,17 @@ public class Server implements Runnable, ServerInterface {
 
             currentUser.setProfilePic(fields[5]);
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
+            db.setUser(currentUser);
             return "true";
         } catch (Exception e) {
             return "false";
         }
     }
-
+    @Override
     public String accessProfile() {
         return currentUser.toString();
     }
-
+    @Override
     public String deleteChat(String user) {
         try {
             // Check if user is logged in
@@ -273,7 +229,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
+    @Override
     public boolean disconnect() {
         try {
             clientSocket.close();
@@ -283,11 +239,11 @@ public class Server implements Runnable, ServerInterface {
             return false;
         }
     }
-
+    @Override
     public String getProfilePic() {
         return db.getUser(currentUser.getUsername()).getProfilePic();
     }
-
+    @Override
     public String login(String content) {
         if (content == null || content.isEmpty()) {
             return "false";
@@ -310,7 +266,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "true";
     }
-
+    @Override
     public String register(String content) {
         try {
             String[] credentials = splitContent(content);
@@ -335,6 +291,7 @@ public class Server implements Runnable, ServerInterface {
      *
      * @return String of users.
      */
+    @Override
     public String getUserList() {
         ArrayList<User> users = db.getUsers();
         String userList = "";
@@ -352,6 +309,7 @@ public class Server implements Runnable, ServerInterface {
      * @param content The username of the other user
      * @return String of all messages
      */
+    @Override
     public String getChat(String content) {
         MessageHistory mh = db.getMessages(currentUser.getUsername(), content);
         if (mh == null) {
@@ -416,7 +374,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
+    @Override
     public String sendImage(String content) {
         try {
             String[] parts = splitContent(content);
@@ -429,7 +387,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
+    @Override
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {
             return "true";
@@ -443,6 +401,7 @@ public class Server implements Runnable, ServerInterface {
      *
      * @return String of friends
      */
+    @Override
     public String getFriendList() {
         String[] friends = db.getFriends(currentUser.getUsername());
         String friendList = "";
@@ -451,7 +410,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return friendList;
     }
-
+    @Override
     public String blockUser(String otherUsername) {
         if (db.blockUser(currentUser.getUsername(), otherUsername)) {
             return "true";
@@ -465,6 +424,7 @@ public class Server implements Runnable, ServerInterface {
      *
      * @return
      */
+    @Override
     public String getBlockList() {
         String[] blocks = db.getBlockList(currentUser.getUsername());
         String blockList = "";
@@ -473,38 +433,38 @@ public class Server implements Runnable, ServerInterface {
         }
         return blockList;
     }
-
+    @Override
     public String removeFriend(String otherUsername) {
         if (db.removeFriend(currentUser.getUsername(), otherUsername)) {
             return "true";
         }
         return "false";
     }
-
+    @Override
     public String unblockUser(String otherUsername) {
         if (db.unblockUser(currentUser.getUsername(), otherUsername)) {
             return "true";
         }
         return "false";
     }
-
+    @Override
     public String isFriendsOnly() {
         if (currentUser.isFriendsOnly()) {
             return "true";
         }
         return "false";
     }
-
+    @Override
     public String setFriendsOnly(boolean friendsOnly) {
         currentUser.setFriendsOnly(friendsOnly);
         return "true";
     }
-
+    @Override
     public String setProfilePic(String profilePic) {
         db.getUser(currentUser.getUsername()).setProfilePic(profilePic);
         return "true";
     }
-
+    @Override
     public String logout() {
         currentUser = null;
         return "true";

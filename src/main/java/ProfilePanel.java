@@ -230,6 +230,10 @@ public class ProfilePanel extends JPanel {
         JPanel blackBackground = new JPanel();
         blackBackground.setBackground(Color.BLACK);
         blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 98);
+        char groupSeparator = (char) 29;
+        String profileInput = client.accessProfile();
+        String[] profileInfo = profileInput.split(groupSeparator + "");
+        JLabel profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 1));// do this later 
         CircularImagePanel imagePanel = new CircularImagePanel(
                 "C:/Users/peter/Github/CS180Team-Project/images/donald-trump-gettyimages-687193180.jpg", 150);
         imagePanel.setBounds(40, 80, 100, 100);
@@ -241,58 +245,59 @@ public class ProfilePanel extends JPanel {
         int startX = 50;
         int startY = 250;
         int verticalGap = 25;
-
-        char groupSeparator = (char) 29;
-        String profileInput = client.accessProfile();
-        String[] profileInfo = profileInput.split(groupSeparator + "");
         // Full Name
-        JLabel fullNameStr = new JLabel(profileInfo[0].substring(profileInfo[0].indexOf(":") + 1) + " "
-                + profileInfo[1].substring(profileInfo[1].indexOf(":") + 1));
-        JLabel firstNameStr = new JLabel(profileInfo[0].substring(profileInfo[0].indexOf(":") + 1));
-        JLabel lastNameStr = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1));
-        JLabel bioStr = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1));
-        JLabel birthdayStr = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1));
+        JLabel fullNameStr = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim() + " "
+                + profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
+        JLabel firstNameStr = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
+        JLabel lastNameStr = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
+        JLabel bioStr = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1).trim());
+        String birthday = profileInfo[4].substring(profileInfo[4].indexOf(":") + 1).trim();
+        String[] birthdayParts = birthday.split("/");
+        JLabel birthdayMonthStr = new JLabel(birthdayParts[0]);
+        JLabel birthdayDayStr = new JLabel(birthdayParts[1]);
+        JLabel birthdayYearStr = new JLabel(birthdayParts[2]);
+        JLabel friendsOnlyStr = new JLabel(profileInfo[6].substring(profileInfo[6].indexOf(":") + 1));
         // Full Name
-        JLabel fullNameLabel = new JLabel("Donald Trump");
+        JLabel fullNameLabel = new JLabel(fullNameStr.getText());
         fullNameLabel.setFont(labelFont);
         fullNameLabel.setForeground(textColor);
         fullNameLabel.setBounds(startX, startY, fieldWidth, fieldHeight); // maybe change height to fieldHeight
 
         // First Name
-        JLabel firstNameLabel = new JLabel("Donald");
+        JLabel firstNameLabel = new JLabel(firstNameStr.getText());
         firstNameLabel.setFont(labelFont);
         firstNameLabel.setForeground(textColor);
         firstNameLabel.setBounds(startX, startY + verticalGap, fieldWidth, fieldHeight);
 
         // Last Name
-        JLabel lastNameLabel = new JLabel("Trump");
+        JLabel lastNameLabel = new JLabel(lastNameStr.getText());
         lastNameLabel.setFont(labelFont);
         lastNameLabel.setForeground(textColor);
         lastNameLabel.setBounds(startX, startY + (verticalGap * 2), fieldWidth, fieldHeight);
 
         // Bio
-        JLabel bioLabel = new JLabel("I am the president of the United States.");
+        JLabel bioLabel = new JLabel(bioStr.getText());
         bioLabel.setFont(labelFont);
         bioLabel.setForeground(textColor);
         bioLabel.setBounds(startX, startY + (verticalGap * 3), fieldWidth, fieldHeight);
 
         // Birthday Month
-        JLabel birthdayMonthLabel = new JLabel("June 14, 1946");
+        JLabel birthdayMonthLabel = new JLabel(birthdayMonthStr.getText());
         birthdayMonthLabel.setFont(labelFont);
         birthdayMonthLabel.setForeground(textColor);
         birthdayMonthLabel.setBounds(startX, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
         // Birthday Day
-        JLabel birthdayDayLabel = new JLabel("June 14, 1946");
+        JLabel birthdayDayLabel = new JLabel(birthdayDayStr.getText());
         birthdayDayLabel.setFont(labelFont);
         birthdayDayLabel.setForeground(textColor);
-        birthdayDayLabel.setBounds(startX + 10, startY + (verticalGap * 4), fieldWidth, fieldHeight);
+        birthdayDayLabel.setBounds(startX + 30, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
         // Birthday Year
-        JLabel birthdayYearLabel = new JLabel("June 14, 1946");
+        JLabel birthdayYearLabel = new JLabel(birthdayYearStr.getText());
         birthdayYearLabel.setFont(labelFont);
         birthdayYearLabel.setForeground(textColor);
-        birthdayYearLabel.setBounds(startX + 20, startY + (verticalGap * 4), fieldWidth, fieldHeight);
+        birthdayYearLabel.setBounds(startX + 60, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
         // After creating imagePanel but before other labels:
         // Stats styling

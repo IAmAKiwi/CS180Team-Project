@@ -463,7 +463,7 @@ public class Database implements DatabaseInterface {
                         }
                         if (users.getBirthday() != null && users.getBirthday().length == 3) {
                             bfr.write("Birthday: ");
-                            bfr.write(users.getBirthday()[0] + " " + users.getBirthday()[1] + " "
+                            bfr.write(users.getBirthday()[0] + "/" + users.getBirthday()[1] + "/"
                                     + users.getBirthday()[2]); // fix
                             bfr.write(groupSeparator);
                         }
@@ -588,7 +588,7 @@ public class Database implements DatabaseInterface {
                                     break;
                                 case "Birthday":
                                     try {
-                                        String[] birthday = value.split(" ");
+                                        String[] birthday = value.split("/");
                                         int[] birthdayInt = new int[3];
                                         for (int j = 0; j < 3; j++) {
                                             birthdayInt[j] = Integer.parseInt(birthday[j]);
@@ -848,6 +848,16 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    public void setUser(User user) {
+        synchronized (USER_KEY) {
+            for (int i = 0; i < this.userList.size(); i++) {
+                if (this.userList.get(i).getUsername().equals(user.getUsername())) {
+                    this.userList.set(i, user);
+                    return;
+                }
+            }
+        }
+    }
     /**
      * Sets the list of users.
      *
