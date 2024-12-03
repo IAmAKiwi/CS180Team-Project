@@ -1,2 +1,1 @@
-username: user1password: Password1$Friends Only: false
-username: User2password: Password2$First Name: BuiLast Name: Dinh Tuan AnhBio: I am gayBirthday: 12/20/2006Profile Picture: profile.pngFriends Only: true
+username: user1password: Password1$First Name: testLast Name: userBio: I am a testBirthday: 1/1/2001Profile Picture: profile.pngFriends Only: false
