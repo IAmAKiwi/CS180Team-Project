@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -179,8 +181,17 @@ public class ChatListPanel extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if (chat == null || chat.isEmpty()) {
+                return "";
+            }
             // Parse and return last message preview
-            return chat != null ? chat.substring(0, Math.min(30, chat.length())) + "..." : "";
+            // Get to the beginning of the last message
+            chat = chat.substring(0, chat.lastIndexOf((char) 29));
+            if (chat.contains("" + (char) 29)) {
+                chat = chat.substring(0, chat.lastIndexOf((char) 29));
+            }
+            String temp = chat.substring(chat.indexOf(":") + 1);
+            return temp.substring(temp.indexOf(":") + 2);
         }
 
         private String getLastMessageTime(String username) {
@@ -192,28 +203,41 @@ public class ChatListPanel extends JPanel {
                 e.printStackTrace();
                 return "FATAL ERROR";
             }
-            String lastMessageString = chat.substring((chat.substring(0, chat.length() - 2)).indexOf((char)26));
-            //String content = lastMessageString.substring(lastMessageString.indexOf(" "));
-            String[] arguments = lastMessageString.split(":");
-            Message msg = new Message(arguments[1], arguments[2], Long.parseLong(arguments[0]));
+            if (chat == null || chat.isEmpty()) {
+                return "";
+            }
+            // Get to the beginning of the last message
+            chat = chat.substring(0, chat.lastIndexOf((char) 29));
+            if (chat.contains("" + (char) 29)) {
+                chat = chat.substring(0, chat.lastIndexOf((char) 29));
+            }
+            String temp = chat.substring(chat.indexOf(":") + 1);
+            String lastMessageContent = temp.substring(temp.indexOf(":") + 2);
+            String[] arguments = chat.split(":");
+            Message msg = new Message(arguments[1], lastMessageContent, Long.parseLong(arguments[0]));
             Date currTime = Date.from(Instant.now());
             Date msgTime = msg.getTimeStamp();
-            if (String.format("%Y%j", currTime, currTime).equals(
-                String.format("%Y%j", msgTime, msgTime)))
-            {
-                return String.format("%l:%M %T", msgTime, msgTime, msgTime);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyDDD");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+            if (dateFormat.format(currTime).equals(dateFormat.format(msgTime))) {
+                return timeFormat.format(msgTime);
             }
-            int currYearDay = Integer.parseInt(String.format("%Y%j", currTime, currTime));
-            int msgYearDay = Integer.parseInt(String.format("%Y%j", msgTime, msgTime));
+            int currYearDay = Integer.parseInt(dateFormat.format(currTime));
+            int msgYearDay = Integer.parseInt(dateFormat.format(msgTime));
             if (msgYearDay == currYearDay - 1)
             {
                 return "Yesterday";
             }
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_YEAR, msgYearDay);
+            SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
             if (((currYearDay - 7) < msgYearDay) && (msgYearDay < (currYearDay - 1)))
             {
-                return String.format("%A", msgYearDay);
+                return dayOfWeekFormat.format(calendar.getTime());
             }
-            return String.format("%e %b %Y", msgYearDay, msgYearDay, msgYearDay);
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("d MMM yyyy");
+            calendar.set(Calendar.DAY_OF_YEAR, msgYearDay);
+            return dateFormat1.format(calendar.getTime());
         }
     }
 
