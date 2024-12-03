@@ -81,7 +81,15 @@ public class GUI implements Runnable {
             return;
         }
         String[] chatsArray = chats.split("" + (char) 29);
-        chatListPanel.refreshChats(chatsArray);
+        /*chatListPanel.refreshChats(chatsArray);
+        String selectedChat = chatListPanel.getSelectedChat();
+        if (selectedChat != null && !selectedChat.isEmpty()) {
+            try {
+                chatPanel.refreshChat(selectedChat);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }*/
     }
 
     public void updateProfilePanel() {
@@ -146,7 +154,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(1000, new ActionListener() { // Check every 5 seconds
+        Timer timer = new Timer(100, new ActionListener() { // Check every 5 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
@@ -188,6 +196,9 @@ public class GUI implements Runnable {
         client.disconnect();
         frame.setVisible(false);
         this.loginPanel = null;
+        this.chatPanel = null;
+        this.profilePanel = null;
+        this.chatListPanel = null;
         frame.dispose();
     }
 
@@ -211,7 +222,7 @@ public class GUI implements Runnable {
         if (i == JOptionPane.YES_OPTION) {
             try {
                 Client client = new Client();
-                client.login("User2" + (char) 29 + "Password1$");
+                client.login("user1" + (char) 29 + "Password1$");
                 loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
@@ -238,7 +249,9 @@ public class GUI implements Runnable {
                 }
                 int j = JOptionPane.showConfirmDialog(null, "continue?",
                         "Auto Login", JOptionPane.YES_NO_OPTION);
-                if (j == JOptionPane.NO_OPTION) {
+                if (j != JOptionPane.YES_OPTION) {
+                    System.out.println("Disconnecting...");
+                    gui.disconnect();
                     return;
                 }
             }
@@ -274,5 +287,4 @@ public class GUI implements Runnable {
             }
         }
     }
-
 }
