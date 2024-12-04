@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
@@ -26,12 +28,12 @@ public class ProfilePanel extends JPanel {
 
     private static class RoundedPanel extends JPanel {
         private int radius;
-    
+
         public RoundedPanel(int radius) {
             this.radius = radius;
             setOpaque(false);
         }
-    
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -42,6 +44,7 @@ public class ProfilePanel extends JPanel {
             g2.dispose();
         }
     }
+
     private static class RoundedButton extends JButton {
         private Color backgroundColor;
         private Color hoverBackgroundColor;
@@ -110,6 +113,8 @@ public class ProfilePanel extends JPanel {
     private static class CircularImagePanel extends JPanel {
         private Image image;
         private int size;
+        private int a = getX();
+        private int b = getY();
 
         public CircularImagePanel(String imagePath, int size) {
             this.size = size;
@@ -131,6 +136,43 @@ public class ProfilePanel extends JPanel {
                 e.printStackTrace();
             }
             setPreferredSize(new Dimension(size, size));
+        }
+
+        public void updateImage(String imagePath, int size) {
+            this.size = size;
+            try {
+                // Load and process new image
+                ImageIcon icon = new ImageIcon(imagePath);
+                Image originalImage = icon.getImage();
+                int originalWidth = originalImage.getWidth(null);
+                int originalHeight = originalImage.getHeight(null);
+
+                // Crop to square
+                int cropSize = Math.min(originalWidth, originalHeight);
+                int x = (originalWidth - cropSize) / 2;
+                int y = (originalHeight - cropSize) / 2;
+
+                // Create new cropped image
+                BufferedImage croppedImage = new BufferedImage(cropSize, cropSize, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = croppedImage.createGraphics();
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                g2d.drawImage(originalImage, 0, 0, cropSize, cropSize, x, y, x + cropSize, y + cropSize, null);
+                g2d.dispose();
+
+                // Scale and set new image
+                this.image = croppedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+
+                // Update panel size
+
+                // Update panel bounds
+                setPreferredSize(new Dimension(size, size));
+
+                // Force complete repaint
+                revalidate();
+                repaint();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -207,10 +249,10 @@ public class ProfilePanel extends JPanel {
         friendsList.setText("");
         blocksList.setText("");
         for (String friend : friends) {
-            friendsList.append(friend + "\n");
+            friendsList.append(friend + "/n");
         }
         for (String block : blocks) {
-            blocksList.append(block + "\n");
+            blocksList.append(block + "/n");
         }
     }
 
@@ -289,9 +331,13 @@ public class ProfilePanel extends JPanel {
             char groupSeparator = (char) 29;
             String profileInput = client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
-            JLabel profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 1));// do this later
+            JLabel profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));// do this later
+            JLabel pic = new JLabel(profilePic.getText());
+            if (pic.getText().equals("profile.png")) {
+                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/4.jpg");
+            }
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    "C:/Users/peter/Github/CS180Team-Project/images/donald-trump-gettyimages-687193180.jpg", 150);
+                    pic.getText(), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             mainPanel.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);
@@ -577,6 +623,40 @@ public class ProfilePanel extends JPanel {
             gbc.gridx = 1;
             RoundedTextField birthdayFieldYear = new RoundedTextField(currentBirthdayYear, 20, 15);
             rightPanel.add(birthdayFieldYear, gbc);
+
+            // Profile Picture
+            JButton browseButton = new JButton("Browse Files");
+            browseButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setFileFilter(new FileNameExtensionFilter(
+                            "Image files", "jpg", "jpeg", "png", "gif"));
+
+                    int result = fileChooser.showOpenDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        pic.setText(selectedFile.getPath());
+                        // Update existing panel instead of creating new one
+                        imagePanel.updateImage(selectedFile.getPath(), 150);
+
+                        // Ensure proper bounds and visibility
+                        imagePanel.setBounds(40, 80, 150, 150);
+
+                        // Force container to refresh
+                        // mainPanel.revalidate();
+                        mainPanel.repaint();
+                    }
+                }
+            });
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            JLabel profilePicture = new JLabel("Profile Picture: ");
+            profilePicture.setPreferredSize(new Dimension(200, 30));
+            rightPanel.add(profilePicture, gbc);
+            gbc.gridx = 1;
+            rightPanel.add(browseButton, gbc);
 
             // Friends Only
             gbc.gridx = 0;

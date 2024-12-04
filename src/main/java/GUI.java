@@ -235,7 +235,7 @@ public class GUI implements Runnable {
         if (i == JOptionPane.YES_OPTION) {
             try {
                 Client client = new Client();
-                client.login("User2" + (char) 29 + "Password2$");
+                client.login("user3" + (char) 29 + "Password3$");
                 loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
