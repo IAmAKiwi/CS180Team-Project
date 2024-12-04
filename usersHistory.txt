@@ -1,2 +1,3 @@
 username: user1password: Password1$First Name: testLast Name: userBio: I am a testBirthday: 1/1/2001Profile Picture: profile.pngFriends Only: false
 username: user3password: Password3$First Name: test3Last Name: user3Bio: I am also a testBirthday: 3/3/2003Profile Picture: profile.pngFriends Only: false
+username: Buiildingpassword: Thanos20122006$First Name: Bui DinLast Name: Tuan AnBio: I am a guBirthday: 1/2/200Profile Picture: CFriends Only: false

@@ -1,5 +1,5 @@
-import java.util.Date;
 import java.time.Instant;
+import java.util.Date;
 /**
  * Class that represents a message in the social media platform.
  * Contains the message content and sender information.
@@ -79,6 +79,6 @@ public class Message implements MessageInterface {
      */
     @Override
     public String toString() {
-        return String.format("%d:%s: %s", this.timeStamp.getTime(), this.senderUsername, this.contents);
+        return String.format("%d:%s:%s", this.timeStamp.getTime(), this.senderUsername, this.contents);
     }
 }

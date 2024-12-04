@@ -486,15 +486,25 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-            // Paths to images
-            String[] imagePaths = {
-                    "C:/Users/peter/Github/CS180Team-Project/images/1.jpg",
-                    "C:/Users/peter/Github/CS180Team-Project/images/2.jpg",
-                    "C:/Users/peter/Github/CS180Team-Project/images/donald-trump-gettyimages-687193180.jpg",
-                    "C:/Users/peter/Github/CS180Team-Project/images/4.jpg",
-                    "C:/Users/peter/Github/CS180Team-Project/images/5.jpg",
-                    "C:/Users/peter/Github/CS180Team-Project/images/6.jpg"
-            };
+            String photosInfo = client.accessPhotosFromUser();
+            String[] photos = photosInfo.split(",");
+            String[] imagePaths = new String[6];
+            for (int i = 0; i < imagePaths.length; i++) {
+                imagePaths[i] = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+            }
+            if (photos.length < 6) {
+                for (int i = 0; i < photos.length; i++) {
+                    char gs = 29;
+                    String[] lmao = photos[i].trim().replace("[","").replace("]","").split(gs + "");
+                    imagePaths[i] = lmao[1];
+                }
+            } else {
+                for (int i = 0; i < 6; i++) {
+                    char gs = 29;
+                    String[] lmao = photos[i].trim().replace("[","").replace("]","").split(gs + "");
+                    imagePaths[i] = lmao[1];
+                }
+            }
 
             // Add 6 image panels to the grid
             for (String imagePath : imagePaths) {
@@ -875,7 +885,7 @@ public class ProfilePanel extends JPanel {
                             bioField.getText().trim() +
                             groupSeparator + birthdayFieldMonth.getText().trim() + "/" +
                             birthdayFieldDay.getText().trim()
-                            + "/" + birthdayFieldYear.getText().trim() + groupSeparator + "profile.png" +
+                            + "/" + birthdayFieldYear.getText().trim() + groupSeparator + pic.getText() +
                             groupSeparator +
                             ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
                     try {
@@ -886,6 +896,7 @@ public class ProfilePanel extends JPanel {
                             birthdayMonthLabel.setText(birthdayFieldMonth.getText().trim());
                             birthdayDayLabel.setText(birthdayFieldDay.getText().trim());
                             birthdayYearLabel.setText(birthdayFieldYear.getText().trim());
+                            pic.setText(profilePic.getText());
                             friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
                             // Close the dialog
                             frame.dispose();

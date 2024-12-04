@@ -21,7 +21,7 @@ public class Server implements Runnable, ServerInterface {
     private final char groupSeparatorChar = (char) 29;
 
     public Server(Socket socket) {
-        clientSocket = socket;
+        clientSocket = socket;// maybe not needed the three lines
     }
 
     public Server() {
@@ -82,6 +82,9 @@ public class Server implements Runnable, ServerInterface {
                         break;
                     case "accessProfile":
                         result = accessProfile();
+                        break;
+                    case "accessPhotosFromUser":
+                        result = accessPhotosFromUser();
                         break;
                     case "saveProfile":
                         result = saveProfile(content);
@@ -213,6 +216,11 @@ public class Server implements Runnable, ServerInterface {
     public String accessProfile() {
         return currentUser.toString();
     }
+
+    public String accessPhotosFromUser() {
+        return db.getAllPhotosFromUser(currentUser).toString();
+    }
+    
     @Override
     public String deleteChat(String user) {
         try {
@@ -378,10 +386,22 @@ public class Server implements Runnable, ServerInterface {
     public String sendImage(String content) {
         try {
             String[] parts = splitContent(content);
+            if (parts.length < 2) {
+                return "false";
+            }
             String userTwo = parts[0];
             String path = parts[1];
-            db.addPhotos(path);
-            return "true";
+            // Check for self-messaging
+            if (currentUser != null && userTwo.equals(currentUser.getUsername())) {
+                return "false";
+            }
+
+            // Check for null/empty message
+            if (path == null || path.isEmpty()) {
+                return "false";
+            }
+            Photo photo = new Photo(path, currentUser.getUsername());
+            return String.valueOf(db.addPhoto(photo,userTwo));
         } catch (Exception e) {
             e.printStackTrace();
             return "false";

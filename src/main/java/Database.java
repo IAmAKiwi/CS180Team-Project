@@ -6,10 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 /**
  * Class that stores all of the Users and MessageHistories.
  * Manages all loading, saving, and accessing of data and some data validation.
@@ -26,7 +22,7 @@ public class Database implements DatabaseInterface {
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
     private final char groupSeparator = 29;
-    private ArrayList<String> photosPath;
+    private ArrayList<PhotoHistory> photosPath;
 
     /**
      * Initializes the Database class, setting up the user list, message history
@@ -170,6 +166,22 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
+    public PhotoHistory getPhotos(String user1, String user2) throws IllegalArgumentException {
+        if (user1.equals(user2)) {
+            return null;
+        }
+
+        synchronized (PHOTO_KEY) {
+            for (PhotoHistory ph : this.photosPath) {
+                if (ph.equals(new PhotoHistory(new String[] { user1, user2 }))) {
+                    return ph;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * adds a MessageHistory to AllChats
      *
@@ -284,6 +296,31 @@ public class Database implements DatabaseInterface {
                 if (m.getMessage().equals(message.getMessage()) && m.getSender().equals(message.getSender())) {
                     mh.deleteMessage(m);
                     this.allChats.set(this.allChats.indexOf(mh), mh);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean deletePhoto(Photo photo, String receiver) {
+        User u1 = this.getUser(photo.getSender());
+        User u2 = this.getUser(receiver);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
+    
+        PhotoHistory ph = this.getPhotos(u1.getUsername(), u2.getUsername());
+        if (ph == null) {
+            return false;
+        }
+    
+        synchronized (PHOTO_KEY) {
+            for (Photo p : ph.getPhotoHistory()) {
+                if (p.getPhotoPath().equals(photo.getPhotoPath()) && 
+                    p.getSender().equals(photo.getSender())) {
+                    ph.deletePhoto(p);
+                    this.photosPath.set(this.photosPath.indexOf(ph), ph);
                     return true;
                 }
             }
@@ -712,9 +749,10 @@ public class Database implements DatabaseInterface {
                 }
                 // Creates a new Message and adds it to the list
                 Message m = new Message(line.substring(line.indexOf(' ') + 1, line.length() - 1),
-                    line.substring(line.indexOf(':') + 1).substring(0, line.substring(line.indexOf(':') + 1).indexOf(':')), 
-                    Long.parseLong(line.substring(0, line.indexOf(':'))));
-                        
+                        line.substring(line.indexOf(':') + 1).substring(0,
+                                line.substring(line.indexOf(':') + 1).indexOf(':')),
+                        Long.parseLong(line.substring(0, line.indexOf(':'))));
+
                 messages.add(m);
                 line = br.readLine();
 
@@ -744,19 +782,54 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean loadPhotos() {
-        try (BufferedReader bfr = new BufferedReader(new FileReader("UsersPhotos.txt"))) {
-            String line = bfr.readLine();
-            while (true) {
-                if (line == null) {
-                    break;
-                }
-                photosPath.add(line);
-                line = bfr.readLine();
-            }
-            return true;
-        } catch (IOException e) {
+        photosPath = new ArrayList<>(); // TODO remove this line maybe idk
+        File photosFile = new File("photoHistory.txt");
+        if (!photosFile.exists()) {
             return false;
         }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(photosFile))) {
+            ArrayList<Photo> photos = new ArrayList<>();
+            String line = br.readLine();
+            String[] usernames = new String[2];
+
+            while (br.ready()) {
+                // Get usernames from first line of new PhotoHistory
+                if (line.charAt(0) == fileSeparator) {
+                    line = line.substring(1);
+                    usernames = line.split(" ");
+                    line = br.readLine();
+                }
+
+                // Combine lines until next separator
+                while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
+                    line = line + "\n" + br.readLine();
+                }
+
+                // Parse photo entry
+                char gs = 29;
+                String[] parts = line.split(gs + "");
+                Photo p = new Photo(
+                        parts[1], // photoPath
+                        parts[0] // senderUsername
+                );
+
+                photos.add(p);
+                line = br.readLine();
+
+                // Create new PhotoHistory when reaching file separator
+                if (line.charAt(0) == fileSeparator) {
+                    PhotoHistory ph = new PhotoHistory(usernames);
+                    ph.setPhotoHistory(photos);
+                    this.photosPath.add(ph);
+                    photos = new ArrayList<>();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading photos: " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -769,26 +842,33 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean savePhotos() {
-        try {
-            File f = new File("UsersPhotos.txt");
-            if (!f.exists()) {
-                try {
-                    f.createNewFile();
-                } catch (IOException e) {
-                    return false;
-                }
+        // Check if File exists and create if not
+        File photosFile = new File("photoHistory.txt");
+        if (!photosFile.exists()) {
+            try {
+                photosFile.createNewFile();
+            } catch (IOException e) {
+                return false;
             }
-            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))) {
-                synchronized (PHOTO_KEY) {
-                    for (String path : photosPath) {
-                        bfw.write(path + "\n");
+        }
+
+        // Write output to file
+        try (FileWriter fw = new FileWriter(photosFile, false)) {
+            synchronized (PHOTO_KEY) {
+                for (PhotoHistory ph : this.photosPath) {
+                    fw.write(fileSeparator);
+                    fw.write(ph.toString() + "\n");
+                    for (Photo p : ph.getPhotoHistory()) {
+                        fw.write(p.toString() + groupSeparator + "\n");
                     }
                 }
-                return true;
+                fw.write(fileSeparator);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println("FAILED: " + e.getMessage());
             return false;
         }
+        return true;
     }
 
     /**
@@ -796,53 +876,72 @@ public class Database implements DatabaseInterface {
      *
      * @param path The file path of the photo to add.
      */
-    @Override
-    public void addPhotos(String path) {
+    public boolean addPhotoHistory(PhotoHistory path) {
         synchronized (PHOTO_KEY) {
-            photosPath.add(path);
+            for (PhotoHistory ph : this.photosPath) {
+                if (ph.equals(path)) {
+                    return false;
+                }
+            }
         }
+        if (path.getUsernames().length == 2) {
+            synchronized (PHOTO_KEY) {
+                this.photosPath.add(path);
+            }
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Displays a photo in a new JFrame window using the given file path.
-     * The window shows the image and can be closed by the user.
-     *
-     * @param path The file path of the photo to display.
-     */
-    @Override
-    public void displayPhotos(String path) {
-        // Create a JFrame Window
-        JFrame frame = new JFrame(path);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+    public boolean addPhoto(Photo photo, String receiver) {
+        User u1 = this.getUser(photo.getSender());
+        User u2 = this.getUser(receiver);
 
-        // Load image using ImageIcon
-        ImageIcon imageIcon = new ImageIcon(path);
+        if (u1 == null || u2 == null) {
+            return false;
+        }
 
-        // Add image to the window
-        JLabel label = new JLabel(imageIcon);
+        ArrayList<String> u1Blocked = u1.getBlocked();
+        ArrayList<String> u2Blocked = u2.getBlocked();
 
-        // add label to frame(window)
-        frame.add(label);
+        if (u1Blocked.contains(receiver) || u2Blocked.contains(photo.getSender())) {
+            return false;
+        }
 
-        // make visible
-        frame.setVisible(true);
-    }
+        if (u1.isFriendsOnly()) {
+            ArrayList<String> u1Friends = u1.getFriends();
+            if (!u1Friends.contains(receiver)) {
+                return false;
+            }
+        }
 
-    /**
-     * Sets the list of photos.
-     *
-     * @param photoPath An ArrayList of String path objects to be set.
-     */
-    @Override
-    public void setPhotos(ArrayList<String> photoPath) {
+        if (u2.isFriendsOnly()) {
+            ArrayList<String> u2Friends = u2.getFriends();
+            if (!u2Friends.contains(u1.getUsername())) {
+                return false;
+            }
+        }
+
         synchronized (PHOTO_KEY) {
-            this.photosPath = photoPath;
+            for (int i = 0; i < this.photosPath.size(); i++) {
+                PhotoHistory ph = this.photosPath.get(i);
+                if (ph.equals(new PhotoHistory(new String[] { photo.getSender(), receiver }))) {
+                    ph.addPhoto(photo);
+                    this.photosPath.set(i, ph);
+                    return true;
+                }
+            }
         }
-    }
 
+        PhotoHistory ph = new PhotoHistory(photo, receiver);
+        synchronized (PHOTO_KEY) {
+            this.photosPath.add(ph);
+            return true;
+        }
+
+    }
     @Override
-    public ArrayList<String> getPhotos() {
+    public ArrayList<PhotoHistory> getPhotos() {
         synchronized (PHOTO_KEY) {
             return photosPath;
         }
@@ -858,6 +957,7 @@ public class Database implements DatabaseInterface {
             }
         }
     }
+
     /**
      * Sets the list of users.
      *
@@ -880,5 +980,45 @@ public class Database implements DatabaseInterface {
         synchronized (MESSAGE_KEY) {
             this.allChats = allChats;
         }
+    }
+
+    public ArrayList<Message> getAllMessagesFromUser(User u) {
+        ArrayList<Message> messages = new ArrayList<>();
+        synchronized (MESSAGE_KEY) {
+            for (MessageHistory mh : this.allChats) {
+                for (Message m : mh.getMessageHistory()) {
+                    if (m.getSender().equals(u.getUsername())) {
+                        messages.add(m);
+                    }
+                }
+            }
+        }
+        return messages;
+
+    }
+
+    public ArrayList<Photo> getAllPhotosFromUser(User u) {
+        this.loadPhotos();
+        ArrayList<Photo> photos = new ArrayList<>();
+        synchronized (PHOTO_KEY) {
+            for (PhotoHistory ph : this.photosPath) {
+                for (Photo p : ph.getPhotoHistory()) {
+                    if (p.getSender().equals(u.getUsername())) {
+                        photos.add(p);
+                    }
+                
+                }
+            }
+        }
+        return photos;
+    }
+
+    public static void main (String[] args) {
+        Database db = new Database();
+        db.loadUsers();
+        db.loadMessages();
+        db.loadPhotos();
+        User u3 = db.getUser("user3");
+        System.out.println(db.getAllPhotosFromUser(u3));
     }
 }

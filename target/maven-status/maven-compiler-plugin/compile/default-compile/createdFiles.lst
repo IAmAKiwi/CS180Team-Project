@@ -1,8 +1,0 @@
-UserInterface.class
-Database.class
-Message.class
-DatabaseInterface.class
-User.class
-MessageInterface.class
-MessageHistory.class
-MessageHistoryInterface.class
