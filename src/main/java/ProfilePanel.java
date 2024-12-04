@@ -19,11 +19,11 @@ public class ProfilePanel extends JPanel {
     private JLabel birthdayDayLabel;
     private JLabel birthdayYearLabel;
     private JLabel friendsOnlyLabel;
-    private JScrollPane friendsListScrollPane;
-    private JTextArea friendsList;
-    private JScrollPane blocksListScrollPane;
-    private JTextArea blocksList;
     private JButton editButton;
+    private JList<String> friendsList;
+    private JScrollPane friendsListScrollPane;
+    private JList<String> blocksList;
+    private JScrollPane blocksListScrollPane;
     private Client client;
 
     private static class RoundedPanel extends JPanel {
@@ -217,18 +217,42 @@ public class ProfilePanel extends JPanel {
         birthdayDayLabel = new JLabel();
         birthdayYearLabel = new JLabel();
         friendsOnlyLabel = new JLabel();
-        friendsList = new JTextArea(5, 10);
-        friendsList.setEditable(false);
+
+        JLabel friendsLabel = new JLabel("Friends:");
+        friendsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        friendsList = new JList<>();
         friendsListScrollPane = new JScrollPane(friendsList);
-        blocksList = new JTextArea(5, 10);
-        blocksList.setEditable(false);
+        friendsListScrollPane.setPreferredSize(new Dimension(100, 100));
+
+        JLabel blocksLabel = new JLabel("Blocks:");
+        blocksLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        blocksList = new JList<>();
         blocksListScrollPane = new JScrollPane(blocksList);
+        blocksListScrollPane.setPreferredSize(new Dimension(100, 100));
         editButton = new JButton("Edit");
+
         createComponents();
-        constraints.gridx = 1;
-        constraints.insets = new Insets(10, 10, 10, 10);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        constraints.gridx = 0;
+        constraints.gridy = GridBagConstraints.RELATIVE;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = new Insets(5, 5, 5, 5);
         this.add(editButton, constraints);
+
+        this.add(friendsLabel, constraints);
+
+        constraints.weighty = .9;
+
+        this.add(friendsList, constraints);
+
+        constraints.weighty = .1;
+
+        this.add(blocksLabel, constraints);
+
+        constraints.weighty = .9;
+
+        this.add(blocksListScrollPane, constraints);
+
         addActionListeners();
     }
 
@@ -246,14 +270,8 @@ public class ProfilePanel extends JPanel {
     }
 
     public void updateFriendsAndBlocks(String[] friends, String[] blocks) {
-        friendsList.setText("");
-        blocksList.setText("");
-        for (String friend : friends) {
-            friendsList.append(friend + "/n");
-        }
-        for (String block : blocks) {
-            blocksList.append(block + "/n");
-        }
+        friendsList.setListData(friends);
+        blocksList.setListData(blocks);
     }
 
     class RoundedTextField extends JTextField {

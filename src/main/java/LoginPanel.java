@@ -271,7 +271,7 @@ public class LoginPanel extends JComponent implements Runnable {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         // Add text field with custom font

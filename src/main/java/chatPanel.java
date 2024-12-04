@@ -14,7 +14,7 @@ public class chatPanel extends JPanel {
     public chatPanel(Client client) {
         this.client = client;
 
-        this.setLayout(new BorderLayout(0, 10));
+        this.setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setVisible(true);
 
