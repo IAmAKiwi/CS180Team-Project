@@ -167,7 +167,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(100, new ActionListener() { // Check every 5 seconds
+        Timer timer = new Timer(1000, new ActionListener() { // Check every 5 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
@@ -175,9 +175,12 @@ public class GUI implements Runnable {
                     return;
                 }
                 updateGUI();
+                System.out.println("updating");
             }
         });
-        timer.start();
+        if (frame.isVisible()) {
+            timer.start();
+        }
     }
 
 
@@ -207,11 +210,8 @@ public class GUI implements Runnable {
 
     public void disconnect() {
         client.disconnect();
+        client = null;
         frame.setVisible(false);
-        this.loginPanel = null;
-        this.chatPanel = null;
-        this.profilePanel = null;
-        this.chatListPanel = null;
         frame.dispose();
     }
 
@@ -265,6 +265,7 @@ public class GUI implements Runnable {
                 if (j != JOptionPane.YES_OPTION) {
                     System.out.println("Disconnecting...");
                     gui.disconnect();
+                    loginPanel = null;
                     return;
                 }
             }
