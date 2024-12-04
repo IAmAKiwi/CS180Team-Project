@@ -53,24 +53,32 @@ public class GUI implements Runnable {
             }
         });
         refreshChats();
+
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridheight = 100;
-        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.weightx = 0.2;
+        gbc.weighty = 1.0;
         frame.add(chatListPanel, gbc);
-        gbc.weightx = 1;
+
+        gbc.weightx = 1.0;
         frame.add(chatPanel, gbc);
-        gbc.weightx = .05;
-        gbc.gridx = 4;
-        gbc.gridheight = 0;
+
+        gbc.weightx = .2;
         frame.add(profilePanel, gbc);
-        gbc.anchor = GridBagConstraints.LAST_LINE_END;
-        gbc.gridheight = 1;
+
+
         gbc.weighty = 0;
-        gbc.gridy = 100;
+        gbc.gridy++;
+        gbc.insets = new Insets(10, 10, 10, 10);
         logoutButton.addActionListener(e -> logout());
-        frame.add(logoutButton, gbc);
+        logoutButton.setForeground(Color.RED);
+        logoutButton.setFont(new Font("Arial", Font.BOLD, 10));
+        //frame.add(logoutButton, gbc);
         JPanel logoutPanel = new JPanel(new BorderLayout(0, 0));
         logoutPanel.add(logoutButton, BorderLayout.LINE_END);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridy++;
         frame.add(logoutPanel, gbc);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
@@ -106,6 +114,9 @@ public class GUI implements Runnable {
     }
 
     public void updateProfilePanel() {
+        if (!isConnected()) {
+            return;
+        }
         String profile = "";
         try {
             profile = client.accessProfile();
@@ -152,7 +163,7 @@ public class GUI implements Runnable {
         }
         String[] blocksArray = blocks.split("" + (char) 29);
         profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
-        }
+    }
 
     public void updateChat() {
         //chatPanel.updateChat(chat);
@@ -167,7 +178,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(100, new ActionListener() { // Check every 5 seconds
+        Timer timer = new Timer(1000, new ActionListener() { // Check every 1 second
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
@@ -177,7 +188,9 @@ public class GUI implements Runnable {
                 updateGUI();
             }
         });
-        timer.start();
+        if (frame.isVisible()) {
+            timer.start();
+        }
     }
 
 
@@ -206,12 +219,11 @@ public class GUI implements Runnable {
     }
 
     public void disconnect() {
-        client.disconnect();
+        if (client != null) {
+            client.disconnect();
+            client = null;
+        }
         frame.setVisible(false);
-        this.loginPanel = null;
-        this.chatPanel = null;
-        this.profilePanel = null;
-        this.chatListPanel = null;
         frame.dispose();
     }
 
@@ -265,6 +277,7 @@ public class GUI implements Runnable {
                 if (j != JOptionPane.YES_OPTION) {
                     System.out.println("Disconnecting...");
                     gui.disconnect();
+                    loginPanel = null;
                     return;
                 }
             }

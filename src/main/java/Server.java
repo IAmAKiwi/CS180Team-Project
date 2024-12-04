@@ -449,7 +449,7 @@ public class Server implements Runnable, ServerInterface {
         String[] blocks = db.getBlockList(currentUser.getUsername());
         String blockList = "";
         for (int i = 0; i < blocks.length; i++) {
-            blockList += blocks[i] + ":";
+            blockList += blocks[i] + (char) 29;
         }
         return blockList;
     }
