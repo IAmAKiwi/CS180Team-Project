@@ -405,9 +405,27 @@ public class Database implements DatabaseInterface {
     public boolean blockUser(String user1, String user2) {
         User u1 = this.getUser(user1);
         User u2 = this.getUser(user2);
+
+        // Check if either user doesn't exist
         if (u1 == null || u2 == null) {
             return false;
         }
+
+        // Prevent self-blocking
+        if (user1.equals(user2)) {
+            return false;
+        }
+
+        // Check if already friends
+        if (u1.getFriends().contains(user2)) {
+            return false;
+        }
+
+        // Check if either user has blocked the other
+        if (u1.getBlocked().contains(user2) || u2.getBlocked().contains(user1)) {
+            return false;
+        }
+
         u1.addBlock(user2);
         return true;
     }

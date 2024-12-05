@@ -157,6 +157,7 @@ public class chatPanel extends JPanel {
                 refreshChat(selectedUser); // refresh chat after successful message send
                 messageInputField.setText(""); // clears input field
             } else {
+                messageInputField.setText("");
                 JOptionPane.showMessageDialog(this, "Failed to send message.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }

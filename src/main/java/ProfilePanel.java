@@ -343,6 +343,7 @@ public class ProfilePanel extends JPanel {
         editButton.setFont(new Font("Arial", Font.BOLD, 14));
         editButton.setBorder(BorderFactory.createLineBorder(new Color(0, 149, 246), 1));
         editButton.setFocusPainted(false);
+        editButton.setPreferredSize(new Dimension(100, 20));
         editButton.setMaximumSize(new Dimension(400, 50));
     }
 
