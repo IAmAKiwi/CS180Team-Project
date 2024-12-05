@@ -22,6 +22,8 @@ public class GUI implements Runnable {
     private RoundedPanel headerPanel;
     private JPopupMenu profileMenu;
     private CircularButton profileButton;
+    int count = 0;
+    ProfilePanel selectedProfilePanel;
 
     public GUI(LoginPanel loginPanel) {
         this.loginPanel = loginPanel;
@@ -267,23 +269,27 @@ public class GUI implements Runnable {
         gbc.weightx = 0.2;
         frame.add(chatPanel, gbc);
 
-        gbc.weightx = .6;
+        gbc.weightx = .4;
         // frame.add(profilePanel, gbc);
         chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
             String selectedUser = (String) evt.getNewValue();
             if (selectedUser != null) {
                 try {
+                    count += 1;
                     chatPanel.refreshChat(selectedUser);
-                    
-                    if (profilePanel.getParent() != null) {
-                        frame.remove(profilePanel);
+                    if (count > 1) {
+                        frame.remove(selectedProfilePanel);
                     }
-                    ProfilePanel selectedProfilePanel = new ProfilePanel(selectedUser, client);
+                    Database db = new Database();
+                    db.loadUsers();
+                    User u = db.getUser(selectedUser);
+                    Client newClient = new Client();
+                    newClient.login(u.getUsername() + (char)29 + u.getPassword());
+                    System.out.println(newClient.accessProfile());
+                    selectedProfilePanel = new ProfilePanel(selectedUser, newClient);
                     frame.add(selectedProfilePanel, gbc);
-                    
                     frame.revalidate();
                     frame.repaint();
-        
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
