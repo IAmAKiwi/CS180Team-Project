@@ -1,7 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -13,9 +10,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.DefaultCaret;
 
 public class chatPanel extends JPanel {
     private RoundedTextArea messageHistoryArea; // prior texts display
+    private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
     private RoundedTextField messageInputField; // text box to send message
     private JList<String> currentMessages;
     private RoundedButton sendButton; // send message button
@@ -36,7 +35,10 @@ public class chatPanel extends JPanel {
         messageHistoryArea = new RoundedTextArea(15);
         messageHistoryArea.setEditable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        RoundedScrollPane scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
+        DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+        scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel inputPanel = new JPanel(new BorderLayout());
@@ -71,6 +73,7 @@ public class chatPanel extends JPanel {
     public void refreshChat(String selectedUser) throws IOException {
         this.selectedUser = selectedUser;
         String chatHistory = client.getChat(selectedUser);
+
         if (chatHistory == null || chatHistory.isEmpty()) {
             messageHistoryArea.setText(" No messages yet with " + selectedUser + ".");
             return;
@@ -86,9 +89,6 @@ public class chatPanel extends JPanel {
         }
 
         messageHistoryArea.setText(message.toString());
-
-        messageHistoryArea.setCaretPosition(messageHistoryArea.getDocument().getLength()); // Auto-scroll to bottom
-        this.repaint();
     }
 
     private String[][] getMessageHistory(String messageContent) {
@@ -171,6 +171,14 @@ public class chatPanel extends JPanel {
     public void displayMessage(String message) {
         messageHistoryArea.append("\n" + message);
         messageHistoryArea.setCaretPosition(messageHistoryArea.getDocument().getLength()); // Auto-scroll to bottom
+    }
+
+    public void refreshChatAutoScroll(String selectedUser) throws IOException {
+        DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        refreshChat(selectedUser);
+        caret = (DefaultCaret) messageHistoryArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     }
 
     class RoundedTextField extends JTextField {

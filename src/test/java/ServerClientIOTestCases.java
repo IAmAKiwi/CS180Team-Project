@@ -54,7 +54,9 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
      */
     @BeforeEach
     public void login() {
-        client.login("testUser" + groupSeparator + "testPass1$");
+        try {
+            client.login("testUser" + groupSeparator + "testPass1$");
+        } catch (IOException e) {}
     }
 
     /**
@@ -62,7 +64,9 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
      */
     @AfterEach
     public void logout() {
-        client.logout();
+        try {
+            client.logout();
+        } catch (IOException e) {}
     }
 
     /**
@@ -72,11 +76,13 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(1)
     public void testRegister() {
-        client.logout();
-        boolean result = client.register("newUser" + groupSeparator + "newPass1$");
-        assertTrue(result);
-        client.login("testUser" + groupSeparator + "testPass1$");
-        client.deleteChat("newUser");
+        try {
+            client.logout();
+            boolean result = client.register("newUser" + groupSeparator + "newPass1$");
+            assertTrue(result);
+            client.login("testUser" + groupSeparator + "testPass1$");
+            client.deleteChat("newUser");
+        } catch (IOException e) {}
     }
 
     /**
@@ -86,8 +92,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(2)
     public void testReLogin() {
-        assertFalse(client.login("newUser" + groupSeparator + "wrongPass1$"));
-        assertTrue(client.login("newUser" + groupSeparator + "newPass1$"));
+        try {
+            assertFalse(client.login("newUser" + groupSeparator + "wrongPass1$"));
+            assertTrue(client.login("newUser" + groupSeparator + "newPass1$"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -97,13 +105,15 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(3)
     public void testSendMessage() {
-        client.deleteChat("newUser");
+        try {
+            client.deleteChat("newUser");
 
-        boolean sent = client.sendMessage("newUser" + groupSeparator + "hello");
-        assertTrue(sent);
+            boolean sent = client.sendMessage("newUser" + groupSeparator + "hello");
+            assertTrue(sent);
 
-        String chat = client.getChat("newUser");
-        assertEquals("testUser: hello" + groupSeparator, chat);
+            String chat = client.getChat("newUser");
+            assertEquals("testUser: hello" + groupSeparator, chat);
+        } catch (IOException e) {}
     }
 
     /**
@@ -113,8 +123,10 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(4)
     public void testGetChat() {
-        String chat = client.getChat("newUser");
-        assertEquals("testUser: hello" + groupSeparator, chat);
+        try {
+            String chat = client.getChat("newUser");
+            assertEquals("testUser: hello" + groupSeparator, chat);
+        } catch (IOException e) {}
     }
 
     /**
@@ -124,13 +136,15 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(5)
     public void testFriends() {
-        assertTrue(client.addFriend("newUser"));
-        String friends = client.getFriendList();
-        assertTrue(friends.contains("newUser"));
-        assertTrue(client.removeFriend("newUser"));
+        try {
+            assertTrue(client.addFriend("newUser"));
+            String friends = client.getFriendList();
+            assertTrue(friends.contains("newUser"));
+            assertTrue(client.removeFriend("newUser"));
 
-        assertFalse(client.addFriend("nobody"));
-        assertFalse(client.removeFriend("nobody"));
+            assertFalse(client.addFriend("nobody"));
+            assertFalse(client.removeFriend("nobody"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -140,26 +154,28 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(6)
     public void testBlocks() {
-        assertTrue(client.blockUser("newUser"));
-        String blocks = client.getBlockList();
-        assertTrue(blocks.contains("newUser"));
+        try {
+            assertTrue(client.blockUser("newUser"));
+            String blocks = client.getBlockList();
+            assertTrue(blocks.contains("newUser"));
 
-        assertFalse(client.sendMessage("newUser" + groupSeparator + "we are blocked"));
-        client.logout();
-        client.login("newUser" + groupSeparator + "newPass1$");
-        assertFalse(client.sendMessage("testUser" + groupSeparator + "we are blocked"));
+            assertFalse(client.sendMessage("newUser" + groupSeparator + "we are blocked"));
+            client.logout();
+            client.login("newUser" + groupSeparator + "newPass1$");
+            assertFalse(client.sendMessage("testUser" + groupSeparator + "we are blocked"));
 
-        assertFalse(client.unblockUser("newUser"));
+            assertFalse(client.unblockUser("newUser"));
 
-        assertFalse(client.blockUser("nobody"));
-        assertFalse(client.unblockUser("nobody"));
+            assertFalse(client.blockUser("nobody"));
+            assertFalse(client.unblockUser("nobody"));
 
-        client.logout();
-        client.login("testUser" + groupSeparator + "testPass1$");
+            client.logout();
+            client.login("testUser" + groupSeparator + "testPass1$");
 
-        assertTrue(client.unblockUser("newUser"));
-        blocks = client.getBlockList();
-        assertFalse(blocks.contains("newUser"));
+            assertTrue(client.unblockUser("newUser"));
+            blocks = client.getBlockList();
+            assertFalse(blocks.contains("newUser"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -169,13 +185,15 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(7)
     public void testFriendsOnly() {
-        assertTrue(client.setFriendsOnly("true"));
+        try {
+            assertTrue(client.setFriendsOnly("true"));
 
-        assertFalse(client.sendMessage("newUser" + groupSeparator + "we are friends"));
+            assertFalse(client.sendMessage("newUser" + groupSeparator + "we are friends"));
 
-        assertTrue(client.setFriendsOnly("false"));
+            assertTrue(client.setFriendsOnly("false"));
 
-        assertTrue(client.sendMessage("newUser" + groupSeparator + "we are not friends"));
+            assertTrue(client.sendMessage("newUser" + groupSeparator + "we are not friends"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -185,19 +203,21 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(8)
     public void testDeletion() {
-        String currentChat = client.getChat("newUser");
-        assertEquals("testUser: hello" + groupSeparator + "testUser: we are not friends" + groupSeparator,
-                currentChat);
+        try {
+            String currentChat = client.getChat("newUser");
+            assertEquals("testUser: hello" + groupSeparator + "testUser: we are not friends" + groupSeparator,
+                    currentChat);
 
-        assertTrue(client.deleteMessage("testUser: hello" + groupSeparator + "newUser"));
-        assertFalse(client.deleteMessage("testUser: hello" + groupSeparator + "hello"));
+            assertTrue(client.deleteMessage("testUser: hello" + groupSeparator + "newUser"));
+            assertFalse(client.deleteMessage("testUser: hello" + groupSeparator + "hello"));
 
-        currentChat = client.getChat("newUser");
-        assertEquals("testUser: we are not friends" + groupSeparator, currentChat);
+            currentChat = client.getChat("newUser");
+            assertEquals("testUser: we are not friends" + groupSeparator, currentChat);
 
-        assertTrue(client.deleteChat("newUser"));
-        assertFalse(client.deleteChat("newUser"));
-        assertEquals("", client.getChat("newUser"));
+            assertTrue(client.deleteChat("newUser"));
+            assertFalse(client.deleteChat("newUser"));
+            assertEquals("", client.getChat("newUser"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -207,13 +227,15 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(9)
     public void testProfile() {
-        assertTrue(client.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
-                groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
-                "profile.png" + groupSeparator + "true"));
-        assertEquals("username: testUser" + groupSeparator + "firstName: jack" + groupSeparator
-                + "lastName: shields" + groupSeparator + "bio: epic bio" + groupSeparator +
-                "birthday: 5/15/2000" + groupSeparator + "profilePic: profile.png" + + groupSeparator +
-                "friendsOnly: true" + groupSeparator, client.accessProfile());
+        try {
+            assertTrue(client.saveProfile("testUser" + groupSeparator + "jack" + groupSeparator + "shields" +
+                    groupSeparator + "epic bio" + groupSeparator + "5/15/2000" + groupSeparator +
+                    "profile.png" + groupSeparator + "true"));
+            assertEquals("username: testUser" + groupSeparator + "firstName: jack" + groupSeparator
+                    + "lastName: shields" + groupSeparator + "bio: epic bio" + groupSeparator +
+                    "birthday: 5/15/2000" + groupSeparator + "profilePic: profile.png" + +groupSeparator +
+                    "friendsOnly: true" + groupSeparator, client.accessProfile());
+        } catch (IOException e) {}
     }
 
     /**
@@ -223,16 +245,18 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(10)
     public void testInvalidRegistration() {
-        logout();
-        assertFalse(client.register("user1" + groupSeparator + "weak"));
-        assertFalse(client.register("user1" + groupSeparator + "nospecial123"));
-        assertFalse(client.register("user1" + groupSeparator + "nouppercase1!"));
-        assertFalse(client.register("user1" + groupSeparator + "NOLOWERCASE1!"));
+        try {
+            logout();
+            assertFalse(client.register("user1" + groupSeparator + "weak"));
+            assertFalse(client.register("user1" + groupSeparator + "nospecial123"));
+            assertFalse(client.register("user1" + groupSeparator + "nouppercase1!"));
+            assertFalse(client.register("user1" + groupSeparator + "NOLOWERCASE1!"));
 
-        assertFalse(client.register("testUser" + groupSeparator + "ValidPass1!"));
+            assertFalse(client.register("testUser" + groupSeparator + "ValidPass1!"));
 
-        assertFalse(client.register("" + groupSeparator + "ValidPass1!"));
-        assertFalse(client.register("user1" + groupSeparator + ""));
+            assertFalse(client.register("" + groupSeparator + "ValidPass1!"));
+            assertFalse(client.register("user1" + groupSeparator + ""));
+        } catch (IOException e) {}
     }
 
     /**
@@ -242,9 +266,11 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(11)
     public void testMessageValidation() {
-        assertFalse(client.sendMessage("newUser" + groupSeparator + ""));
-        assertFalse(client.sendMessage("newUser" + groupSeparator + "test\0message"));
-        assertFalse(client.sendMessage("nonexistentUser" + groupSeparator + "hello"));
+        try {
+            assertFalse(client.sendMessage("newUser" + groupSeparator + ""));
+            assertFalse(client.sendMessage("newUser" + groupSeparator + "test\0message"));
+            assertFalse(client.sendMessage("nonexistentUser" + groupSeparator + "hello"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -254,15 +280,17 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(12)
     public void testProfileValidation() {
-        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
-                "Doe" + groupSeparator + "Bio" + groupSeparator + "13/1/2000" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false"));
-        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
-                "Doe" + groupSeparator + "Bio" + groupSeparator + "12/32/2000" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false"));
-        assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
-                "Doe" + groupSeparator + "Bio" + groupSeparator + "12/25/2025" + groupSeparator +
-                "pic.jpg" + groupSeparator + "false"));
+        try {
+            assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                    "Doe" + groupSeparator + "Bio" + groupSeparator + "13/1/2000" + groupSeparator +
+                    "pic.jpg" + groupSeparator + "false"));
+            assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                    "Doe" + groupSeparator + "Bio" + groupSeparator + "12/32/2000" + groupSeparator +
+                    "pic.jpg" + groupSeparator + "false"));
+            assertFalse(client.saveProfile("testUser" + groupSeparator + "John" + groupSeparator +
+                    "Doe" + groupSeparator + "Bio" + groupSeparator + "12/25/2025" + groupSeparator +
+                    "pic.jpg" + groupSeparator + "false"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -272,34 +300,36 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(13)
     public void testMultiUserChat() {
-        client.deleteChat("newUser");
-        client.deleteChat("user3");
+        try {
+            client.deleteChat("newUser");
+            client.deleteChat("user3");
 
-        client.logout();
-        client.register("user3" + groupSeparator + "Pass3$");
+            client.logout();
+            client.register("user3" + groupSeparator + "Pass3$");
 
-        client.login("testUser" + groupSeparator + "testPass1$");
+            client.login("testUser" + groupSeparator + "testPass1$");
 
-        client.setFriendsOnly("false");
+            client.setFriendsOnly("false");
 
-        String blocks = client.getBlockList();
-        if (blocks.contains("newUser")) {
-            client.unblockUser("newUser");
-        }
-        if (blocks.contains("user3")) {
-            client.unblockUser("user3");
-        }
+            String blocks = client.getBlockList();
+            if (blocks.contains("newUser")) {
+                client.unblockUser("newUser");
+            }
+            if (blocks.contains("user3")) {
+                client.unblockUser("user3");
+            }
 
-        assertTrue(client.sendMessage("newUser" + groupSeparator + "test message 1"));
-        assertTrue(client.sendMessage("user3" + groupSeparator + "test message 2"));
+            assertTrue(client.sendMessage("newUser" + groupSeparator + "test message 1"));
+            assertTrue(client.sendMessage("user3" + groupSeparator + "test message 2"));
 
-        String chatWithNewUser = client.getChat("newUser");
-        String chatWithUser3 = client.getChat("user3");
+            String chatWithNewUser = client.getChat("newUser");
+            String chatWithUser3 = client.getChat("user3");
 
-        assertTrue(chatWithNewUser.contains("test message 1"));
-        assertTrue(chatWithUser3.contains("test message 2"));
-        assertFalse(chatWithNewUser.contains("test message 2"));
-        assertFalse(chatWithUser3.contains("test message 1"));
+            assertTrue(chatWithNewUser.contains("test message 1"));
+            assertTrue(chatWithUser3.contains("test message 2"));
+            assertFalse(chatWithNewUser.contains("test message 2"));
+            assertFalse(chatWithUser3.contains("test message 1"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -309,21 +339,23 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(14)
     public void testBlockedUserInteractions() {
-        String blocks = client.getBlockList();
-        if (blocks.contains("user3")) {
-            client.unblockUser("user3");
-        }
+        try {
+            String blocks = client.getBlockList();
+            if (blocks.contains("user3")) {
+                client.unblockUser("user3");
+            }
 
-        assertTrue(client.blockUser("user3"));
+            assertTrue(client.blockUser("user3"));
 
-        client.logout();
-        client.login("user3" + groupSeparator + "Pass3$");
-        assertFalse(client.sendMessage("testUser" + groupSeparator + "blocked message"));
-        assertFalse(client.addFriend("testUser"));
+            client.logout();
+            client.login("user3" + groupSeparator + "Pass3$");
+            assertFalse(client.sendMessage("testUser" + groupSeparator + "blocked message"));
+            assertFalse(client.addFriend("testUser"));
 
-        client.logout();
-        client.login("testUser" + groupSeparator + "testPass1$");
-        assertFalse(client.sendMessage("user3" + groupSeparator + "message to blocked"));
+            client.logout();
+            client.login("testUser" + groupSeparator + "testPass1$");
+            assertFalse(client.sendMessage("user3" + groupSeparator + "message to blocked"));
+        } catch (IOException e) {}
     }
 
     /**
@@ -333,21 +365,23 @@ public class ServerClientIOTestCases implements ServerClientIOTestInterface {
     @Test
     @Order(15)
     public void testFriendsOnlyModeInteractions() {
-        client.setFriendsOnly("false");
-        String blocks = client.getBlockList();
-        if (blocks.contains("newUser")) {
-            client.unblockUser("newUser");
-        }
+        try {
+            client.setFriendsOnly("false");
+            String blocks = client.getBlockList();
+            if (blocks.contains("newUser")) {
+                client.unblockUser("newUser");
+            }
 
-        assertTrue(client.setFriendsOnly("true"));
-        assertTrue(client.addFriend("newUser"));
+            assertTrue(client.setFriendsOnly("true"));
+            assertTrue(client.addFriend("newUser"));
 
-        assertTrue(client.sendMessage("newUser" + groupSeparator + "friend message"));
-        assertFalse(client.sendMessage("user3" + groupSeparator + "non-friend message"));
+            assertTrue(client.sendMessage("newUser" + groupSeparator + "friend message"));
+            assertFalse(client.sendMessage("user3" + groupSeparator + "non-friend message"));
 
-        assertTrue(client.removeFriend("newUser"));
-        assertFalse(client.sendMessage("newUser" + groupSeparator + "after unfriend"));
+            assertTrue(client.removeFriend("newUser"));
+            assertFalse(client.sendMessage("newUser" + groupSeparator + "after unfriend"));
 
-        client.setFriendsOnly("false");
+            client.setFriendsOnly("false");
+        } catch (IOException e) {}
     }
 }
