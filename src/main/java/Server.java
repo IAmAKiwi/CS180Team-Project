@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
@@ -327,8 +329,8 @@ public class Server implements Runnable, ServerInterface {
         String chat = "";
         char endChar = (char) 29;
         for (int i = 0; i < messages.size(); i++) {
-            chat += messages.get(i).toString();
-            chat += endChar;
+            chat = chat.concat((messages.get(i)).toString());
+            chat = chat.concat("" + endChar);
         }
         return chat;
     }
@@ -376,7 +378,7 @@ public class Server implements Runnable, ServerInterface {
                 return "false";
             }
 
-            Message mes = new Message(message, currentUser.getUsername());
+            Message mes = new Message(message, currentUser.getUsername(), Date.from(Instant.now()).getTime());
             return String.valueOf(db.addMessage(mes, userTwo));
         } catch (Exception e) {
             return "false";

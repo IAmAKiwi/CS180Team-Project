@@ -359,7 +359,7 @@ public class ChatListPanel extends JPanel {
                     firePropertyChange("selectedChat", null, selectedChat);
                 }
             }
-        });
+         });
     }
 
     // Custom cell renderer for chat list items
@@ -434,7 +434,7 @@ public class ChatListPanel extends JPanel {
                 chat = chat.substring(0, chat.lastIndexOf((char) 29));
             }
             String temp = chat.substring(chat.indexOf(":") + 1);
-            return temp.substring(temp.indexOf(":") + 2);
+            return temp.substring(temp.indexOf(":") + 1);
         }
 
         private String getLastMessageTime(String username) {

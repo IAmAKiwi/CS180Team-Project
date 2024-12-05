@@ -306,17 +306,15 @@ public class GUI implements Runnable {
             return;
         }
         String[] chatsArray = chats.split("" + (char) 29);
-        /*
-         * chatListPanel.refreshChats(chatsArray);
-         * String selectedChat = chatListPanel.getSelectedChat();
-         * if (selectedChat != null && !selectedChat.isEmpty()) {
-         * try {
-         * chatPanel.refreshChat(selectedChat);
-         * } catch (Exception e) {
-         * // TODO: handle exception
-         * }
-         * }
-         */
+        chatListPanel.refreshChats(chatsArray);
+        String selectedChat = chatListPanel.getSelectedChat();
+        if (selectedChat != null && !selectedChat.isEmpty()) {
+            try {
+                chatPanel.refreshChat(selectedChat);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
     }
 
     public void updateProfilePanel() {
@@ -384,7 +382,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(1000, new ActionListener() { // Check every 1 second
+        Timer timer = new Timer(300, new ActionListener() { // Check every 1 second
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components

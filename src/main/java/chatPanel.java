@@ -4,27 +4,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class chatPanel extends JPanel {
     private RoundedTextArea messageHistoryArea; // prior texts display
     private RoundedTextField messageInputField; // text box to send message
+    private JList<String> currentMessages;
     private RoundedButton sendButton; // send message button
     private Client client; // client object
     private String selectedUser; // The desired user to chat with
 
     public chatPanel(Client client) {
         this.client = client;
+        this.setPreferredSize(new Dimension(500, 500));
 
         this.setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -69,12 +69,81 @@ public class chatPanel extends JPanel {
         this.selectedUser = selectedUser;
         String chatHistory = client.getChat(selectedUser);
         if (chatHistory == null || chatHistory.isEmpty()) {
-            messageHistoryArea.setText("No messages yet with " + selectedUser + ".");
-        } else {
-            messageHistoryArea.setText(chatHistory);
+            messageHistoryArea.setText(" No messages yet with " + selectedUser + ".");
+            return;
         }
+
+        String[][] messages = getMessageHistory(chatHistory);
+        StringBuilder message = new StringBuilder();
+        for (int i = messages.length - 1; i > -1; i--) {
+            message.append(" ");
+            message.append(getMessageTime(messages[i][0]));
+            message.append(" ");
+            message.append(messages[i][1] + ": " + messages[i][2] + "\n");
+        }
+
+        messageHistoryArea.setText(message.toString());
+
         messageHistoryArea.setCaretPosition(messageHistoryArea.getDocument().getLength()); // Auto-scroll to bottom
         this.repaint();
+    }
+
+    private String[][] getMessageHistory(String messageContent) {
+        if (messageContent == null || messageContent.isEmpty()) {
+            return null;
+        }
+        ArrayList<String[]> messageHistory = new ArrayList<String[]>();
+        while (messageContent.contains("" + (char) 29)) {
+            messageContent = messageContent.substring(0, messageContent.lastIndexOf((char) 29));
+            // Adds the parts of a message (time, user, content) to an array length 3
+            if (messageContent.contains("" + (char) 29)) {
+                String[] content = new String[3];
+                String currentMessage = messageContent.substring(messageContent.lastIndexOf((char) 29) + 1);
+                content[0] = currentMessage.substring(0, currentMessage.indexOf((':')));
+                currentMessage = currentMessage.substring(currentMessage.indexOf((':')) + 1);
+                content[1] = currentMessage.substring(0, currentMessage.indexOf((':')));
+                currentMessage = currentMessage.substring(currentMessage.indexOf((':')) + 1);
+                content[2] = currentMessage;
+                messageHistory.add(content);
+            }
+        }
+        // Adds the final message.
+        String[] content = new String[3];
+        content[0] = messageContent.substring(0, messageContent.indexOf((':')));
+        messageContent = messageContent.substring(messageContent.indexOf((':')) + 1);
+        content[1] = messageContent.substring(0, messageContent.indexOf((':')));
+        messageContent = messageContent.substring(messageContent.indexOf((':')) + 1);
+        content[2] = messageContent;
+        messageHistory.add(content);
+        // Return the 2d array of messages.
+        return messageHistory.toArray(new String[messageHistory.size()][]);
+    }
+
+    private String getMessageTime(String timeLong) {
+        Message msg = new Message("temp", "temp", Long.parseLong(timeLong));
+        Date currTime = Date.from(Instant.now());
+        Date msgTime = msg.getTimeStamp();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyDDD");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        if (dateFormat.format(currTime).equals(dateFormat.format(msgTime))) {
+            return timeFormat.format(msgTime);
+        }
+        int currYearDay = Integer.parseInt(dateFormat.format(currTime));
+        int msgYearDay = Integer.parseInt(dateFormat.format(msgTime));
+        if (msgYearDay == currYearDay - 1)
+        {
+            return "Yesterday";
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, msgYearDay);
+        SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+        if (((currYearDay - 7) < msgYearDay) && (msgYearDay < (currYearDay - 1)))
+        {
+            return dayOfWeekFormat.format(calendar.getTime());
+        }
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("d MMM yyyy");
+        calendar.set(Calendar.DAY_OF_YEAR, msgYearDay);
+        return dateFormat1.format(calendar.getTime());
     }
 
     /**

@@ -747,11 +747,14 @@ public class Database implements DatabaseInterface {
                 while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
                     line = line + "\n" + br.readLine();
                 }
+                String timeStamp = line.substring(0, line.indexOf(":"));
+                line = line.substring(line.indexOf(":") + 1);
+                String senderUsername = line.substring(0, line.indexOf(":"));
+                line = line.substring(line.indexOf(":") + 1);
+                String content = line.substring(line.indexOf(":") + 1, line.length() - 1);
+
                 // Creates a new Message and adds it to the list
-                Message m = new Message(line.substring(line.indexOf(' ') + 1, line.length() - 1),
-                        line.substring(line.indexOf(':') + 1).substring(0,
-                                line.substring(line.indexOf(':') + 1).indexOf(':')),
-                        Long.parseLong(line.substring(0, line.indexOf(':'))));
+                Message m = new Message(content, senderUsername, Long.parseLong(timeStamp));
 
                 messages.add(m);
                 line = br.readLine();
