@@ -24,7 +24,10 @@ public class chatPanel extends JPanel {
 
     public chatPanel(Client client) {
         this.client = client;
-        this.setPreferredSize(new Dimension(500, 500));
+        this.setPreferredSize(new Dimension(400, 500));
+
+        // Add margins to create space on right
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 30));
 
         this.setLayout(new BorderLayout(5, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -33,13 +36,13 @@ public class chatPanel extends JPanel {
         messageHistoryArea = new RoundedTextArea(15);
         messageHistoryArea.setEditable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        RoundedScrollPane scrollPane = new RoundedScrollPane(messageHistoryArea,15);
+        RoundedScrollPane scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel inputPanel = new JPanel(new BorderLayout());
-        messageInputField = new RoundedTextField("", 20,15);
+        messageInputField = new RoundedTextField("", 20, 15);
         messageInputField.setFont(new Font("Arial", Font.PLAIN, 14));
-        sendButton = new RoundedButton("Send",15);
+        sendButton = new RoundedButton("Send", 15);
         sendButton.setFont(new Font("Arial", Font.BOLD, 14));
         sendButton.setBackground(new Color(0, 149, 246));
         sendButton.setForeground(Color.WHITE);
@@ -56,7 +59,7 @@ public class chatPanel extends JPanel {
                     sendMessage();
                 } catch (Exception bruh) {
                     // TODO: handle exception
-                } 
+                }
             }
         });
     }
@@ -130,15 +133,13 @@ public class chatPanel extends JPanel {
         }
         int currYearDay = Integer.parseInt(dateFormat.format(currTime));
         int msgYearDay = Integer.parseInt(dateFormat.format(msgTime));
-        if (msgYearDay == currYearDay - 1)
-        {
+        if (msgYearDay == currYearDay - 1) {
             return "Yesterday";
         }
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_YEAR, msgYearDay);
         SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
-        if (((currYearDay - 7) < msgYearDay) && (msgYearDay < (currYearDay - 1)))
-        {
+        if (((currYearDay - 7) < msgYearDay) && (msgYearDay < (currYearDay - 1))) {
             return dayOfWeekFormat.format(calendar.getTime());
         }
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("d MMM yyyy");
@@ -152,7 +153,8 @@ public class chatPanel extends JPanel {
     private void sendMessage() throws IOException {
         String message = messageInputField.getText().trim();
         if (!message.isEmpty() && selectedUser != null) {
-            String result = Boolean.toString(client.sendMessage(selectedUser + (char) 29 + message)); // group separator char
+            String result = Boolean.toString(client.sendMessage(selectedUser + (char) 29 + message)); // group separator
+                                                                                                      // char
             if ("true".equals(result)) {
                 refreshChat(selectedUser); // refresh chat after successful message send
                 messageInputField.setText(""); // clears input field
@@ -171,8 +173,6 @@ public class chatPanel extends JPanel {
         messageHistoryArea.setCaretPosition(messageHistoryArea.getDocument().getLength()); // Auto-scroll to bottom
     }
 
-
-    
     class RoundedTextField extends JTextField {
         private int radius;
 
@@ -209,22 +209,23 @@ public class chatPanel extends JPanel {
             g2.dispose();
         }
     }
+
     private static class RoundedLabel extends JLabel {
         private int radius;
         private Color backgroundColor;
-    
+
         public RoundedLabel(String text, int radius) {
             super(text);
             this.radius = radius;
             setOpaque(false);
         }
-    
+
         @Override
         public void setBackground(Color bg) {
             this.backgroundColor = bg;
             repaint();
         }
-    
+
         @Override
         protected void paintComponent(Graphics g) {
             if (backgroundColor != null) {
@@ -237,7 +238,7 @@ public class chatPanel extends JPanel {
             }
             super.paintComponent(g);
         }
-    
+
         @Override
         protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -247,7 +248,7 @@ public class chatPanel extends JPanel {
             g2.dispose();
         }
     }
-    
+
     // Usage:
     // RoundedLabel label = new RoundedLabel("Text", 15);
     // label.setBackground(new Color(245, 245, 245));
@@ -315,36 +316,37 @@ public class chatPanel extends JPanel {
             g2.dispose();
         }
     }
+
     private static class RoundedTextArea extends JTextArea {
         private int radius;
         private Color backgroundColor;
-    
+
         public RoundedTextArea(int radius) {
             super();
             this.radius = radius;
             setOpaque(false);
         }
-    
+
         public RoundedTextArea(String text, int radius) {
             super(text);
             this.radius = radius;
             setOpaque(false);
         }
-    
+
         @Override
         public void setBackground(Color bg) {
             this.backgroundColor = bg;
             repaint();
         }
-    
+
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
-            
+
             // Set rendering hints
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            
+
             // Fill background
             if (backgroundColor != null) {
                 g2.setColor(backgroundColor);
@@ -352,97 +354,97 @@ public class chatPanel extends JPanel {
                 g2.setColor(getBackground());
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-    
+
             // Draw border
             g2.setColor(getForeground());
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
-            
+
             g2.dispose();
-            
+
             // Paint text
             super.paintComponent(g);
         }
-    
+
         @Override
         protected void paintBorder(Graphics g) {
             // Don't paint default border
         }
-        
+
     }
-    
+
     private static class RoundedScrollPane extends JScrollPane {
-    private int radius;
-    private Color backgroundColor;
+        private int radius;
+        private Color backgroundColor;
 
-    public RoundedScrollPane(Component view, int radius) {
-        super(view);
-        this.radius = radius;
-        setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder());
-        
-        // Style the scrollbars
-        getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            @Override
-            protected void configureScrollBarColors() {
-                this.thumbColor = new Color(200, 200, 200);
-                this.trackColor = new Color(245, 245, 245);
-            }
-            
-            @Override
-            protected JButton createDecreaseButton(int orientation) {
-                return createZeroButton();
-            }
+        public RoundedScrollPane(Component view, int radius) {
+            super(view);
+            this.radius = radius;
+            setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder());
 
-            @Override
-            protected JButton createIncreaseButton(int orientation) {
-                return createZeroButton();
-            }
+            // Style the scrollbars
+            getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+                @Override
+                protected void configureScrollBarColors() {
+                    this.thumbColor = new Color(200, 200, 200);
+                    this.trackColor = new Color(245, 245, 245);
+                }
 
-            private JButton createZeroButton() {
-                JButton button = new JButton();
-                button.setPreferredSize(new Dimension(0, 0));
-                return button;
-            }
-        });
-    }
+                @Override
+                protected JButton createDecreaseButton(int orientation) {
+                    return createZeroButton();
+                }
 
-    @Override
-    public void setBackground(Color bg) {
-        this.backgroundColor = bg;
-        repaint();
-    }
+                @Override
+                protected JButton createIncreaseButton(int orientation) {
+                    return createZeroButton();
+                }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        
-        // Set rendering hints
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
-        // Fill background
-        if (backgroundColor != null) {
-            g2.setColor(backgroundColor);
-        } else {
-            g2.setColor(getBackground());
+                private JButton createZeroButton() {
+                    JButton button = new JButton();
+                    button.setPreferredSize(new Dimension(0, 0));
+                    return button;
+                }
+            });
         }
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-        
-        g2.dispose();
-        super.paintComponent(g);
+
+        @Override
+        public void setBackground(Color bg) {
+            this.backgroundColor = bg;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+
+            // Set rendering hints
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+            // Fill background
+            if (backgroundColor != null) {
+                g2.setColor(backgroundColor);
+            } else {
+                g2.setColor(getBackground());
+            }
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+
+            g2.dispose();
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(new Color(200, 200, 200));
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            g2.dispose();
+        }
     }
 
-    @Override
-    protected void paintBorder(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(200, 200, 200));
-        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
-        g2.dispose();
-    }
-}
-
-// Usage:
-// RoundedScrollPane scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
-// scrollPane.setBackground(Color.WHITE);
+    // Usage:
+    // RoundedScrollPane scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
+    // scrollPane.setBackground(Color.WHITE);
 }
