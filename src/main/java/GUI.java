@@ -311,13 +311,10 @@ public class GUI implements Runnable {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!client.addFriend(otherUsername)) {
-                    client.removeFriend(otherUsername);
-                }
-            } catch (IOException ex) {
-                disconnect();
-            }
-        });
+                // if (!client.addFriend(otherUsername)) {
+                //     client.removeFriend(otherUsername);
+                // }
+            }});
 
         addBlockButton.addActionListener(e -> {
             try {
@@ -429,7 +426,7 @@ public class GUI implements Runnable {
             return;
         }
         String[] blocksArray = blocks.split("" + (char) 29);
-        profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
+        // profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
     }
 
     public void updateChat() {

@@ -601,7 +601,7 @@ public class ProfilePanel extends JPanel {
         editButton.setMaximumSize(new Dimension(400, 50));
     }
 
-    private void editProfile() {
+    public void editProfile() {
         try {
             // TODO: add cancel button
             // Create a new dialog to edit the profile
