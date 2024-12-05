@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,12 +20,17 @@ public class ProfilePanel extends JPanel {
     private JLabel birthdayDayLabel;
     private JLabel birthdayYearLabel;
     private JLabel friendsOnlyLabel;
-    private JButton editButton;
-    private JList<String> friendsList;
-    private JScrollPane friendsListScrollPane;
-    private JList<String> blocksList;
-    private JScrollPane blocksListScrollPane;
+    private JLabel profilePic  = new JLabel("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
+    private RoundedButton editButton;
+    private RoundedJList<String> friendsList;
+    private RoundedScrollPane friendsListScrollPane;
+    private RoundedJList<String> blocksList;
+    private RoundedScrollPane blocksListScrollPane;
     private Client client;
+
+    public String getProfilePic() {
+        return profilePic.getText();
+    }
 
     private static class RoundedPanel extends JPanel {
         private int radius;
@@ -220,16 +226,16 @@ public class ProfilePanel extends JPanel {
 
         JLabel friendsLabel = new JLabel("Friends:");
         friendsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        friendsList = new JList<>();
-        friendsListScrollPane = new JScrollPane(friendsList);
+        friendsList = new RoundedJList<>(15);
+        friendsListScrollPane = new RoundedScrollPane(friendsList,15);
         friendsListScrollPane.setPreferredSize(new Dimension(100, 100));
 
         JLabel blocksLabel = new JLabel("Blocks:");
         blocksLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        blocksList = new JList<>();
-        blocksListScrollPane = new JScrollPane(blocksList);
+        blocksList = new RoundedJList<>(15);
+        blocksListScrollPane = new RoundedScrollPane(blocksList,15);
         blocksListScrollPane.setPreferredSize(new Dimension(100, 100));
-        editButton = new JButton("Edit");
+        editButton = new RoundedButton("Edit",15);
 
         createComponents();
 
@@ -331,7 +337,13 @@ public class ProfilePanel extends JPanel {
         friendsOnlyLabel.setFont(font);
         friendsList.setFont(font);
         blocksList.setFont(font);
-        editButton = new JButton("Edit");
+        editButton = new RoundedButton("Edit",15);
+        editButton.setBackground(new Color(0, 149, 246));
+        editButton.setForeground(Color.WHITE);
+        editButton.setFont(new Font("Arial", Font.BOLD, 14));
+        editButton.setBorder(BorderFactory.createLineBorder(new Color(0, 149, 246), 1));
+        editButton.setFocusPainted(false);
+        editButton.setMaximumSize(new Dimension(400, 50));
     }
 
     private void editProfile() {
@@ -349,7 +361,7 @@ public class ProfilePanel extends JPanel {
             char groupSeparator = (char) 29;
             String profileInput = client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
-            JLabel profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));// do this later
+            profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png")) {
                 pic.setText("C:/Users/peter/Github/CS180Team-Project/images/4.jpg");
@@ -954,5 +966,152 @@ public class ProfilePanel extends JPanel {
             }
         });
     }
+    private static class RoundedScrollPane extends JScrollPane {
+    private int radius;
+    private Color backgroundColor;
+
+    public RoundedScrollPane(Component view, int radius) {
+        super(view);
+        this.radius = radius;
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        
+        // Style the scrollbars
+        getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(200, 200, 200);
+                this.trackColor = new Color(245, 245, 245);
+            }
+            
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                return button;
+            }
+        });
+    }
+
+    @Override
+    public void setBackground(Color bg) {
+        this.backgroundColor = bg;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        
+        // Set rendering hints
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        
+        // Fill background
+        if (backgroundColor != null) {
+            g2.setColor(backgroundColor);
+        } else {
+            g2.setColor(getBackground());
+        }
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+        
+        g2.dispose();
+        super.paintComponent(g);
+    }
+
+    @Override
+    protected void paintBorder(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(new Color(200, 200, 200));
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+        g2.dispose();
+    }
+}
+private static class RoundedJList<E> extends JList<E> {
+    private int radius;
+    private Color backgroundColor;
+
+    public RoundedJList(int radius) {
+        super();
+        this.radius = radius;
+        init();
+    }
+
+    public RoundedJList(ListModel<E> model, int radius) {
+        super(model);
+        this.radius = radius;
+        init();
+    }
+
+    private void init() {
+        setOpaque(false);
+        setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, 
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, 
+                        index, isSelected, cellHasFocus);
+                
+                if (isSelected) {
+                    setBackground(new Color(0, 149, 246, 50));
+                    setForeground(Color.BLACK);
+                } else {
+                    setBackground(list.getBackground());
+                    setForeground(list.getForeground());
+                }
+                
+                setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                return c;
+            }
+        });
+    }
+
+    @Override
+    public void setBackground(Color bg) {
+        this.backgroundColor = bg;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        // Fill background
+        if (backgroundColor != null) {
+            g2.setColor(backgroundColor);
+        } else {
+            g2.setColor(getBackground());
+        }
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+
+        g2.dispose();
+        super.paintComponent(g);
+    }
+
+    @Override
+    protected void paintBorder(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(new Color(200, 200, 200));
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() -1, radius, radius);
+        g2.dispose();
+    }
+}
+
+// Usage:
+// friendsList = new RoundedJList<>(15);
+// friendsList.setBackground(Color.WHITE);
 
 }

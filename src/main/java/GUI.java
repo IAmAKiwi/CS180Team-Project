@@ -1,8 +1,13 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.swing.border.*;
+import java.awt.event.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
 public class GUI implements Runnable {
     private JFrame frame;
@@ -10,18 +15,218 @@ public class GUI implements Runnable {
     private LoginPanel loginPanel;
     private chatPanel chatPanel;
     private ProfilePanel profilePanel;
-    private JButton logoutButton;
+    private RoundedButton logoutButton;
     private Client client;
+    private RoundedPanel headerPanel;
+    private JPopupMenu profileMenu;
+    private CircularButton profileButton;
 
     public GUI(LoginPanel loginPanel) {
         this.loginPanel = loginPanel;
+    }
+    private static class RoundedButton extends JButton {
+        private Color backgroundColor;
+        private Color hoverBackgroundColor;
+        private Color pressedBackgroundColor;
+        private int radius;
+        private boolean isHovered = false;
+        private boolean isPressed = false;
+
+        public RoundedButton(String text, int radius) {
+            super(text);
+            this.radius = radius;
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setOpaque(false);
+
+            // Add hover effect
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    isHovered = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    isHovered = false;
+                    repaint();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    isPressed = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    isPressed = false;
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Get current background color
+            Color background = getBackground();
+            if (isPressed) {
+                background = background.darker();
+            } else if (isHovered) {
+                background = background.brighter();
+            }
+
+            g2.setColor(background);
+            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+
+            super.paintComponent(g);
+            g2.dispose();
+        }
+    }
+    private static class RoundedPanel extends JPanel {
+        private int radius;
+
+        public RoundedPanel(int radius) {
+            this.radius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2.dispose();
+        }
+    }
+
+    private void createHeader() {
+        headerPanel = new RoundedPanel(15);
+        headerPanel.setLayout(new BorderLayout());
+        headerPanel.setBackground(new Color(245, 245, 245));
+        headerPanel.setPreferredSize(new Dimension(frame.getWidth(), 60));
+        // headerPanel.setBorder(new EmptyBorder(10,10,10,10));
+
+        String profilePic = profilePanel.getProfilePic();
+        if (profilePic == null || profilePic.isEmpty()) {
+            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+        }
+
+        profileButton = new CircularButton(profilePic, 50);
+        profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
+        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonWrapper.setBackground(new Color(245, 245, 245));
+        buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 150)); // top, left, bottom, right padding
+        buttonWrapper.add(profileButton);
+        headerPanel.add(buttonWrapper, BorderLayout.EAST);
+
+        profileMenu = new JPopupMenu();
+        profileMenu.setBackground(new Color(30, 30, 30));
+
+        JMenuItem profileItem = new JMenuItem("My Profile");
+        profileItem.setForeground(Color.WHITE);
+        profileItem.setBackground(new Color(30, 30, 30));
+        profileItem.addActionListener(e -> {
+            profilePanel.setVisible(true);
+            chatPanel.setVisible(false);
+            chatListPanel.setVisible(false);
+        });
+
+        // JMenuItem editProfileItem = new JMenuItem("Edit Profile");
+        // editProfileItem.setForeground(Color.WHITE);
+        // editProfileItem.setBackground(new Color(30,30,30));
+        // editProfileItem.addActionListener(e -> {
+        // profilePanel.setVisible(true);
+        // chatPanel.setVisible(false);
+        // chatListPanel.setVisible(false);
+        // profilePanel.editProfile();
+        // });
+
+        profileMenu.add(profileItem);
+        // profileMenu.add(editProfileItem);
+
+        profileButton.addActionListener(e -> {
+            profileMenu.show(profileButton, 0, profileButton.getHeight());
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.0;
+        gbc.gridy = 0;
+        frame.add(headerPanel, gbc);
+    }
+
+    class CircularButton extends JButton {
+        private Image image;
+        private int size;
+
+        public CircularButton(String imagePath, int size) {
+            this.size = size;
+            setPreferredSize(new Dimension(size, size));
+            setContentAreaFilled(false);
+            setBorderPainted(false);
+            setFocusPainted(false);
+
+            try {
+                ImageIcon icon = new ImageIcon(imagePath);
+                Image originalImage = icon.getImage();
+
+                BufferedImage circularImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2 = circularImage.createGraphics();
+                g2.drawImage(originalImage, 0, 0, size, size, null);
+                g2.dispose();
+
+                this.image = circularImage;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+                    RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            // Draw white circle background
+            g2.setColor(Color.WHITE);
+            g2.fillOval(0, 0, size, size);
+
+            // Create circular clip
+            g2.setClip(new Ellipse2D.Float(1, 1, size - 2, size - 2));
+            // Draw image if loaded
+            if (image != null) {
+                g2.drawImage(image, 0, 0, this);
+            }
+
+            g2.setClip(null);
+            g2.setColor(new Color(200, 200, 200)); // Lighter gray for softer appearance
+            g2.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2.drawOval(1, 1, size - 2, size - 2);
+            g2.dispose();
+        }
     }
 
     public void run() {
         frame = new JFrame("Chatter");
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        logoutButton = new JButton("Logout");
+        logoutButton = new RoundedButton("Logout",15);
+        logoutButton.setBackground(new Color(0, 149, 246));
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setFont(new Font("Arial", Font.BOLD, 30));
         client = loginPanel.getClient();
         if (client == null) {
             frame.setVisible(false);
@@ -41,7 +246,7 @@ public class GUI implements Runnable {
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
         chatListPanel = new ChatListPanel(client);
-        //NEW CHANGE TESTING
+        // NEW CHANGE TESTING
         chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
             String selectedUser = (String) evt.getNewValue();
             if (selectedUser != null) {
@@ -53,7 +258,7 @@ public class GUI implements Runnable {
             }
         });
         refreshChats();
-
+        createHeader();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
 
@@ -67,15 +272,14 @@ public class GUI implements Runnable {
         gbc.weightx = .2;
         frame.add(profilePanel, gbc);
 
-
         gbc.weighty = 0;
         gbc.gridy++;
         gbc.insets = new Insets(10, 10, 10, 10);
         logoutButton.addActionListener(e -> logout());
         logoutButton.setForeground(Color.RED);
         logoutButton.setFont(new Font("Arial", Font.BOLD, 10));
-        //frame.add(logoutButton, gbc);
-        JPanel logoutPanel = new JPanel(new BorderLayout(0, 0));
+        // frame.add(logoutButton, gbc);
+        RoundedPanel logoutPanel = new RoundedPanel(15);
         logoutPanel.add(logoutButton, BorderLayout.LINE_END);
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.gridy++;
@@ -102,15 +306,17 @@ public class GUI implements Runnable {
             return;
         }
         String[] chatsArray = chats.split("" + (char) 29);
-        /*chatListPanel.refreshChats(chatsArray);
-        String selectedChat = chatListPanel.getSelectedChat();
-        if (selectedChat != null && !selectedChat.isEmpty()) {
-            try {
-                chatPanel.refreshChat(selectedChat);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }*/
+        /*
+         * chatListPanel.refreshChats(chatsArray);
+         * String selectedChat = chatListPanel.getSelectedChat();
+         * if (selectedChat != null && !selectedChat.isEmpty()) {
+         * try {
+         * chatPanel.refreshChat(selectedChat);
+         * } catch (Exception e) {
+         * // TODO: handle exception
+         * }
+         * }
+         */
     }
 
     public void updateProfilePanel() {
@@ -166,11 +372,11 @@ public class GUI implements Runnable {
     }
 
     public void updateChat() {
-        //chatPanel.updateChat(chat);
+        // chatPanel.updateChat(chat);
     }
 
     public void displayMessage(String message) {
-        //chatPanel.displayMessage();
+        // chatPanel.displayMessage();
     }
 
     public void displayError(String error) {
@@ -192,7 +398,6 @@ public class GUI implements Runnable {
             timer.start();
         }
     }
-
 
     public void updateGUI() {
         if (!isConnected()) {

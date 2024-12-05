@@ -1,26 +1,50 @@
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class ChatListPanel extends JPanel {
     private boolean searching = false;
     private JList<String> chatList;
     private DefaultListModel<String> listModel;
-    private JButton newChatButton;
-    private JTextField searchField;
+    private RoundedButton newChatButton;
+    private RoundedTextField searchField;
     private Client client;
 
     public ChatListPanel(Client client) {
@@ -30,6 +54,225 @@ public class ChatListPanel extends JPanel {
         addListeners();
         setupStyling();
     }
+    private static class RoundedScrollPane extends JScrollPane {
+    private int radius;
+    private Color backgroundColor;
+
+    public RoundedScrollPane(Component view, int radius) {
+        super(view);
+        this.radius = radius;
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));        
+        // Style the scrollbars
+        getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(200, 200, 200);
+                this.trackColor = new Color(245, 245, 245);
+            }
+            
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                return button;
+            }
+        });
+    }
+
+    @Override
+    public void setBackground(Color bg) {
+        this.backgroundColor = bg;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        
+        // Set rendering hints
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        
+        // Fill background
+        if (backgroundColor != null) {
+            g2.setColor(backgroundColor);
+        } else {
+            g2.setColor(getBackground());
+        }
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+        
+        g2.dispose();
+        super.paintComponent(g);
+    }
+
+    @Override
+    protected void paintBorder(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(new Color(200, 200, 200));
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+        g2.dispose();
+    }
+}
+
+    class RoundedTextField extends JTextField {
+        private int radius;
+
+        public RoundedTextField(String text, int columns, int radius) {
+            super(text, columns);
+            this.radius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            super.paintComponent(g);
+            g2.dispose();
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.setColor(getForeground());
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            g2.dispose();
+        }
+    }
+    private static class RoundedLabel extends JLabel {
+        private int radius;
+        private Color backgroundColor;
+    
+        public RoundedLabel(String text, int radius) {
+            super(text);
+            this.radius = radius;
+            setOpaque(false);
+        }
+    
+        @Override
+        public void setBackground(Color bg) {
+            this.backgroundColor = bg;
+            repaint();
+        }
+    
+        @Override
+        protected void paintComponent(Graphics g) {
+            if (backgroundColor != null) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g2.setColor(backgroundColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+                g2.dispose();
+            }
+            super.paintComponent(g);
+        }
+    
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getForeground());
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            g2.dispose();
+        }
+    }
+    
+    // Usage:
+    // RoundedLabel label = new RoundedLabel("Text", 15);
+    // label.setBackground(new Color(245, 245, 245));
+    private static class RoundedButton extends JButton {
+        private Color backgroundColor;
+        private Color hoverBackgroundColor;
+        private Color pressedBackgroundColor;
+        private int radius;
+        private boolean isHovered = false;
+        private boolean isPressed = false;
+
+        public RoundedButton(String text, int radius) {
+            super(text);
+            this.radius = radius;
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setOpaque(false);
+
+            // Add hover effect
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    isHovered = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    isHovered = false;
+                    repaint();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    isPressed = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    isPressed = false;
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Get current background color
+            Color background = getBackground();
+            if (isPressed) {
+                background = background.darker();
+            } else if (isHovered) {
+                background = background.brighter();
+            }
+
+            g2.setColor(background);
+            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+
+            super.paintComponent(g);
+            g2.dispose();
+        }
+    }
+
+    
+    
+
+    
+
 
     private void initializeComponents() {
         // Initialize list model and chat list
@@ -39,11 +282,11 @@ public class ChatListPanel extends JPanel {
         chatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // Create search field with placeholder
-        searchField = new JTextField();
-        searchField.putClientProperty("JTextField.placeholderText", "Search chats...");
+        searchField = new RoundedTextField("", 10, 15);
+        searchField.putClientProperty("RoundedTextField.placeholderText", "Search chats...");
 
         // Create new chat button with icon
-        newChatButton = new JButton("New Chat");
+        newChatButton = new RoundedButton("New Chat",15);
         newChatButton.setIcon(new ImageIcon("./images/icons8-add-to-chat-50.png")); // Add your icon
     }
 
@@ -58,7 +301,7 @@ public class ChatListPanel extends JPanel {
 
         // Add components to main panel
         add(topPanel, BorderLayout.NORTH);
-        add(new JScrollPane(chatList), BorderLayout.CENTER);
+        add(new RoundedScrollPane(chatList,15), BorderLayout.CENTER);
     }
 
     private void setupStyling() {
@@ -271,10 +514,10 @@ public class ChatListPanel extends JPanel {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(0, 0, 0));
 
-        JButton addFriendButton = new JButton("Add/Remove Friend");
-        JButton blockButton = new JButton("Block/Unblock");
-        JButton openChatButton = new JButton("Open Chat");
-        JButton cancelButton = new JButton("Cancel");
+        RoundedButton addFriendButton = new RoundedButton("Add/Remove Friend",15);
+        RoundedButton blockButton = new RoundedButton("Block/Unblock",15);
+        RoundedButton openChatButton = new RoundedButton("Open Chat",15);
+        RoundedButton cancelButton = new RoundedButton("Cancel",15);
 
 
         addFriendButton.addActionListener(e -> {
@@ -357,7 +600,7 @@ public class ChatListPanel extends JPanel {
 
     private void addUnreadIndicator(String username, int count) {
         // Add a small circle with number of unread messages
-        JLabel unreadLabel = new JLabel(String.valueOf(count));
+        RoundedLabel unreadLabel = new RoundedLabel(String.valueOf(count),15);
         unreadLabel.setOpaque(true);
         unreadLabel.setBackground(new Color(76, 175, 80));
         unreadLabel.setForeground(Color.WHITE);
