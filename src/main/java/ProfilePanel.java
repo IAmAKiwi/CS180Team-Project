@@ -1,14 +1,46 @@
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class ProfilePanel extends JPanel {
     private GridBagConstraints constraints;
@@ -809,7 +841,7 @@ public class ProfilePanel extends JPanel {
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png")) {
-                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.png");
+                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
             }
             CircularImagePanel imagePanel = new CircularImagePanel(
                     pic.getText(), 150);

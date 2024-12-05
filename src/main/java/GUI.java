@@ -262,14 +262,14 @@ public class GUI implements Runnable {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        gbc.weightx = 0.1;
+        gbc.weightx = 0.2;
         gbc.weighty = 1.0;
         frame.add(chatListPanel, gbc);
 
-        gbc.weightx = 0.2;
+        gbc.weightx = 0.5;
         frame.add(chatPanel, gbc);
 
-        gbc.weightx = .4;
+        gbc.weightx = 1.2;
         // frame.add(profilePanel, gbc);
         chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
             String selectedUser = (String) evt.getNewValue();
@@ -284,8 +284,7 @@ public class GUI implements Runnable {
                     db.loadUsers();
                     User u = db.getUser(selectedUser);
                     Client newClient = new Client();
-                    newClient.login(u.getUsername() + (char)29 + u.getPassword());
-                    System.out.println(newClient.accessProfile());
+                    newClient.login(u.getUsername() + (char) 29 + u.getPassword());
                     selectedProfilePanel = new ProfilePanel(selectedUser, newClient);
                     frame.add(selectedProfilePanel, gbc);
                     frame.revalidate();
@@ -350,6 +349,15 @@ public class GUI implements Runnable {
             }
         });
         updateGUI();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(screenSize.width, screenSize.height);
+        // Set frame to maximized state
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        // Center the dialog
+        frame.setLocation(0, 0);
+
+        // Make the dialog visible
         frame.setVisible(true);
         scheduleUpdates();
     }
