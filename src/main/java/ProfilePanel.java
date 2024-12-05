@@ -251,8 +251,9 @@ public class ProfilePanel extends JPanel {
             String profileInput = this.client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
-            if (profilePic.getText().equals("profile.png") || profilePic.getText().isEmpty() || profilePic.getText().equals("")) {
-                profilePic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
+            JLabel pic = new JLabel(profilePic.getText());
+            if (pic.getText().equals("profile.png") || profilePic.getText().isEmpty() || profilePic.getText().equals("")) {
+                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
             }
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
@@ -273,7 +274,7 @@ public class ProfilePanel extends JPanel {
             int blackPanelWidth = (int) (screenSize.width * 0.6); // 60% width
             blackBackground.setBounds(0, 10, blackPanelWidth, screenSize.height - 180);
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    profilePic.getText(), 150);
+                pic.getText(), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);
@@ -531,7 +532,7 @@ public class ProfilePanel extends JPanel {
             blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 98);
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png")) {
-                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.png");
+                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
             }
             CircularImagePanel imagePanel = new CircularImagePanel(
                     pic.getText(), 150);
@@ -823,7 +824,7 @@ public class ProfilePanel extends JPanel {
         }
     }
 
-    public void editProfile() {
+    public void editProfile(ActionListener saveCallback) {
         try {
             // TODO: add cancel button
             // Create a new dialog to edit the profile
@@ -873,43 +874,43 @@ public class ProfilePanel extends JPanel {
             fullNameLabel.setBounds(startX, startY, fieldWidth, fieldHeight); // maybe change height to fieldHeight
 
             // First Name
-            firstNameLabel = new JLabel(firstNameStr.getText());
+            JLabel firstNameLabel = new JLabel(firstNameStr.getText());
             firstNameLabel.setFont(labelFont);
             firstNameLabel.setForeground(textColor);
             firstNameLabel.setBounds(startX, startY + verticalGap, fieldWidth, fieldHeight);
 
             // Last Name
-            lastNameLabel = new JLabel(lastNameStr.getText());
+            JLabel lastNameLabel = new JLabel(lastNameStr.getText());
             lastNameLabel.setFont(labelFont);
             lastNameLabel.setForeground(textColor);
             lastNameLabel.setBounds(startX, startY + (verticalGap * 2), fieldWidth, fieldHeight);
 
             // Bio
-            bioLabel = new JLabel(bioStr.getText());
+            JLabel bioLabel = new JLabel(bioStr.getText());
             bioLabel.setFont(labelFont);
             bioLabel.setForeground(textColor);
             bioLabel.setBounds(startX, startY + (verticalGap * 3), fieldWidth, fieldHeight);
 
             // Birthday Month
-            birthdayMonthLabel = new JLabel(birthdayMonthStr.getText());
+            JLabel birthdayMonthLabel = new JLabel(birthdayMonthStr.getText());
             birthdayMonthLabel.setFont(labelFont);
             birthdayMonthLabel.setForeground(textColor);
             birthdayMonthLabel.setBounds(startX, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
             // Birthday Day
-            birthdayDayLabel = new JLabel(birthdayDayStr.getText());
+            JLabel birthdayDayLabel = new JLabel(birthdayDayStr.getText());
             birthdayDayLabel.setFont(labelFont);
             birthdayDayLabel.setForeground(textColor);
             birthdayDayLabel.setBounds(startX + 30, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
             // Birthday Year
-            birthdayYearLabel = new JLabel(birthdayYearStr.getText());
+            JLabel  birthdayYearLabel = new JLabel(birthdayYearStr.getText());
             birthdayYearLabel.setFont(labelFont);
             birthdayYearLabel.setForeground(textColor);
             birthdayYearLabel.setBounds(startX + 60, startY + (verticalGap * 4), fieldWidth, fieldHeight);
 
             // Friends Only
-            friendsOnlyLabel = new JLabel(friendsOnlyStr.getText());
+            JLabel friendsOnlyLabel = new JLabel(friendsOnlyStr.getText());
 
             // After creating imagePanel but before other labels:
             // Stats styling
@@ -1409,6 +1410,9 @@ public class ProfilePanel extends JPanel {
                             pic.setText(profilePic.getText());
                             friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
                             // Close the dialog
+                            if (saveCallback != null) {
+                                saveCallback.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Save"));
+                            }
                             frame.dispose();
                         } else {
                             // Show an error message

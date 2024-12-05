@@ -112,7 +112,38 @@ public class GUI implements Runnable {
             g2.dispose();
         }
     }
-
+    private void updateProfileButton() {
+        String profilePic = profilePanel.getProfilePic();
+        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") 
+                || profilePic.equals("profile.png")) {
+            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+        }
+        
+        // Remove old button wrapper
+        Component[] components = headerPanel.getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JPanel && comp.getName() != null 
+                    && comp.getName().equals("buttonWrapper")) {
+                headerPanel.remove(comp);
+            }
+        }
+    
+        // Create new button
+        profileButton = new CircularButton(profilePic, 50);
+        profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
+        
+        // Create new wrapper
+        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonWrapper.setName("buttonWrapper"); // For identification
+        buttonWrapper.setBackground(new Color(245, 245, 245));
+        buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 200));
+        buttonWrapper.add(profileButton);
+        
+        // Add new wrapper
+        headerPanel.add(buttonWrapper, BorderLayout.EAST);
+        headerPanel.revalidate();
+        headerPanel.repaint();
+    }
     private void createHeader() {
         headerPanel = new RoundedPanel(15);
         headerPanel.setLayout(new BorderLayout());
@@ -121,6 +152,9 @@ public class GUI implements Runnable {
         // headerPanel.setBorder(new EmptyBorder(10,10,10,10));
 
         String profilePic = profilePanel.getProfilePic();
+        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") || profilePic.equals("profile.png")) {
+            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+        }
         profileButton = new CircularButton(profilePic, 50);
 
         profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
@@ -145,7 +179,17 @@ public class GUI implements Runnable {
         editProfileItem.setBackground(new Color(30, 30, 30));
         editProfileItem.addActionListener(e -> {
             profilePanel.setVisible(true);
-            profilePanel.editProfile();
+            profilePanel.editProfile(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // This will run after save button is clicked
+                    SwingUtilities.invokeLater(() -> {
+                        updateProfileButton();
+                        updateProfilePanel();
+                    });
+                }
+            }); 
+            updateProfileButton(); 
         });
 
         profileMenu.add(profileItem);
