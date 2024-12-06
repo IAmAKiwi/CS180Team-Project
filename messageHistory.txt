@@ -1,6 +1,4 @@
-user1 user3
-1733170417580:user1:content
-user3 Buiilding
-1733505743464:user3:adfklalkfl;kasfdl;jk
-1733505775096:user3:NOOOOOOOOOO
+user1 user2
+1733507860406:user1:Hello
+1733507860406:user2:Hi there!
 

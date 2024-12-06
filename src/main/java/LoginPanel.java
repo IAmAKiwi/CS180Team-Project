@@ -554,7 +554,7 @@ public class LoginPanel extends JComponent implements Runnable {
                 // Add after initializing other fields
                 JButton browseButton = new JButton("Browse Files");
                 CircularImagePanel profilePreview = new CircularImagePanel(
-                        "C:/Users/peter/Github/CS180Team-Project/images/5.jpg", 150);
+                        "../../images/5.jpg", 150);
                 browseButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

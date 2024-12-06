@@ -187,7 +187,7 @@ public class GUI implements Runnable {
                     blockList =  (ArrayList<String>) Arrays.asList(blocks.split(
                             "" + (char) 29));
                 }
-                profilePanel.createComponent(friendList, blockList);
+                profilePanel.createComponent(null, friendList, blockList);
             } catch (IOException ex) {
                 disconnect();
             }
@@ -201,7 +201,7 @@ public class GUI implements Runnable {
         editProfileItem.setBackground(new Color(30, 30, 30));
         editProfileItem.addActionListener(e -> {
             profilePanel.setVisible(true);
-            profilePanel.editProfile(new ActionListener() {
+            profilePanel.createComponent(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // This will run after save button is clicked
@@ -210,7 +210,7 @@ public class GUI implements Runnable {
                         updateProfilePanel();
                     });
                 }
-            }); 
+            }, null, null);
             updateProfileButton(); 
         });
 
@@ -599,8 +599,6 @@ public class GUI implements Runnable {
             disconnect();
             return;
         }
-        updateProfilePanel();
-        // updateFriendsAndBlocks();
         refreshChats();
     }
 
