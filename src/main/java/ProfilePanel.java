@@ -234,10 +234,8 @@ public class ProfilePanel extends JPanel {
             char groupSeparator = (char) 29;
             String profileInput = this.client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
-            System.out.println(profileInfo[5]);
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
-            System.out.println(pic.getText());
             if (pic.getText().equals("profile.png") || pic.getText().isEmpty() || pic.getText().equals("")) {
                 pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
             }
