@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -89,7 +90,10 @@ public class Server implements Runnable, ServerInterface {
                         result = accessUserProfile(content);
                         break;
                     case "accessPhotosFromUser":
-                        result = accessPhotosFromUser();
+                        result = accessPhotosFromUser(content);
+                        break;
+                    case "accessMessagesFromUser":
+                        result = accessMessagesFromUser(content);
                         break;
                     case "saveProfile":
                         result = saveProfile(content);
@@ -208,8 +212,9 @@ public class Server implements Runnable, ServerInterface {
             } catch (NumberFormatException e) {
                 return "false";
             }
-
-            currentUser.setProfilePic(fields[5]);
+            db.addPhotosFile(new File(fields[5]));
+            db.loadPhotosFolder();
+            currentUser.setProfilePic(db.getPhotoFolderPaths().get(db.getPhotoFolderPaths().size() - 1));
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
             return "true";
@@ -226,10 +231,13 @@ public class Server implements Runnable, ServerInterface {
         return db.getUser(user).toString();
     }
 
-    public String accessPhotosFromUser() {
-        return db.getAllPhotosFromUser(currentUser).toString();
+    public String accessPhotosFromUser(String user) {
+        return db.getAllPhotosFromUser(db.getUser(user)).toString();
     }
     
+    public String accessMessagesFromUser(String user) {
+        return db.getAllMessagesFromUser(db.getUser(user)).size() + "";
+    }
     @Override
     public String deleteChat(String user) {
         try {

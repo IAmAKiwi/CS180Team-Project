@@ -6,6 +6,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.File;
 
 public class LoginPanel extends JComponent implements Runnable {
@@ -230,6 +234,7 @@ public class LoginPanel extends JComponent implements Runnable {
         }
     }
 
+
     public void run() {
         try {
             if (client.isLoggedIn()) {
@@ -263,15 +268,17 @@ public class LoginPanel extends JComponent implements Runnable {
         // Load custom font
         Font customFont = null;
         try {
+            Path symbolsPath = Paths.get("symbols");
+            String fontPath = symbolsPath.resolve("TheHeartOfEverythingDemo-KRdD.ttf").toString();
             customFont = Font
                     .createFont(Font.TRUETYPE_FONT,
                             new File(
-                                    "C:/Users/peter/Github/CS180Team-Project/images/TheHeartOfEverythingDemo-KRdD.ttf"))
+                                    fontPath))
                     .deriveFont(48f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
 
         // Add text field with custom font
@@ -552,8 +559,10 @@ public class LoginPanel extends JComponent implements Runnable {
                 JTextField birthdayFieldYear = new JTextField("", 20);
                 // Add after initializing other fields
                 JButton browseButton = new JButton("Browse Files");
+                Path photosPath = Paths.get("images");
+                String defaultPath = photosPath.resolve("69.jpg").toString();
                 CircularImagePanel profilePreview = new CircularImagePanel(
-                        "C:/Users/peter/Github/CS180Team-Project/images/5.jpg", 150);
+                    defaultPath, 150);
                 browseButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

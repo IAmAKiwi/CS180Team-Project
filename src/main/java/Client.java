@@ -97,6 +97,10 @@ public class Client implements Runnable, ClientInterface {
                         // Access photos from user example: accessPhotosFromUser:username
                         result = accessPhotosFromUser(content);
                         break;
+                    case "accessMessagesFromUser":
+                        // Access messages from user example: accessMessagesFromUser:username
+                        result = accessMessagesFromUser(content);
+                        break;
                     case "saveProfile":
                         result = String.valueOf(saveProfile(content));
                         break;
@@ -189,6 +193,11 @@ public class Client implements Runnable, ClientInterface {
 
     public String accessUserProfile(String content) throws IOException {
         String command = "accessUserProfile:" + content;
+        return requestData(command);
+    }
+
+    public String accessMessagesFromUser(String content) throws IOException {
+        String command = "accessMessagesFromUser:" + content;
         return requestData(command);
     }
 

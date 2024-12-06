@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 /**
@@ -23,11 +27,14 @@ public class Database implements DatabaseInterface {
     private final char fileSeparator = 28;
     private final char groupSeparator = 29;
     private ArrayList<PhotoHistory> photosPath;
+    private static final String PHOTOS_DIR = "images/";
+    private ArrayList<String> photoFolderPaths;
 
     /**
      * Initializes the Database class, setting up the user list, message history
      * list, and photo paths.
      */
+
     public Database() {
         this.userList = new ArrayList<>();
         this.allChats = new ArrayList<>();
@@ -309,16 +316,16 @@ public class Database implements DatabaseInterface {
         if (u1 == null || u2 == null) {
             return false;
         }
-    
+
         PhotoHistory ph = this.getPhotos(u1.getUsername(), u2.getUsername());
         if (ph == null) {
             return false;
         }
-    
+
         synchronized (PHOTO_KEY) {
             for (Photo p : ph.getPhotoHistory()) {
-                if (p.getPhotoPath().equals(photo.getPhotoPath()) && 
-                    p.getSender().equals(photo.getSender())) {
+                if (p.getPhotoPath().equals(photo.getPhotoPath()) &&
+                        p.getSender().equals(photo.getSender())) {
                     ph.deletePhoto(p);
                     this.photosPath.set(this.photosPath.indexOf(ph), ph);
                     return true;
@@ -569,6 +576,7 @@ public class Database implements DatabaseInterface {
      */
     @Override
     public boolean loadUsers() {
+        userList = new ArrayList<>();
         File f = new File("usersHistory.txt");
         if (!f.exists()) {
             System.out.println("No data file found.");
@@ -962,6 +970,7 @@ public class Database implements DatabaseInterface {
         }
 
     }
+
     @Override
     public ArrayList<PhotoHistory> getPhotos() {
         synchronized (PHOTO_KEY) {
@@ -1021,6 +1030,7 @@ public class Database implements DatabaseInterface {
 
     public ArrayList<Photo> getAllPhotosFromUser(User u) {
         this.loadPhotos();
+        System.out.println(this.photosPath);
         ArrayList<Photo> photos = new ArrayList<>();
         synchronized (PHOTO_KEY) {
             for (PhotoHistory ph : this.photosPath) {
@@ -1028,19 +1038,75 @@ public class Database implements DatabaseInterface {
                     if (p.getSender().equals(u.getUsername())) {
                         photos.add(p);
                     }
-                
+
                 }
             }
         }
         return photos;
     }
 
-    public static void main (String[] args) {
-        Database db = new Database();
-        db.loadUsers();
-        db.loadMessages();
-        db.loadPhotos();
-        User u3 = db.getUser("user3");
-        System.out.println(db.getAllPhotosFromUser(u3));
+    public boolean loadPhotosFolder() {
+        try {
+            photoFolderPaths = new ArrayList<>();
+            Path photosPath = Paths.get(PHOTOS_DIR);
+            if (!Files.exists(photosPath)) {
+                System.out.println("Directory does not exist: " + photosPath.toAbsolutePath());
+                return false;
+            }
+            Files.list(photosPath).filter(Files::isRegularFile)
+                    .forEach(path -> photoFolderPaths.add(path.getFileName().toString()));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<String> getPhotoFolderPaths() {
+        return photoFolderPaths;
+    }
+
+    public boolean addPhotosFile(File f) {
+        try {
+            // Check if the file exists
+            if (!f.exists()) {
+                System.err.println("File does not exist: " + f.getAbsolutePath());
+                return false;
+            }
+
+            // get the path to the photos directory
+            Path photosPath = Paths.get(PHOTOS_DIR);
+            // load photos in folder path 
+            Database db = new Database();
+            db.loadPhotosFolder();
+            // get the highest number.jpg
+            int x = 0;
+            for (String i : db.getPhotoFolderPaths()) {
+                String[] parts = i.split("\\.");
+                x = Math.max(x, Integer.parseInt(parts[0]));
+            }
+
+            if (!Files.exists(photosPath)) {
+                Files.createDirectories(photosPath);
+            }
+
+            // create the path of the new photo
+            Path destPath = photosPath.resolve(f.getName());
+            Files.copy(f.toPath(), destPath, StandardCopyOption.REPLACE_EXISTING);
+            // Extract the file extension
+            String fileExtension = getFileExtension(f.getName());
+
+            // Rename the file to the next number with the same extension
+            Path newPath = photosPath.resolve((x + 1) + fileExtension);
+            Files.move(destPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error adding photo file: " + e.getMessage());
+            return false;
+        }
+    }
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex != -1) ? fileName.substring(dotIndex) : ""; // Return extension (e.g., ".png") or empty string
     }
 }

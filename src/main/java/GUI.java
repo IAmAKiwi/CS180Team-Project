@@ -119,7 +119,7 @@ public class GUI implements Runnable {
         String profilePic = profilePanel.getProfilePic();
         if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") 
                 || profilePic.equals("profile.png")) {
-            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/69.jpg";
         }
         
         // Remove old button wrapper
@@ -156,7 +156,7 @@ public class GUI implements Runnable {
 
         String profilePic = profilePanel.getProfilePic();
         if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") || profilePic.equals("profile.png")) {
-            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/69.jpg";
         }
         profileButton = new CircularButton(profilePic, 50);
 
