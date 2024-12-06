@@ -85,6 +85,9 @@ public class Server implements Runnable, ServerInterface {
                     case "accessProfile":
                         result = accessProfile();
                         break;
+                    case "accessUserProfile":
+                        result = accessUserProfile(content);
+                        break;
                     case "accessPhotosFromUser":
                         result = accessPhotosFromUser();
                         break;
@@ -217,6 +220,10 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String accessProfile() {
         return currentUser.toString();
+    }
+
+    public String accessUserProfile(String user) {
+        return db.getUser(user).toString();
     }
 
     public String accessPhotosFromUser() {

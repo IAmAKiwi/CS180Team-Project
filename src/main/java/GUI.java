@@ -192,6 +192,8 @@ public class GUI implements Runnable {
                 disconnect();
             }
 
+
+
         });
 
         JMenuItem editProfileItem = new JMenuItem("Edit Profile");
@@ -344,12 +346,9 @@ public class GUI implements Runnable {
                     if (count > 1) {
                         frame.remove(selectedProfilePanel);
                     }
-                    Database db = new Database();
-                    db.loadUsers();
-                    User u = db.getUser(selectedUser);
-                    Client newClient = new Client();
-                    newClient.login(u.getUsername() + (char) 29 + u.getPassword());
-                    selectedProfilePanel = new ProfilePanel(selectedUser, newClient);
+                    String profile = client.accessUserProfile(selectedUser);
+                    String photos = client.accessPhotosFromUser(selectedUser);
+                    selectedProfilePanel = new ProfilePanel(profile, photos);
                     JButton[] friendAndBlockButtons = selectedProfilePanel.getFriendAndBlockButtons();
                     ArrayList<String> friendList = new ArrayList<>();
                     ArrayList<String> blockList = new ArrayList<>();
