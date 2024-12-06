@@ -21,22 +21,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -506,7 +493,7 @@ public class ProfilePanel extends JPanel {
         return new JButton[]{addFriendButton, blockButton};
     }
 
-    public void createComponent() {
+    public void createComponent(ArrayList<String> friendList, ArrayList<String> blockList) {
         try {
             char groupSeparator = (char) 29;
             String profileInput = this.client.accessProfile();
@@ -527,7 +514,9 @@ public class ProfilePanel extends JPanel {
             // JDialog editDialog = new JDialog(frame, "Edit Profile", true);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
             JPanel mainPanel = new JPanel(null);
+            JPanel friendAndBlockPanel = new JPanel(null);
             JPanel blackBackground = new RoundedPanel(30);
             blackBackground.setBackground(Color.BLACK);
             blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 98);
@@ -546,6 +535,29 @@ public class ProfilePanel extends JPanel {
             int startX = 50;
             int startY = 250;
             int verticalGap = 25;
+
+            // Setup friends and blocks lists.
+            RoundedTextField friendsText = new RoundedTextField("", 50, 15);
+            friendsText.setFont(new Font("Arial", Font.PLAIN, 14));
+
+            RoundedTextField blocksText = new RoundedTextField("", 50, 15);
+            blocksText.setFont(new Font("Arial", Font.PLAIN, 14));
+
+            if (friendList.size() > 0) {
+                String friendString = "";
+                for (String friend : friendList) {
+                    friendString += friend + "\n";
+                }
+                friendsText.setText(friendString);
+            }
+
+            if (blockList.size() > 0) {
+                String blockString = "";
+                for (String block : blockList) {
+                    blockString += block + "\n";
+                }
+                blocksText.setText(blockString);
+            }
 
             // Full Name
             fullNameLabel.setFont(labelFont);
@@ -768,8 +780,16 @@ public class ProfilePanel extends JPanel {
 
             // Make the dialog visible
             frame.setVisible(true);
+
             // Add the panel and button to the dialog
+            friendAndBlockPanel.setBackground(Color.WHITE);
+            friendAndBlockPanel.setBounds((int) (screenSize.width / 2.5), 0, screenSize.width -
+                    (int) (screenSize.width / 2.5), screenSize.height);
+            mainPanel.add(friendAndBlockPanel);
             frame.add(mainPanel);
+            //c.weightx = 0.3;
+            //c.gridx = 1;
+            //frame.add(friendAndBlockPanel, c);
         } catch (Exception e) {
             e.printStackTrace();
         }

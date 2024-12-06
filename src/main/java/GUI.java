@@ -26,7 +26,7 @@ public class GUI implements Runnable {
     private JPopupMenu profileMenu;
     private CircularButton profileButton;
     int count = 0;
-    ProfilePanel selectedProfilePanel;
+    private ProfilePanel selectedProfilePanel;
 
     public GUI(LoginPanel loginPanel) {
         this.loginPanel = loginPanel;
@@ -174,7 +174,24 @@ public class GUI implements Runnable {
         profileItem.setForeground(Color.WHITE);
         profileItem.setBackground(new Color(30, 30, 30));
         profileItem.addActionListener(e -> {
-            profilePanel.createComponent();
+            try {
+                ArrayList<String> friendList = new ArrayList<>();
+                ArrayList<String> blockList = new ArrayList<>();
+                String friends = client.getFriendList();
+                String blocks = client.getBlockList();
+                if (!friends.isEmpty()) {
+                    friendList = (ArrayList<String>) Arrays.asList(friends.split(
+                            "" + (char) 29));
+                }
+                if (!blocks.isEmpty()) {
+                    blockList =  (ArrayList<String>) Arrays.asList(blocks.split(
+                            "" + (char) 29));
+                }
+                profilePanel.createComponent(friendList, blockList);
+            } catch (IOException ex) {
+                disconnect();
+            }
+
         });
 
         JMenuItem editProfileItem = new JMenuItem("Edit Profile");
