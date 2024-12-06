@@ -43,7 +43,6 @@ public class ChatListPanel extends JPanel {
     private boolean searching = false;
     private JList<String> chatList;
     private DefaultListModel<String> listModel;
-    private RoundedButton newChatButton;
     private RoundedTextField searchField;
     private Client client;
 
@@ -284,10 +283,6 @@ public class ChatListPanel extends JPanel {
         // Create search field with placeholder
         searchField = new RoundedTextField("", 10, 15);
         searchField.putClientProperty("RoundedTextField.placeholderText", "Search chats...");
-
-        // Create new chat button with icon
-        newChatButton = new RoundedButton("New Chat",15);
-        newChatButton.setIcon(new ImageIcon("./images/icons8-add-to-chat-50.png")); // Add your icon
     }
 
     private void setupLayout() {
@@ -297,7 +292,6 @@ public class ChatListPanel extends JPanel {
         // Top panel for search and new chat button
         JPanel topPanel = new JPanel(new BorderLayout(5, 0));
         topPanel.add(searchField, BorderLayout.CENTER);
-        topPanel.add(newChatButton, BorderLayout.EAST);
 
         // Add components to main panel
         add(topPanel, BorderLayout.NORTH);
@@ -316,11 +310,6 @@ public class ChatListPanel extends JPanel {
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
 
-        // Button styling
-        newChatButton.setBackground(new Color(76, 175, 80));
-        newChatButton.setForeground(Color.WHITE);
-        newChatButton.setBorder(new RoundedBorder(8));
-        newChatButton.setFocusPainted(false);
 
         // List styling
         chatList.setFixedCellHeight(60);
@@ -347,9 +336,6 @@ public class ChatListPanel extends JPanel {
                 searching = false;
             }
         });
-
-        // New chat button action
-        newChatButton.addActionListener(e -> showNewChatDialog());
 
         // Chat selection listener
         chatList.addListSelectionListener(e -> {
