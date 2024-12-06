@@ -2,12 +2,15 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import javax.swing.border.*;
 import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GUI implements Runnable {
     private JFrame frame;
@@ -17,13 +20,13 @@ public class GUI implements Runnable {
     private ProfilePanel profilePanel;
     private RoundedButton logoutButton;
     // private RoundedButton addFriendButton;
-    // private RoundedButton addBlockButton;
+    // private RoundedButton addBlockButton;a
     private Client client;
     private RoundedPanel headerPanel;
     private JPopupMenu profileMenu;
     private CircularButton profileButton;
     int count = 0;
-    ProfilePanel selectedProfilePanel;
+    private ProfilePanel selectedProfilePanel;
 
     public GUI(LoginPanel loginPanel) {
         this.loginPanel = loginPanel;
@@ -171,7 +174,26 @@ public class GUI implements Runnable {
         profileItem.setForeground(Color.WHITE);
         profileItem.setBackground(new Color(30, 30, 30));
         profileItem.addActionListener(e -> {
-            profilePanel.createComponent();
+            try {
+                ArrayList<String> friendList = new ArrayList<>();
+                ArrayList<String> blockList = new ArrayList<>();
+                String friends = client.getFriendList();
+                String blocks = client.getBlockList();
+                if (!friends.isEmpty()) {
+                    friendList = (ArrayList<String>) Arrays.asList(friends.split(
+                            "" + (char) 29));
+                }
+                if (!blocks.isEmpty()) {
+                    blockList =  (ArrayList<String>) Arrays.asList(blocks.split(
+                            "" + (char) 29));
+                }
+                profilePanel.createComponent(friendList, blockList);
+            } catch (IOException ex) {
+                disconnect();
+            }
+
+
+
         });
 
         JMenuItem editProfileItem = new JMenuItem("Edit Profile");
@@ -324,12 +346,68 @@ public class GUI implements Runnable {
                     if (count > 1) {
                         frame.remove(selectedProfilePanel);
                     }
-                    Database db = new Database();
-                    db.loadUsers();
-                    User u = db.getUser(selectedUser);
-                    Client newClient = new Client();
-                    newClient.login(u.getUsername() + (char) 29 + u.getPassword());
-                    selectedProfilePanel = new ProfilePanel(selectedUser, newClient);
+                    String profile = client.accessUserProfile(selectedUser);
+                    String photos = client.accessPhotosFromUser(selectedUser);
+                    selectedProfilePanel = new ProfilePanel(profile, photos);
+                    JButton[] friendAndBlockButtons = selectedProfilePanel.getFriendAndBlockButtons();
+                    ArrayList<String> friendList = new ArrayList<>();
+                    ArrayList<String> blockList = new ArrayList<>();
+                    try {
+                        String friends = client.getFriendList();
+                        if (!friends.isEmpty()) {
+                            friendList = (ArrayList<String>) Arrays.asList(friends.split(
+                                    "" + (char) 29));
+                        }
+                        String blocks = client.getBlockList();
+                        if (!blocks.isEmpty()) {
+                            blockList = (ArrayList<String>) Arrays.asList(blocks.split(
+                                    "" + (char) 29));
+                        }
+                    } catch (IOException ex) {
+                        disconnect();
+                        return;
+                    }
+
+                    if (friendList.contains(selectedUser)) {
+                        friendAndBlockButtons[0].setText("Unfriend");
+                    }
+
+                    if (blockList.contains(selectedUser)) {
+                        friendAndBlockButtons[1].setText("Unblock");
+                    }
+
+                    friendAndBlockButtons[0].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (!client.addFriend(selectedUser)) {
+                                    client.removeFriend(selectedUser);
+                                    friendAndBlockButtons[0].setText("Friend");
+                                } else {
+                                    friendAndBlockButtons[0].setText("Unfriend");
+                                }
+                            } catch (Exception ex) {
+                                disconnect();
+                            }
+                        }
+                    });
+
+                    friendAndBlockButtons[1].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (!client.blockUser(selectedUser)) {
+                                    client.unblockUser(selectedUser);
+                                    friendAndBlockButtons[1].setText("Block");
+                                } else {
+                                    friendAndBlockButtons[1].setText("Unblock");
+                                }
+                            } catch (Exception ex) {
+                                disconnect();
+                            }
+                        }
+                    });
+
                     frame.add(selectedProfilePanel, gbc);
                     frame.revalidate();
                     frame.repaint();

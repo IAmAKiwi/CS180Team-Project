@@ -89,9 +89,13 @@ public class Client implements Runnable, ClientInterface {
                         // Access profile example: accessProfile:
                         result = accessProfile();
                         break;
+                    case "accessUserProfile":
+                        // Access user profile example accessUserProfile:username
+                        result = accessUserProfile(content);
+                        break;
                     case "accessPhotosFromUser":
-                        // Access photos from user example: accessPhotosFromUser:
-                        result = "accessPhotosFromUser()";
+                        // Access photos from user example: accessPhotosFromUser:username
+                        result = accessPhotosFromUser(content);
                         break;
                     case "saveProfile":
                         result = String.valueOf(saveProfile(content));
@@ -183,8 +187,14 @@ public class Client implements Runnable, ClientInterface {
         return requestData("accessProfile: ");
     }
 
-    public String accessPhotosFromUser() throws IOException {
-        return requestData("accessPhotosFromUser: ");
+    public String accessUserProfile(String content) throws IOException {
+        String command = "accessUserProfile:" + content;
+        return requestData(command);
+    }
+
+    public String accessPhotosFromUser(String content) throws IOException {
+        String command = "accessPhotosFromUser:" + content;
+        return requestData(command);
     }
 
     public boolean saveProfile(String content) throws IOException {
