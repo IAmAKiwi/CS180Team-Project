@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Temporary unworking code for displaying the friends and blocks list.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-    </list>
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -138,32 +132,31 @@
       <option name="project" value="LOCAL" />
       <updated>1733463352763</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users.">
+      <option name="closed" value="true" />
+      <created>1733465739197</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733465739197</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit for git tracking." />
     <MESSAGE value="Changed the friend/block buttons to change to unfriend/unblock if they are already blocked and friended and vice versa!" />
     <MESSAGE value="Temporary unworking code for displaying the friends and blocks list." />
-    <option name="LAST_COMMIT_MESSAGE" value="Temporary unworking code for displaying the friends and blocks list." />
+    <MESSAGE value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>350</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
           <line>88</line>
           <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>348</line>
-          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
