@@ -4,28 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginPanel.java" afterDir="false" />
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="commit for git tracking.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Database.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/LoginPanel$1$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/LoginPanel$1$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ProfilePanel$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProfilePanel$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/profilePanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/profilePanel$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/profilePanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/profilePanel$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/profilePanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/profilePanel$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/profilePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/profilePanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,10 +17,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2pisuY6CwKQYFh6yVVhvZa2Seg3" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -46,12 +28,80 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.GUI.executor": "Run",
+    "Application.ServerGUI.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CS180Team-Project1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CS180Team-Project1" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="CS180Team-Project1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="CS180Team-Project1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="CS180Team-Project1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,5 +121,16 @@
       <workItem from="1733260458364" duration="1000" />
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit for git tracking." />
+    <option name="LAST_COMMIT_MESSAGE" value="commit for git tracking." />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

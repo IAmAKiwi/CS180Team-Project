@@ -53,11 +53,8 @@ public class ProfilePanel extends JPanel {
     private JLabel birthdayYearLabel;
     private JLabel friendsOnlyLabel;
     private JLabel profilePic;
-    // private RoundedButton editButton;
-    // private RoundedJList<String> friendsList;
-    // private RoundedScrollPane friendsListScrollPane;
-    // private RoundedJList<String> blocksList;
-    // private RoundedScrollPane blocksListScrollPane;
+    private RoundedButton addFriendButton;
+    private RoundedButton blockButton;
     private Client client;
 
     public String getProfilePic() {
@@ -398,7 +395,7 @@ public class ProfilePanel extends JPanel {
             int buttonsY = startY + (verticalGap * 5) + 18; // Below birthday section
 
             // Create Add Friend button
-            RoundedButton addFriendButton = new RoundedButton("Add Friend", 16);
+            addFriendButton = new RoundedButton("Add Friend", 16);
             addFriendButton.setBackground(instagramBlue);
             addFriendButton.setForeground(Color.WHITE);
             addFriendButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -406,7 +403,7 @@ public class ProfilePanel extends JPanel {
             addFriendButton.setFocusPainted(false);
 
             // Create Block button
-            RoundedButton blockButton = new RoundedButton("Block", 16);
+            blockButton = new RoundedButton("Block", 16);
             blockButton.setBackground(instagramBlue);
             blockButton.setForeground(Color.WHITE);
             blockButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -503,6 +500,10 @@ public class ProfilePanel extends JPanel {
             e.printStackTrace();
         }
 
+    }
+
+    public JButton[] getFriendAndBlockButtons() {
+        return new JButton[]{addFriendButton, blockButton};
     }
 
     public void createComponent() {
