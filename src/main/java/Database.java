@@ -654,7 +654,8 @@ public class Database implements DatabaseInterface {
                                     }
                                     break;
                                 case "Profile Picture":
-                                    user.setProfilePic(value);
+                                    String path = elements[i].replace("Profile Picture: ", "").trim();
+                                    user.setProfilePic(path);
                                     break;
                                 case "Friends":
                                     String[] friends = value.split(":");
