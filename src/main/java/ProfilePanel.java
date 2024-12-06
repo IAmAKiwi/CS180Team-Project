@@ -771,7 +771,7 @@ public class ProfilePanel extends JPanel {
             friendsOnlyLabel = new JLabel(profileInfo[6].substring(profileInfo[6].indexOf(":") + 1));
             JLabel fullNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim() + " "
                     + profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
-            JFrame frame = new JFrame("Edit Profile");
+            JFrame frame = new JFrame("My Profile");
             // JDialog editDialog = new JDialog(frame, "Edit Profile", true);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -959,8 +959,8 @@ public class ProfilePanel extends JPanel {
             String photosInfo = client.accessPhotosFromUser(profileInfo[0]);
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+            for (int i = 0; i < photos.length && i < imagePaths.length; i++) {
+                imagePaths[i] = photos[i];
             }
             if (photos.length < 6) {
                 for (int i = 0; i < photos.length; i++) {

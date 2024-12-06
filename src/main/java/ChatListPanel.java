@@ -319,15 +319,37 @@ public class ChatListPanel extends JPanel {
     private void addListeners() {
         // Search functionality
         searchField.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { filterChats(); }
-            public void removeUpdate(DocumentEvent e) { filterChats(); }
-            public void changedUpdate(DocumentEvent e) { filterChats(); }
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                filterChats();
+            } catch (IOException ex) {
+                return;
+            }
+            }
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    filterChats();
+                } catch (IOException ex) {
+                    return;
+                }
+            }
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    filterChats();
+                } catch (IOException ex) {
+                    return;
+                }
+            }
         });
 
         searchField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                filterChats();
+                try {
+                    filterChats();
+                } catch (IOException ex) {
+                    return;
+                }
                 searching = true;
             }
 
@@ -384,8 +406,12 @@ public class ChatListPanel extends JPanel {
                 return this;
             }
             nameLabel.setText(username);
-            lastMessageLabel.setText(getLastMessage(username));
-            timeLabel.setText(getLastMessageTime(username));
+            try {
+                lastMessageLabel.setText(getLastMessage(username));
+                timeLabel.setText(getLastMessageTime(username));
+            } catch (IOException ex) {
+                return this;
+            }
 
             // Handle selection styling
             if (isSelected) {
@@ -402,14 +428,10 @@ public class ChatListPanel extends JPanel {
             return this;
         }
 
-        private String getLastMessage(String username) {
+        private String getLastMessage(String username) throws IOException {
             // Get last message from chat history
             String chat = "";
-            try {
-                chat = client.getChat(username);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            chat = client.getChat(username);
             if (chat == null || chat.isEmpty()) {
                 return "";
             }
@@ -423,15 +445,10 @@ public class ChatListPanel extends JPanel {
             return temp.substring(temp.indexOf(":") + 1);
         }
 
-        private String getLastMessageTime(String username) {
+        private String getLastMessageTime(String username) throws IOException {
             // Get and format last message timestamp
             String chat = "NULL";
-            try {
-                chat = (client.getChat(username));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "FATAL ERROR";
-            }
+            chat = (client.getChat(username));
             if (chat == null || chat.isEmpty()) {
                 return "";
             }
@@ -470,27 +487,20 @@ public class ChatListPanel extends JPanel {
         }
     }
 
-    private void filterChats() {
+    private void filterChats() throws IOException {
         String searchText = searchField.getText().toLowerCase();
         listModel.clear();
-        try {
-            for (String chat : client.getUserList().split("" + (char) 29)) {
-                if (chat.toLowerCase().contains(searchText)) {
-                    listModel.addElement(chat);
-                }
+        for (String chat : client.getUserList().split("" + (char) 29)) {
+            if (chat.toLowerCase().contains(searchText)) {
+                listModel.addElement(chat);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void showNewChatDialog() {
+    @Deprecated
+    private void showNewChatDialog() throws IOException {
         String[] users = {};
-        try {
-            users = client.getUserList().split("" + (char) 29);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        users = client.getUserList().split("" + (char) 29);
         JFrame newChatDialog = new JFrame("Select User");
         newChatDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newChatDialog.setSize(550, 100);
@@ -517,7 +527,7 @@ public class ChatListPanel extends JPanel {
                     }
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                return;
             }
             newChatDialog.dispose();
         });
@@ -533,7 +543,7 @@ public class ChatListPanel extends JPanel {
                     }
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                return;
             }
             newChatDialog.dispose();
         });
@@ -546,7 +556,7 @@ public class ChatListPanel extends JPanel {
                     client.createChat(selectedUser);
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                return;
             }
             chatList.setSelectedValue(selectedUser, true);
             newChatDialog.dispose();
@@ -611,12 +621,12 @@ public class ChatListPanel extends JPanel {
     }
     
     // Public methods
-    public void refreshChats(String[] chats) {
+    public void refreshChats(String[] chats) throws IOException {
         if (searchField.getText().trim().isEmpty() && !searching && chatList.isSelectionEmpty()) {
             listModel.clear();
             if (chats != null) {
                 for (String chat : chats) {
-                    if (chat != null) {
+                    if (chat != null && !chat.equals(client.getUsername())) {
                         listModel.addElement(chat);
                     }
                 }

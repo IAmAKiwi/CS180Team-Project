@@ -20,7 +20,7 @@ public class GUI implements Runnable {
     private ProfilePanel profilePanel;
     private RoundedButton logoutButton;
     // private RoundedButton addFriendButton;
-    // private RoundedButton addBlockButton;a
+    // private RoundedButton addBlockButton;
     private Client client;
     private RoundedPanel headerPanel;
     private JPopupMenu profileMenu;
@@ -493,7 +493,12 @@ public class GUI implements Runnable {
             return;
         }
         String[] chatsArray = chats.split("" + (char) 29);
-        chatListPanel.refreshChats(chatsArray);
+        try {
+            chatListPanel.refreshChats(chatsArray);
+        } catch (IOException ex) {
+            disconnect();
+            return;
+        }
         String selectedChat = chatListPanel.getSelectedChat();
         if (selectedChat != null && !selectedChat.isEmpty()) {
             try {
