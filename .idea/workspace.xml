@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Removed the NewChat button from chatlistpanel.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -140,7 +148,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733465739197</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Removed the NewChat button from chatlistpanel.">
+      <option name="closed" value="true" />
+      <created>1733493641394</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733493641394</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -148,14 +164,15 @@
     <MESSAGE value="Changed the friend/block buttons to change to unfriend/unblock if they are already blocked and friended and vice versa!" />
     <MESSAGE value="Temporary unworking code for displaying the friends and blocks list." />
     <MESSAGE value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
+    <MESSAGE value="Removed the NewChat button from chatlistpanel." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed the NewChat button from chatlistpanel." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>88</line>
+          <line>91</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>

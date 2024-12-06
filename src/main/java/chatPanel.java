@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.DefaultCaret;
 
@@ -35,6 +36,8 @@ public class chatPanel extends JPanel {
         messageHistoryArea = new RoundedTextArea(15);
         messageHistoryArea.setEditable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        messageHistoryArea.setLineWrap(true);
+        messageHistoryArea.setBorder(new EmptyBorder(5, 5, 5, 5));
         DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 

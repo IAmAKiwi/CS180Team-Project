@@ -82,6 +82,9 @@ public class Server implements Runnable, ServerInterface {
                     case "deleteMessage":
                         result = deleteMessage(content);
                         break;
+                    case "getUsername":
+                        result = getUsername();
+                        break;
                     case "accessProfile":
                         result = accessProfile();
                         break;
@@ -217,6 +220,11 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
+
+    public String getUsername() {
+        return currentUser.getUsername();
+    }
+
     @Override
     public String accessProfile() {
         return currentUser.toString();
