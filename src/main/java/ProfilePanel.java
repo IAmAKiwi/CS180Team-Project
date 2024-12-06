@@ -498,16 +498,25 @@ public class ProfilePanel extends JPanel {
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png") || profilePic.getText().isEmpty() || profilePic.getText().equals("")) {
-                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
+                //pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
+                pic.setText("../../images/default-image.jpg");
             }
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
             bioLabel = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1).trim());
             String birthday = profileInfo[4].substring(profileInfo[4].indexOf(":") + 1).trim();
             String[] birthdayParts = birthday.split("/");
-            birthdayMonthLabel = new JLabel(birthdayParts[0]);
-            birthdayDayLabel = new JLabel(birthdayParts[1]);
-            birthdayYearLabel = new JLabel(birthdayParts[2]);
+            if (birthdayParts.length == 3)
+            {
+                birthdayMonthLabel = new JLabel(birthdayParts[0]);
+                birthdayDayLabel = new JLabel(birthdayParts[1]);
+                birthdayYearLabel = new JLabel(birthdayParts[2]);
+            } else
+            {
+                birthdayDayLabel = new JLabel(" ");
+                birthdayMonthLabel = new JLabel(" ");
+                birthdayYearLabel = new JLabel(" ");
+            }
             friendsOnlyLabel = new JLabel(profileInfo[6].substring(profileInfo[6].indexOf(":") + 1));
             // Get screen dimensions
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

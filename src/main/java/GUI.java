@@ -355,13 +355,17 @@ public class GUI implements Runnable {
                     try {
                         String friends = client.getFriendList();
                         if (!friends.isEmpty()) {
-                            friendList = (ArrayList<String>) Arrays.asList(friends.split(
-                                    "" + (char) 29));
+                            for (String s : friends.split("" + (char) 29))
+                            {
+                                friendList.add(s);
+                            }
                         }
                         String blocks = client.getBlockList();
                         if (!blocks.isEmpty()) {
-                            blockList = (ArrayList<String>) Arrays.asList(blocks.split(
-                                    "" + (char) 29));
+                            for (String s : blocks.split("" + (char) 29))
+                            {
+                                blockList.add(s);
+                            }
                         }
                     } catch (IOException ex) {
                         disconnect();
