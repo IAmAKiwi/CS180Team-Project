@@ -85,6 +85,10 @@ public class Client implements Runnable, ClientInterface {
                         // deleteMessage[groupSeparator]message[groupSeparator]otherUser
                         result = String.valueOf(deleteMessage(content));
                         break;
+                    case "getUsername":
+                        // Get username example getUsername:
+                        result = getUsername();
+                        break;
                     case "accessProfile":
                         // Access profile example: accessProfile:
                         result = accessProfile();
@@ -185,6 +189,10 @@ public class Client implements Runnable, ClientInterface {
     public boolean deleteMessage(String content) throws IOException{
         String command = "deleteMessage:" + content;
         return sendCommand(command);
+    }
+
+    public String getUsername() throws IOException {
+        return requestData("getUsername: ");
     }
 
     public String accessProfile() throws IOException {

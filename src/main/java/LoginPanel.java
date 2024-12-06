@@ -25,7 +25,8 @@ public class LoginPanel extends JComponent implements Runnable {
     private JLabel logoLabel;
     private String username;
     private String password;
-    private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
+    //private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
+    private String profilePicturePath = "../../images/5.jpg";
 
     public LoginPanel(Client client) {
         super();

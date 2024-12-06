@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Stuff throws exceptions to GUI now.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messageHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/messageHistory.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,7 +31,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.GUI.executor": "Run",
+    "Application.MessageHistoryTestCases (1).executor": "Run",
+    "Application.MessageHistoryTestCases.executor": "Run",
+    "Application.MessageTestCases.executor": "Run",
     "Application.ServerGUI.executor": "Run",
+    "Application.UserTestCases.executor": "Run",
+    "JUnit.ClientTest.executor": "Run",
+    "JUnit.DatabaseTestCases.executor": "Run",
+    "JUnit.ServerTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -34,6 +47,20 @@
   }
 }]]></component>
   <component name="RunManager">
+    <configuration name="MessageHistoryTestCases (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MessageHistoryTestCases" />
+      <module name="CS180Team-Project1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MessageHistoryTestCases" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MessageHistoryTestCases" />
+      <module name="CS180Team-Project1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="CS180Team-Project1" />
       <method v="2">
@@ -97,6 +124,12 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MessageHistoryTestCases (1)" />
+        <item itemvalue="Application.MessageHistoryTestCases" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -140,7 +173,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733465739197</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Removed the NewChat button from chatlistpanel.">
+      <option name="closed" value="true" />
+      <created>1733493641394</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733493641394</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Stuff throws exceptions to GUI now.">
+      <option name="closed" value="true" />
+      <created>1733505815460</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733505815460</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -148,15 +197,22 @@
     <MESSAGE value="Changed the friend/block buttons to change to unfriend/unblock if they are already blocked and friended and vice versa!" />
     <MESSAGE value="Temporary unworking code for displaying the friends and blocks list." />
     <MESSAGE value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
+    <MESSAGE value="Removed the NewChat button from chatlistpanel." />
+    <MESSAGE value="Stuff throws exceptions to GUI now." />
+    <option name="LAST_COMMIT_MESSAGE" value="Stuff throws exceptions to GUI now." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>88</line>
+          <line>91</line>
           <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
+          <line>203</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
