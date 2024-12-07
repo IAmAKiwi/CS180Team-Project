@@ -429,23 +429,28 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBackground(Color.BLACK);
 
             String photosInfo = this.client.accessPhotosFromUser(username);
-            String[] photos = photosInfo.split(",");
+            String[] photos;
+            if (photosInfo.trim().equals("[]")) {
+                photos = new String[0]; // Create an empty array
+            } else {
+                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
+            }
             String[] imagePaths = new String[6];
             for (int i = 0; i < imagePaths.length; i++) {
                 imagePaths[i] = getPath("0.jpg", "images");
             }
-            if (photos[0].contains(",")) {
+            if (photos.length > 0) {
                 if (photos.length < 6) {
                     for (int i = 0; i < photos.length; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = getPath(lmao[1], "images");
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = getPath(lmao[1], "images");
                     }
                 }
             }
@@ -738,7 +743,7 @@ public class ProfilePanel extends JPanel {
             JPanel mainPanel = new JPanel(null);
             JPanel friendAndBlockPanel = new JPanel(null);
             JPanel blackBackground = createBlackBackgroundPanel(new Dimension(screenSize.width, screenSize.height));
-            blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 98);
+            blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 40);
 
             CircularImagePanel imagePanel = new CircularImagePanel(
                     getPath(profilePic.getText(), "images"), 150);
@@ -856,26 +861,36 @@ public class ProfilePanel extends JPanel {
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight + 50);
             gridPanel.setBackground(Color.BLACK);
 
             String photosInfo = client.accessPhotosFromUser(client.getUsername());
-            String[] photos = photosInfo.split(",");
-            String[] imagePaths = new String[6];
-            for (int i = 0; i < photos.length && i < imagePaths.length; i++) {
-                imagePaths[i] = photos[i];
-            }
-            if (photos.length < 6) {
-                for (int i = 0; i < photos.length; i++) {
-                    char gs = 29;
-                    String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                    imagePaths[i] = lmao[0];
-                }
+            String[] photos;
+            if (photosInfo.trim().equals("[]")) {
+                photos = new String[0]; // Create an empty array
             } else {
-                for (int i = 0; i < 6; i++) {
-                    char gs = 29;
-                    String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                    imagePaths[i] = lmao[1];
+                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
+            }
+            String[] imagePaths = new String[6];
+            for (int i = 0; i < imagePaths.length; i++) {
+                imagePaths[i] = getPath("0.jpg", "images");
+            }
+            if (photos.length > 0) {
+                if (photos.length < 6) {
+                    for (int i = 0; i < photos.length; i++) {
+                        char gs = 29;
+                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
+                        System.out.println("photo: " + lmao[1]);
+                        imagePaths[i] = getPath(lmao[1], "images");
+                    }
+                } else {
+                    for (int i = 0; i < 6; i++) {
+                        char gs = 29;
+                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
+                        imagePaths[i] = getPath(lmao[1], "images");
+                        System.out.println("photo: " + lmao[1]);
+
+                    }
                 }
             }
 
@@ -1288,7 +1303,7 @@ public class ProfilePanel extends JPanel {
             }
 
             // Add grid panel to main panel
-            // mainPanel.add(gridPanel);
+            mainPanel.add(gridPanel);
             mainPanel.add(addFriendButton);
             mainPanel.add(blockButton);
             mainPanel.add(messagesNumber);
