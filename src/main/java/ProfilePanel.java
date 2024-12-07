@@ -254,7 +254,7 @@ public class ProfilePanel extends JPanel {
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png") || pic.getText().isEmpty() || pic.getText().equals("")) {
-                pic.setText(getPath("0.jpg", "images"));
+                pic.setText("0.jpg");
             }
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
@@ -275,7 +275,7 @@ public class ProfilePanel extends JPanel {
             int blackPanelWidth = (int) (screenSize.width * 0.6); // 60% width
             blackBackground.setBounds(0, 10, blackPanelWidth, screenSize.height - 180);
             CircularImagePanel imagePanel = new CircularImagePanel(
-                getPath(pic.getText(),"images"), 150);
+                    getPath(pic.getText(), "images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);
@@ -325,7 +325,8 @@ public class ProfilePanel extends JPanel {
 
             // Friends Only
             if (friendsOnlyLabel.getText().equals("true")) {
-                ImageIcon appIcon = new ImageIcon("C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-lock-48.png");
+                ImageIcon appIcon = new ImageIcon(
+                        "C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-lock-48.png");
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -352,7 +353,9 @@ public class ProfilePanel extends JPanel {
             int statsGap = 10;
 
             // Messages Stats
-            // JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username: ","")));
+            // JLabel messagesNumber = new
+            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
+            // ","")));
             JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
@@ -514,11 +517,11 @@ public class ProfilePanel extends JPanel {
             String[] profileInfo = profile.split(groupSeparator + "");
 
             initializeLabels(profileInfo);
-            
 
-            if (profilePic.getText().equals("profile.png") || profilePic.getText().isEmpty() || profilePic.getText().equals("")) {
+            if (profilePic.getText().equals("profile.png") || profilePic.getText().isEmpty()
+                    || profilePic.getText().equals("")) {
                 // profilePic.setText("C:/Users/peter/Github/CS180Team-Project/images/0.jpg");
-                profilePic.setText(getPath("0.jpg", "images"));
+                profilePic.setText("0.jpg");
             }
 
             // Get screen dimensions
@@ -528,10 +531,9 @@ public class ProfilePanel extends JPanel {
             JPanel blackBackground = createBlackBackgroundPanel(screenSize);
             // Create the profilePicture panel
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    profilePic.getText(), 150);
+                    getPath(profilePic.getText(), "images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
-
 
             // Format the labels
             formatLabels();
@@ -564,7 +566,9 @@ public class ProfilePanel extends JPanel {
             int statsGap = 10;
 
             // Messages Stats
-            // JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username: ","")));
+            // JLabel messagesNumber = new
+            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
+            // ","")));
             JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
@@ -621,26 +625,34 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-
-            String[] photos = photosInfo.split(",");
+            String[] photos;
+            if (photosInfo.trim().equals("[]")) {
+                photos = new String[0]; // Create an empty array
+            } else {
+                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
+            }
             String[] imagePaths = new String[6];
             for (int i = 0; i < imagePaths.length; i++) {
                 imagePaths[i] = getPath("0.jpg", "images");
             }
-            if (photos[0].contains(",")) {
+            if (photos.length > 0) {
                 if (photos.length < 6) {
                     for (int i = 0; i < photos.length; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = getPath(lmao[1], "images");
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = getPath(lmao[1], "images");
                     }
                 }
+            }
+
+            for (String testing : imagePaths) {
+                System.out.println("paths : " + testing);
             }
 
             // Add 6 image panels to the grid
@@ -705,11 +717,11 @@ public class ProfilePanel extends JPanel {
     }
 
     public JButton[] getFriendAndBlockButtons() {
-        return new JButton[]{addFriendButton, blockButton};
+        return new JButton[] { addFriendButton, blockButton };
     }
 
     public void createComponent(ActionListener saveCallback, ArrayList<String> friendList,
-                                ArrayList<String> blockList) {
+            ArrayList<String> blockList) {
         try {
             char groupSeparator = (char) 29;
             String profileInput = this.client.accessProfile();
@@ -729,7 +741,7 @@ public class ProfilePanel extends JPanel {
             blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 98);
 
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    profilePic.getText(), 150);
+                    getPath(profilePic.getText(), "images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             mainPanel.add(imagePanel);
 
@@ -788,7 +800,9 @@ public class ProfilePanel extends JPanel {
             int statsGap = 10;
 
             // Messages Stats
-            // JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username: ","")));
+            // JLabel messagesNumber = new
+            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
+            // ","")));
             JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
@@ -936,7 +950,8 @@ public class ProfilePanel extends JPanel {
                 firstName.setPreferredSize(new Dimension(200, 30));
                 rightPanel.add(firstName, gbc);
                 gbc.gridx = 1;
-                RoundedTextField firstNameField = new RoundedTextField(currentFirstName, 20, 15); // Set current value and
+                RoundedTextField firstNameField = new RoundedTextField(currentFirstName, 20, 15); // Set current value
+                                                                                                  // and
                 // rounded corners
                 rightPanel.add(firstNameField, gbc);
 
@@ -1233,10 +1248,12 @@ public class ProfilePanel extends JPanel {
                                 birthdayDayLabel.setText(birthdayFieldDay.getText().trim());
                                 birthdayYearLabel.setText(birthdayFieldYear.getText().trim());
                                 profilePic.setText(profilePic.getText());
-                                friendsOnlyLabel.setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
+                                friendsOnlyLabel
+                                        .setText(((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim());
                                 // Close the dialog
                                 if (saveCallback != null) {
-                                    saveCallback.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Save"));
+                                    saveCallback.actionPerformed(
+                                            new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Save"));
                                 }
                                 frame.dispose();
                             } else {
@@ -1271,7 +1288,7 @@ public class ProfilePanel extends JPanel {
             }
 
             // Add grid panel to main panel
-            //mainPanel.add(gridPanel);
+            // mainPanel.add(gridPanel);
             mainPanel.add(addFriendButton);
             mainPanel.add(blockButton);
             mainPanel.add(messagesNumber);
@@ -1304,11 +1321,11 @@ public class ProfilePanel extends JPanel {
             friendAndBlockPanel.setBackground(Color.WHITE);
             friendAndBlockPanel.setBounds((int) (screenSize.width / 2.5), 0, screenSize.width -
                     (int) (screenSize.width / 2.5), screenSize.height);
-            //mainPanel.add(friendAndBlockPanel);
+            // mainPanel.add(friendAndBlockPanel);
             frame.add(mainPanel);
-            //c.weightx = 0.3;
-            //c.gridx = 1;
-            //frame.add(friendAndBlockPanel, c);
+            // c.weightx = 0.3;
+            // c.gridx = 1;
+            // frame.add(friendAndBlockPanel, c);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1349,7 +1366,6 @@ public class ProfilePanel extends JPanel {
         int startX = 50;
         int startY = 250;
         int verticalGap = 25;
-
 
         fullNameLabel.setFont(labelFont);
         fullNameLabel.setForeground(textColor);
