@@ -1,15 +1,19 @@
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.File;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.DefaultCaret;
 
@@ -67,6 +71,47 @@ public class chatPanel extends JPanel {
                 }
             }
         });
+
+        RoundedButton uploadImageButton = new RoundedButton("Upload Image", 15);
+        uploadImageButton.setFont(new Font("Arial", Font.BOLD, 14));
+        uploadImageButton.setBackground(new Color(0, 149, 246));
+        uploadImageButton.setForeground(Color.WHITE);
+        uploadImageButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        inputPanel.add(uploadImageButton, BorderLayout.WEST);
+    
+        uploadImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "gif"));
+                int result = fileChooser.showOpenDialog(chatPanel.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    try {
+                        sendImageMessage(selectedFile);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+    }
+
+    private void sendImageMessage(File imageFile) throws IOException {
+        if (selectedUser == null) return;
+
+        // convert the image to Base64
+        byte[] imageBytes = Files.readAllBytes(imageFile.toPath());
+        String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+
+        // send the image as a special message type
+        String result = Boolean.toString(client.sendMessage(selectedUser + (char) 29 + "[IMAGE]" + encodedImage));
+        if ("true".equals(result)) {
+            refreshChat(selectedUser);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

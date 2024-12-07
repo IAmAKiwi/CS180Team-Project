@@ -6,6 +6,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.File;
 
 public class LoginPanel extends JComponent implements Runnable {
@@ -22,7 +26,7 @@ public class LoginPanel extends JComponent implements Runnable {
     private String username;
     private String password;
     //private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
-    private String profilePicturePath = "../../images/5.jpg";
+    private String profilePicturePath = getPath("0.jpg", "images");
 
     public LoginPanel(Client client) {
         super();
@@ -231,6 +235,7 @@ public class LoginPanel extends JComponent implements Runnable {
         }
     }
 
+
     public void run() {
         try {
             if (client.isLoggedIn()) {
@@ -264,15 +269,17 @@ public class LoginPanel extends JComponent implements Runnable {
         // Load custom font
         Font customFont = null;
         try {
+            Path symbolsPath = Paths.get("symbols");
+            String fontPath = symbolsPath.resolve("TheHeartOfEverythingDemo-KRdD.ttf").toString();
             customFont = Font
                     .createFont(Font.TRUETYPE_FONT,
                             new File(
-                                    "C:/Users/peter/Github/CS180Team-Project/images/TheHeartOfEverythingDemo-KRdD.ttf"))
+                                    fontPath))
                     .deriveFont(48f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
 
         // Add text field with custom font
@@ -476,8 +483,7 @@ public class LoginPanel extends JComponent implements Runnable {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 try {
-                    if (client
-                            .login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
+                    if (client.login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
                         // Successful login
                         username = usernameField.getText();
                         password = String.valueOf(passwordField.getPassword());
@@ -554,7 +560,7 @@ public class LoginPanel extends JComponent implements Runnable {
                 // Add after initializing other fields
                 JButton browseButton = new JButton("Browse Files");
                 CircularImagePanel profilePreview = new CircularImagePanel(
-                        "C:/Users/peter/Github/CS180Team-Project/images/5.jpg", 150);
+                    getPath("0.jpg","images"), 150);
                 browseButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -667,18 +673,24 @@ public class LoginPanel extends JComponent implements Runnable {
                                     String.valueOf(passwordField.getPassword()))) {
                                 // Save the changes
                                 char groupSeparator = (char) 29;
+                                String profilePath = client.addProfilePic(profilePicturePath);
                                 String content = usernameField.getText().trim() + groupSeparator
                                         + firstNameField.getText().trim() +
                                         groupSeparator + lastNameField.getText().trim() + groupSeparator
                                         + bioField.getText().trim() +
                                         groupSeparator + birthdayFieldMonth.getText().trim() + "/"
                                         + birthdayFieldDay.getText().trim()
-                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePicturePath
+                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePath
                                         + groupSeparator +
                                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
-                                System.out.println(content);
                                 if (client.saveProfile(content)) {
+                                    username = usernameField.getText();
+                                    password = String.valueOf(passwordField.getPassword());
+                                    frame.setVisible(false);
+                                    frame.dispose();
+                                    loginPanel = null;
                                     editDialog.dispose();
+                                    
                                 } else {
                                     // Show an error message
                                     JOptionPane.showMessageDialog(null, "Invalid profile information, " +
@@ -741,5 +753,10 @@ public class LoginPanel extends JComponent implements Runnable {
             return false;
         }
         return true;
+    }
+    public String getPath(String item, String folder) {
+        Path path = Paths.get(folder);
+        String thePath = path.resolve(item).toString();
+        return thePath;
     }
 }

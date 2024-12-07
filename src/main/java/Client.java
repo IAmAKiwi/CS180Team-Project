@@ -85,6 +85,10 @@ public class Client implements Runnable, ClientInterface {
                         // deleteMessage[groupSeparator]message[groupSeparator]otherUser
                         result = String.valueOf(deleteMessage(content));
                         break;
+                    case "addProfilePic":
+                        // Add profile pic example: addProfilePic:profilePicPath
+                        result = String.valueOf(addProfilePic(content));
+                        break;
                     case "getUsername":
                         // Get username example getUsername:
                         result = getUsername();
@@ -100,6 +104,10 @@ public class Client implements Runnable, ClientInterface {
                     case "accessPhotosFromUser":
                         // Access photos from user example: accessPhotosFromUser:username
                         result = accessPhotosFromUser(content);
+                        break;
+                    case "accessMessagesFromUser":
+                        // Access messages from user example: accessMessagesFromUser:username
+                        result = accessMessagesFromUser(content);
                         break;
                     case "saveProfile":
                         result = String.valueOf(saveProfile(content));
@@ -182,6 +190,11 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
+    public String addProfilePic(String content) throws IOException {
+        String command = "addProfilePic:" + content;
+        return requestData(command);
+    }
+
     public boolean deleteMessage(String content) throws IOException{
         String command = "deleteMessage:" + content;
         return sendCommand(command);
@@ -197,6 +210,11 @@ public class Client implements Runnable, ClientInterface {
 
     public String accessUserProfile(String content) throws IOException {
         String command = "accessUserProfile:" + content;
+        return requestData(command);
+    }
+
+    public String accessMessagesFromUser(String content) throws IOException {
+        String command = "accessMessagesFromUser:" + content;
         return requestData(command);
     }
 

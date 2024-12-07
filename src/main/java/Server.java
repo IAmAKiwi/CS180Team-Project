@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -8,7 +9,6 @@ import java.net.SocketException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-
 /**
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
  *         12
@@ -55,6 +55,9 @@ public class Server implements Runnable, ServerInterface {
                 String content = line.substring(line.indexOf(':') + 1);
                 String result = "";
                 switch (command) {
+                    case "getUsername":
+                        result = getUsername();
+                        break;
                     case "login":
                         result = login(content);
                         break;
@@ -82,9 +85,6 @@ public class Server implements Runnable, ServerInterface {
                     case "deleteMessage":
                         result = deleteMessage(content);
                         break;
-                    case "getUsername":
-                        result = getUsername();
-                        break;
                     case "accessProfile":
                         result = accessProfile();
                         break;
@@ -92,7 +92,10 @@ public class Server implements Runnable, ServerInterface {
                         result = accessUserProfile(content);
                         break;
                     case "accessPhotosFromUser":
-                        result = accessPhotosFromUser();
+                        result = accessPhotosFromUser(content);
+                        break;
+                    case "accessMessagesFromUser":
+                        result = accessMessagesFromUser(content);
                         break;
                     case "saveProfile":
                         result = saveProfile(content);
@@ -133,6 +136,9 @@ public class Server implements Runnable, ServerInterface {
                     case "getProfilePic":
                         result = getProfilePic();
                         break;
+                    case "addProfilePic":
+                        result = addProfilePic(content);
+                        break;
                     case "logout":
                         result = logout();
                         break;
@@ -151,6 +157,15 @@ public class Server implements Runnable, ServerInterface {
                     send(result, writer);
                 }
             }
+        }
+    }
+
+    public String addProfilePic(String content) {
+        try {
+            String lmao = db.addPhotoFile(new File(content));
+            return lmao;
+        } catch (Exception e) {
+            return "failed to add profile pic";
         }
     }
     @Override
@@ -213,6 +228,7 @@ public class Server implements Runnable, ServerInterface {
             }
 
             currentUser.setProfilePic(fields[5]);
+            db.addPhotoFile(new File(fields[5]));
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
             return "true";
@@ -220,11 +236,6 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
-    public String getUsername() {
-        return currentUser.getUsername();
-    }
-
     @Override
     public String accessProfile() {
         return currentUser.toString();
@@ -234,10 +245,13 @@ public class Server implements Runnable, ServerInterface {
         return db.getUser(user).toString();
     }
 
-    public String accessPhotosFromUser() {
-        return db.getAllPhotosFromUser(currentUser).toString();
+    public String accessPhotosFromUser(String user) {
+        return db.getAllPhotosFromUser(db.getUser(user)).toString();
     }
     
+    public String accessMessagesFromUser(String user) {
+        return db.getAllMessagesFromUser(db.getUser(user)).size() + "";
+    }
     @Override
     public String deleteChat(String user) {
         try {
@@ -301,7 +315,7 @@ public class Server implements Runnable, ServerInterface {
             String username = credentials[0];
             String password = credentials[1];
             if (db.addUser(new User(username, password))) {
-                currentUser = new User(username, password);
+                currentUser = db.getUser(username);
                 return "true";
             }
             return "false";
@@ -324,6 +338,10 @@ public class Server implements Runnable, ServerInterface {
             userList += users.get(i).getUsername() + groupSeparatorChar;
         }
         return userList;
+    }
+
+    public String getUsername() {
+        return currentUser.getUsername();
     }
 
     /**

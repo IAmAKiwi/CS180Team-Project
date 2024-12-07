@@ -1,3 +1,5 @@
 username: user1password: Password1$First Name: testLast Name: userBio: I am a testBirthday: 1/1/2001Profile Picture: profile.pngFriends Only: false
-username: user3password: Password3$First Name: hahhahaLast Name: LmaooooooBio: Hello everybodyBirthday: 3/3/2003Profile Picture: C:\Users\peter\Downloads\chessboard.pngFriends Only: false
+username: user3password: Password3$First Name: hahhahaLast Name: LmaooooooBio: Hello everybodyBirthday: 3/3/2003Profile Picture: profile.pngFriends Only: false
 username: Buiildingpassword: Thanos20122006$First Name: Bui DinLast Name: Tuan AnBio: I am a guBirthday: 1/2/200Profile Picture: profile.pngFriends Only: false
+username: foxpassword: Password$First Name: foxLast Name: asdkBio: asdjasidjaBirthday: 12/20/2006Profile Picture: 30.jpgFriends Only: true
+username: jacksonpassword: Password$First Name: asdsaLast Name: safwegweBio: dsfgdsfsdfBirthday: 12/20/2006Profile Picture: 31.jpgFriends Only: true

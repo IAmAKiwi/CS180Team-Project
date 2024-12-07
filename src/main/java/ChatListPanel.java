@@ -438,11 +438,7 @@ public class ChatListPanel extends JPanel {
             // Parse and return last message preview
             // Get to the beginning of the last message
             chat = chat.substring(0, chat.lastIndexOf((char) 29));
-            if (chat.contains("" + (char) 29)) {
-                chat = chat.substring(0, chat.lastIndexOf((char) 29));
-            }
-            String temp = chat.substring(chat.indexOf(":") + 1);
-            return temp.substring(temp.indexOf(":") + 1);
+            return chat.substring(chat.lastIndexOf(":") + 1);
         }
 
         private String getLastMessageTime(String username) throws IOException {
