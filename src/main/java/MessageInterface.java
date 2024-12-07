@@ -1,3 +1,4 @@
+import java.util.Date;
 /**
  * Interface that defines the required methods for Message objects.
  *
@@ -8,6 +9,8 @@
 public interface MessageInterface {
     // Methods we definitely need
     String getMessage();
-
+    Date getTimeStamp();
     String getSender();
+    
+    String toString();
 }

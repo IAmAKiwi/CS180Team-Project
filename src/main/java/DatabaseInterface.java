@@ -6,6 +6,8 @@ import java.util.ArrayList;
  * @version Nov 2, 2024
  */
 public interface DatabaseInterface {
+
+
     // User Management
     boolean addUser(User user);
     boolean validateNewUser(User user);
@@ -18,6 +20,7 @@ public interface DatabaseInterface {
     boolean unblockUser(String user1, String user2);
     String[] getFriends(String username);
     String[] getBlockList(String username);
+    ArrayList<Message> getAllMessagesFromUser(User u);
 
     // Message Operations
     ArrayList<MessageHistory> getAllChats();
@@ -35,6 +38,7 @@ public interface DatabaseInterface {
     boolean addPhotoHistory(PhotoHistory photoHistory);
     boolean addPhoto(Photo photo, String receiver);
     boolean deletePhoto(Photo photo, String receiver);
+    ArrayList<Photo> getAllPhotosFromUser(User u);
 
     // File Operations
     boolean saveUsers();
