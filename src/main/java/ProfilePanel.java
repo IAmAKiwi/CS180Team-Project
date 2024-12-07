@@ -425,7 +425,7 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-            String photosInfo = client.accessPhotosFromUser(username);
+            String photosInfo = this.client.accessPhotosFromUser(username);
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
             for (int i = 0; i < imagePaths.length; i++) {
@@ -736,9 +736,13 @@ public class ProfilePanel extends JPanel {
             // Setup friends and blocks lists.
             RoundedTextField friendsText = new RoundedTextField("", 50, 15);
             friendsText.setFont(new Font("Arial", Font.PLAIN, 14));
+            friendsText.setEditable(false);
+            friendsText.setPreferredSize(new Dimension(100, 100));
 
             RoundedTextField blocksText = new RoundedTextField("", 50, 15);
             blocksText.setFont(new Font("Arial", Font.PLAIN, 14));
+            blocksText.setEditable(false);
+            blocksText.setPreferredSize(new Dimension(100, 100));
 
             if (friendList != null && friendList.size() > 0) {
                 String friendString = "";
@@ -897,19 +901,17 @@ public class ProfilePanel extends JPanel {
                 gridPanel.add(imagePanel2);
             }
 
+            JPanel rightPanel = new JPanel(new GridBagLayout());
+            rightPanel.setBackground(Color.WHITE);
+            rightPanel.setBounds((int) (screenSize.width / 2.5), 0, screenSize.width - (int) (screenSize.width / 2.5),
+                    screenSize.height);
+            mainPanel.add(rightPanel);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.WEST;
             if (saveCallback != null) {
-
-                JPanel rightPanel = new JPanel(new GridBagLayout());
-                rightPanel.setBackground(Color.WHITE);
-                rightPanel.setBounds((int) (screenSize.width / 2.5), 0, screenSize.width - (int) (screenSize.width / 2.5),
-                        screenSize.height);
-                mainPanel.add(rightPanel);
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.insets = new Insets(10, 10, 10, 10);
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-                gbc.anchor = GridBagConstraints.WEST;
 
                 String currentFullName = fullNameLabel.getText();
                 String currentFirstName = firstNameLabel.getText();
@@ -1248,6 +1250,12 @@ public class ProfilePanel extends JPanel {
                     }
                 });
                 frame.add(saveButton, BorderLayout.SOUTH);
+            } else {
+                gbc.gridy = GridBagConstraints.RELATIVE;
+                rightPanel.add(friendsLabel, gbc);
+                rightPanel.add(friendsText);
+                rightPanel.add(blockedLabel);
+                rightPanel.add(friendsText);
             }
 
             // Add grid panel to main panel

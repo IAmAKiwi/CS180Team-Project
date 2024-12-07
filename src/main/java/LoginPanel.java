@@ -32,10 +32,6 @@ public class LoginPanel extends JComponent implements Runnable {
         super();
         this.client = client;
         loginPanel = this;
-        try {
-            username = client.getUsername();
-        } catch (Exception e) {
-        }
     }
 
     public void addPlaceHolderStyle(JTextField textField) {
@@ -487,8 +483,7 @@ public class LoginPanel extends JComponent implements Runnable {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 try {
-                    if (client
-                            .login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
+                    if (client.login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
                         // Successful login
                         username = usernameField.getText();
                         password = String.valueOf(passwordField.getPassword());

@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Stuff throws exceptions to GUI now.">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Got rid of profilepanel editProfile.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messageHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/messageHistory.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +30,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.GUI.executor": "Run",
+    "Application.GUI.executor": "Debug",
     "Application.MessageHistoryTestCases (1).executor": "Run",
     "Application.MessageHistoryTestCases.executor": "Run",
     "Application.MessageTestCases.executor": "Run",
@@ -189,8 +189,27 @@
       <option name="project" value="LOCAL" />
       <updated>1733505815460</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Got rid of profilepanel editProfile.">
+      <option name="closed" value="true" />
+      <created>1733514461418</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1733514461418</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit for git tracking." />
@@ -199,21 +218,71 @@
     <MESSAGE value="Removed Database from GUI and now it uses accessUserProfile/accessPhotosFromUser and a new profilePanel constructor to manage opening the panels of other users." />
     <MESSAGE value="Removed the NewChat button from chatlistpanel." />
     <MESSAGE value="Stuff throws exceptions to GUI now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Stuff throws exceptions to GUI now." />
+    <MESSAGE value="Got rid of profilepanel editProfile." />
+    <option name="LAST_COMMIT_MESSAGE" value="Got rid of profilepanel editProfile." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>91</line>
-          <option name="timeStamp" value="31" />
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>1082</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>736</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>168</line>
+          <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>203</line>
-          <option name="timeStamp" value="34" />
+          <line>645</line>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ChatListPanel.java</url>
+          <line>628</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
+          <line>313</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>276</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
+          <line>340</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>427</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>847</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="45" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
