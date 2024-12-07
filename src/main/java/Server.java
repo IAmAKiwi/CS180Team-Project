@@ -315,7 +315,7 @@ public class Server implements Runnable, ServerInterface {
             String username = credentials[0];
             String password = credentials[1];
             if (db.addUser(new User(username, password))) {
-                currentUser = new User(username, password);
+                currentUser = db.getUser(username);
                 return "true";
             }
             return "false";

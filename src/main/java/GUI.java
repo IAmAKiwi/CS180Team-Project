@@ -185,12 +185,14 @@ public class GUI implements Runnable {
                 String friends = client.getFriendList();
                 String blocks = client.getBlockList();
                 if (!friends.isEmpty()) {
-                    friendList = (ArrayList<String>) Arrays.asList(friends.split(
-                            "" + (char) 29));
+                    for (String friend : friends.split("" + (char) 29)) {
+                        friendList.add(friend);
+                    }
                 }
                 if (!blocks.isEmpty()) {
-                    blockList = (ArrayList<String>) Arrays.asList(blocks.split(
-                            "" + (char) 29));
+                    for (String block : blocks.split("" + (char) 29)) {
+                        blockList.add(block);
+                    }
                 }
                 profilePanel.createComponent(null, friendList, blockList);
             } catch (IOException ex) {
@@ -308,8 +310,13 @@ public class GUI implements Runnable {
             frame.dispose();
             return;
         }
-        String username = loginPanel.getUsername();
-        System.out.println(username);
+        String username = "";
+        try {
+           username  = client.getUsername();
+        } catch (IOException ex) {
+            disconnect();
+            return;
+        }
         chatPanel = new chatPanel(client);
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
