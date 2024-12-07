@@ -163,7 +163,7 @@ public class GUI implements Runnable {
         if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") || profilePic.equals("profile.png")) {
             profilePic = getPath("0.jpg", "images");
         }
-        profileButton = new CircularButton(profilePic, 50);
+        profileButton = new CircularButton(getPath(profilePic,"images"), 50);
 
         profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -613,7 +613,7 @@ public class GUI implements Runnable {
         if (i == JOptionPane.YES_OPTION) {
             try {
                 Client client = new Client();
-                client.login("user3" + (char) 29 + "Password3$");
+                client.login("fox" + (char) 29 + "Password$");
                 loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
