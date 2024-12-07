@@ -845,7 +845,7 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-            String photosInfo = client.accessPhotosFromUser(usernameLabel.getText());
+            String photosInfo = client.accessPhotosFromUser(client.getUsername());
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
             for (int i = 0; i < photos.length && i < imagePaths.length; i++) {
@@ -855,7 +855,7 @@ public class ProfilePanel extends JPanel {
                 for (int i = 0; i < photos.length; i++) {
                     char gs = 29;
                     String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                    imagePaths[i] = lmao[1];
+                    imagePaths[i] = lmao[0];
                 }
             } else {
                 for (int i = 0; i < 6; i++) {
@@ -1251,11 +1251,23 @@ public class ProfilePanel extends JPanel {
                 });
                 frame.add(saveButton, BorderLayout.SOUTH);
             } else {
-                gbc.gridy = GridBagConstraints.RELATIVE;
-                rightPanel.add(friendsLabel, gbc);
-                rightPanel.add(friendsText);
-                rightPanel.add(blockedLabel);
-                rightPanel.add(friendsText);
+                gbc.gridheight = 1;
+                gbc.gridwidth = 1;
+                friendsLabel.setForeground(Color.BLACK);
+                JLabel newFriendsLabel = new JLabel("Friends:");
+                newFriendsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                newFriendsLabel.setForeground(Color.BLACK);
+                rightPanel.add(newFriendsLabel, gbc);
+                gbc.gridy++;
+                rightPanel.add(friendsText, gbc);
+                gbc.gridy++;
+                JLabel newBlockedLabel = new JLabel("Blocked:");
+                newBlockedLabel.setForeground(Color.BLACK);
+                newBlockedLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                rightPanel.add(newBlockedLabel, gbc);
+                gbc.gridy++;
+                rightPanel.add(blocksText, gbc);
+                gbc.gridy++;
             }
 
             // Add grid panel to main panel
