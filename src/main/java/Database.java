@@ -21,14 +21,10 @@ import java.util.ArrayList;
 public class Database implements DatabaseInterface {
     private final static Object USER_KEY = new Object();
     private final static Object MESSAGE_KEY = new Object();
-    private final static Object PHOTO_KEY = new Object();
     private ArrayList<User> userList;
     private ArrayList<MessageHistory> allChats;
     private final char fileSeparator = 28;
     private final char groupSeparator = 29;
-    private ArrayList<PhotoHistory> photosPath;
-    private static final String PHOTOS_DIR = "images/";
-    private ArrayList<String> photoFolderPaths;
 
     /**
      * Initializes the Database class, setting up the user list, message history
@@ -38,7 +34,6 @@ public class Database implements DatabaseInterface {
     public Database() {
         this.userList = new ArrayList<>();
         this.allChats = new ArrayList<>();
-        this.photosPath = new ArrayList<>();
     }
 
     /**
@@ -173,22 +168,6 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
-    public PhotoHistory getPhotos(String user1, String user2) throws IllegalArgumentException {
-        if (user1.equals(user2)) {
-            return null;
-        }
-
-        synchronized (PHOTO_KEY) {
-            for (PhotoHistory ph : this.photosPath) {
-                if (ph.equals(new PhotoHistory(new String[] { user1, user2 }))) {
-                    return ph;
-                }
-            }
-        }
-
-        return null;
-    }
-
     /**
      * adds a MessageHistory to AllChats
      *
@@ -303,31 +282,6 @@ public class Database implements DatabaseInterface {
                 if (m.getMessage().equals(message.getMessage()) && m.getSender().equals(message.getSender())) {
                     mh.deleteMessage(m);
                     this.allChats.set(this.allChats.indexOf(mh), mh);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean deletePhoto(Photo photo, String receiver) {
-        User u1 = this.getUser(photo.getSender());
-        User u2 = this.getUser(receiver);
-        if (u1 == null || u2 == null) {
-            return false;
-        }
-
-        PhotoHistory ph = this.getPhotos(u1.getUsername(), u2.getUsername());
-        if (ph == null) {
-            return false;
-        }
-
-        synchronized (PHOTO_KEY) {
-            for (Photo p : ph.getPhotoHistory()) {
-                if (p.getPhotoPath().equals(photo.getPhotoPath()) &&
-                        p.getSender().equals(photo.getSender())) {
-                    ph.deletePhoto(p);
-                    this.photosPath.set(this.photosPath.indexOf(ph), ph);
                     return true;
                 }
             }
@@ -802,134 +756,6 @@ public class Database implements DatabaseInterface {
         return true;
     }
 
-    /**
-     * Loads photo paths from a file named `UsersPhotos.txt` and stores them in
-     * `photosPath`.
-     * Reads each line in the file as a separate path and adds it to the list.
-     *
-     * @return true if the photo paths were successfully loaded, false if an error
-     *         occurred.
-     */
-    @Override
-    public boolean loadPhotos() {
-        photosPath = new ArrayList<>();
-        File photosFile = new File("photoHistory.txt");
-        if (!photosFile.exists()) {
-            return false;
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(photosFile))) {
-            ArrayList<Photo> photos = new ArrayList<>();
-            String line = br.readLine();
-            String[] usernames = new String[2];
-
-            while (br.ready()) {
-                // Get usernames from first line of new PhotoHistory
-                if (line.charAt(0) == fileSeparator) {
-                    line = line.substring(1);
-                    usernames = line.split(" ");
-                    line = br.readLine();
-                }
-
-                // Combine lines until next separator
-                while (line.charAt(0) != fileSeparator && line.indexOf(groupSeparator) == -1) {
-                    line = line + "\n" + br.readLine();
-                }
-
-                // Parse photo entry
-                char gs = 29;
-                String[] parts = line.split(gs + "");
-                Photo p = new Photo(
-                        parts[1], // photoPath
-                        parts[0] // senderUsername
-                );
-
-                photos.add(p);
-                line = br.readLine();
-
-                // Create new PhotoHistory when reaching file separator
-                if (line.charAt(0) == fileSeparator) {
-                    PhotoHistory ph = new PhotoHistory(usernames);
-                    ph.setPhotoHistory(photos);
-                    this.photosPath.add(ph);
-                    photos = new ArrayList<>();
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error loading photos: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Saves the current photo paths in `photosPath` to a file named
-     * `UsersPhotos.txt`.
-     * Each path is written to a new line in the file.
-     *
-     * @return true if the photo paths were successfully saved, false if an error
-     *         occurred.
-     */
-    @Override
-    public boolean savePhotos() {
-        // Check if File exists and create if not
-        File photosFile = new File("photoHistory.txt");
-        if (!photosFile.exists()) {
-            try {
-                photosFile.createNewFile();
-            } catch (IOException e) {
-                return false;
-            }
-        }
-
-        // Write output to file
-        try (FileWriter fw = new FileWriter(photosFile, false)) {
-            synchronized (PHOTO_KEY) {
-                for (PhotoHistory ph : this.photosPath) {
-                    fw.write(fileSeparator);
-                    fw.write(ph.toString() + "\n");
-                    for (Photo p : ph.getPhotoHistory()) {
-                        fw.write(p.toString() + groupSeparator + "\n");
-                    }
-                }
-                fw.write(fileSeparator);
-            }
-        } catch (Exception e) {
-            System.out.println("FAILED: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Adds a new photo path to the `photosPath` list.
-     *
-     * @param path The file path of the photo to add.
-     */
-    public boolean addPhotoHistory(PhotoHistory path) {
-        synchronized (PHOTO_KEY) {
-            for (PhotoHistory ph : this.photosPath) {
-                if (ph.equals(path)) {
-                    return false;
-                }
-            }
-        }
-        if (path.getUsernames().length == 2) {
-            synchronized (PHOTO_KEY) {
-                this.photosPath.add(path);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public ArrayList<PhotoHistory> getPhotos() {
-        synchronized (PHOTO_KEY) {
-            return photosPath;
-        }
-    }
-
     public void setUser(User user) {
         synchronized (USER_KEY) {
             for (int i = 0; i < this.userList.size(); i++) {
@@ -978,153 +804,5 @@ public class Database implements DatabaseInterface {
         }
         return messages;
 
-    }
-
-    public ArrayList<Photo> getAllPhotosFromUser(User u) {
-        this.loadPhotos();
-        System.out.println(this.photosPath);
-        ArrayList<Photo> photos = new ArrayList<>();
-        synchronized (PHOTO_KEY) {
-            for (PhotoHistory ph : this.photosPath) {
-                for (Photo p : ph.getPhotoHistory()) {
-                    if (p.getSender().equals(u.getUsername())) {
-                        photos.add(p);
-                    }
-
-                }
-            }
-        }
-        return photos;
-    }
-
-    public boolean loadPhotosFolder() {
-        try {
-            photoFolderPaths = new ArrayList<>();
-            Path photosPath1 = Paths.get(PHOTOS_DIR);
-            if (!Files.exists(photosPath1)) {
-                System.out.println("Directory does not exist: " + photosPath1.toAbsolutePath());
-                return false;
-            }
-            Files.list(photosPath1).filter(Files::isRegularFile)
-                    .forEach(path -> this.photoFolderPaths.add(path.getFileName().toString()));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public ArrayList<String> getPhotoFolderPaths() {
-        return this.photoFolderPaths;
-    }
-
-    public String addPhotoFile(File f) throws IOException {
-        // Check if the file exists
-        if (!f.exists()) {
-            System.err.println("File does not exist: " + f.getAbsolutePath());
-            return null;
-        }
-    
-        // Synchronize for thread safety
-        synchronized (PHOTO_KEY) {
-            // Ensure the photos directory exists
-            Path photosPath = Paths.get(PHOTOS_DIR);
-            if (!Files.exists(photosPath)) {
-                Files.createDirectories(photosPath);
-            }
-    
-            // Load existing photo paths and find the highest number
-            Database db = new Database();
-            db.loadPhotosFolder();
-            int x = 0;
-            for (String i : db.getPhotoFolderPaths()) {
-                String[] parts = i.split("\\.");
-                x = Math.max(x, Integer.parseInt(parts[0]));
-            }
-    
-            // Create the path of the new photo
-            Path destPath = photosPath.resolve(f.getName());
-            Files.copy(f.toPath(), destPath, StandardCopyOption.REPLACE_EXISTING);
-    
-            // Extract the file extension
-            String fileExtension = getFileExtension(f.getName());
-    
-            // Rename the file to the next number with the same extension
-            Path newPath = photosPath.resolve((x + 1) + fileExtension);
-            Files.move(destPath, newPath, StandardCopyOption.REPLACE_EXISTING);
-    
-            // Return the new file path as a string
-            return newPath.getFileName().toString();
-        }
-    }
-
-    public boolean addPhoto(Photo photo, String receiver) {
-        try {
-            User u1 = this.getUser(photo.getSender());
-            User u2 = this.getUser(receiver);
-    
-            // Validate users
-            if (u1 == null || u2 == null) return false;
-    
-            // Check if users are blocked
-            ArrayList<String> u1Blocked = u1.getBlocked();
-            ArrayList<String> u2Blocked = u2.getBlocked();
-            if (u1Blocked.contains(receiver) || u2Blocked.contains(photo.getSender())) return false;
-    
-            // Check if users are friends (if required)
-            if (u1.isFriendsOnly() && !u1.getFriends().contains(receiver)) return false;
-            if (u2.isFriendsOnly() && !u2.getFriends().contains(u1.getUsername())) return false;
-    
-            // Handle the file
-            File f = new File(photo.getPhotoPath());
-            String newPhotoPath = addPhotoFile(f); // Call the new method
-            if (newPhotoPath == null) return false;
-    
-            // Create a copy of the photo with the updated path
-            Photo photoCopy = new Photo(newPhotoPath, photo.getSender());
-    
-            // Add the photo to the history
-            synchronized (PHOTO_KEY) {
-                for (int i = 0; i < this.photosPath.size(); i++) {
-                    PhotoHistory ph = this.photosPath.get(i);
-                    if (ph.equals(new PhotoHistory(new String[] { photo.getSender(), receiver }))) {
-                        ph.addPhoto(photoCopy);
-                        this.photosPath.set(i, ph);
-                        return true;
-                    }
-                }
-    
-                // Create a new photo history if none exists
-                PhotoHistory ph = new PhotoHistory(photoCopy, receiver);
-                this.photosPath.add(ph);
-                return true;
-            }
-    
-        } catch (IOException e) {
-            System.err.println("Error adding photo: " + e.getMessage());
-            return false;
-        }
-    }
-    
-
-    private String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf('.');
-        return (dotIndex != -1) ? fileName.substring(dotIndex) : ""; // Return extension (e.g., ".png") or empty string
-    }
-
-    public static void main(String[] args) {
-        Database db = new Database();
-        db.loadPhotos();
-        db.loadPhotosFolder();
-        String name1 = "jackson";
-        String name2 = "peter";
-        User user3 = new User(name1, "Password$");
-        User user2 = new User(name2, "Password$");
-        Photo photo = new Photo("C:/Users/peter/Downloads/QUIZZES-images-16.jpg", name1);
-        db.addUser(user3);
-        db.addUser(user2);
-        db.addPhoto(photo, name2);
-        db.addPhoto(photo,name2);
-        db.savePhotos();
     }
 }

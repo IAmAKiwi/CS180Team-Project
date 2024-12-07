@@ -33,8 +33,6 @@ public interface ServerInterface {
 
     String deleteChat(String user); // otherUsername
 
-    String sendImage(String content); // path
-
     // Friend management
     String removeFriend(String friend); // friendUsername
 

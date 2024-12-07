@@ -91,9 +91,6 @@ public class Server implements Runnable, ServerInterface {
                     case "accessUserProfile":
                         result = accessUserProfile(content);
                         break;
-                    case "accessPhotosFromUser":
-                        result = accessPhotosFromUser(content);
-                        break;
                     case "accessMessagesFromUser":
                         result = accessMessagesFromUser(content);
                         break;
@@ -115,9 +112,6 @@ public class Server implements Runnable, ServerInterface {
                     case "deleteChat":
                         result = deleteChat(content);
                         break;
-                    case "sendImage":
-                        result = sendImage(content);
-                        break;
                     case "getBlockList":
                         result = getBlockList();
                         break;
@@ -135,9 +129,6 @@ public class Server implements Runnable, ServerInterface {
                         break;
                     case "getProfilePic":
                         result = getProfilePic();
-                        break;
-                    case "addProfilePic":
-                        result = addProfilePic(content);
                         break;
                     case "logout":
                         result = logout();
@@ -160,14 +151,6 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    public String addProfilePic(String content) {
-        try {
-            String lmao = db.addPhotoFile(new File(content));
-            return lmao;
-        } catch (Exception e) {
-            return "failed to add profile pic";
-        }
-    }
     @Override
     public String deleteMessage(String content) {
         String[] info = content.split(groupSeparatorChar + "");
@@ -228,7 +211,6 @@ public class Server implements Runnable, ServerInterface {
             }
 
             currentUser.setProfilePic(fields[5]);
-            db.addPhotoFile(new File(fields[5]));
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
             return "true";
@@ -243,10 +225,6 @@ public class Server implements Runnable, ServerInterface {
 
     public String accessUserProfile(String user) {
         return db.getUser(user).toString();
-    }
-
-    public String accessPhotosFromUser(String user) {
-        return db.getAllPhotosFromUser(db.getUser(user)).toString();
     }
     
     public String accessMessagesFromUser(String user) {
@@ -417,31 +395,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-    @Override
-    public String sendImage(String content) {
-        try {
-            String[] parts = splitContent(content);
-            if (parts.length < 2) {
-                return "false";
-            }
-            String userTwo = parts[0];
-            String path = parts[1];
-            // Check for self-messaging
-            if (currentUser != null && userTwo.equals(currentUser.getUsername())) {
-                return "false";
-            }
 
-            // Check for null/empty message
-            if (path == null || path.isEmpty()) {
-                return "false";
-            }
-            Photo photo = new Photo(path, currentUser.getUsername());
-            return String.valueOf(db.addPhoto(photo,userTwo));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "false";
-        }
-    }
     @Override
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {

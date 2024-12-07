@@ -251,11 +251,7 @@ public class ProfilePanel extends JPanel {
             char groupSeparator = (char) 29;
             String profileInput = this.client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
-            profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
-            JLabel pic = new JLabel(profilePic.getText());
-            if (pic.getText().equals("profile.png") || pic.getText().isEmpty() || pic.getText().equals("")) {
-                pic.setText("0.jpg");
-            }
+            profilePic = new JLabel("0.jpg");
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
             bioLabel = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1).trim());
@@ -275,7 +271,7 @@ public class ProfilePanel extends JPanel {
             int blackPanelWidth = (int) (screenSize.width * 0.6); // 60% width
             blackBackground.setBounds(0, 10, blackPanelWidth, screenSize.height - 180);
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    getPath(pic.getText(), "images"), 150);
+                    getPath("0.jpg", "images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);
@@ -418,80 +414,7 @@ public class ProfilePanel extends JPanel {
             blockButton.setBounds(startX + buttonWidth + buttonGap - 10, buttonsY, buttonWidth, buttonHeight);
             blockButton.setFocusPainted(false);
 
-            // After adding the buttons:
-            int gridStartY = buttonsY + buttonHeight + 20; // Below buttons with some spacing
-            double gridWidth = screenSize.width / 2.5; // Half screen width
-            int gridHeight = screenSize.height - gridStartY - 95; // Fill remaining height
-
-            // Create panel for grid of pictures
-            JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
-            gridPanel.setBackground(Color.BLACK);
-
-            String photosInfo = this.client.accessPhotosFromUser(username);
-            String[] photos;
-            if (photosInfo.trim().equals("[]")) {
-                photos = new String[0]; // Create an empty array
-            } else {
-                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
-            }
-            String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
-            if (photos.length > 0) {
-                if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                    }
-                } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                    }
-                }
-            }
-
-            // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
-                JPanel imagePanel2 = new JPanel() {
-                    @Override
-                    protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-                        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        try {
-                            ImageIcon icon = new ImageIcon(imagePath);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
-                        } catch (Exception e) {
-                            g2.setColor(Color.WHITE);
-                            g2.fillRect(0, 0, getWidth(), getHeight());
-                        }
-                        g2.dispose();
-                    }
-                };
-                imagePanel2.setBackground(Color.BLACK);
-                gridPanel.add(imagePanel2);
-            }
             this.add(blackBackground);
-            this.add(gridPanel);
             this.add(addFriendButton);
             this.add(blockButton);
             this.add(messagesNumber);
@@ -515,7 +438,7 @@ public class ProfilePanel extends JPanel {
 
     }
 
-    public ProfilePanel(String profile, String photosInfo) {
+    public ProfilePanel(String profile) {
         try {
             this.setLayout(null);
             char groupSeparator = (char) 29;
@@ -625,79 +548,7 @@ public class ProfilePanel extends JPanel {
             double gridWidth = screenSize.width / 2.5; // Half screen width
             int gridHeight = screenSize.height - gridStartY - 95; // Fill remaining height
 
-            // Create panel for grid of pictures
-            JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
-            gridPanel.setBackground(Color.BLACK);
-
-            String[] photos;
-            if (photosInfo.trim().equals("[]")) {
-                photos = new String[0]; // Create an empty array
-            } else {
-                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
-            }
-            String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
-            if (photos.length > 0) {
-                if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                    }
-                } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                    }
-                }
-            }
-
-            for (String testing : imagePaths) {
-                System.out.println("paths : " + testing);
-            }
-
-            // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
-                JPanel imagePanel2 = new JPanel() {
-                    @Override
-                    protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-                        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        try {
-                            ImageIcon icon = new ImageIcon(imagePath);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
-                        } catch (Exception e) {
-                            g2.setColor(Color.WHITE);
-                            g2.fillRect(0, 0, getWidth(), getHeight());
-                        }
-                        g2.dispose();
-                    }
-                };
-                imagePanel2.setBackground(Color.BLACK);
-                gridPanel.add(imagePanel2);
-            }
-
             // add everything to panel
-            this.add(gridPanel);
             this.add(addFriendButton);
             this.add(blockButton);
             this.add(messagesNumber);
@@ -746,7 +597,7 @@ public class ProfilePanel extends JPanel {
             blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 40);
 
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    getPath(profilePic.getText(), "images"), 150);
+                    getPath("0.jpg", "images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             mainPanel.add(imagePanel);
 
@@ -853,82 +704,6 @@ public class ProfilePanel extends JPanel {
             int verticalGap = 25;
             int buttonHeight = 35;
             int buttonsY = startY + (verticalGap * 5) + 18; // Below birthday section
-
-            // After adding the buttons:
-            int gridStartY = buttonsY + buttonHeight + 20; // Below buttons with some spacing
-            double gridWidth = screenSize.width / 2.5; // Half screen width
-            int gridHeight = screenSize.height - gridStartY - 95; // Fill remaining height
-
-            // Create panel for grid of pictures
-            JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight + 50);
-            gridPanel.setBackground(Color.BLACK);
-
-            String photosInfo = client.accessPhotosFromUser(client.getUsername());
-            String[] photos;
-            if (photosInfo.trim().equals("[]")) {
-                photos = new String[0]; // Create an empty array
-            } else {
-                photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
-            }
-            String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
-            if (photos.length > 0) {
-                if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        System.out.println("photo: " + lmao[1]);
-                        imagePaths[i] = getPath(lmao[1], "images");
-                    }
-                } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                        System.out.println("photo: " + lmao[1]);
-
-                    }
-                }
-            }
-
-            // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
-                JPanel imagePanel2 = new JPanel() {
-                    @Override
-                    protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-                        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        try {
-                            ImageIcon icon = new ImageIcon(imagePath);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
-                        } catch (Exception e) {
-                            g2.setColor(Color.WHITE);
-                            g2.fillRect(0, 0, getWidth(), getHeight());
-                        }
-                        g2.dispose();
-                    }
-                };
-                imagePanel2.setBackground(Color.BLACK);
-                gridPanel.add(imagePanel2);
-            }
 
             JPanel rightPanel = new JPanel(new GridBagLayout());
             rightPanel.setBackground(Color.WHITE);
@@ -1302,8 +1077,6 @@ public class ProfilePanel extends JPanel {
                 gbc.gridy++;
             }
 
-            // Add grid panel to main panel
-            mainPanel.add(gridPanel);
             mainPanel.add(addFriendButton);
             mainPanel.add(blockButton);
             mainPanel.add(messagesNumber);
@@ -1355,7 +1128,7 @@ public class ProfilePanel extends JPanel {
         lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
         bioLabel = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1).trim());
         String birthday = profileInfo[4].substring(profileInfo[4].indexOf(":") + 1).trim();
-        profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
+        profilePic = new JLabel("0.jpg");
         friendsOnlyLabel = new JLabel(profileInfo[6].substring(profileInfo[6].indexOf(":") + 1));
         String[] birthdayParts = birthday.split("/");
         birthdayMonthLabel = new JLabel(birthdayParts[0]);
@@ -1490,151 +1263,6 @@ public class ProfilePanel extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g2.setColor(getForeground());
-            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
-            g2.dispose();
-        }
-    }
-
-    private static class RoundedScrollPane extends JScrollPane {
-        private int radius;
-        private Color backgroundColor;
-
-        public RoundedScrollPane(Component view, int radius) {
-            super(view);
-            this.radius = radius;
-            setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder());
-
-            // Style the scrollbars
-            getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-                @Override
-                protected void configureScrollBarColors() {
-                    this.thumbColor = new Color(200, 200, 200);
-                    this.trackColor = new Color(245, 245, 245);
-                }
-
-                @Override
-                protected JButton createDecreaseButton(int orientation) {
-                    return createZeroButton();
-                }
-
-                @Override
-                protected JButton createIncreaseButton(int orientation) {
-                    return createZeroButton();
-                }
-
-                private JButton createZeroButton() {
-                    JButton button = new JButton();
-                    button.setPreferredSize(new Dimension(0, 0));
-                    return button;
-                }
-            });
-        }
-
-        @Override
-        public void setBackground(Color bg) {
-            this.backgroundColor = bg;
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-
-            // Set rendering hints
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-            // Fill background
-            if (backgroundColor != null) {
-                g2.setColor(backgroundColor);
-            } else {
-                g2.setColor(getBackground());
-            }
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-
-            g2.dispose();
-            super.paintComponent(g);
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(new Color(200, 200, 200));
-            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
-            g2.dispose();
-        }
-    }
-
-    private static class RoundedJList<E> extends JList<E> {
-        private int radius;
-        private Color backgroundColor;
-
-        public RoundedJList(int radius) {
-            super();
-            this.radius = radius;
-            init();
-        }
-
-        public RoundedJList(ListModel<E> model, int radius) {
-            super(model);
-            this.radius = radius;
-            init();
-        }
-
-        private void init() {
-            setOpaque(false);
-            setCellRenderer(new DefaultListCellRenderer() {
-                @Override
-                public Component getListCellRendererComponent(JList<?> list, Object value,
-                        int index, boolean isSelected, boolean cellHasFocus) {
-                    Component c = super.getListCellRendererComponent(list, value,
-                            index, isSelected, cellHasFocus);
-
-                    if (isSelected) {
-                        setBackground(new Color(0, 149, 246, 50));
-                        setForeground(Color.BLACK);
-                    } else {
-                        setBackground(list.getBackground());
-                        setForeground(list.getForeground());
-                    }
-
-                    setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-                    return c;
-                }
-            });
-        }
-
-        @Override
-        public void setBackground(Color bg) {
-            this.backgroundColor = bg;
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-            // Fill background
-            if (backgroundColor != null) {
-                g2.setColor(backgroundColor);
-            } else {
-                g2.setColor(getBackground());
-            }
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-
-            g2.dispose();
-            super.paintComponent(g);
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(new Color(200, 200, 200));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
             g2.dispose();
         }

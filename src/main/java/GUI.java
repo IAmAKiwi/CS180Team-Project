@@ -7,13 +7,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.swing.border.*;
 import java.awt.event.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GUI implements Runnable {
     private JFrame frame;
@@ -22,8 +18,6 @@ public class GUI implements Runnable {
     private chatPanel chatPanel;
     private ProfilePanel profilePanel;
     private RoundedButton logoutButton;
-    // private RoundedButton addFriendButton;
-    // private RoundedButton addBlockButton;
     private Client client;
     private RoundedPanel headerPanel;
     private JPopupMenu profileMenu;
@@ -346,8 +340,7 @@ public class GUI implements Runnable {
                         frame.remove(selectedProfilePanel);
                     }
                     String profile = client.accessUserProfile(selectedUser);
-                    String photos = client.accessPhotosFromUser(selectedUser);
-                    selectedProfilePanel = new ProfilePanel(profile, photos);
+                    selectedProfilePanel = new ProfilePanel(profile);
                     JButton[] friendAndBlockButtons = selectedProfilePanel.getFriendAndBlockButtons();
                     ArrayList<String> friendList = new ArrayList<>();
                     ArrayList<String> blockList = new ArrayList<>();

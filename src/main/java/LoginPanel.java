@@ -25,8 +25,6 @@ public class LoginPanel extends JComponent implements Runnable {
     private JLabel logoLabel;
     private String username;
     private String password;
-    //private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
-    private String profilePicturePath = getPath("0.jpg", "images");
 
     public LoginPanel(Client client) {
         super();
@@ -46,84 +44,6 @@ public class LoginPanel extends JComponent implements Runnable {
         font = font.deriveFont(Font.PLAIN);
         textField.setFont(font);
         textField.setForeground(Color.BLACK);
-    }
-
-    private static class CircularImagePanel extends JPanel {
-        private Image image;
-        private int size;
-
-        public CircularImagePanel(String imagePath, int size) {
-            this.size = size;
-            try {
-                ImageIcon icon = new ImageIcon(imagePath);
-                Image originalImage = icon.getImage();
-                int originalWidth = originalImage.getWidth(null);
-                int originalHeight = originalImage.getHeight(null);
-
-                int cropSize = Math.min(originalWidth, originalHeight);
-                int x = (originalWidth - cropSize) / 2;
-                int y = (originalHeight - cropSize) / 2;
-                BufferedImage croppedImage = new BufferedImage(cropSize, cropSize, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g2d = croppedImage.createGraphics();
-                g2d.drawImage(originalImage, 0, 0, cropSize, cropSize, x, y, x + cropSize, y + cropSize, null);
-                g2d.dispose();
-                image = croppedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            setPreferredSize(new Dimension(size, size));
-        }
-
-        public void updateImage(String imagePath, int size) {
-            this.size = size;
-            try {
-                ImageIcon icon = new ImageIcon(imagePath);
-                Image originalImage = icon.getImage();
-                int originalWidth = originalImage.getWidth(null);
-                int originalHeight = originalImage.getHeight(null);
-
-                int cropSize = Math.min(originalWidth, originalHeight);
-                int x = (originalWidth - cropSize) / 2;
-                int y = (originalHeight - cropSize) / 2;
-                BufferedImage croppedImage = new BufferedImage(cropSize, cropSize, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g2d = croppedImage.createGraphics();
-                g2d.drawImage(originalImage, 0, 0, cropSize, cropSize, x, y, x + cropSize, y + cropSize, null);
-                g2d.dispose();
-                image = croppedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-                repaint();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            setPreferredSize(new Dimension(size, size));
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                    RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            // Draw white circle background
-            g2.setColor(Color.WHITE);
-            g2.fillOval(0, 0, size, size);
-
-            // Create circular clip
-            g2.setClip(new Ellipse2D.Float(1, 1, size - 2, size - 2));
-            // Draw image if loaded
-            if (image != null) {
-                g2.drawImage(image, 0, 0, this);
-            }
-
-            g2.setClip(null);
-            g2.setColor(new Color(200, 200, 200)); // Lighter gray for softer appearance
-            g2.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            g2.drawOval(1, 1, size - 2, size - 2);
-            g2.dispose();
-        }
     }
 
     // Add this inner class to your LoginPanel:
@@ -557,26 +477,6 @@ public class LoginPanel extends JComponent implements Runnable {
                 JTextField birthdayFieldMonth = new JTextField("", 20);
                 JTextField birthdayFieldDay = new JTextField("", 20);
                 JTextField birthdayFieldYear = new JTextField("", 20);
-                // Add after initializing other fields
-                JButton browseButton = new JButton("Browse Files");
-                CircularImagePanel profilePreview = new CircularImagePanel(
-                    getPath("0.jpg","images"), 150);
-                browseButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JFileChooser fileChooser = new JFileChooser();
-                        fileChooser.setFileFilter(new FileNameExtensionFilter(
-                                "Image files", "jpg", "jpeg", "png", "gif"));
-
-                        int result = fileChooser.showOpenDialog(null);
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            File selectedFile = fileChooser.getSelectedFile();
-                            profilePreview.updateImage(selectedFile.getPath(), 150);
-                            profilePicturePath = selectedFile.getPath();
-                        }
-
-                    }
-                });
                 JCheckBox friendsOnlyCheckBox = new JCheckBox("Messages limited to friends?",
                         false);
 
@@ -647,18 +547,6 @@ public class LoginPanel extends JComponent implements Runnable {
                 editPanel.add(birthdayFieldYear, gbc);
 
                 gbc.gridx = 0;
-                gbc.gridy = 8;
-                editPanel.add(new JLabel("Profile Picture:"), gbc);
-                gbc.gridx = 1;
-                editPanel.add(browseButton, gbc);
-
-                gbc.gridx = 0;
-                gbc.gridy = 9;
-                editPanel.add(new JLabel("Image Preview:"), gbc);
-                gbc.gridx = 1;
-                editPanel.add(profilePreview, gbc);
-
-                gbc.gridx = 0;
                 gbc.gridy = 10;
                 editPanel.add(new JLabel("Friends Only:"), gbc);
                 gbc.gridx = 1;
@@ -673,14 +561,13 @@ public class LoginPanel extends JComponent implements Runnable {
                                     String.valueOf(passwordField.getPassword()))) {
                                 // Save the changes
                                 char groupSeparator = (char) 29;
-                                String profilePath = client.addProfilePic(profilePicturePath);
                                 String content = usernameField.getText().trim() + groupSeparator
                                         + firstNameField.getText().trim() +
                                         groupSeparator + lastNameField.getText().trim() + groupSeparator
                                         + bioField.getText().trim() +
                                         groupSeparator + birthdayFieldMonth.getText().trim() + "/"
                                         + birthdayFieldDay.getText().trim()
-                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePath
+                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator
                                         + groupSeparator +
                                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
                                 if (client.saveProfile(content)) {

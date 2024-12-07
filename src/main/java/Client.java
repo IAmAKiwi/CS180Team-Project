@@ -101,10 +101,6 @@ public class Client implements Runnable, ClientInterface {
                         // Access user profile example accessUserProfile:username
                         result = accessUserProfile(content);
                         break;
-                    case "accessPhotosFromUser":
-                        // Access photos from user example: accessPhotosFromUser:username
-                        result = accessPhotosFromUser(content);
-                        break;
                     case "accessMessagesFromUser":
                         // Access messages from user example: accessMessagesFromUser:username
                         result = accessMessagesFromUser(content);
@@ -131,10 +127,6 @@ public class Client implements Runnable, ClientInterface {
                     case "deleteChat":
                         // Delete chat example: deleteChat:username
                         result = String.valueOf(deleteChat(content));
-                        break;
-                    case "sendImage":
-                        // Send image example: sendImage:username[groupSeparator]imagePath
-                        result = String.valueOf(sendImage(content));
                         break;
                     case "getBlockList":
                         // Get block list example: getBlockList:
@@ -218,11 +210,6 @@ public class Client implements Runnable, ClientInterface {
         return requestData(command);
     }
 
-    public String accessPhotosFromUser(String content) throws IOException {
-        String command = "accessPhotosFromUser:" + content;
-        return requestData(command);
-    }
-
     public boolean saveProfile(String content) throws IOException {
         String command = "saveProfile:" + content;
         return sendCommand(command);
@@ -251,11 +238,6 @@ public class Client implements Runnable, ClientInterface {
     // the other user
     public boolean deleteChat(String otherUser) throws IOException{
         String command = "deleteChat:" + otherUser;
-        return sendCommand(command);
-    }
-
-    public boolean sendImage(String content) throws IOException{
-        String command = "sendImage:" + content;
         return sendCommand(command);
     }
 

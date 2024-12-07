@@ -36,8 +36,6 @@ public interface ClientInterface {
 
     boolean deleteChat(String user) throws IOException; // otherUsername
 
-    boolean sendImage(String content) throws IOException; // otherUsername [groupSeparator] path
-
     // Friend management
     boolean removeFriend(String friend) throws IOException; // friendUsername
 

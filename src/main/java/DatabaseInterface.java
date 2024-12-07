@@ -32,19 +32,9 @@ public interface DatabaseInterface {
     String[] getAllUserChats(String username);
     void setAllChats(ArrayList<MessageHistory> allChats);
 
-    // Photo Operations
-    ArrayList<PhotoHistory> getPhotos();
-    PhotoHistory getPhotos(String user1, String user2);
-    boolean addPhotoHistory(PhotoHistory photoHistory);
-    boolean addPhoto(Photo photo, String receiver);
-    boolean deletePhoto(Photo photo, String receiver);
-    ArrayList<Photo> getAllPhotosFromUser(User u);
-
     // File Operations
     boolean saveUsers();
     boolean loadUsers();
     boolean saveMessages();
     boolean loadMessages();
-    boolean savePhotos();
-    boolean loadPhotos();
 }
