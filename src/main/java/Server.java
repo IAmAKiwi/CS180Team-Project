@@ -9,7 +9,6 @@ import java.net.SocketException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-
 /**
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
  *         12
@@ -56,6 +55,9 @@ public class Server implements Runnable, ServerInterface {
                 String content = line.substring(line.indexOf(':') + 1);
                 String result = "";
                 switch (command) {
+                    case "getUsername":
+                        result = getUsername();
+                        break;
                     case "login":
                         result = login(content);
                         break;
@@ -82,9 +84,6 @@ public class Server implements Runnable, ServerInterface {
                         break;
                     case "deleteMessage":
                         result = deleteMessage(content);
-                        break;
-                    case "getUsername":
-                        result = getUsername();
                         break;
                     case "accessProfile":
                         result = accessProfile();
@@ -215,9 +214,9 @@ public class Server implements Runnable, ServerInterface {
             } catch (NumberFormatException e) {
                 return "false";
             }
-            db.addPhotosFile(new File(fields[5]));
-            db.loadPhotosFolder();
-            currentUser.setProfilePic(db.getPhotoFolderPaths().get(db.getPhotoFolderPaths().size() - 1));
+
+            currentUser.setProfilePic(fields[5]);
+            db.addPhotoFile(new File(fields[5]));
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
             return "true";
@@ -225,11 +224,6 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
-
-    public String getUsername() {
-        return currentUser.getUsername();
-    }
-
     @Override
     public String accessProfile() {
         return currentUser.toString();
@@ -332,6 +326,10 @@ public class Server implements Runnable, ServerInterface {
             userList += users.get(i).getUsername() + groupSeparatorChar;
         }
         return userList;
+    }
+
+    public String getUsername() {
+        return currentUser.getUsername();
     }
 
     /**

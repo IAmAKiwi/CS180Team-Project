@@ -21,6 +21,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -252,7 +254,7 @@ public class ProfilePanel extends JPanel {
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
             JLabel pic = new JLabel(profilePic.getText());
             if (pic.getText().equals("profile.png") || pic.getText().isEmpty() || pic.getText().equals("")) {
-                pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
+                pic.setText(getPath("0.jpg", "images"));
             }
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
@@ -323,14 +325,14 @@ public class ProfilePanel extends JPanel {
 
             // Friends Only
             if (friendsOnlyLabel.getText().equals("true")) {
-                ImageIcon appIcon = new ImageIcon("C:/Users/peter/Github/CS180Team-Project/images/icons8-lock-48.png");
+                ImageIcon appIcon = new ImageIcon("C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-lock-48.png");
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
                 this.add(iconLabel);
             } else {
                 ImageIcon appIcon = new ImageIcon(
-                        "C:/Users/peter/Github/CS180Team-Project/images/icons8-unlock-48.png");
+                        "C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-unlock-48.png");
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -423,11 +425,11 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-            String photosInfo = client.accessPhotosFromUser(profileInfo[0]);
+            String photosInfo = client.accessPhotosFromUser(username);
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
             for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+                imagePaths[i] = getPath("0.jpg", "images");
             }
             if (photos[0].contains(",")) {
                 if (photos.length < 6) {
@@ -512,10 +514,11 @@ public class ProfilePanel extends JPanel {
             String[] profileInfo = profile.split(groupSeparator + "");
 
             initializeLabels(profileInfo);
+            
 
             if (profilePic.getText().equals("profile.png") || profilePic.getText().isEmpty() || profilePic.getText().equals("")) {
-                //pic.setText("C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg");
-                profilePic.setText("../../images/default-image.jpg");
+                // profilePic.setText("C:/Users/peter/Github/CS180Team-Project/images/0.jpg");
+                profilePic.setText(getPath("0.jpg", "images"));
             }
 
             // Get screen dimensions
@@ -523,7 +526,6 @@ public class ProfilePanel extends JPanel {
 
             // Create and setup black background
             JPanel blackBackground = createBlackBackgroundPanel(screenSize);
-
             // Create the profilePicture panel
             CircularImagePanel imagePanel = new CircularImagePanel(
                     profilePic.getText(), 150);
@@ -536,14 +538,13 @@ public class ProfilePanel extends JPanel {
 
             // Friends Only
             if (friendsOnlyLabel.getText().equals("true")) {
-                ImageIcon appIcon = new ImageIcon("../../images/icons8-lock-48.png");
+                ImageIcon appIcon = new ImageIcon(getPath("icons8-lock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
                 this.add(iconLabel);
             } else {
-                ImageIcon appIcon = new ImageIcon(
-                        "../../images/icons8-unlock-48.png");
+                ImageIcon appIcon = new ImageIcon(getPath("icons8-unlock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -624,7 +625,7 @@ public class ProfilePanel extends JPanel {
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
             for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = "C:/Users/peter/Github/CS180Team-Project/images/default-image.jpg";
+                imagePaths[i] = getPath("0.jpg", "images");
             }
             if (photos[0].contains(",")) {
                 if (photos.length < 6) {
@@ -757,14 +758,13 @@ public class ProfilePanel extends JPanel {
 
             // Friends Only
             if (friendsOnlyLabel.getText().equals("true")) {
-                ImageIcon appIcon = new ImageIcon("C:/Users/peter/Github/CS180Team-Project/images/icons8-lock-48.png");
+                ImageIcon appIcon = new ImageIcon(getPath("icons8-lock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
                 mainPanel.add(iconLabel);
             } else {
-                ImageIcon appIcon = new ImageIcon(
-                        "C:/Users/peter/Github/CS180Team-Project/images/icons8-unlock-48.png");
+                ImageIcon appIcon = new ImageIcon(getPath("icons8-unlock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -841,7 +841,7 @@ public class ProfilePanel extends JPanel {
             gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
-            String photosInfo = client.accessPhotosFromUser(profileInfo[0]);
+            String photosInfo = client.accessPhotosFromUser(usernameLabel.getText());
             String[] photos = photosInfo.split(",");
             String[] imagePaths = new String[6];
             for (int i = 0; i < photos.length && i < imagePaths.length; i++) {
@@ -1587,5 +1587,11 @@ public class ProfilePanel extends JPanel {
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
             g2.dispose();
         }
+    }
+
+    public String getPath(String item, String folder) {
+        Path path = Paths.get(folder);
+        String thePath = path.resolve(item).toString();
+        return thePath;
     }
 }

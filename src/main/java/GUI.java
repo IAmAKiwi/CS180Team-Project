@@ -4,6 +4,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.swing.border.*;
 import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
@@ -115,38 +118,40 @@ public class GUI implements Runnable {
             g2.dispose();
         }
     }
+
     private void updateProfileButton() {
         String profilePic = profilePanel.getProfilePic();
-        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") 
+        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("")
                 || profilePic.equals("profile.png")) {
-            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/69.jpg";
+            profilePic = getPath("0.jpg", "images");
         }
-        
+
         // Remove old button wrapper
         Component[] components = headerPanel.getComponents();
         for (Component comp : components) {
-            if (comp instanceof JPanel && comp.getName() != null 
+            if (comp instanceof JPanel && comp.getName() != null
                     && comp.getName().equals("buttonWrapper")) {
                 headerPanel.remove(comp);
             }
         }
-    
+
         // Create new button
         profileButton = new CircularButton(profilePic, 50);
         profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
-        
+
         // Create new wrapper
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonWrapper.setName("buttonWrapper"); // For identification
         buttonWrapper.setBackground(new Color(245, 245, 245));
         buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 200));
         buttonWrapper.add(profileButton);
-        
+
         // Add new wrapper
         headerPanel.add(buttonWrapper, BorderLayout.EAST);
         headerPanel.revalidate();
         headerPanel.repaint();
     }
+
     private void createHeader() {
         headerPanel = new RoundedPanel(15);
         headerPanel.setLayout(new BorderLayout());
@@ -156,7 +161,7 @@ public class GUI implements Runnable {
 
         String profilePic = profilePanel.getProfilePic();
         if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") || profilePic.equals("profile.png")) {
-            profilePic = "C:/Users/peter/Github/CS180Team-Project/images/69.jpg";
+            profilePic = getPath("0.jpg", "images");
         }
         profileButton = new CircularButton(profilePic, 50);
 
@@ -184,15 +189,13 @@ public class GUI implements Runnable {
                             "" + (char) 29));
                 }
                 if (!blocks.isEmpty()) {
-                    blockList =  (ArrayList<String>) Arrays.asList(blocks.split(
+                    blockList = (ArrayList<String>) Arrays.asList(blocks.split(
                             "" + (char) 29));
                 }
                 profilePanel.createComponent(null, friendList, blockList);
             } catch (IOException ex) {
                 disconnect();
             }
-
-
 
         });
 
@@ -211,7 +214,7 @@ public class GUI implements Runnable {
                     });
                 }
             }, null, null);
-            updateProfileButton(); 
+            updateProfileButton();
         });
 
         profileMenu.add(profileItem);
@@ -291,18 +294,6 @@ public class GUI implements Runnable {
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // addFriendButton = new RoundedButton("Friend", 15);
-        // addFriendButton.setBackground(new Color(0, 149, 246));
-        // addFriendButton.setForeground(Color.WHITE);
-        // addFriendButton.setFont(new Font("Arial", Font.BOLD, 14));
-        // addFriendButton.setPreferredSize(new Dimension(150, 20));
-
-        // addBlockButton = new RoundedButton("Block", 15);
-        // addBlockButton.setBackground(new Color(0, 149, 246));
-        // addBlockButton.setForeground(Color.WHITE);
-        // addBlockButton.setFont(new Font("Arial", Font.BOLD, 14));
-        // addBlockButton.setPreferredSize(new Dimension(150, 20));
-
         client = loginPanel.getClient();
         if (client == null) {
             frame.setVisible(false);
@@ -318,6 +309,7 @@ public class GUI implements Runnable {
             return;
         }
         String username = loginPanel.getUsername();
+        System.out.println(username);
         chatPanel = new chatPanel(client);
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
@@ -335,7 +327,7 @@ public class GUI implements Runnable {
         gbc.weightx = 0.5;
         frame.add(chatPanel, gbc);
 
-        gbc.weightx = 1.2;
+        gbc.weightx = 0.9;
         // frame.add(profilePanel, gbc);
         chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
             String selectedUser = (String) evt.getNewValue();
@@ -355,15 +347,13 @@ public class GUI implements Runnable {
                     try {
                         String friends = client.getFriendList();
                         if (!friends.isEmpty()) {
-                            for (String s : friends.split("" + (char) 29))
-                            {
+                            for (String s : friends.split("" + (char) 29)) {
                                 friendList.add(s);
                             }
                         }
                         String blocks = client.getBlockList();
                         if (!blocks.isEmpty()) {
-                            for (String s : blocks.split("" + (char) 29))
-                            {
+                            for (String s : blocks.split("" + (char) 29)) {
                                 blockList.add(s);
                             }
                         }
@@ -420,34 +410,6 @@ public class GUI implements Runnable {
                 }
             }
         });
-
-        // // addFriendButton.addActionListener(e -> {
-        // // try {
-        // // String otherUsername = chatListPanel.getSelectedChat();
-        // // if (otherUsername == null || otherUsername.isEmpty()) {
-        // // return;
-        // // }
-        // // if (!client.addFriend(otherUsername)) {
-        // // client.removeFriend(otherUsername);
-        // // }
-        // // } catch (IOException ex) {
-        // // disconnect();
-        // // }
-        // // });
-
-        // // addBlockButton.addActionListener(e -> {
-        // // try {
-        // // String otherUsername = chatListPanel.getSelectedChat();
-        // // if (otherUsername == null || otherUsername.isEmpty()) {
-        // // return;
-        // // }
-        // // if (!client.blockUser(otherUsername)) {
-        // // client.unblockUser(otherUsername);
-        // // }
-        // // } catch (IOException ex) {
-        // // disconnect();
-        // // }
-        // // });
 
         logoutButton = new RoundedButton("Logout", 15);
         logoutButton.setBackground(new Color(0, 149, 246));
@@ -599,7 +561,7 @@ public class GUI implements Runnable {
             disconnect();
             return;
         }
-        refreshChats();
+         refreshChats();
     }
 
     public void logout() {
@@ -709,5 +671,10 @@ public class GUI implements Runnable {
                 }
             }
         }
+    }
+    public String getPath(String item, String folder) {
+        Path path = Paths.get(folder);
+        String thePath = path.resolve(item).toString();
+        return thePath;
     }
 }

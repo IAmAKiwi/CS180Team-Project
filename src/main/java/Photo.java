@@ -45,6 +45,10 @@ public class Photo implements PhotoInterface {
         return this.photoPath;
     }
 
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
     /**
      * Getter for the username of the sender.
      */

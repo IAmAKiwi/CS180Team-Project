@@ -26,12 +26,16 @@ public class LoginPanel extends JComponent implements Runnable {
     private String username;
     private String password;
     //private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
-    private String profilePicturePath = "../../images/5.jpg";
+    private String profilePicturePath = getPath("0.jpg", "images");
 
     public LoginPanel(Client client) {
         super();
         this.client = client;
         loginPanel = this;
+        try {
+            username = client.getUsername();
+        } catch (Exception e) {
+        }
     }
 
     public void addPlaceHolderStyle(JTextField textField) {
@@ -560,10 +564,8 @@ public class LoginPanel extends JComponent implements Runnable {
                 JTextField birthdayFieldYear = new JTextField("", 20);
                 // Add after initializing other fields
                 JButton browseButton = new JButton("Browse Files");
-                Path photosPath = Paths.get("images");
-                String defaultPath = photosPath.resolve("69.jpg").toString();
                 CircularImagePanel profilePreview = new CircularImagePanel(
-                    defaultPath, 150);
+                    getPath("0.jpg","images"), 150);
                 browseButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -750,5 +752,10 @@ public class LoginPanel extends JComponent implements Runnable {
             return false;
         }
         return true;
+    }
+    public String getPath(String item, String folder) {
+        Path path = Paths.get(folder);
+        String thePath = path.resolve(item).toString();
+        return thePath;
     }
 }
