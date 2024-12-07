@@ -275,7 +275,7 @@ public class ProfilePanel extends JPanel {
             int blackPanelWidth = (int) (screenSize.width * 0.6); // 60% width
             blackBackground.setBounds(0, 10, blackPanelWidth, screenSize.height - 180);
             CircularImagePanel imagePanel = new CircularImagePanel(
-                pic.getText(), 150);
+                getPath(pic.getText(),"images"), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);

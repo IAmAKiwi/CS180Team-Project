@@ -673,18 +673,24 @@ public class LoginPanel extends JComponent implements Runnable {
                                     String.valueOf(passwordField.getPassword()))) {
                                 // Save the changes
                                 char groupSeparator = (char) 29;
+                                String profilePath = client.addProfilePic(profilePicturePath);
                                 String content = usernameField.getText().trim() + groupSeparator
                                         + firstNameField.getText().trim() +
                                         groupSeparator + lastNameField.getText().trim() + groupSeparator
                                         + bioField.getText().trim() +
                                         groupSeparator + birthdayFieldMonth.getText().trim() + "/"
                                         + birthdayFieldDay.getText().trim()
-                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePicturePath
+                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePath
                                         + groupSeparator +
                                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
-                                System.out.println(content);
                                 if (client.saveProfile(content)) {
+                                    username = usernameField.getText();
+                                    password = String.valueOf(passwordField.getPassword());
+                                    frame.setVisible(false);
+                                    frame.dispose();
+                                    loginPanel = null;
                                     editDialog.dispose();
+                                    
                                 } else {
                                     // Show an error message
                                     JOptionPane.showMessageDialog(null, "Invalid profile information, " +

@@ -85,6 +85,10 @@ public class Client implements Runnable, ClientInterface {
                         // deleteMessage[groupSeparator]message[groupSeparator]otherUser
                         result = String.valueOf(deleteMessage(content));
                         break;
+                    case "addProfilePic":
+                        // Add profile pic example: addProfilePic:profilePicPath
+                        result = String.valueOf(addProfilePic(content));
+                        break;
                     case "getUsername":
                         // Get username example getUsername:
                         result = getUsername();
@@ -184,6 +188,11 @@ public class Client implements Runnable, ClientInterface {
     public boolean sendMessage(String content) throws IOException {
         String command = "sendMessage:" + content; //
         return sendCommand(command);
+    }
+
+    public String addProfilePic(String content) throws IOException {
+        String command = "addProfilePic:" + content;
+        return requestData(command);
     }
 
     public boolean deleteMessage(String content) throws IOException{

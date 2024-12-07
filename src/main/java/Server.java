@@ -136,6 +136,9 @@ public class Server implements Runnable, ServerInterface {
                     case "getProfilePic":
                         result = getProfilePic();
                         break;
+                    case "addProfilePic":
+                        result = addProfilePic(content);
+                        break;
                     case "logout":
                         result = logout();
                         break;
@@ -154,6 +157,15 @@ public class Server implements Runnable, ServerInterface {
                     send(result, writer);
                 }
             }
+        }
+    }
+
+    public String addProfilePic(String content) {
+        try {
+            String lmao = db.addPhotoFile(new File(content));
+            return lmao;
+        } catch (Exception e) {
+            return "failed to add profile pic";
         }
     }
     @Override
