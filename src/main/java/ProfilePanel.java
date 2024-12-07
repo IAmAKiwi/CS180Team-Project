@@ -795,40 +795,6 @@ public class ProfilePanel extends JPanel {
                 RoundedTextField birthdayFieldYear = new RoundedTextField(currentBirthdayYear, 20, 15);
                 rightPanel.add(birthdayFieldYear, gbc);
 
-                // Profile Picture
-                JButton browseButton = new JButton("Browse Files");
-                browseButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JFileChooser fileChooser = new JFileChooser();
-                        fileChooser.setFileFilter(new FileNameExtensionFilter(
-                                "Image files", "jpg", "jpeg", "png", "gif"));
-
-                        int result = fileChooser.showOpenDialog(null);
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            File selectedFile = fileChooser.getSelectedFile();
-                            profilePic.setText(selectedFile.getPath());
-                            // Update existing panel instead of creating new one
-                            imagePanel.updateImage(selectedFile.getPath(), 150);
-
-                            // Ensure proper bounds and visibility
-                            imagePanel.setBounds(40, 80, 150, 150);
-
-                            // Force container to refresh
-                            // mainPanel.revalidate();
-                            mainPanel.repaint();
-                        }
-                    }
-                });
-
-                gbc.gridx = 0;
-                gbc.gridy++;
-                JLabel profilePicture = new JLabel("Profile Picture: ");
-                profilePicture.setPreferredSize(new Dimension(200, 30));
-                rightPanel.add(profilePicture, gbc);
-                gbc.gridx = 1;
-                rightPanel.add(browseButton, gbc);
-
                 // Friends Only
                 gbc.gridx = 0;
                 gbc.gridy++;

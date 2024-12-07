@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Added friends and blocks list">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Changed userHistory to have good information and added a few users and messages for presentation purposes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ClientInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ClientInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatabaseInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ServerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733546260445</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Created a version with most photo functionality removed. Just users a set profile picture in a path. we can state we would look more into it in the future.">
+      <option name="closed" value="true" />
+      <created>1733609404328</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733609404328</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -248,14 +250,16 @@
     <MESSAGE value="Got rid of profilepanel editProfile." />
     <MESSAGE value="Fixed error causing loginPanel to call getUsername before logging in." />
     <MESSAGE value="Added friends and blocks list" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added friends and blocks list" />
+    <MESSAGE value="Created a version with most photo functionality removed. Just users a set profile picture in a path. we can state we would look more into it in the future." />
+    <MESSAGE value="Changed userHistory to have good information and added a few users and messages for presentation purposes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed userHistory to have good information and added a few users and messages for presentation purposes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>887</line>
+          <line>853</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

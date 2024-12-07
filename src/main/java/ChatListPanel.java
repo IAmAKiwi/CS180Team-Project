@@ -61,7 +61,7 @@ public class ChatListPanel extends JPanel {
         super(view);
         this.radius = radius;
         setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));        
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Style the scrollbars
         getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
@@ -69,7 +69,7 @@ public class ChatListPanel extends JPanel {
                 this.thumbColor = new Color(200, 200, 200);
                 this.trackColor = new Color(245, 245, 245);
             }
-            
+
             @Override
             protected JButton createDecreaseButton(int orientation) {
                 return createZeroButton();
@@ -97,11 +97,11 @@ public class ChatListPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        
+
         // Set rendering hints
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
+
         // Fill background
         if (backgroundColor != null) {
             g2.setColor(backgroundColor);
@@ -109,7 +109,7 @@ public class ChatListPanel extends JPanel {
             g2.setColor(getBackground());
         }
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
-        
+
         g2.dispose();
         super.paintComponent(g);
     }
@@ -163,19 +163,19 @@ public class ChatListPanel extends JPanel {
     private static class RoundedLabel extends JLabel {
         private int radius;
         private Color backgroundColor;
-    
+
         public RoundedLabel(String text, int radius) {
             super(text);
             this.radius = radius;
             setOpaque(false);
         }
-    
+
         @Override
         public void setBackground(Color bg) {
             this.backgroundColor = bg;
             repaint();
         }
-    
+
         @Override
         protected void paintComponent(Graphics g) {
             if (backgroundColor != null) {
@@ -188,7 +188,7 @@ public class ChatListPanel extends JPanel {
             }
             super.paintComponent(g);
         }
-    
+
         @Override
         protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -198,7 +198,7 @@ public class ChatListPanel extends JPanel {
             g2.dispose();
         }
     }
-    
+
     // Usage:
     // RoundedLabel label = new RoundedLabel("Text", 15);
     // label.setBackground(new Color(245, 245, 245));
@@ -267,10 +267,10 @@ public class ChatListPanel extends JPanel {
         }
     }
 
-    
-    
 
-    
+
+
+
 
 
     private void initializeComponents() {
@@ -485,9 +485,10 @@ public class ChatListPanel extends JPanel {
 
     private void filterChats() throws IOException {
         String searchText = searchField.getText().toLowerCase();
+        String username = client.getUsername();
         listModel.clear();
         for (String chat : client.getUserList().split("" + (char) 29)) {
-            if (chat.toLowerCase().contains(searchText)) {
+            if (!chat.equals(username) && chat.toLowerCase().contains(searchText)) {
                 listModel.addElement(chat);
             }
         }
@@ -598,15 +599,15 @@ public class ChatListPanel extends JPanel {
         unreadLabel.setForeground(Color.WHITE);
         unreadLabel.setBorder(new RoundedBorder(10));
     }
-    
+
     // Custom rounded border for buttons
     private class RoundedBorder extends AbstractBorder {
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -615,7 +616,7 @@ public class ChatListPanel extends JPanel {
             g2.dispose();
         }
     }
-    
+
     // Public methods
     public void refreshChats(String[] chats) throws IOException {
         if (searchField.getText().trim().isEmpty() && !searching && chatList.isSelectionEmpty()) {
@@ -629,17 +630,17 @@ public class ChatListPanel extends JPanel {
             }
         }
     }
-    
+
     public void addChat(String chat) {
         if (!listModel.contains(chat)) {
             listModel.addElement(chat);
         }
     }
-    
+
     public void removeChat(String chat) {
         listModel.removeElement(chat);
     }
-    
+
     public String getSelectedChat() {
         return chatList.getSelectedValue();
     }
