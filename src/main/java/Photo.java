@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Photo implements PhotoInterface {
 
-    private String photoPath;
+    private String photoEncode;
     private String senderUsername;
     private Date timeStamp;
     private String caption;
@@ -19,7 +19,7 @@ public class Photo implements PhotoInterface {
      * Default constructor.
      */
     public Photo() {
-        this.photoPath = null;
+        this.photoEncode = null;
         this.senderUsername = null;
         this.timeStamp = Date.from(Instant.now());
     }
@@ -33,7 +33,7 @@ public class Photo implements PhotoInterface {
      */
     public Photo(String photoPath, String senderUsername) {
         this();
-        this.photoPath = photoPath;
+        this.photoEncode = photoPath;
         this.senderUsername = senderUsername;
         this.timeStamp = Date.from(Instant.now());
     }
@@ -41,12 +41,12 @@ public class Photo implements PhotoInterface {
     /**
      * Getter for the photo path.
      */
-    public String getPhotoPath() {
-        return this.photoPath;
+    public String getphotoEncode() {
+        return this.photoEncode;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setPhotoEncode(String photoPath) {
+        this.photoEncode = photoPath;
     }
 
     /**
@@ -76,6 +76,6 @@ public class Photo implements PhotoInterface {
     @Override
     public String toString() {
         char gs = 29;
-        return this.senderUsername + gs + this.photoPath + gs + this.timeStamp.getTime();
+        return this.senderUsername + gs + this.photoEncode + gs + this.timeStamp.getTime();
     }
 }

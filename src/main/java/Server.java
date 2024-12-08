@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -136,9 +135,6 @@ public class Server implements Runnable, ServerInterface {
                     case "getProfilePic":
                         result = getProfilePic();
                         break;
-                    case "addProfilePic":
-                        result = addProfilePic(content);
-                        break;
                     case "logout":
                         result = logout();
                         break;
@@ -160,14 +156,7 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    public String addProfilePic(String content) {
-        try {
-            String lmao = db.addPhotoFile(new File(content));
-            return lmao;
-        } catch (Exception e) {
-            return "failed to add profile pic";
-        }
-    }
+    
     @Override
     public String deleteMessage(String content) {
         String[] info = content.split(groupSeparatorChar + "");
@@ -227,8 +216,7 @@ public class Server implements Runnable, ServerInterface {
                 return "false";
             }
 
-            currentUser.setProfilePic(fields[5]);
-            db.addPhotoFile(new File(fields[5]));
+            currentUser.setProfilePic(fields[5]); // Profile pic
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
             return "true";

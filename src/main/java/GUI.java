@@ -1,8 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +17,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class GUI implements Runnable {
     private JFrame frame;
@@ -120,36 +124,17 @@ public class GUI implements Runnable {
     }
 
     private void updateProfileButton() {
-        String profilePic = profilePanel.getProfilePic();
-        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("")
-                || profilePic.equals("profile.png")) {
-            profilePic = getPath("0.jpg", "images");
+        // Remove existing header panel if it exists
+        if (headerPanel != null) {
+            frame.remove(headerPanel);
         }
-
-        // Remove old button wrapper
-        Component[] components = headerPanel.getComponents();
-        for (Component comp : components) {
-            if (comp instanceof JPanel && comp.getName() != null
-                    && comp.getName().equals("buttonWrapper")) {
-                headerPanel.remove(comp);
-            }
-        }
-
-        // Create new button
-        profileButton = new CircularButton(profilePic, 50);
-        profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
-
-        // Create new wrapper
-        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonWrapper.setName("buttonWrapper"); // For identification
-        buttonWrapper.setBackground(new Color(245, 245, 245));
-        buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 200));
-        buttonWrapper.add(profileButton);
-
-        // Add new wrapper
-        headerPanel.add(buttonWrapper, BorderLayout.EAST);
-        headerPanel.revalidate();
-        headerPanel.repaint();
+    
+        // Create new header with updated profile
+        createHeader();
+    
+        // Ensure proper layout update
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void createHeader() {
@@ -157,21 +142,28 @@ public class GUI implements Runnable {
         headerPanel.setLayout(new BorderLayout());
         headerPanel.setBackground(new Color(245, 245, 245));
         headerPanel.setPreferredSize(new Dimension(frame.getWidth(), 60));
-        // headerPanel.setBorder(new EmptyBorder(10,10,10,10));
 
+        // Get profile picture
         String profilePic = profilePanel.getProfilePic();
-        if (profilePic == null || profilePic.isEmpty() || profilePic.equals("") || profilePic.equals("profile.png")) {
-            profilePic = getPath("0.jpg", "images");
+
+        // Check if the image string is valid
+        if (profilePic != null && !profilePic.isEmpty()) {
+            profileButton = new CircularButton(profilePic, 50); // Create CircularButton with the image
+            profileButton.setPreferredSize(new Dimension(50, 50)); // Ensure size
+        } else {
+            System.out.println("Profile picture path is invalid or empty.");
         }
-        profileButton = new CircularButton(getPath(profilePic,"images"), 50);
 
         profileButton.setBorder(new EmptyBorder(0, 0, 0, 10));
+
+        // Create the button wrapper panel
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonWrapper.setBackground(new Color(245, 245, 245));
-        buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 200)); // top, left, bottom, right padding
+        buttonWrapper.setBorder(new EmptyBorder(0, 0, 30, 200)); // Padding
         buttonWrapper.add(profileButton);
         headerPanel.add(buttonWrapper, BorderLayout.EAST);
 
+        // Create profile menu
         profileMenu = new JPopupMenu();
         profileMenu.setBackground(new Color(30, 30, 30));
 
@@ -198,7 +190,6 @@ public class GUI implements Runnable {
             } catch (IOException ex) {
                 disconnect();
             }
-
         });
 
         JMenuItem editProfileItem = new JMenuItem("Edit Profile");
@@ -211,12 +202,11 @@ public class GUI implements Runnable {
                 public void actionPerformed(ActionEvent e) {
                     // This will run after save button is clicked
                     SwingUtilities.invokeLater(() -> {
-                        updateProfileButton();
                         updateProfilePanel();
+                        updateProfileButton();
                     });
                 }
             }, null, null);
-            updateProfileButton();
         });
 
         profileMenu.add(profileItem);
@@ -226,6 +216,7 @@ public class GUI implements Runnable {
             profileMenu.show(profileButton, 0, profileButton.getHeight());
         });
 
+        // Add the header panel to the frame
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -233,6 +224,10 @@ public class GUI implements Runnable {
         gbc.weighty = 0.0;
         gbc.gridy = 0;
         frame.add(headerPanel, gbc);
+
+        // Refresh the frame layout
+        frame.revalidate();
+        frame.repaint();
     }
 
     class CircularButton extends JButton {
@@ -248,20 +243,22 @@ public class GUI implements Runnable {
 
             try {
                 // Load and scale image
-                ImageIcon icon = new ImageIcon(imagePath);
+                // Decode Base64 string to a BufferedImage
+                byte[] imageBytes = Base64.getDecoder().decode(imagePath);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+                BufferedImage buffered = ImageIO.read(byteArrayInputStream);
+            
+                // Convert BufferedImage to ImageIcon and then to Image
+                ImageIcon icon = new ImageIcon(buffered);
                 Image originalImage = icon.getImage();
-
+            
                 // Create scaled instance with high quality
                 this.image = originalImage.getScaledInstance(size, size, Image.SCALE_AREA_AVERAGING);
-
-                // Pre-render for better performance
-                MediaTracker tracker = new MediaTracker(this);
-                tracker.addImage(this.image, 0);
-                tracker.waitForID(0);
+            
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }            
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -312,7 +309,7 @@ public class GUI implements Runnable {
         }
         String username = "";
         try {
-           username  = client.getUsername();
+            username = client.getUsername();
         } catch (IOException ex) {
             disconnect();
             return;
@@ -568,7 +565,7 @@ public class GUI implements Runnable {
             disconnect();
             return;
         }
-         refreshChats();
+        refreshChats();
     }
 
     public void logout() {
@@ -613,7 +610,7 @@ public class GUI implements Runnable {
         if (i == JOptionPane.YES_OPTION) {
             try {
                 Client client = new Client();
-                client.login("fox" + (char) 29 + "Password$");
+                client.login("William" + (char) 29 + "Paasswrod$");
                 loginPanel = new LoginPanel(client);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
@@ -679,6 +676,7 @@ public class GUI implements Runnable {
             }
         }
     }
+
     public String getPath(String item, String folder) {
         Path path = Paths.get(folder);
         String thePath = path.resolve(item).toString();

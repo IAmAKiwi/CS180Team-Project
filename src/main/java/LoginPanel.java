@@ -25,7 +25,8 @@ public class LoginPanel extends JComponent implements Runnable {
     private JLabel logoLabel;
     private String username;
     private String password;
-    //private String profilePicturePath = "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
+    // private String profilePicturePath =
+    // "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
     private String profilePicturePath = getPath("0.jpg", "images");
 
     public LoginPanel(Client client) {
@@ -234,7 +235,6 @@ public class LoginPanel extends JComponent implements Runnable {
             g2.dispose();
         }
     }
-
 
     public void run() {
         try {
@@ -483,7 +483,8 @@ public class LoginPanel extends JComponent implements Runnable {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 try {
-                    if (client.login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
+                    if (client
+                            .login(usernameField.getText() + (char) 29 + String.valueOf(passwordField.getPassword()))) {
                         // Successful login
                         username = usernameField.getText();
                         password = String.valueOf(passwordField.getPassword());
@@ -560,7 +561,7 @@ public class LoginPanel extends JComponent implements Runnable {
                 // Add after initializing other fields
                 JButton browseButton = new JButton("Browse Files");
                 CircularImagePanel profilePreview = new CircularImagePanel(
-                    getPath("0.jpg","images"), 150);
+                        getPath("0.jpg", "images"), 150);
                 browseButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -673,14 +674,18 @@ public class LoginPanel extends JComponent implements Runnable {
                                     String.valueOf(passwordField.getPassword()))) {
                                 // Save the changes
                                 char groupSeparator = (char) 29;
-                                String profilePath = client.addProfilePic(profilePicturePath);
+                                // Convert the file path to binary data
+                                byte[] imageData = Files.readAllBytes(Paths.get(profilePicturePath.trim()));
+
+                                // Encode the binary data to a string (e.g., Base64) to include in the command
+                                String profileEncoded = java.util.Base64.getEncoder().encodeToString(imageData);
                                 String content = usernameField.getText().trim() + groupSeparator
                                         + firstNameField.getText().trim() +
                                         groupSeparator + lastNameField.getText().trim() + groupSeparator
                                         + bioField.getText().trim() +
                                         groupSeparator + birthdayFieldMonth.getText().trim() + "/"
                                         + birthdayFieldDay.getText().trim()
-                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profilePath
+                                        + "/" + birthdayFieldYear.getText().trim() + groupSeparator + profileEncoded
                                         + groupSeparator +
                                         ((Boolean) friendsOnlyCheckBox.isSelected()).toString().trim();
                                 if (client.saveProfile(content)) {
@@ -690,7 +695,7 @@ public class LoginPanel extends JComponent implements Runnable {
                                     frame.dispose();
                                     loginPanel = null;
                                     editDialog.dispose();
-                                    
+
                                 } else {
                                     // Show an error message
                                     JOptionPane.showMessageDialog(null, "Invalid profile information, " +
@@ -754,6 +759,7 @@ public class LoginPanel extends JComponent implements Runnable {
         }
         return true;
     }
+
     public String getPath(String item, String folder) {
         Path path = Paths.get(folder);
         String thePath = path.resolve(item).toString();

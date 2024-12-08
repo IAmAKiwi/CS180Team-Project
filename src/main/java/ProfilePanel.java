@@ -19,12 +19,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -62,7 +66,7 @@ public class ProfilePanel extends JPanel {
     private Client client;
 
     public String getProfilePic() {
-        return profilePic.getText();
+        return profilePic.getText().replaceAll("\\s+", "");
     }
 
     private static class RoundedPanel extends JPanel {
@@ -158,7 +162,10 @@ public class ProfilePanel extends JPanel {
         public CircularImagePanel(String imagePath, int size) {
             this.size = size;
             try {
-                ImageIcon icon = new ImageIcon(imagePath);
+                byte[] imageBytes = Base64.getDecoder().decode(imagePath);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+                BufferedImage buffered = ImageIO.read(byteArrayInputStream);
+                ImageIcon icon = new ImageIcon(buffered);
                 Image originalImage = icon.getImage();
                 int originalWidth = originalImage.getWidth(null);
                 int originalHeight = originalImage.getHeight(null);
@@ -180,8 +187,15 @@ public class ProfilePanel extends JPanel {
         public void updateImage(String imagePath, int size) {
             this.size = size;
             try {
+                byte[] imageBytes = Base64.getDecoder().decode(imagePath.trim());
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+
+                // Convert the byte array into a BufferedImage
+                BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+
+
                 // Load and process new image
-                ImageIcon icon = new ImageIcon(imagePath);
+                ImageIcon icon = new ImageIcon(bufferedImage);
                 Image originalImage = icon.getImage();
                 int originalWidth = originalImage.getWidth(null);
                 int originalHeight = originalImage.getHeight(null);
@@ -251,11 +265,15 @@ public class ProfilePanel extends JPanel {
             char groupSeparator = (char) 29;
             String profileInput = this.client.accessProfile();
             String[] profileInfo = profileInput.split(groupSeparator + "");
+            // String profilepic = profileInfo[5].substring(profileInfo[5].indexOf(":") +
+            // 2);
+
             profilePic = new JLabel(profileInfo[5].substring(profileInfo[5].indexOf(":") + 2));
-            JLabel pic = new JLabel(profilePic.getText());
-            if (pic.getText().equals("profile.png") || pic.getText().isEmpty() || pic.getText().equals("")) {
-                pic.setText("0.jpg");
-            }
+            // JLabel pic = new JLabel(profilePic.getText());
+            // if (pic.getText().equals("profile.png") || pic.getText().isEmpty() ||
+            // pic.getText().equals("")) {
+            // pic.setText("0.jpg");
+            // }
             firstNameLabel = new JLabel(profileInfo[1].substring(profileInfo[1].indexOf(":") + 1).trim());
             lastNameLabel = new JLabel(profileInfo[2].substring(profileInfo[2].indexOf(":") + 1).trim());
             bioLabel = new JLabel(profileInfo[3].substring(profileInfo[3].indexOf(":") + 1).trim());
@@ -275,7 +293,7 @@ public class ProfilePanel extends JPanel {
             int blackPanelWidth = (int) (screenSize.width * 0.6); // 60% width
             blackBackground.setBounds(0, 10, blackPanelWidth, screenSize.height - 180);
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    getPath(pic.getText(), "images"), 150);
+                    profilePic.getText().replaceAll("\\s+", ""), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
             Font labelFont = new Font("Monospaced", Font.BOLD, 16);
@@ -436,27 +454,24 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
             if (photos.length > 0) {
                 if (photos.length < 6) {
                     for (int i = 0; i < photos.length; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
+                        imagePaths[i] = lmao[1];
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
+                        imagePaths[i] = lmao[1];
                     }
                 }
             }
 
             // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
+            for (String encodedImage : imagePaths) {
                 JPanel imagePanel2 = new JPanel() {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -470,7 +485,12 @@ public class ProfilePanel extends JPanel {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            ImageIcon icon = new ImageIcon(imagePath);
+                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+
+                            // Convert the byte array into a BufferedImage
+                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                            ImageIcon icon = new ImageIcon(bufferedImage);
                             Image image = icon.getImage();
                             int imgWidth = image.getWidth(null);
                             int imgHeight = image.getHeight(null);
@@ -523,20 +543,15 @@ public class ProfilePanel extends JPanel {
 
             initializeLabels(profileInfo);
 
-            if (profilePic.getText().equals("profile.png") || profilePic.getText().isEmpty()
-                    || profilePic.getText().equals("")) {
-                // profilePic.setText("C:/Users/peter/Github/CS180Team-Project/images/0.jpg");
-                profilePic.setText("0.jpg");
-            }
-
             // Get screen dimensions
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
             // Create and setup black background
             JPanel blackBackground = createBlackBackgroundPanel(screenSize);
+
             // Create the profilePicture panel
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    getPath(profilePic.getText(), "images"), 150);
+                    profilePic.getText(), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             this.add(imagePanel);
 
@@ -637,31 +652,24 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
             if (photos.length > 0) {
                 if (photos.length < 6) {
                     for (int i = 0; i < photos.length; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
+                        imagePaths[i] = lmao[1];
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
+                        imagePaths[i] = lmao[1];
                     }
                 }
             }
 
-            for (String testing : imagePaths) {
-                System.out.println("paths : " + testing);
-            }
-
             // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
+            for (String encodedImage : imagePaths) {
                 JPanel imagePanel2 = new JPanel() {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -675,7 +683,12 @@ public class ProfilePanel extends JPanel {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            ImageIcon icon = new ImageIcon(imagePath);
+                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+
+                            // Convert the byte array into a BufferedImage
+                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                            ImageIcon icon = new ImageIcon(bufferedImage);
                             Image image = icon.getImage();
                             int imgWidth = image.getWidth(null);
                             int imgHeight = image.getHeight(null);
@@ -746,7 +759,7 @@ public class ProfilePanel extends JPanel {
             blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 40);
 
             CircularImagePanel imagePanel = new CircularImagePanel(
-                    getPath(profilePic.getText(), "images"), 150);
+                    profilePic.getText(), 150);
             imagePanel.setBounds(40, 80, 100, 100);
             mainPanel.add(imagePanel);
 
@@ -872,30 +885,25 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
-            for (int i = 0; i < imagePaths.length; i++) {
-                imagePaths[i] = getPath("0.jpg", "images");
-            }
             if (photos.length > 0) {
                 if (photos.length < 6) {
                     for (int i = 0; i < photos.length; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        System.out.println("photo: " + lmao[1]);
-                        imagePaths[i] = getPath(lmao[1], "images");
+                        imagePaths[i] = lmao[1];
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = getPath(lmao[1], "images");
-                        System.out.println("photo: " + lmao[1]);
+                        imagePaths[i] = lmao[1];
 
                     }
                 }
             }
 
             // Add 6 image panels to the grid
-            for (String imagePath : imagePaths) {
+            for (String encodedImage : imagePaths) {
                 JPanel imagePanel2 = new JPanel() {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -909,7 +917,12 @@ public class ProfilePanel extends JPanel {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            ImageIcon icon = new ImageIcon(imagePath);
+                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+
+                            // Convert the byte array into a BufferedImage
+                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                            ImageIcon icon = new ImageIcon(bufferedImage);
                             Image image = icon.getImage();
                             int imgWidth = image.getWidth(null);
                             int imgHeight = image.getHeight(null);
@@ -1032,16 +1045,29 @@ public class ProfilePanel extends JPanel {
                         int result = fileChooser.showOpenDialog(null);
                         if (result == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = fileChooser.getSelectedFile();
-                            profilePic.setText(selectedFile.getPath());
-                            // Update existing panel instead of creating new one
-                            imagePanel.updateImage(selectedFile.getPath(), 150);
+                            try {
+                                // Read file data
+                                byte[] imageData = Files.readAllBytes(Paths.get(selectedFile.getPath().trim()));
 
-                            // Ensure proper bounds and visibility
-                            imagePanel.setBounds(40, 80, 150, 150);
+                                // Encode the binary data to a string (e.g., Base64)
+                                String profileEncoded = java.util.Base64.getEncoder().encodeToString(imageData);
 
-                            // Force container to refresh
-                            // mainPanel.revalidate();
-                            mainPanel.repaint();
+                                // Update profile picture display
+                                profilePic.setText(profileEncoded);
+
+                                // Update the existing panel
+                                imagePanel.updateImage(profileEncoded, 150); // Pass encoded string here
+
+                                // Ensure proper bounds and visibility
+                                imagePanel.setBounds(40, 80, 150, 150);
+
+                                // Force container to refresh
+                                mainPanel.repaint();
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                                JOptionPane.showMessageDialog(null, "Failed to load the image file.", "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
                 });

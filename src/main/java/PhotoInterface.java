@@ -10,7 +10,7 @@ public interface PhotoInterface {
      * Gets the file path of the photo
      * @return String representing the photo's file path
      */
-    String getPhotoPath();
+    String getphotoEncode();
 
     /**
      * Gets the username of the photo sender

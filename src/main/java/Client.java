@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -172,7 +174,6 @@ public class Client implements Runnable, ClientInterface {
                     default:
                         throw new IllegalArgumentException("Invalid command: " + command);
                 }
-                System.out.println(result);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -191,11 +192,17 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public String addProfilePic(String content) throws IOException {
-        String command = "addProfilePic:" + content;
+
+        // Convert the file path to binary data
+        byte[] imageData = Files.readAllBytes(Paths.get(content.trim()));
+
+        // Encode the binary data to a string (e.g., Base64) to include in the command
+        String encodedImage = java.util.Base64.getEncoder().encodeToString(imageData);
+        String command = "addProfilePic:" + encodedImage;
         return requestData(command);
     }
 
-    public boolean deleteMessage(String content) throws IOException{
+    public boolean deleteMessage(String content) throws IOException {
         String command = "deleteMessage:" + content;
         return sendCommand(command);
     }
@@ -228,7 +235,7 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
-    public boolean removeFriend(String friend) throws IOException{
+    public boolean removeFriend(String friend) throws IOException {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
     }
@@ -238,23 +245,23 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
-    public boolean unblockUser(String user) throws IOException{
+    public boolean unblockUser(String user) throws IOException {
         String command = "unblockUser:" + user;
         return sendCommand(command);
     }
 
-    public boolean blockUser(String otherUsername) throws IOException{
+    public boolean blockUser(String otherUsername) throws IOException {
         String command = "blockUser:" + otherUsername;
         return sendCommand(command);
     }
 
     // the other user
-    public boolean deleteChat(String otherUser) throws IOException{
+    public boolean deleteChat(String otherUser) throws IOException {
         String command = "deleteChat:" + otherUser;
         return sendCommand(command);
     }
 
-    public boolean sendImage(String content) throws IOException{
+    public boolean sendImage(String content) throws IOException {
         String command = "sendImage:" + content;
         return sendCommand(command);
     }
@@ -268,7 +275,7 @@ public class Client implements Runnable, ClientInterface {
         return requestData("getChatList: ");
     }
 
-    public boolean createChat(String otherUsername) throws IOException{
+    public boolean createChat(String otherUsername) throws IOException {
         String command = "createChat:" + otherUsername;
         return sendCommand(command);
     }
@@ -290,7 +297,7 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand("setFriendsOnly:" + booleanValue);
     }
 
-    public boolean setProfilePic(String profilePic) throws IOException{
+    public boolean setProfilePic(String profilePic) throws IOException {
         return sendCommand("setProfilePic:" + profilePic);
     }
 
