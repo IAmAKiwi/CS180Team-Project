@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys.">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Fixed the gridpanel. Now displays the most recently sent photos.">
+      <change beforePath="$PROJECT_DIR$/.idea/CS180Team-Project1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CS180Team-Project1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" afterDir="false" />
@@ -57,6 +59,9 @@
     "git-widget-placeholder": "main",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -261,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733678073729</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fixed the gridpanel. Now displays the most recently sent photos.">
+      <option name="closed" value="true" />
+      <created>1733679513875</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733679513875</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -289,14 +302,16 @@
     <MESSAGE value="Its betterish now!" />
     <MESSAGE value="It is actually mostly working but the first message sent is getting deleted for some reason." />
     <MESSAGE value="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys." />
+    <MESSAGE value="Fixed the gridpanel. Now displays the most recently sent photos." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the gridpanel. Now displays the most recently sent photos." />
+    <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>319</line>
+          <line>326</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -311,7 +326,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
-          <line>849</line>
+          <line>848</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -321,28 +336,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>443</line>
+          <line>451</line>
           <option name="timeStamp" value="99" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>648</line>
+          <line>650</line>
           <option name="timeStamp" value="102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>880</line>
+          <line>885</line>
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>448</line>
+          <line>447</line>
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>646</line>
+          <line>648</line>
           <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>895</line>
+          <option name="timeStamp" value="107" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
