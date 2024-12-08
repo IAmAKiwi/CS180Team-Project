@@ -423,7 +423,7 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
         private String getLastMessage(String username) throws IOException {
             // Get last message from chat history
             String chat = "";
-            chat = client.getChat(username);
+            chat = client.getMessages(username);
             if (chat == null || chat.isEmpty()) {
                 return "";
             }
@@ -436,7 +436,7 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
         private String getLastMessageTime(String username) throws IOException {
             // Get and format last message timestamp
             String chat = "NULL";
-            chat = (client.getChat(username));
+            chat = (client.getMessages(username));
             if (chat == null || chat.isEmpty()) {
                 return "";
             }

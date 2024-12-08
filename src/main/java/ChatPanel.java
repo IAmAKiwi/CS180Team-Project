@@ -7,7 +7,6 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,9 +17,8 @@ import java.util.Date;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.text.DefaultCaret;
 
-public class chatPanel extends JPanel {
+public class ChatPanel extends JPanel {
     private JPanel messageHistoryArea; // prior texts display
     private ArrayList<JLabel> messagesAndImages = new ArrayList<>();
     private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
@@ -30,7 +28,7 @@ public class chatPanel extends JPanel {
     private Client client; // client object
     private String selectedUser; // The desired user to chat with
 
-    public chatPanel(Client client) {
+    public ChatPanel(Client client) {
         this.client = client;
         this.setPreferredSize(new Dimension(400, 500));
 
@@ -89,13 +87,13 @@ public class chatPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "gif"));
-                int result = fileChooser.showOpenDialog(chatPanel.this);
+                int result = fileChooser.showOpenDialog(ChatPanel.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     try {
                         client.sendImage(selectedUser + (char) 29 + String.valueOf(selectedFile));
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error",
+                        JOptionPane.showMessageDialog(ChatPanel.this, "Failed to send image.", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }

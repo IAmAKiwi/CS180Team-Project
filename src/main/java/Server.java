@@ -73,6 +73,9 @@ public class Server implements Runnable, ServerInterface {
                     case "getChat":
                         result = getChat(content);
                         break;
+                    case "getMessages":
+                        result = getMessages(content);
+                        break;
                     case "getChatList":
                         result = getChatList();
                         break;
@@ -392,10 +395,10 @@ public class Server implements Runnable, ServerInterface {
             Message message = messages.get(messageIndex);
             Photo photo = photos.get(photoIndex);
             if (message.getTimeStamp().before(photo.getTimeStamp())) {
-                chat = chat.concat(message.toString()+ endChar);
+                chat = chat.concat(message.toString() + endChar);
                 messageIndex++;
             } else {
-                chat = chat.concat(photoChar + photo.toString()+ endChar);
+                chat = chat.concat(photoChar + photo.toString() + endChar);
                 photoIndex++;
             }
         }
@@ -411,6 +414,19 @@ public class Server implements Runnable, ServerInterface {
             }
         }
 
+        return chat;
+    }
+
+    public String getMessages(String content) {
+        MessageHistory mh = db.getMessages(currentUser.getUsername(), content);
+        if (mh == null) {
+            return "";
+        }
+        String chat = "";
+        char endChar = (char) 29;
+        for (Message m : mh.getMessageHistory()) {
+            chat = chat.concat(m.toString() + endChar);
+        }
         return chat;
     }
 
