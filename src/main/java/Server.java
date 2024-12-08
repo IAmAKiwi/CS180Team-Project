@@ -251,17 +251,14 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String accessMessagesFromUser(String user) {
-        db.loadUsers();
         return db.getAllMessagesFromUser(db.getUser(user.trim())).size() + "";
     }
 
     public String accessFriendsFromUser(String user) {
-        db.loadUsers();
         return db.getAllFriendsFromUser(db.getUser(user.trim())).size() + "";
     }
 
     public String accessBlockedFromUser(String user) {
-        db.loadUsers();
         return db.getAllBlockedFromUser(db.getUser(user.trim())).size() + "";
     }
 

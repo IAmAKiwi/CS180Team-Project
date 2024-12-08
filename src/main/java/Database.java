@@ -953,8 +953,6 @@ public class Database implements DatabaseInterface {
     }
 
     public ArrayList<Message> getAllMessagesFromUser(User u) {
-        // this.loadUsers();
-        this.loadMessages();
         ArrayList<Message> messages = new ArrayList<>();
         synchronized (MESSAGE_KEY) {
             for (MessageHistory mh : this.allChats) {
@@ -970,7 +968,6 @@ public class Database implements DatabaseInterface {
     }
 
     public ArrayList<String> getAllBlockedFromUser(User u) {
-        this.loadUsers();
         ArrayList<String> blocked = new ArrayList<>();
         synchronized (USER_KEY) {
             for (User user : this.userList) {
@@ -983,7 +980,6 @@ public class Database implements DatabaseInterface {
     }
 
     public ArrayList<String> getAllFriendsFromUser(User u) {
-        this.loadUsers();
         ArrayList<String> friends = new ArrayList<>();
         synchronized (USER_KEY) {
             for (User user : this.userList) {
