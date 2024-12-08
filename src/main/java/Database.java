@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 
 /**
  * Class that stores all of the Users and MessageHistories.
@@ -722,6 +719,7 @@ public class Database implements DatabaseInterface {
     @Override
     public boolean loadMessages() {
         File messagesFile = new File("messageHistory.txt");
+        allChats = new ArrayList<>();
         if (!messagesFile.exists()) {
             return false;
         }
@@ -939,6 +937,8 @@ public class Database implements DatabaseInterface {
     }
 
     public ArrayList<Message> getAllMessagesFromUser(User u) {
+        // this.loadUsers();
+        this.loadMessages();
         ArrayList<Message> messages = new ArrayList<>();
         synchronized (MESSAGE_KEY) {
             for (MessageHistory mh : this.allChats) {
@@ -951,6 +951,32 @@ public class Database implements DatabaseInterface {
         }
         return messages;
 
+    }
+
+    public ArrayList<String> getAllBlockedFromUser(User u) {
+        this.loadUsers();
+        ArrayList<String> blocked = new ArrayList<>();
+        synchronized (USER_KEY) {
+            for (User user : this.userList) {
+                if (user.getBlocked().contains(u.getUsername())) {
+                    blocked.add(user.getUsername());
+                }
+            }
+        }
+        return blocked;
+    }
+
+    public ArrayList<String> getAllFriendsFromUser(User u) {
+        this.loadUsers();
+        ArrayList<String> friends = new ArrayList<>();
+        synchronized (USER_KEY) {
+            for (User user : this.userList) {
+                if (user.getFriends().contains(u.getUsername())) {
+                    friends.add(user.getUsername());
+                }
+            }
+        }
+        return friends;
     }
 
     public ArrayList<Photo> getAllPhotosFromUser(User u) {

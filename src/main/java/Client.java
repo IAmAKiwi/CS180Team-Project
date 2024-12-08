@@ -1,4 +1,7 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -92,6 +95,10 @@ public class Client implements Runnable, ClientInterface {
                         // Get username example getUsername:
                         result = getUsername();
                         break;
+                    case "accessFriendsFromUser":
+                        // Access friends from user example: accessFriendsFromUser:username
+                        result = accessFriendsFromUser(content);
+                        break;
                     case "accessProfile":
                         // Access profile example: accessProfile:
                         result = accessProfile();
@@ -107,6 +114,10 @@ public class Client implements Runnable, ClientInterface {
                     case "accessMessagesFromUser":
                         // Access messages from user example: accessMessagesFromUser:username
                         result = accessMessagesFromUser(content);
+                        break;
+                    case "accessBlockedFromUser":
+                        // Access blocked from user example: accessBlockedFromUser:username
+                        result = accessBlockedFromUser(content);
                         break;
                     case "saveProfile":
                         result = String.valueOf(saveProfile(content));
@@ -219,6 +230,16 @@ public class Client implements Runnable, ClientInterface {
 
     public String accessMessagesFromUser(String content) throws IOException {
         String command = "accessMessagesFromUser:" + content;
+        return requestData(command);
+    }
+
+    public String accessFriendsFromUser(String content) throws IOException {
+        String command = "accessFriendsFromUser:" + content;
+        return requestData(command);
+    }
+
+    public String accessBlockedFromUser(String content) throws IOException {
+        String command = "accessBlockedFromUser:" + content;
         return requestData(command);
     }
 

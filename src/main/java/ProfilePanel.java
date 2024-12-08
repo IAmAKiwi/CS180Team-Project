@@ -343,14 +343,14 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             // Friends Only
             if (friendsOnlyLabel.getText().equals("true")) {
                 ImageIcon appIcon = new ImageIcon(
-                        "C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-lock-48.png");
+                        getPath("icons8-lock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
                 this.add(iconLabel);
             } else {
                 ImageIcon appIcon = new ImageIcon(
-                        "C:\\Users\\peter\\Github\\CS180Team-Project\\symbols\\icons8-unlock-48.png");
+                    getPath("icons8-unlock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -370,10 +370,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsGap = 10;
 
             // Messages Stats
-            // JLabel messagesNumber = new
-            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
-            // ","")));
-            JLabel messagesNumber = new JLabel("699");
+            JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
             messagesNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -386,7 +384,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             messagesLabel.setBounds(statsStartX, statsY + 25, statsWidth, 20);
 
             // Friends Stats
-            JLabel friendsNumber = new JLabel("966");
+            // JLabel friendsNumber = new JLabel("966");
+            JLabel friendsNumber = new JLabel(client.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -399,7 +398,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             friendsLabel.setBounds(statsStartX + statsWidth + statsGap, statsY + 25, statsWidth, 20);
 
             // Blocked Stats
-            JLabel blockedNumber = new JLabel("1M");
+            // JLabel blockedNumber = new JLabel("1M");
+            JLabel blockedNumber = new JLabel(client.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -603,12 +603,11 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsY = 120; // Above profile picture
             int statsWidth = 80;
             int statsGap = 10;
-
+            Client tempClient = new Client();
             // Messages Stats
-            // JLabel messagesNumber = new
-            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
-            // ","")));
-            JLabel messagesNumber = new JLabel("699");
+            JLabel messagesNumber = new JLabel(tempClient.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            // System.out.println(profileInfo[0].replace("username:","").trim());
+            // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
             messagesNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -621,7 +620,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             messagesLabel.setBounds(statsStartX, statsY + 25, statsWidth, 20);
 
             // Friends Stats
-            JLabel friendsNumber = new JLabel("966");
+            // JLabel friendsNumber = new JLabel("966");
+            JLabel friendsNumber = new JLabel(tempClient.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -634,7 +634,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             friendsLabel.setBounds(statsStartX + statsWidth + statsGap, statsY + 25, statsWidth, 20);
 
             // Blocked Stats
-            JLabel blockedNumber = new JLabel("1M");
+            // JLabel blockedNumber = new JLabel("1M");
+            JLabel blockedNumber = new JLabel(tempClient.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -857,10 +858,9 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsGap = 10;
 
             // Messages Stats
-            // JLabel messagesNumber = new
-            // JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:
-            // ","")));
-            JLabel messagesNumber = new JLabel("699");
+            JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            // System.out.println(profileInfo[0].replace("username:","").trim());
+            // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
             messagesNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -873,7 +873,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             messagesLabel.setBounds(statsStartX, statsY + 25, statsWidth, 20);
 
             // Friends Stats
-            JLabel friendsNumber = new JLabel("966");
+            // JLabel friendsNumber = new JLabel("966");
+            JLabel friendsNumber = new JLabel(client.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -886,7 +887,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             friendsLabel.setBounds(statsStartX + statsWidth + statsGap, statsY + 25, statsWidth, 20);
 
             // Blocked Stats
-            JLabel blockedNumber = new JLabel("1M");
+            // JLabel blockedNumber = new JLabel("1M");
+            JLabel blockedNumber = new JLabel(client.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1369,7 +1371,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             } else {
                 gbc.gridheight = 1;
                 gbc.gridwidth = 1;
-                friendsLabel.setForeground(Color.BLACK);
+                
                 JLabel newFriendsLabel = new JLabel("Friends:");
                 newFriendsLabel.setFont(new Font("Arial", Font.BOLD, 14));
                 newFriendsLabel.setForeground(Color.BLACK);
@@ -1387,13 +1389,13 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             }
 
             // Add grid panel to main panel
+            mainPanel.add(friendsLabel);
             mainPanel.add(gridPanel);
             mainPanel.add(addFriendButton);
             mainPanel.add(blockButton);
             mainPanel.add(messagesNumber);
             mainPanel.add(messagesLabel);
             mainPanel.add(friendsNumber);
-            mainPanel.add(friendsLabel);
             mainPanel.add(blockedNumber);
             mainPanel.add(blockedLabel);
             mainPanel.add(fullNameLabel);

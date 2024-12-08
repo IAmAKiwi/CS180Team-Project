@@ -97,6 +97,12 @@ public class Server implements Runnable, ServerInterface {
                     case "accessMessagesFromUser":
                         result = accessMessagesFromUser(content);
                         break;
+                    case "accessFriendsFromUser":
+                        result = accessFriendsFromUser(content);
+                        break;
+                    case "accessBlockedFromUser":
+                        result = accessBlockedFromUser(content);
+                        break;
                     case "saveProfile":
                         result = saveProfile(content);
                         break;
@@ -240,7 +246,18 @@ public class Server implements Runnable, ServerInterface {
     }
 
     public String accessMessagesFromUser(String user) {
-        return db.getAllMessagesFromUser(db.getUser(user)).size() + "";
+        db.loadUsers();
+        return db.getAllMessagesFromUser(db.getUser(user.trim())).size() + "";
+    }
+
+    public String accessFriendsFromUser(String user) {
+        db.loadUsers();
+        return db.getAllFriendsFromUser(db.getUser(user.trim())).size() + "";
+    }
+
+    public String accessBlockedFromUser(String user) {
+        db.loadUsers();
+        return db.getAllBlockedFromUser(db.getUser(user.trim())).size() + "";
     }
 
     @Override
