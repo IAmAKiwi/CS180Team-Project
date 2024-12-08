@@ -30,7 +30,20 @@ public class Photo implements PhotoInterface {
      *
      * @param photoPath      The file path to the photo
      * @param senderUsername The username of the User that sent this Photo
-     * @param caption        Optional caption for the photo
+     * @param timeStamp The time stamp of the photo
+     */
+    public Photo(String photoPath, String senderUsername, long timeStamp) {
+        this();
+        this.photoEncode = photoPath;
+        this.senderUsername = senderUsername;
+        this.timeStamp = new Date(timeStamp);
+    }
+
+    /**
+     * Main constructor for the class Photo.
+     *
+     * @param photoPath The file path to the photo
+     * @param senderUsername The username of the User that sent this Photo
      */
     public Photo(String photoPath, String senderUsername) {
         this();
@@ -76,7 +89,7 @@ public class Photo implements PhotoInterface {
      */
     @Override
     public String toString() {
-        char gs = 29;
-        return this.senderUsername + gs + this.photoEncode + gs + this.timeStamp.getTime();
+        String gs = ":";
+        return this.timeStamp.getTime() + gs + this.senderUsername + gs + this.photoEncode;
     }
 }

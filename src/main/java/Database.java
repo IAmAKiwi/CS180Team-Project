@@ -809,13 +809,13 @@ public class Database implements DatabaseInterface {
                     line = line + "\n" + br.readLine();
                 }
 
-                // Parse photo entry
-                char gs = 29;
-                String[] parts = line.split(gs + "");
-                Photo p = new Photo(
-                        parts[1], // photoPath
-                        parts[0] // senderUsername
-                );
+                String timeStamp = line.substring(0, line.indexOf(":"));
+                line = line.substring(line.indexOf(":") + 1);
+                String senderUsername = line.substring(0, line.indexOf(":"));
+                line = line.substring(line.indexOf(":") + 1);
+                String content = line.substring(line.indexOf(":") + 1, line.length() - 1);
+
+                Photo p = new Photo(content, senderUsername, Long.parseLong(timeStamp));
 
                 photos.add(p);
                 line = br.readLine();
@@ -954,7 +954,9 @@ public class Database implements DatabaseInterface {
     }
 
     public ArrayList<Photo> getAllPhotosFromUser(User u) {
-        this.loadPhotos();
+        if (photosPath == null) {
+            this.loadPhotos();
+        }
         ArrayList<Photo> photos = new ArrayList<>();
         synchronized (PHOTO_KEY) {
             for (PhotoHistory ph : this.photosPath) {
@@ -969,9 +971,10 @@ public class Database implements DatabaseInterface {
         return photos;
     }
 
-    public boolean addPhoto(Photo photo, String receiver) {
+
+    public boolean addPhoto(String sender, String receiver, String photoData) {
         try {
-            User u1 = this.getUser(photo.getSender());
+            User u1 = this.getUser(sender);
             User u2 = this.getUser(receiver);
 
             // Validate users
@@ -981,23 +984,20 @@ public class Database implements DatabaseInterface {
             // Check if users are blocked
             ArrayList<String> u1Blocked = u1.getBlocked();
             ArrayList<String> u2Blocked = u2.getBlocked();
-            if (u1Blocked.contains(receiver) || u2Blocked.contains(photo.getSender()))
-                return false;
-
+            if (u1Blocked.contains(receiver) || u2Blocked.contains(sender)) return false;
+    
             // Check if users are friends (if required)
-            if (u1.isFriendsOnly() && !u1.getFriends().contains(receiver))
-                return false;
-            if (u2.isFriendsOnly() && !u2.getFriends().contains(u1.getUsername()))
-                return false;
+            if (u1.isFriendsOnly() && !u1.getFriends().contains(receiver)) return false;
+            if (u2.isFriendsOnly() && !u2.getFriends().contains(u1.getUsername())) return false;
 
-            // Convert the photo to a base64 string
-            String encoded = Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(photo.getphotoEncode())));
-            Photo newPhoto = new Photo(encoded, photo.getSender());
+            // Create a Photo from the data passed
+            Photo newPhoto = new Photo(photoData, sender);
+
             // Add the photo to the history
             synchronized (PHOTO_KEY) {
                 for (int i = 0; i < this.photosPath.size(); i++) {
                     PhotoHistory ph = this.photosPath.get(i);
-                    if (ph.equals(new PhotoHistory(new String[] { photo.getSender(), receiver }))) {
+                    if (ph.equals(new PhotoHistory(new String[] { sender, receiver }))) {
                         ph.addPhoto(newPhoto);
                         this.photosPath.set(i, ph);
                         return true;

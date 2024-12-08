@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -262,7 +259,12 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public boolean sendImage(String content) throws IOException {
-        String command = "sendImage:" + content;
+        String[] parts = content.split("" + (char) 29);
+        if (parts.length != 2) {
+            return false;
+        }
+        parts[1] = encodeImage(parts[1]);
+        String command = "sendImage:" + parts[0] + (char) 29 + parts[1];
         return sendCommand(command);
     }
 
@@ -364,6 +366,19 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean updateProfile(String content) throws IOException {
         return sendCommand("updateProfile:" + content);
+    }
+
+    private String encodeImage(String imagePath) {
+        // Convert the file path to binary data
+        byte[] imageData = null;
+        try {
+            imageData = Files.readAllBytes(Paths.get(imagePath.trim()));
+        } catch (IOException e) {
+            return null;
+        }
+
+        // Encode the binary data to a string (e.g., Base64) to include in the command
+        return java.util.Base64.getEncoder().encodeToString(imageData);
     }
 
     public static void main(String[] args) {

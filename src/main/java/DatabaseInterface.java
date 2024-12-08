@@ -54,8 +54,7 @@ public interface DatabaseInterface {
     PhotoHistory getPhotos(String user1, String user2);
 
     boolean addPhotoHistory(PhotoHistory photoHistory);
-
-    boolean addPhoto(Photo photo, String receiver);
+    boolean addPhoto(String sender, String receiver, String photoData);
 
     // File Operations
     boolean saveUsers();
