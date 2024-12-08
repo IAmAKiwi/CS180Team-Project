@@ -21,7 +21,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.DefaultCaret;
 
 public class chatPanel extends JPanel {
-    private RoundedTextArea messageHistoryArea; // prior texts display
+    private JPanel messageHistoryArea; // prior texts display
     private ArrayList<JLabel> messagesAndImages = new ArrayList<>();
     private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
     private RoundedTextField messageInputField; // text box to send message
@@ -41,15 +41,12 @@ public class chatPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setVisible(true);
 
-        messageHistoryArea = new RoundedTextArea(15);
-        messageHistoryArea.setEditable(false);
+        messageHistoryArea = new JPanel();
         messageHistoryArea.setAutoscrolls(true);
         messageHistoryArea.setFocusable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
         messageHistoryArea.setBorder(new EmptyBorder(5, 5, 5, 5));
-        DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
-        messageHistoryArea.setLayout(new GridLayout(0, 1));
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        messageHistoryArea.setLayout(new GridLayout(0, 1, 10, 5));
 
         scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
         scrollPane.setLayout(new ScrollPaneLayout());
@@ -110,21 +107,12 @@ public class chatPanel extends JPanel {
      * and the selected user.
      */
     public void refreshChat(String selectedUser) throws IOException {
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.NORTHWEST;
-        c.weighty = 1.0;
-        c.weightx = 1.0;
-        c.gridx = 0;
-        c.gridy = GridBagConstraints.RELATIVE;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 5, 5);
         this.selectedUser = selectedUser;
-        messageHistoryArea.setText("");
         messageHistoryArea.removeAll();
         String chatHistory = client.getChat(selectedUser);
 
         if (chatHistory == null || chatHistory.isEmpty()) {
-            messageHistoryArea.setText(" No messages yet with " + selectedUser + ".");
+            messageHistoryArea.add(new JLabel(" No messages yet with " + selectedUser + "."));
             return;
         }
 
@@ -149,12 +137,10 @@ public class chatPanel extends JPanel {
                 message.append(messages[i][2] + "\n");
             }
             messageLabel.setText(message.toString());
-            messageLabel.setBounds(5, 5, scrollPane.getWidth(), 50);
+            messageLabel.setPreferredSize(new Dimension(scrollPane.getWidth(), 250));
             messageHistoryArea.add(messageLabel);
-            c.gridy++;
             message.delete(0, message.length());
         }
-        scrollPane.setMinimumSize(messageHistoryArea.getSize());
     }
 
     private String[][] getMessageHistory(String messageContent) {
@@ -235,11 +221,6 @@ public class chatPanel extends JPanel {
     }
 
     public void refreshChatAutoScroll(String selectedUser) throws IOException {
-        DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        refreshChat(selectedUser);
-        caret = (DefaultCaret) messageHistoryArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     }
 
     class RoundedTextField extends JTextField {
