@@ -222,10 +222,11 @@ public class Server implements Runnable, ServerInterface {
             } catch (NumberFormatException e) {
                 return "false";
             }
-
+            System.out.println(fields[5]);
             currentUser.setProfilePic(fields[5]); // Profile pic
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
+            db.saveUsers();
             return "true";
         } catch (Exception e) {
             return "false";

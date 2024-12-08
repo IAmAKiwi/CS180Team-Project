@@ -1,9 +1,0 @@
-File Separator (ASCII 28)
-Specify MessageHistory (username username)
-Group Separator (ASCII 29) username: message #Sender and Message Group Separator
-repeat Sender and Message
-
-File Separator
-Specify MessageHistory
-Sender and Message
-etc.

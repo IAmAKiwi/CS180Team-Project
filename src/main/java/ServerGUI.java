@@ -95,6 +95,7 @@ public class ServerGUI implements Runnable {
         db.loadUsers();
         db.loadPhotos();
         Server.setDatabase(db);
+        System.out.println("Loaded data...");
 
         startButton.addActionListener(new ActionListener() {
             @Override
