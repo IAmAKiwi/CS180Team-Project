@@ -203,7 +203,6 @@ public class GUI implements Runnable {
                     // This will run after save button is clicked
                     SwingUtilities.invokeLater(() -> {
                         updateProfilePanel();
-                        updateProfileButton();
                     });
                 }
             }, null, null);

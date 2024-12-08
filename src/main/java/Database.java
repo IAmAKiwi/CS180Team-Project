@@ -1022,9 +1022,10 @@ public class Database implements DatabaseInterface {
         String name2 = "William";
         User user3 = new User(name1, "Password$");
         User user2 = new User(name2, "Paasswrod$");
+        Photo photo = new Photo("C:/Users/peter/Downloads/QUIZZES-images-16.jpg", name1);
         db.addUser(user3);
         db.addUser(user2);
-
+        System.out.println(db.getAllPhotosFromUser(user3));
     }
 
 }
