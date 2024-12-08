@@ -3,27 +3,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.swing.border.*;
 import java.awt.event.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class GUI implements Runnable, GUIInterface {
     private JFrame frame;
     private ChatListPanel chatListPanel;
     private LoginPanel loginPanel;
-    private chatPanel chatPanel;
+    private ChatPanel chatPanel;
     private ProfilePanel profilePanel;
     private RoundedButton logoutButton;
     // private RoundedButton addFriendButton;
@@ -313,7 +308,7 @@ public class GUI implements Runnable, GUIInterface {
             disconnect();
             return;
         }
-        chatPanel = new chatPanel(client);
+        chatPanel = new ChatPanel(client);
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
         chatListPanel = new ChatListPanel(client);
@@ -604,73 +599,32 @@ public class GUI implements Runnable, GUIInterface {
 
     public static void main(String[] args) {
         LoginPanel loginPanel;
-        int i = JOptionPane.showConfirmDialog(null, "Auto login to user1 Password1$?",
-                "Auto Login", JOptionPane.YES_NO_OPTION);
-        if (i == JOptionPane.YES_OPTION) {
+        while (true) {
             try {
-                Client client = new Client();
-                client.login("William" + (char) 29 + "Paasswrod$");
-                loginPanel = new LoginPanel(client);
+                loginPanel = new LoginPanel(new Client());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Could not connect to server",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            while (true) {
-                SwingUtilities.invokeLater(loginPanel);
-                while (!loginPanel.isDone()) { // Wait for login panel to finish
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                GUI gui = new GUI(loginPanel);
-                SwingUtilities.invokeLater(gui);
-                while (!gui.isDone()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                int j = JOptionPane.showConfirmDialog(null, "continue?",
-                        "Auto Login", JOptionPane.YES_NO_OPTION);
-                if (j != JOptionPane.YES_OPTION) {
-                    System.out.println("Disconnecting...");
-                    gui.disconnect();
-                    loginPanel = null;
-                    return;
+            if (!loginPanel.isConnected()) {
+                return;
+            }
+            SwingUtilities.invokeLater(loginPanel);
+            while (!loginPanel.isDone()) { // Wait for login panel to finish
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        } else if (i == JOptionPane.NO_OPTION) {
-            while (true) {
+            GUI gui = new GUI(loginPanel);
+            SwingUtilities.invokeLater(gui);
+            while (!gui.isDone()) {
                 try {
-                    loginPanel = new LoginPanel(new Client());
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(null, "Could not connect to server",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (!loginPanel.isConnected()) {
-                    return;
-                }
-                SwingUtilities.invokeLater(loginPanel);
-                while (!loginPanel.isDone()) { // Wait for login panel to finish
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                GUI gui = new GUI(loginPanel);
-                SwingUtilities.invokeLater(gui);
-                while (!gui.isDone()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }

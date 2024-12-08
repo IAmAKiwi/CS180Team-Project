@@ -304,6 +304,11 @@ public class Client implements Runnable, ClientInterface {
         return requestData(command);
     }
 
+    public String getMessages(String otherUsername) throws IOException {
+        String command = "getMessages:" + otherUsername;
+        return requestData(command);
+    }
+
     public String getChatList() throws IOException {
         return requestData("getChatList: ");
     }

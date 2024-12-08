@@ -4,28 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Fixed the gridpanel. Now displays the most recently sent photos.">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="fixed gridpanel displaying more than 0 but less than 6 images">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ChatPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/CS180Team-Project1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CS180Team-Project1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedTextField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedTextField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +22,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;IAmAKiwi&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IAmAKiwi/CS180Team-Project.git&quot;,
+    &quot;accountId&quot;: &quot;c55d8980-cfd8-4c54-80a8-d8814497e905&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
@@ -44,27 +43,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GUI.executor": "Run",
-    "Application.MessageHistoryTestCases (1).executor": "Run",
-    "Application.MessageHistoryTestCases.executor": "Run",
-    "Application.MessageTestCases.executor": "Run",
-    "Application.ServerGUI.executor": "Run",
-    "Application.UserTestCases.executor": "Run",
-    "JUnit.ClientTest.executor": "Run",
-    "JUnit.DatabaseTestCases.executor": "Run",
-    "JUnit.ServerTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GUI.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.MessageHistoryTestCases (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.MessageHistoryTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MessageTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ServerGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UserTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ClientTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DatabaseTestCases.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="MessageHistoryTestCases (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MessageHistoryTestCases" />
@@ -80,69 +84,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CS180Team-Project1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CS180Team-Project1" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="CS180Team-Project1" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.FlaskServer">
-      <module name="CS180Team-Project1" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="CS180Team-Project1" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MessageHistoryTestCases (1)" />
@@ -151,14 +92,6 @@
         <item itemvalue="Application.MessageHistoryTestCases" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -169,6 +102,9 @@
       <option name="presentableId" value="Default" />
       <updated>1733260455985</updated>
       <workItem from="1733260458364" duration="1000" />
+      <workItem from="1733691197757" duration="570000" />
+      <workItem from="1733691796537" duration="476000" />
+      <workItem from="1733693147890" duration="29000" />
     </task>
     <task id="LOCAL-00001" summary="Changed the friend/block buttons to change to unfriend/unblock if they are already blocked and friended and vice versa!">
       <option name="closed" value="true" />
@@ -274,8 +210,19 @@
       <option name="project" value="LOCAL" />
       <updated>1733679513875</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed gridpanel displaying more than 0 but less than 6 images">
+      <option name="closed" value="true" />
+      <created>1733683810904</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1733683810904</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -303,7 +250,8 @@
     <MESSAGE value="It is actually mostly working but the first message sent is getting deleted for some reason." />
     <MESSAGE value="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys." />
     <MESSAGE value="Fixed the gridpanel. Now displays the most recently sent photos." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed the gridpanel. Now displays the most recently sent photos." />
+    <MESSAGE value="fixed gridpanel displaying more than 0 but less than 6 images" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed gridpanel displaying more than 0 but less than 6 images" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -311,42 +259,37 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>326</line>
+          <line>347</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>188</line>
-          <option name="timeStamp" value="72" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>199</line>
+          <line>194</line>
           <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
-          <line>848</line>
+          <line>846</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
-          <line>95</line>
+          <line>97</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>451</line>
+          <line>485</line>
           <option name="timeStamp" value="99" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>650</line>
+          <line>668</line>
           <option name="timeStamp" value="102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>885</line>
+          <line>921</line>
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -356,13 +299,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>648</line>
+          <line>666</line>
           <option name="timeStamp" value="106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>895</line>
+          <line>931</line>
           <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/LoginPanel.java</url>
+          <line>514</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/LoginPanel.java</url>
+          <line>672</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/LoginPanel.java</url>
+          <line>567</line>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
