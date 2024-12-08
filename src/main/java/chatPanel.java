@@ -46,7 +46,7 @@ public class chatPanel extends JPanel {
         messageHistoryArea.setFocusable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
         messageHistoryArea.setBorder(new EmptyBorder(5, 5, 5, 5));
-        messageHistoryArea.setLayout(new GridLayout(0, 1, 10, 5));
+        messageHistoryArea.setLayout(new GridBagLayout());
 
         scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
         scrollPane.setLayout(new ScrollPaneLayout());
@@ -116,15 +116,21 @@ public class chatPanel extends JPanel {
             return;
         }
 
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.gridx = 0;
+        c.gridy = GridBagConstraints.RELATIVE;
+
         String[][] messages = getMessageHistory(chatHistory);
         JLabel messageLabel;
         ImageIcon icon;
         StringBuilder message = new StringBuilder();
         for (int i = messages.length - 1; i > -1; i--) {
-            messageLabel = new RoundedLabel("", 15);
+            messageLabel = new RoundedLabel(" ", 15);
             message.append(getMessageTime(messages[i][0]));
-            message.append(messages[i][1] + ": ");
             message.append(" ");
+            message.append(messages[i][1] + ": ");
+            // Handling photos else handling message
             if(messages[i][0].charAt(0) == 28) {
                 byte[] imageBytes = Base64.getDecoder().decode(messages[i][2]);
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
@@ -132,13 +138,16 @@ public class chatPanel extends JPanel {
                 // Convert the byte array into a BufferedImage
                 BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
                 icon = new ImageIcon(bufferedImage.getScaledInstance(250, 250, Image.SCALE_SMOOTH));
+                messageLabel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, 250));
                 messageLabel.setIcon(icon);
+                messageLabel.setText(message.toString());
+                messageHistoryArea.add(messageLabel, c);
             } else {
                 message.append(messages[i][2] + "\n");
+                messageLabel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, 20));
+                messageLabel.setText(message.toString());
+                messageHistoryArea.add(messageLabel, c);
             }
-            messageLabel.setText(message.toString());
-            messageLabel.setPreferredSize(new Dimension(scrollPane.getWidth(), 250));
-            messageHistoryArea.add(messageLabel);
             message.delete(0, message.length());
         }
     }

@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Added more photo message functionality, though it is not finished properly.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Its betterish now!">
       <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" afterDir="false" />
@@ -230,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733674494242</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Its betterish now!">
+      <option name="closed" value="true" />
+      <created>1733675213216</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733675213216</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,7 +260,8 @@
     <MESSAGE value="Fixed error causing loginPanel to call getUsername before logging in." />
     <MESSAGE value="push to fix peter hopefully" />
     <MESSAGE value="Added more photo message functionality, though it is not finished properly." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more photo message functionality, though it is not finished properly." />
+    <MESSAGE value="Its betterish now!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Its betterish now!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
