@@ -194,6 +194,7 @@ public class User implements UserInterface {
         return profilePic;
     }
 
+    @Override
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }

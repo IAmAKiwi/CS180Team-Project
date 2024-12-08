@@ -5,7 +5,8 @@ import java.util.Date;
  * Class that represents a photo in the social media platform.
  * Contains the photo path and sender information.
  *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec 12
+ * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
+ *         12
  * @version Nov 2, 2024
  */
 public class Photo implements PhotoInterface {
@@ -27,9 +28,9 @@ public class Photo implements PhotoInterface {
     /**
      * Main constructor for the class Photo.
      *
-     * @param photoPath The file path to the photo
+     * @param photoPath      The file path to the photo
      * @param senderUsername The username of the User that sent this Photo
-     * @param caption Optional caption for the photo
+     * @param caption        Optional caption for the photo
      */
     public Photo(String photoPath, String senderUsername) {
         this();

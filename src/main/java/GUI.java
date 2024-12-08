@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 
-public class GUI implements Runnable {
+public class GUI implements Runnable, GUIInterface {
     private JFrame frame;
     private ChatListPanel chatListPanel;
     private LoginPanel loginPanel;
@@ -128,10 +128,10 @@ public class GUI implements Runnable {
         if (headerPanel != null) {
             frame.remove(headerPanel);
         }
-    
+
         // Create new header with updated profile
         createHeader();
-    
+
         // Ensure proper layout update
         frame.revalidate();
         frame.repaint();
@@ -246,18 +246,18 @@ public class GUI implements Runnable {
                 byte[] imageBytes = Base64.getDecoder().decode(imagePath);
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
                 BufferedImage buffered = ImageIO.read(byteArrayInputStream);
-            
+
                 // Convert BufferedImage to ImageIcon and then to Image
                 ImageIcon icon = new ImageIcon(buffered);
                 Image originalImage = icon.getImage();
-            
+
                 // Create scaled instance with high quality
                 this.image = originalImage.getScaledInstance(size, size, Image.SCALE_AREA_AVERAGING);
-            
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }            
+        }
 
         @Override
         protected void paintComponent(Graphics g) {

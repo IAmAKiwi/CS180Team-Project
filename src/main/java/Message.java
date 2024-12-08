@@ -1,5 +1,6 @@
 import java.time.Instant;
 import java.util.Date;
+
 /**
  * Class that represents a message in the social media platform.
  * Contains the message content and sender information.
@@ -10,8 +11,10 @@ import java.util.Date;
  */
 public class Message implements MessageInterface {
 
-    /*private String date;
-    private String time;*/
+    /*
+     * private String date;
+     * private String time;
+     */
 
     private String contents;
     private String senderUsername;
@@ -24,7 +27,8 @@ public class Message implements MessageInterface {
         this.contents = null;
         this.senderUsername = null;
         this.timeStamp = Date.from(Instant.now());
-        //(GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("America/Indiana/Indianapolis"));
+        // (GregorianCalendar)
+        // GregorianCalendar.getInstance(TimeZone.getTimeZone("America/Indiana/Indianapolis"));
     }
 
     /**
@@ -42,12 +46,11 @@ public class Message implements MessageInterface {
     /**
      * Constructor implementing timeStamp setting.
      * 
-     * @param contents      The text that makes up the Message.
+     * @param contents       The text that makes up the Message.
      * @param senderUsername The username of the User that sent this Message.
-     * @param timeStamp The long variable that will set the timeStamp.
+     * @param timeStamp      The long variable that will set the timeStamp.
      */
-    public Message(String contents, String senderUsername, long timeStamp)
-    {
+    public Message(String contents, String senderUsername, long timeStamp) {
         this(contents, senderUsername);
         this.timeStamp = new Date(timeStamp);
     }
@@ -69,8 +72,7 @@ public class Message implements MessageInterface {
     /**
      * Getter for the time stamp of this Message.
      */
-    public Date getTimeStamp()
-    {
+    public Date getTimeStamp() {
         return this.timeStamp;
     }
 

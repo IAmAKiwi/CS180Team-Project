@@ -17,7 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.DefaultCaret;
 
-public class chatPanel extends JPanel {
+public class chatPanel extends JPanel implements ChatPanelInterface {
     private RoundedTextArea messageHistoryArea; // prior texts display
     private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
     private RoundedTextField messageInputField; // text box to send message
@@ -79,7 +79,7 @@ public class chatPanel extends JPanel {
         uploadImageButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         inputPanel.add(uploadImageButton, BorderLayout.WEST);
-    
+
         uploadImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,8 @@ public class chatPanel extends JPanel {
                     try {
                         sendImageMessage(selectedFile);
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -99,7 +100,8 @@ public class chatPanel extends JPanel {
     }
 
     private void sendImageMessage(File imageFile) throws IOException {
-        if (selectedUser == null) return;
+        if (selectedUser == null)
+            return;
 
         // convert the image to Base64
         byte[] imageBytes = Files.readAllBytes(imageFile.toPath());
