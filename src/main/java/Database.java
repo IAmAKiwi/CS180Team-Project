@@ -45,8 +45,24 @@ public class Database implements DatabaseInterface {
     @Override
     public boolean addUser(User user) {
         synchronized (USER_KEY) {
-            return validateNewUser(user) && userList.add(user);
+            if (validateNewUser(user)) {
+                return userList.add(user);
+            } else {
+                return false;
+            }
         }
+    }
+
+    public boolean removeUser(String username) {
+        synchronized (USER_KEY) {
+            for (int i = 0; i < this.userList.size(); i++) {
+                if (this.userList.get(i).getUsername().equals(username)) {
+                    this.userList.remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

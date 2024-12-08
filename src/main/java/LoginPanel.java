@@ -697,6 +697,7 @@ public class LoginPanel extends JComponent implements Runnable {
                                     editDialog.dispose();
 
                                 } else {
+                                    client.removeUser(usernameField.getText());
                                     // Show an error message
                                     JOptionPane.showMessageDialog(null, "Invalid profile information, " +
                                             "try again", "Error", JOptionPane.ERROR_MESSAGE);

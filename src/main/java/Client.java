@@ -126,6 +126,10 @@ public class Client implements Runnable, ClientInterface {
                         // Remove friend example: removeFriend:friend
                         result = String.valueOf(removeFriend(content));
                         break;
+                    case "removeUser":
+                        // Remove user example: removeUser:user
+                        result = String.valueOf(removeUser(content));
+                        break;
                     case "addFriend":
                         // Add friend example: addFriend:friend
                         result = String.valueOf(addFriend(content));
@@ -198,6 +202,7 @@ public class Client implements Runnable, ClientInterface {
         String command = "sendMessage:" + content; //
         return sendCommand(command);
     }
+    
 
     public String addProfilePic(String content) throws IOException {
 
@@ -255,6 +260,11 @@ public class Client implements Runnable, ClientInterface {
 
     public boolean removeFriend(String friend) throws IOException {
         String command = "removeFriend:" + friend;
+        return sendCommand(command);
+    }
+
+    public boolean removeUser(String user) throws IOException {
+        String command = "removeUser:" + user;
         return sendCommand(command);
     }
 

@@ -109,6 +109,9 @@ public class Server implements Runnable, ServerInterface {
                     case "removeFriend":
                         result = removeFriend(content);
                         break;
+                    case "removeUser":
+                        result = removeUser(content);
+                        break;
                     case "addFriend":
                         result = addFriend(content);
                         break;
@@ -195,10 +198,6 @@ public class Server implements Runnable, ServerInterface {
             // Store original birthday to check if validation passed
             int[] originalBirthday = currentUser.getBirthday();
 
-            currentUser.setFirstName(fields[1]);
-            currentUser.setLastName(fields[2]);
-            currentUser.setBio(fields[3]);
-
             // Birthday validation
             String[] birthdayStr = fields[4].split("/");
             if (birthdayStr.length != 3) {
@@ -222,7 +221,9 @@ public class Server implements Runnable, ServerInterface {
             } catch (NumberFormatException e) {
                 return "false";
             }
-            System.out.println(fields[5]);
+            currentUser.setFirstName(fields[1]);
+            currentUser.setLastName(fields[2]);
+            currentUser.setBio(fields[3]);
             currentUser.setProfilePic(fields[5]); // Profile pic
             currentUser.setFriendsOnly(Boolean.parseBoolean(fields[6].trim()));
             db.setUser(currentUser);
@@ -544,6 +545,13 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String removeFriend(String otherUsername) {
         if (db.removeFriend(currentUser.getUsername(), otherUsername)) {
+            return "true";
+        }
+        return "false";
+    }
+
+    public String removeUser(String otherUsername) {
+        if (db.removeUser(otherUsername)) {
             return "true";
         }
         return "false";
