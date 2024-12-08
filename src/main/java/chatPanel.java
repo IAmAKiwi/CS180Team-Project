@@ -50,7 +50,7 @@ public class chatPanel extends JPanel {
 
         scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
         scrollPane.setLayout(new ScrollPaneLayout());
-        this.add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane);
 
         JPanel inputPanel = new JPanel(new BorderLayout());
         messageInputField = new RoundedTextField("", 20, 15);
@@ -117,7 +117,8 @@ public class chatPanel extends JPanel {
         }
 
         GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.NORTHWEST;
+        c.anchor = GridBagConstraints.NORTH;
+        c.insets = new Insets(5, 5, 5, 5);
         c.gridx = 0;
         c.gridy = GridBagConstraints.RELATIVE;
 
@@ -129,7 +130,7 @@ public class chatPanel extends JPanel {
             messageLabel = new RoundedLabel(" ", 15);
             message.append(getMessageTime(messages[i][0]));
             message.append(" ");
-            message.append(messages[i][1] + ": ");
+            message.append(messages[i][1]);
             // Handling photos else handling message
             if(messages[i][0].charAt(0) == 28) {
                 byte[] imageBytes = Base64.getDecoder().decode(messages[i][2]);
@@ -143,11 +144,14 @@ public class chatPanel extends JPanel {
                 messageLabel.setText(message.toString());
                 messageHistoryArea.add(messageLabel, c);
             } else {
+                message.append(": ");
                 message.append(messages[i][2] + "\n");
                 messageLabel.setPreferredSize(new Dimension(scrollPane.getWidth() - 50, 20));
                 messageLabel.setText(message.toString());
                 messageHistoryArea.add(messageLabel, c);
             }
+            scrollPane.repaint();
+            scrollPane.revalidate();
             message.delete(0, message.length());
         }
     }

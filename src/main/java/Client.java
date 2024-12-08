@@ -259,7 +259,12 @@ public class Client implements Runnable, ClientInterface {
     }
 
     public boolean sendImage(String content) throws IOException {
-        String command = "sendImage:" + content;
+        String[] parts = content.split("" + (char) 29);
+        if (parts.length != 2) {
+            return false;
+        }
+        parts[1] = encodeImage(parts[1]);
+        String command = "sendImage:" + parts[0] + (char) 29 + parts[1];
         return sendCommand(command);
     }
 

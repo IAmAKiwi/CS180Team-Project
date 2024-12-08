@@ -377,11 +377,11 @@ public class Server implements Runnable, ServerInterface {
 
         // add the remainder of whichever history has more to add.
         if (messageIndex < messages.size()) {
-            for (int i = messageIndex + 1; i < messages.size(); i++) {
+            for (int i = messageIndex; i < messages.size(); i++) {
                 chat = chat.concat(messages.get(i).toString() + endChar);
             }
         } else {
-            for (int i = photoIndex + 1; i < photos.size(); i++) {
+            for (int i = photoIndex; i < photos.size(); i++) {
                 chat = chat.concat(photoChar + photos.get(i).toString() + endChar);
             }
         }
@@ -441,7 +441,7 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String sendImage(String content) {
         try {
-            if (currentUser != null) {
+            if (currentUser == null) {
                 return "false";
             }
             String[] parts = splitContent(content);

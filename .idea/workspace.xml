@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Its betterish now!">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="It is actually mostly working but the first message sent is getting deleted for some reason.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" afterDir="false" />
@@ -14,6 +18,7 @@
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,11 +39,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.GUI.executor": "Run",
+    "Application.GUI.executor": "Debug",
     "Application.MessageHistoryTestCases (1).executor": "Run",
     "Application.MessageHistoryTestCases.executor": "Run",
     "Application.MessageTestCases.executor": "Run",
-    "Application.ServerGUI.executor": "Run",
+    "Application.ServerGUI.executor": "Debug",
     "Application.UserTestCases.executor": "Run",
     "JUnit.ClientTest.executor": "Run",
     "JUnit.DatabaseTestCases.executor": "Run",
@@ -235,7 +240,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733675213216</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="It is actually mostly working but the first message sent is getting deleted for some reason.">
+      <option name="closed" value="true" />
+      <created>1733675777029</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733675777029</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -261,16 +274,12 @@
     <MESSAGE value="push to fix peter hopefully" />
     <MESSAGE value="Added more photo message functionality, though it is not finished properly." />
     <MESSAGE value="Its betterish now!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Its betterish now!" />
+    <MESSAGE value="It is actually mostly working but the first message sent is getting deleted for some reason." />
+    <option name="LAST_COMMIT_MESSAGE" value="It is actually mostly working but the first message sent is getting deleted for some reason." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/LoginPanel.java</url>
-          <line>675</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
           <line>319</line>
@@ -292,14 +301,24 @@
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
-          <line>788</line>
-          <option name="timeStamp" value="80" />
+          <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
+          <line>220</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
+          <line>415</line>
+          <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
-          <line>109</line>
-          <option name="timeStamp" value="88" />
+          <line>95</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
+          <line>443</line>
+          <option name="timeStamp" value="99" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
