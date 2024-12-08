@@ -456,7 +456,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = photos.length; i > -1; i--) {
+                    for (int i = photos.length - 1; i > -1; i--) {
                         photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
                         String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
                         imagePaths[imagePathsIndex] = lmao;
@@ -657,7 +657,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = photos.length; i > -1; i--) {
+                    for (int i = photos.length - 1; i > -1; i--) {
                         photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
                         String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
                         imagePaths[imagePathsIndex] = lmao;
@@ -893,7 +893,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = photos.length; i > -1; i--) {
+                    for (int i = photos.length - 1; i > -1; i--) {
                         photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
                         String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
                         imagePaths[imagePathsIndex] = lmao;
