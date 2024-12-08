@@ -49,7 +49,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-public class ProfilePanel extends JPanel {
+public class ProfilePanel extends JPanel implements ProfilePanelInterface {
     private GridBagConstraints constraints;
     private JLabel fullNameLabel;
     private JLabel usernameLabel;
@@ -192,7 +192,6 @@ public class ProfilePanel extends JPanel {
 
                 // Convert the byte array into a BufferedImage
                 BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-
 
                 // Load and process new image
                 ImageIcon icon = new ImageIcon(bufferedImage);

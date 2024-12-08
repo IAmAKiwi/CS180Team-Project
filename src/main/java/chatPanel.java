@@ -83,7 +83,7 @@ public class chatPanel extends JPanel {
         uploadImageButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         inputPanel.add(uploadImageButton, BorderLayout.WEST);
-    
+
         uploadImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,7 +95,8 @@ public class chatPanel extends JPanel {
                     try {
                         client.sendImage(selectedUser + (char) 29 + String.valueOf(selectedFile));
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

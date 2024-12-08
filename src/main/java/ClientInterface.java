@@ -8,56 +8,67 @@ import java.io.IOException;
  * @version Nov 2, 2024
  */
 public interface ClientInterface {
-    void run(); // to be overridden in GUI
+    // Methods for managing profile data
+    boolean updateProfile(String content) throws IOException;
 
-    // User authentication
-    boolean login(String content) throws IOException; // username [groupSeparator] password
+    boolean saveProfile(String content) throws IOException;
 
-    boolean register(String content) throws IOException; // username [groupSeparator] password
+    boolean setProfilePic(String profilePic) throws IOException;
+
+    String getProfilePic() throws IOException;
+
+    // Methods for user information and profile
+    String getUsername() throws IOException;
+
+    String accessProfile() throws IOException;
+
+    String accessUserProfile(String username) throws IOException;
+
+    // Methods for managing friendships
+    boolean addFriend(String friend) throws IOException;
+
+    boolean removeFriend(String friend) throws IOException;
+
+    String getFriendList() throws IOException;
+
+    // Methods for managing blocks
+    boolean blockUser(String username) throws IOException;
+
+    boolean unblockUser(String username) throws IOException;
+
+    String getBlockList() throws IOException;
+
+    // Methods for messages
+    boolean sendMessage(String content) throws IOException;
+
+    boolean deleteMessage(String content) throws IOException;
+
+    String getChat(String otherUsername) throws IOException;
+
+    String getChatList() throws IOException;
+
+    boolean createChat(String otherUsername) throws IOException;
+
+    boolean deleteChat(String otherUsername) throws IOException;
+
+    // Methods for handling user photos and messages
+    String accessPhotosFromUser(String username) throws IOException;
+
+    String accessMessagesFromUser(String username) throws IOException;
+
+    // Methods for account management
+    boolean login(String credentials) throws IOException;
+
+    boolean register(String credentials) throws IOException;
+
+    boolean isLoggedIn() throws IOException;
 
     boolean logout() throws IOException;
 
-    boolean disconnect() throws IOException;
+    boolean disconnect();
 
-    // User management
-    String getUserList() throws IOException; // username [groupSeparator] username [groupSeparator] etc
-
-    String accessProfile() throws IOException; // username [groupSeparator] first name [groupSeparator] last name
-                                               // [groupSeparator] etc
-
-    boolean saveProfile(String content) throws IOException; // username [groupSeparator] first name [groupSeparator] etc (above)
-
-    // Messaging
-    boolean sendMessage(String content) throws IOException; // otherUsername [groupSeparator] message
-
-    boolean deleteMessage(String content) throws IOException; // otherUsername [groupSeparator] message
-
-    String getChat(String otherUsername) throws IOException; // otherUsername
-
-    boolean deleteChat(String user) throws IOException; // otherUsername
-
-    boolean sendImage(String content) throws IOException; // otherUsername [groupSeparator] path
-
-    // Friend management
-    boolean removeFriend(String friend) throws IOException; // friendUsername
-
-    boolean addFriend(String friend) throws IOException; // friendUsername
-
-    String getFriendList() throws IOException; // friendUsername [groupSeparator] friendUsername [groupSeparator] etc
-
-    // Block management
-    boolean unblockUser(String user) throws IOException; // blockedUsername
-
-    boolean blockUser(String otherUsername) throws IOException; // blockedUsername
-
-    String getBlockList() throws IOException; // blockedUsername [groupSeparator] blockedUsername [groupSeparator] etc
-
-    // Settings
+    // Privacy settings
     boolean isFriendsOnly() throws IOException;
 
-    boolean setFriendsOnly(String booleanValue) throws IOException; // "true" or "false"
-
-    boolean setProfilePic(String profilePic) throws IOException; // path
-
-    String getProfilePic() throws IOException;
+    boolean setFriendsOnly(String booleanValue) throws IOException;
 }

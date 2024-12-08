@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+
 /**
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
  *         12
@@ -156,7 +157,6 @@ public class Server implements Runnable, ServerInterface {
         }
     }
 
-    
     @Override
     public String deleteMessage(String content) {
         String[] info = content.split(groupSeparatorChar + "");
@@ -172,6 +172,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "false";
     }
+
     @Override
     public String saveProfile(String content) {
         /*
@@ -224,6 +225,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
+
     @Override
     public String accessProfile() {
         return currentUser.toString();
@@ -236,10 +238,11 @@ public class Server implements Runnable, ServerInterface {
     public String accessPhotosFromUser(String user) {
         return db.getAllPhotosFromUser(db.getUser(user)).toString();
     }
-    
+
     public String accessMessagesFromUser(String user) {
         return db.getAllMessagesFromUser(db.getUser(user)).size() + "";
     }
+
     @Override
     public String deleteChat(String user) {
         try {
@@ -256,6 +259,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
+
     @Override
     public boolean disconnect() {
         try {
@@ -266,10 +270,12 @@ public class Server implements Runnable, ServerInterface {
             return false;
         }
     }
+
     @Override
     public String getProfilePic() {
         return db.getUser(currentUser.getUsername()).getProfilePic();
     }
+
     @Override
     public String login(String content) {
         if (content == null || content.isEmpty()) {
@@ -293,6 +299,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "true";
     }
+
     @Override
     public String register(String content) {
         try {
@@ -402,7 +409,7 @@ public class Server implements Runnable, ServerInterface {
         try {
             String[] parts = splitContent(content);
             String userTwo = parts[0];
-            String[] users = {currentUser.getUsername(), userTwo};
+            String[] users = { currentUser.getUsername(), userTwo };
             MessageHistory mh = new MessageHistory(users);
             return String.valueOf(db.addMessageHistory(mh));
         } catch (Exception e) {
@@ -438,6 +445,7 @@ public class Server implements Runnable, ServerInterface {
             return "false";
         }
     }
+
     @Override
     public String sendImage(String content) {
         try {
@@ -490,6 +498,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return friendList;
     }
+
     @Override
     public String blockUser(String otherUsername) {
         if (db.blockUser(currentUser.getUsername(), otherUsername)) {
@@ -513,6 +522,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return blockList;
     }
+
     @Override
     public String removeFriend(String otherUsername) {
         if (db.removeFriend(currentUser.getUsername(), otherUsername)) {
@@ -520,6 +530,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "false";
     }
+
     @Override
     public String unblockUser(String otherUsername) {
         if (db.unblockUser(currentUser.getUsername(), otherUsername)) {
@@ -527,6 +538,7 @@ public class Server implements Runnable, ServerInterface {
         }
         return "false";
     }
+
     @Override
     public String isFriendsOnly() {
         if (currentUser.isFriendsOnly()) {
@@ -534,16 +546,19 @@ public class Server implements Runnable, ServerInterface {
         }
         return "false";
     }
+
     @Override
     public String setFriendsOnly(boolean friendsOnly) {
         currentUser.setFriendsOnly(friendsOnly);
         return "true";
     }
+
     @Override
     public String setProfilePic(String profilePic) {
         db.getUser(currentUser.getUsername()).setProfilePic(profilePic);
         return "true";
     }
+
     @Override
     public String logout() {
         currentUser = null;

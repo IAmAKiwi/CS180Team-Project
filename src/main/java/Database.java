@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 
-
 /**
  * Class that stores all of the Users and MessageHistories.
  * Manages all loading, saving, and accessing of data and some data validation.
@@ -979,8 +978,9 @@ public class Database implements DatabaseInterface {
             User u2 = this.getUser(receiver);
 
             // Validate users
-            if (u1 == null || u2 == null) return false;
-    
+            if (u1 == null || u2 == null)
+                return false;
+
             // Check if users are blocked
             ArrayList<String> u1Blocked = u1.getBlocked();
             ArrayList<String> u2Blocked = u2.getBlocked();
@@ -1003,13 +1003,13 @@ public class Database implements DatabaseInterface {
                         return true;
                     }
                 }
-    
+
                 // Create a new photo history if none exists
                 PhotoHistory ph = new PhotoHistory(newPhoto, receiver);
                 this.photosPath.add(ph);
                 return true;
             }
-    
+
         } catch (Exception e) {
             System.err.println("Error adding photo: " + e.getMessage());
             return false;

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 /**
  * Manages photo sharing history between users
+ * 
  * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui
  * @version Nov 2, 2024
  */
@@ -19,7 +20,8 @@ public class PhotoHistory implements PhotoHistoryInterface {
 
     /**
      * Constructor for a new photo sharing history between two users
-     * @param photo First shared photo. Contains sender's username
+     * 
+     * @param photo     First shared photo. Contains sender's username
      * @param recipient Username of photo recipient
      */
     public PhotoHistory(Photo photo, String recipient) {
@@ -32,6 +34,7 @@ public class PhotoHistory implements PhotoHistoryInterface {
 
     /**
      * Constructor for multi-user photo sharing
+     * 
      * @param users Array of usernames involved in sharing
      */
     public PhotoHistory(String[] users) {
@@ -61,6 +64,7 @@ public class PhotoHistory implements PhotoHistoryInterface {
 
     /**
      * Adds a photo to the history
+     * 
      * @param photo Photo to be added
      */
     public void addPhoto(Photo photo) {
@@ -84,10 +88,10 @@ public class PhotoHistory implements PhotoHistoryInterface {
         }
 
         PhotoHistory ph = (PhotoHistory) other;
-        return (ph.userPhotographers[0].equals(this.userPhotographers[0]) && 
+        return (ph.userPhotographers[0].equals(this.userPhotographers[0]) &&
                 ph.userPhotographers[1].equals(this.userPhotographers[1])) ||
-               (ph.userPhotographers[0].equals(this.userPhotographers[1]) && 
-                ph.userPhotographers[1].equals(this.userPhotographers[0]));
+                (ph.userPhotographers[0].equals(this.userPhotographers[1]) &&
+                        ph.userPhotographers[1].equals(this.userPhotographers[0]));
     }
 
     @Override
