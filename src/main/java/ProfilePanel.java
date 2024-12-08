@@ -437,12 +437,12 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // After adding the buttons:
             int gridStartY = buttonsY + buttonHeight + 20; // Below buttons with some spacing
-            double gridWidth = screenSize.width / 2.5; // Half screen width
+            double gridWidth = screenSize.width / 3; // Half screen width
             int gridHeight = screenSize.height - gridStartY - 95; // Fill remaining height
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 40, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
             String photosInfo = this.client.accessPhotosFromUser(username);
@@ -487,21 +487,38 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
-                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
-
-                            // Convert the byte array into a BufferedImage
-                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                            ImageIcon icon = new ImageIcon(bufferedImage);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
+                            if (encodedImage != null) {
+                                // Decode Base64 image
+                                byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+                                BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                    
+                                // Get panel and image dimensions
+                                int panelWidth = getWidth();
+                                int panelHeight = getHeight();
+                                int imgWidth = bufferedImage.getWidth();
+                                int imgHeight = bufferedImage.getHeight();
+                    
+                                // Calculate scaling factor to fit the panel
+                                double scaleX = (double) panelWidth / imgWidth;
+                                double scaleY = (double) panelHeight / imgHeight;
+                                double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
+                    
+                                // Calculate new dimensions
+                                int scaledWidth = (int) (imgWidth * scale);
+                                int scaledHeight = (int) (imgHeight * scale);
+                    
+                                // Center the image in the panel
+                                int x = (panelWidth - scaledWidth) / 2;
+                                int y = (panelHeight - scaledHeight) / 2;
+                    
+                                // Draw the scaled image
+                                g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
+                            } else {
+                                // Fill with black if no image is present
+                                g2.setColor(Color.WHITE);
+                                g2.fillRect(0, 0, getWidth(), getHeight());
+                            }
                         } catch (Exception e) {
                             g2.setColor(Color.WHITE);
                             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -639,12 +656,12 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // After adding the buttons:
             int gridStartY = buttonsY + buttonHeight + 20; // Below buttons with some spacing
-            double gridWidth = screenSize.width / 2.5; // Half screen width
+            double gridWidth = screenSize.width / 3; // Half screen width
             int gridHeight = screenSize.height - gridStartY - 95; // Fill remaining height
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 40, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
             String[] photos;
@@ -688,21 +705,38 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
-                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
-
-                            // Convert the byte array into a BufferedImage
-                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                            ImageIcon icon = new ImageIcon(bufferedImage);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
+                            if (encodedImage != null) {
+                                // Decode Base64 image
+                                byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+                                BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                    
+                                // Get panel and image dimensions
+                                int panelWidth = getWidth();
+                                int panelHeight = getHeight();
+                                int imgWidth = bufferedImage.getWidth();
+                                int imgHeight = bufferedImage.getHeight();
+                    
+                                // Calculate scaling factor to fit the panel
+                                double scaleX = (double) panelWidth / imgWidth;
+                                double scaleY = (double) panelHeight / imgHeight;
+                                double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
+                    
+                                // Calculate new dimensions
+                                int scaledWidth = (int) (imgWidth * scale);
+                                int scaledHeight = (int) (imgHeight * scale);
+                    
+                                // Center the image in the panel
+                                int x = (panelWidth - scaledWidth) / 2;
+                                int y = (panelHeight - scaledHeight) / 2;
+                    
+                                // Draw the scaled image
+                                g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
+                            } else {
+                                // Fill with black if no image is present
+                                g2.setColor(Color.WHITE);
+                                g2.fillRect(0, 0, getWidth(), getHeight());
+                            }
                         } catch (Exception e) {
                             g2.setColor(Color.WHITE);
                             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -761,7 +795,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             JPanel mainPanel = new JPanel(null);
             JPanel friendAndBlockPanel = new JPanel(null);
             JPanel blackBackground = createBlackBackgroundPanel(new Dimension(screenSize.width, screenSize.height));
-            blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 40);
+            blackBackground.setBounds(0, 0, (int) (screenSize.width / 2.5), screenSize.height - 20);
 
             CircularImagePanel imagePanel = new CircularImagePanel(
                     profilePic.getText(), 150);
@@ -879,7 +913,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight + 50);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth, gridHeight + 80);
             gridPanel.setBackground(Color.BLACK);
 
             String photosInfo = client.accessPhotosFromUser(client.getUsername());
@@ -924,21 +958,38 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         try {
-                            byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
-                            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
-
-                            // Convert the byte array into a BufferedImage
-                            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                            ImageIcon icon = new ImageIcon(bufferedImage);
-                            Image image = icon.getImage();
-                            int imgWidth = image.getWidth(null);
-                            int imgHeight = image.getHeight(null);
-                            int panelWidth = getWidth();
-                            int panelHeight = getHeight();
-                            int cropSize = Math.min(imgWidth, imgHeight);
-                            int x = (imgWidth - cropSize) / 2;
-                            int y = (imgHeight - cropSize) / 2;
-                            g2.drawImage(image, 0, 0, panelWidth, panelHeight, x, y, x + cropSize, y + cropSize, this);
+                            if (encodedImage != null) {
+                                // Decode Base64 image
+                                byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
+                                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+                                BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                    
+                                // Get panel and image dimensions
+                                int panelWidth = getWidth();
+                                int panelHeight = getHeight();
+                                int imgWidth = bufferedImage.getWidth();
+                                int imgHeight = bufferedImage.getHeight();
+                    
+                                // Calculate scaling factor to fit the panel
+                                double scaleX = (double) panelWidth / imgWidth;
+                                double scaleY = (double) panelHeight / imgHeight;
+                                double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
+                    
+                                // Calculate new dimensions
+                                int scaledWidth = (int) (imgWidth * scale);
+                                int scaledHeight = (int) (imgHeight * scale);
+                    
+                                // Center the image in the panel
+                                int x = (panelWidth - scaledWidth) / 2;
+                                int y = (panelHeight - scaledHeight) / 2;
+                    
+                                // Draw the scaled image
+                                g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
+                            } else {
+                                // Fill with black if no image is present
+                                g2.setColor(Color.WHITE);
+                                g2.fillRect(0, 0, getWidth(), getHeight());
+                            }
                         } catch (Exception e) {
                             g2.setColor(Color.WHITE);
                             g2.fillRect(0, 0, getWidth(), getHeight());
