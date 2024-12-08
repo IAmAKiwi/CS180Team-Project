@@ -93,6 +93,7 @@ public class ServerGUI implements Runnable {
         Database db = new Database();
         db.loadMessages();
         db.loadUsers();
+        db.loadPhotos();
         Server.setDatabase(db);
 
         startButton.addActionListener(new ActionListener() {
@@ -133,6 +134,7 @@ public class ServerGUI implements Runnable {
             public void actionPerformed(ActionEvent e) {
                 db.saveMessages();
                 db.saveUsers();
+                db.savePhotos();
             }
         });
         stopButton.addActionListener(new ActionListener() {
@@ -173,6 +175,7 @@ public class ServerGUI implements Runnable {
                     System.out.println("Saving data...");
                     db.saveMessages();
                     db.saveUsers();
+                    db.savePhotos();
                     serverThread.interrupt();
                     running = false;
                     System.out.println("Stopping client connections...");

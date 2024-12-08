@@ -1,7 +1,10 @@
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Files;
@@ -19,6 +22,7 @@ import javax.swing.text.DefaultCaret;
 
 public class chatPanel extends JPanel {
     private RoundedTextArea messageHistoryArea; // prior texts display
+    private ArrayList<JLabel> messagesAndImages = new ArrayList<>();
     private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
     private RoundedTextField messageInputField; // text box to send message
     private JList<String> currentMessages;
@@ -39,13 +43,16 @@ public class chatPanel extends JPanel {
 
         messageHistoryArea = new RoundedTextArea(15);
         messageHistoryArea.setEditable(false);
+        messageHistoryArea.setAutoscrolls(true);
+        messageHistoryArea.setFocusable(false);
         messageHistoryArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        messageHistoryArea.setLineWrap(true);
         messageHistoryArea.setBorder(new EmptyBorder(5, 5, 5, 5));
         DefaultCaret caret = (DefaultCaret) messageHistoryArea.getCaret();
+        messageHistoryArea.setLayout(new GridLayout(0, 1));
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
         scrollPane = new RoundedScrollPane(messageHistoryArea, 15);
+        scrollPane.setLayout(new ScrollPaneLayout());
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel inputPanel = new JPanel(new BorderLayout());
@@ -89,7 +96,7 @@ public class chatPanel extends JPanel {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     try {
-                        sendImageMessage(selectedFile);
+                        client.sendImage(selectedUser + (char) 29 + String.valueOf(selectedFile));
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(chatPanel.this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -98,28 +105,22 @@ public class chatPanel extends JPanel {
         });
     }
 
-    private void sendImageMessage(File imageFile) throws IOException {
-        if (selectedUser == null) return;
-
-        // convert the image to Base64
-        byte[] imageBytes = Files.readAllBytes(imageFile.toPath());
-        String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
-
-        // send the image as a special message type
-        String result = Boolean.toString(client.sendMessage(selectedUser + (char) 29 + "[IMAGE]" + encodedImage));
-        if ("true".equals(result)) {
-            refreshChat(selectedUser);
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to send image.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     /**
      * Refreshes the message history area with messages between the current user
      * and the selected user.
      */
     public void refreshChat(String selectedUser) throws IOException {
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.weighty = 1.0;
+        c.weightx = 1.0;
+        c.gridx = 0;
+        c.gridy = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
         this.selectedUser = selectedUser;
+        messageHistoryArea.setText("");
+        messageHistoryArea.removeAll();
         String chatHistory = client.getChat(selectedUser);
 
         if (chatHistory == null || chatHistory.isEmpty()) {
@@ -128,15 +129,32 @@ public class chatPanel extends JPanel {
         }
 
         String[][] messages = getMessageHistory(chatHistory);
+        JLabel messageLabel;
+        ImageIcon icon;
         StringBuilder message = new StringBuilder();
         for (int i = messages.length - 1; i > -1; i--) {
-            message.append(" ");
+            messageLabel = new RoundedLabel("", 15);
             message.append(getMessageTime(messages[i][0]));
+            message.append(messages[i][1] + ": ");
             message.append(" ");
-            message.append(messages[i][1] + ": " + messages[i][2] + "\n");
-        }
+            if(messages[i][0].charAt(0) == 28) {
+                byte[] imageBytes = Base64.getDecoder().decode(messages[i][2]);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
 
-        messageHistoryArea.setText(message.toString());
+                // Convert the byte array into a BufferedImage
+                BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                icon = new ImageIcon(bufferedImage.getScaledInstance(250, 250, Image.SCALE_SMOOTH));
+                messageLabel.setIcon(icon);
+            } else {
+                message.append(messages[i][2] + "\n");
+            }
+            messageLabel.setText(message.toString());
+            messageLabel.setBounds(5, 5, scrollPane.getWidth(), 50);
+            messageHistoryArea.add(messageLabel);
+            c.gridy++;
+            message.delete(0, message.length());
+        }
+        scrollPane.setMinimumSize(messageHistoryArea.getSize());
     }
 
     private String[][] getMessageHistory(String messageContent) {
@@ -171,6 +189,9 @@ public class chatPanel extends JPanel {
     }
 
     private String getMessageTime(String timeLong) {
+        if (timeLong.charAt(0) == (char) 28) {
+            timeLong = timeLong.substring(1);
+        }
         Message msg = new Message("temp", "temp", Long.parseLong(timeLong));
         Date currTime = Date.from(Instant.now());
         Date msgTime = msg.getTimeStamp();
@@ -211,14 +232,6 @@ public class chatPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Failed to send message.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
-    /**
-     * Displays a message in the chat panel.
-     */
-    public void displayMessage(String message) {
-        messageHistoryArea.append("\n" + message);
-        messageHistoryArea.setCaretPosition(messageHistoryArea.getDocument().getLength()); // Auto-scroll to bottom
     }
 
     public void refreshChatAutoScroll(String selectedUser) throws IOException {
@@ -373,18 +386,12 @@ public class chatPanel extends JPanel {
         }
     }
 
-    private static class RoundedTextArea extends JTextArea {
+    private static class RoundedTextArea extends JTextPane {
         private int radius;
         private Color backgroundColor;
 
         public RoundedTextArea(int radius) {
             super();
-            this.radius = radius;
-            setOpaque(false);
-        }
-
-        public RoundedTextArea(String text, int radius) {
-            super(text);
             this.radius = radius;
             setOpaque(false);
         }

@@ -456,6 +456,9 @@ public class ChatListPanel extends JPanel {
             String temp = chat.substring(chat.indexOf(":") + 1);
             String lastMessageContent = temp.substring(temp.indexOf(":") + 2);
             String[] arguments = chat.split(":");
+            if (arguments[0].charAt(0) == (char) 28) {
+                arguments[0] = arguments[0].substring(1);
+            }
             Message msg = new Message(arguments[1], lastMessageContent, Long.parseLong(arguments[0]));
             Date currTime = Date.from(Instant.now());
             Date msgTime = msg.getTimeStamp();
@@ -485,9 +488,10 @@ public class ChatListPanel extends JPanel {
 
     private void filterChats() throws IOException {
         String searchText = searchField.getText().toLowerCase();
+        String username = client.getUsername();
         listModel.clear();
         for (String chat : client.getUserList().split("" + (char) 29)) {
-            if (chat.toLowerCase().contains(searchText)) {
+            if (!chat.equals(username) && chat.toLowerCase().contains(searchText)) {
                 listModel.addElement(chat);
             }
         }

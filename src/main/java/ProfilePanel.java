@@ -465,7 +465,7 @@ public class ProfilePanel extends JPanel {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = lmao[0];
                     }
                 }
             }
@@ -663,7 +663,7 @@ public class ProfilePanel extends JPanel {
                     for (int i = 0; i < 6; i++) {
                         char gs = 29;
                         String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                        imagePaths[i] = lmao[0];
                     }
                 }
             }

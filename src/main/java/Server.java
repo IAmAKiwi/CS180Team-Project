@@ -343,16 +343,49 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String getChat(String content) {
         MessageHistory mh = db.getMessages(currentUser.getUsername(), content);
-        if (mh == null) {
+        PhotoHistory ph = db.getPhotos(currentUser.getUsername(), content);
+        if (mh == null && ph == null) {
             return "";
         }
+        if (mh == null) {
+            mh = new MessageHistory();
+        }
+        if (ph == null) {
+            ph = new PhotoHistory();
+        }
         ArrayList<Message> messages = mh.getMessageHistory();
+        ArrayList<Photo> photos = ph.getPhotoHistory();
+
         String chat = "";
         char endChar = (char) 29;
-        for (int i = 0; i < messages.size(); i++) {
-            chat = chat.concat((messages.get(i)).toString());
-            chat = chat.concat("" + endChar);
+        char photoChar = (char) 28;
+        int messageIndex = 0;
+        int photoIndex = 0;
+
+        // Add the messages/photos in order of
+        while (messageIndex < messages.size() && photoIndex < photos.size()) {
+            Message message = messages.get(messageIndex);
+            Photo photo = photos.get(photoIndex);
+            if (message.getTimeStamp().before(photo.getTimeStamp())) {
+                chat = chat.concat(message.toString()+ endChar);
+                messageIndex++;
+            } else {
+                chat = chat.concat(photoChar + photo.toString()+ endChar);
+                photoIndex++;
+            }
         }
+
+        // add the remainder of whichever history has more to add.
+        if (messageIndex < messages.size()) {
+            for (int i = messageIndex + 1; i < messages.size(); i++) {
+                chat = chat.concat(messages.get(i).toString() + endChar);
+            }
+        } else {
+            for (int i = photoIndex + 1; i < photos.size(); i++) {
+                chat = chat.concat(photoChar + photos.get(i).toString() + endChar);
+            }
+        }
+
         return chat;
     }
 
@@ -408,28 +441,32 @@ public class Server implements Runnable, ServerInterface {
     @Override
     public String sendImage(String content) {
         try {
+            if (currentUser != null) {
+                return "false";
+            }
             String[] parts = splitContent(content);
             if (parts.length < 2) {
                 return "false";
             }
             String userTwo = parts[0];
-            String path = parts[1];
+            String imageData = parts[1];
             // Check for self-messaging
-            if (currentUser != null && userTwo.equals(currentUser.getUsername())) {
+            if (userTwo.equals(currentUser.getUsername())) {
                 return "false";
             }
 
             // Check for null/empty message
-            if (path == null || path.isEmpty()) {
+            if (imageData == null || imageData.isEmpty()) {
                 return "false";
             }
-            Photo photo = new Photo(path, currentUser.getUsername());
-            return String.valueOf(db.addPhoto(photo,userTwo));
+
+            return String.valueOf(db.addPhoto(currentUser.getUsername(), userTwo, imageData));
         } catch (Exception e) {
             e.printStackTrace();
             return "false";
         }
     }
+
     @Override
     public String addFriend(String otherUsername) {
         if (db.addFriend(currentUser.getUsername(), otherUsername)) {

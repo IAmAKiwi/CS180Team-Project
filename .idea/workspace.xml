@@ -4,12 +4,134 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Fixed error causing loginPanel to call getUsername before logging in.">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="push to fix peter hopefully">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/photoHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/photoHistory.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$ChatListCellRenderer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedBorder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedButton$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedLabel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedScrollPane$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedScrollPane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel$RoundedTextField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ChatListPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ClientInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataSaver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataSaverInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Database.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatabaseInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$CircularButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$RoundedButton$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$RoundedButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI$RoundedPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$5$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$5$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$5$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$CircularImagePanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$RoundedBorder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$RoundedButton$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$RoundedButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$RoundedPasswordField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel$RoundedTextField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MessageHistory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MessageHistoryInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MessageInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Photo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Photo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Photo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PhotoHistory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PhotoHistoryInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PhotoInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$CircularImagePanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedButton$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedJList$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedJList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedScrollPane$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedScrollPane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel$RoundedTextField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ServerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ServerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ServerInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedButton$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedLabel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedScrollPane$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedScrollPane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedTextArea.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel$RoundedTextField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel$ChatListCellRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel$ChatListCellRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel$RoundedBorder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel$RoundedBorder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ChatListPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/DatabaseInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/DatabaseInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$CircularButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI$CircularButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Photo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Photo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ServerGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,6 +250,8 @@
       <list>
         <item itemvalue="Application.MessageHistoryTestCases (1)" />
         <item itemvalue="Application.MessageHistoryTestCases" />
+        <item itemvalue="Application.MessageHistoryTestCases (1)" />
+        <item itemvalue="Application.MessageHistoryTestCases" />
       </list>
     </recent_temporary>
   </component>
@@ -205,7 +329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733542557338</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="push to fix peter hopefully">
+      <option name="closed" value="true" />
+      <created>1733625363041</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733625363041</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,54 +360,46 @@
     <MESSAGE value="Stuff throws exceptions to GUI now." />
     <MESSAGE value="Got rid of profilepanel editProfile." />
     <MESSAGE value="Fixed error causing loginPanel to call getUsername before logging in." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed error causing loginPanel to call getUsername before logging in." />
+    <MESSAGE value="push to fix peter hopefully" />
+    <option name="LAST_COMMIT_MESSAGE" value="push to fix peter hopefully" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>1082</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>847</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/LoginPanel.java</url>
-          <line>674</line>
+          <line>675</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>331</line>
+          <line>319</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="67" />
+          <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
+          <line>188</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GUI.java</url>
-          <line>348</line>
-          <option name="timeStamp" value="68" />
+          <line>199</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
-          <line>868</line>
-          <option name="timeStamp" value="69" />
+          <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
+          <line>849</line>
+          <option name="timeStamp" value="79" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>330</line>
-          <properties class="Server" method="getUsername">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="64" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Database.java</url>
+          <line>788</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
+          <line>112</line>
+          <option name="timeStamp" value="87" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -379,7 +379,7 @@ public class GUI implements Runnable {
                             try {
                                 if (!client.addFriend(selectedUser)) {
                                     client.removeFriend(selectedUser);
-                                    friendAndBlockButtons[0].setText("Friend");
+                                    friendAndBlockButtons[0].setText("Add Friend");
                                 } else {
                                     friendAndBlockButtons[0].setText("Unfriend");
                                 }
@@ -543,7 +543,7 @@ public class GUI implements Runnable {
     }
 
     private void scheduleUpdates() {
-        Timer timer = new Timer(300, new ActionListener() { // Check every 1 second
+        Timer timer = new Timer(1000, new ActionListener() { // Check every 1 second
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update GUI components
