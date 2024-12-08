@@ -176,4 +176,6 @@ public interface UserInterface {
      * @param friendsOnly true to enable friends-only mode, false to disable
      */
     void setFriendsOnly(boolean friendsOnly);
+
+    String toString();
 }
