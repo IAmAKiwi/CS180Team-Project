@@ -4,21 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="It is actually mostly working but the first message sent is getting deleted for some reason.">
+    <list default="true" id="b0abc399-0f3b-4251-bbf6-d07aad17a43b" name="Changes" comment="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedButton.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedLabel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedScrollPane.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextArea.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel$RoundedTextField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/chatPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/usersHistory.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedJList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedScrollPane.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedTextField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel$RoundedTextField.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/production/CS180Team-Project1/ProfilePanel.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +44,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.GUI.executor": "Debug",
+    "Application.GUI.executor": "Run",
     "Application.MessageHistoryTestCases (1).executor": "Run",
     "Application.MessageHistoryTestCases.executor": "Run",
     "Application.MessageTestCases.executor": "Run",
-    "Application.ServerGUI.executor": "Debug",
+    "Application.ServerGUI.executor": "Run",
     "Application.UserTestCases.executor": "Run",
     "JUnit.ClientTest.executor": "Run",
     "JUnit.DatabaseTestCases.executor": "Run",
@@ -248,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733675777029</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys.">
+      <option name="closed" value="true" />
+      <created>1733678073729</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733678073729</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -275,7 +288,8 @@
     <MESSAGE value="Added more photo message functionality, though it is not finished properly." />
     <MESSAGE value="Its betterish now!" />
     <MESSAGE value="It is actually mostly working but the first message sent is getting deleted for some reason." />
-    <option name="LAST_COMMIT_MESSAGE" value="It is actually mostly working but the first message sent is getting deleted for some reason." />
+    <MESSAGE value="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed formatting of sending messages and images. Now sending images correctly encodes the data to send. We did it boys." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -302,16 +316,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
-          <line>220</line>
-          <option name="timeStamp" value="92" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>415</line>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/chatPanel.java</url>
           <line>95</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
@@ -319,6 +323,26 @@
           <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
           <line>443</line>
           <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>648</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>880</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>448</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ProfilePanel.java</url>
+          <line>646</line>
+          <option name="timeStamp" value="106" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

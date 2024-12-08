@@ -454,18 +454,21 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
+            int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                    for (int i = photos.length; i > -1; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[0];
+                    for (int i = photos.length - 1; i > photos.length - 7; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 }
             }
@@ -652,18 +655,21 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
+            int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                    for (int i = photos.length; i > -1; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[0];
+                    for (int i = photos.length - 1; i > photos.length - 7; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 }
             }
@@ -885,19 +891,21 @@ public class ProfilePanel extends JPanel {
                 photos = photosInfo.trim().replace("[", "").replace("]", "").split(",");
             }
             String[] imagePaths = new String[6];
+            int imagePathsIndex = 0;
             if (photos.length > 0) {
                 if (photos.length < 6) {
-                    for (int i = 0; i < photos.length; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
+                    for (int i = photos.length; i > -1; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 } else {
-                    for (int i = 0; i < 6; i++) {
-                        char gs = 29;
-                        String[] lmao = photos[i].trim().replace("[", "").replace("]", "").split(gs + "");
-                        imagePaths[i] = lmao[1];
-
+                    for (int i = photos.length - 1; i > photos.length - 7; i--) {
+                        photos[i] = photos[i].substring(photos[i].indexOf(":") + 1);
+                        String lmao = photos[i].substring(photos[i].indexOf(":") + 1);
+                        imagePaths[imagePathsIndex] = lmao;
+                        imagePathsIndex++;
                     }
                 }
             }
