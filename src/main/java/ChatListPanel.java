@@ -611,6 +611,7 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
     }
 
     // Public methods
+    @Override
     public void refreshChats(String[] chats) throws IOException {
         if (searchField.getText().trim().isEmpty() && !searching && chatList.isSelectionEmpty()) {
             listModel.clear();
@@ -624,16 +625,19 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
         }
     }
 
+    @Override
     public void addChat(String chat) {
         if (!listModel.contains(chat)) {
             listModel.addElement(chat);
         }
     }
 
+    @Override
     public void removeChat(String chat) {
         listModel.removeElement(chat);
     }
 
+    @Override
     public String getSelectedChat() {
         return chatList.getSelectedValue();
     }

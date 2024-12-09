@@ -519,26 +519,6 @@ public class GUI implements Runnable, GUIInterface {
         profilePanel.refreshProfile(username, firstName, lastName, bio, month, day, year, profilePic, friendsOnly);
     }
 
-    // public void updateFriendsAndBlocks() {
-    // String friends;
-    // try {
-    // friends = client.getFriendList();
-    // } catch (IOException e) {
-    // disconnect();
-    // return;
-    // }
-    // String[] friendsArray = friends.split("" + (char) 29);
-    // String blocks;
-    // try {
-    // blocks = client.getBlockList();
-    // } catch (IOException e) {
-    // disconnect();
-    // return;
-    // }
-    // String[] blocksArray = blocks.split("" + (char) 29);
-    // profilePanel.updateFriendsAndBlocks(friendsArray, blocksArray);
-    // }
-
     public void updateChat() {
         // chatPanel.updateChat(chat);
     }

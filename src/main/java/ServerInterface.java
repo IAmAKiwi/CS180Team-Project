@@ -1,28 +1,16 @@
-
-/**
- * Interface that defines the required methods for Server implementation.
- * Specifies the contract for handling client requests and managing server
- * operations.
- *
- * @author William Thain, Fox Christiansen, Jackson Shields, Peter Bui: lab sec
- *         12
- * @version Nov 2, 2024
- */
 import java.io.PrintWriter;
 
 public interface ServerInterface {
-    // Core server operations
-    String getUsername();
 
     String login(String content);
-
-    String isLoggedIn();
 
     String register(String content);
 
     String getUserList();
 
     String getChat(String content);
+
+    String getMessages(String content);
 
     String getChatList();
 
@@ -34,29 +22,23 @@ public interface ServerInterface {
 
     String accessProfile();
 
-    String accessUserProfile(String user);
-
-    String accessPhotosFromUser(String user);
-
-    String accessMessagesFromUser(String user);
-
     String saveProfile(String content);
 
-    String removeFriend(String otherUsername);
-
-    String addFriend(String otherUsername);
-
-    String unblockUser(String otherUsername);
-
-    String blockUser(String otherUsername);
-
-    String deleteChat(String user);
+    String deleteChat(String content);
 
     String sendImage(String content);
 
-    String getBlockList();
+    String addFriend(String otherUsername);
 
     String getFriendList();
+
+    String blockUser(String otherUsername);
+
+    String getBlockList();
+
+    String removeFriend(String otherUsername);
+
+    String unblockUser(String otherUsername);
 
     String isFriendsOnly();
 
@@ -70,9 +52,5 @@ public interface ServerInterface {
 
     boolean disconnect();
 
-    // Optional utility methods for use in implementations
-    default void send(String result, PrintWriter writer) {
-        writer.println(result);
-        writer.flush();
-    }
+    void send(String result, PrintWriter writer);
 }

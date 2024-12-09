@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-public class ChatPanel extends JPanel {
+public class ChatPanel extends JPanel implements ChatPanelInterface {
     private JPanel messageHistoryArea; // prior texts display
     private ArrayList<JLabel> messagesAndImages = new ArrayList<>();
     private RoundedScrollPane scrollPane; // pane storing messageHistoryArea
@@ -105,6 +105,7 @@ public class ChatPanel extends JPanel {
      * Refreshes the message history area with messages between the current user
      * and the selected user.
      */
+    @Override
     public void refreshChat(String selectedUser) throws IOException {
         this.selectedUser = selectedUser;
         messageHistoryArea.removeAll();
@@ -131,7 +132,7 @@ public class ChatPanel extends JPanel {
             message.append(" ");
             message.append(messages[i][1]);
             // Handling photos else handling message
-            if(messages[i][0].charAt(0) == 28) {
+            if (messages[i][0].charAt(0) == 28) {
                 byte[] imageBytes = Base64.getDecoder().decode(messages[i][2]);
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
 
@@ -230,9 +231,6 @@ public class ChatPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Failed to send message.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
-    public void refreshChatAutoScroll(String selectedUser) throws IOException {
     }
 
     class RoundedTextField extends JTextField {

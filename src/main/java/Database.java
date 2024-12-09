@@ -53,6 +53,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    @Override
     public boolean removeUser(String username) {
         synchronized (USER_KEY) {
             for (int i = 0; i < this.userList.size(); i++) {
@@ -114,6 +115,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    @Override
     public String[] getAllUserChats(String username) {
         synchronized (MESSAGE_KEY) {
             ArrayList<String> chatList = new ArrayList<>();
@@ -184,6 +186,7 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
+    @Override
     public PhotoHistory getPhotos(String user1, String user2) throws IllegalArgumentException {
         if (user1.equals(user2)) {
             return null;
@@ -224,6 +227,7 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
+    @Override
     public boolean deleteChat(String user1, String user2) {
         synchronized (MESSAGE_KEY) {
             for (int i = 0; i < this.allChats.size(); i++) {
@@ -245,6 +249,7 @@ public class Database implements DatabaseInterface {
      * @param receiver Username of receiver
      * @return true if message was added
      **/
+    @Override
     public boolean addMessage(Message message, String receiver) {
         User u1 = this.getUser(message.getSender());
         User u2 = this.getUser(receiver);
@@ -299,6 +304,7 @@ public class Database implements DatabaseInterface {
      * @param receiver Username of receiver
      * @return true if message was added
      **/
+    @Override
     public boolean deleteMessage(Message message, String receiver) {
         User u1 = this.getUser(message.getSender());
         User u2 = this.getUser(receiver);
@@ -363,6 +369,7 @@ public class Database implements DatabaseInterface {
      * @param username username of user to get friends of
      * @return array of friends
      */
+    @Override
     public String[] getFriends(String username) {
         User u = this.getUser(username);
         if (u == null) {
@@ -378,6 +385,7 @@ public class Database implements DatabaseInterface {
      * @param user2 user to be added
      * @return if the friend was added (both users must exist)
      */
+    @Override
     public boolean removeFriend(String user1, String user2) {
         User u1 = this.getUser(user1);
         User u2 = this.getUser(user2);
@@ -395,6 +403,7 @@ public class Database implements DatabaseInterface {
      * @param user2 user to be added
      * @return if the block was added (both users must exist)
      */
+    @Override
     public boolean blockUser(String user1, String user2) {
         User u1 = this.getUser(user1);
         User u2 = this.getUser(user2);
@@ -429,6 +438,7 @@ public class Database implements DatabaseInterface {
      * @param username username of user to get blocks of
      * @return array of blocks
      */
+    @Override
     public String[] getBlockList(String username) {
         User u = this.getUser(username);
         if (u == null) {
@@ -917,6 +927,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    @Override
     public void setUser(User user) {
         synchronized (USER_KEY) {
             for (int i = 0; i < this.userList.size(); i++) {
@@ -952,6 +963,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    @Override
     public ArrayList<Message> getAllMessagesFromUser(User u) {
         ArrayList<Message> messages = new ArrayList<>();
         synchronized (MESSAGE_KEY) {
@@ -967,6 +979,7 @@ public class Database implements DatabaseInterface {
 
     }
 
+    @Override
     public ArrayList<String> getAllBlockedFromUser(User u) {
         ArrayList<String> blocked = new ArrayList<>();
         synchronized (USER_KEY) {
@@ -979,6 +992,7 @@ public class Database implements DatabaseInterface {
         return blocked;
     }
 
+    @Override
     public ArrayList<String> getAllFriendsFromUser(User u) {
         ArrayList<String> friends = new ArrayList<>();
         synchronized (USER_KEY) {
@@ -991,6 +1005,7 @@ public class Database implements DatabaseInterface {
         return friends;
     }
 
+    @Override
     public ArrayList<Photo> getAllPhotosFromUser(User u) {
         if (photosPath == null) {
             this.loadPhotos();
@@ -1009,7 +1024,6 @@ public class Database implements DatabaseInterface {
         return photos;
     }
 
-
     public boolean addPhoto(String sender, String receiver, String photoData) {
         try {
             User u1 = this.getUser(sender);
@@ -1022,11 +1036,14 @@ public class Database implements DatabaseInterface {
             // Check if users are blocked
             ArrayList<String> u1Blocked = u1.getBlocked();
             ArrayList<String> u2Blocked = u2.getBlocked();
-            if (u1Blocked.contains(receiver) || u2Blocked.contains(sender)) return false;
-    
+            if (u1Blocked.contains(receiver) || u2Blocked.contains(sender))
+                return false;
+
             // Check if users are friends (if required)
-            if (u1.isFriendsOnly() && !u1.getFriends().contains(receiver)) return false;
-            if (u2.isFriendsOnly() && !u2.getFriends().contains(u1.getUsername())) return false;
+            if (u1.isFriendsOnly() && !u1.getFriends().contains(receiver))
+                return false;
+            if (u2.isFriendsOnly() && !u2.getFriends().contains(u1.getUsername()))
+                return false;
 
             // Create a Photo from the data passed
             Photo newPhoto = new Photo(photoData, sender);

@@ -16,19 +16,4 @@ public interface ChatPanelInterface {
      * @throws IOException If chat data cannot be loaded
      */
     void refreshChat(String selectedUser) throws IOException;
-
-    /**
-     * Displays a message in the chat panel
-     * 
-     * @param message Message to display
-     */
-    void displayMessage(String message);
-
-    /**
-     * Refreshes chat with auto-scrolling enabled
-     * 
-     * @param selectedUser Username of selected chat partner
-     * @throws IOException If chat data cannot be loaded
-     */
-    void refreshChatAutoScroll(String selectedUser) throws IOException;
 }

@@ -193,17 +193,18 @@ public class Client implements Runnable, ClientInterface {
     }
 
     // Getusers
-
+    @Override
     public String getUserList() throws IOException {
         return requestData("getUserList: ");
     }
 
+    @Override
     public boolean sendMessage(String content) throws IOException {
         String command = "sendMessage:" + content; //
         return sendCommand(command);
     }
-    
 
+    @Override
     public String addProfilePic(String content) throws IOException {
 
         // Convert the file path to binary data
@@ -215,80 +216,96 @@ public class Client implements Runnable, ClientInterface {
         return requestData(command);
     }
 
+    @Override
     public boolean deleteMessage(String content) throws IOException {
         String command = "deleteMessage:" + content;
         return sendCommand(command);
     }
 
+    @Override
     public String getUsername() throws IOException {
         return requestData("getUsername: ");
     }
 
+    @Override
     public String accessProfile() throws IOException {
         return requestData("accessProfile: ");
     }
 
+    @Override
     public String accessUserProfile(String content) throws IOException {
         String command = "accessUserProfile:" + content;
         return requestData(command);
     }
 
+    @Override
     public String accessMessagesFromUser(String content) throws IOException {
         String command = "accessMessagesFromUser:" + content;
         return requestData(command);
     }
 
+    @Override
     public String accessFriendsFromUser(String content) throws IOException {
         String command = "accessFriendsFromUser:" + content;
         return requestData(command);
     }
 
+    @Override
     public String accessBlockedFromUser(String content) throws IOException {
         String command = "accessBlockedFromUser:" + content;
         return requestData(command);
     }
 
+    @Override
     public String accessPhotosFromUser(String content) throws IOException {
         String command = "accessPhotosFromUser:" + content;
         return requestData(command);
     }
 
+    @Override
     public boolean saveProfile(String content) throws IOException {
         String command = "saveProfile:" + content;
         return sendCommand(command);
     }
 
+    @Override
     public boolean removeFriend(String friend) throws IOException {
         String command = "removeFriend:" + friend;
         return sendCommand(command);
     }
 
+    @Override
     public boolean removeUser(String user) throws IOException {
         String command = "removeUser:" + user;
         return sendCommand(command);
     }
 
+    @Override
     public boolean addFriend(String friend) throws IOException {
         String command = "addFriend:" + friend;
         return sendCommand(command);
     }
 
+    @Override
     public boolean unblockUser(String user) throws IOException {
         String command = "unblockUser:" + user;
         return sendCommand(command);
     }
 
+    @Override
     public boolean blockUser(String otherUsername) throws IOException {
         String command = "blockUser:" + otherUsername;
         return sendCommand(command);
     }
 
     // the other user
+    @Override
     public boolean deleteChat(String otherUser) throws IOException {
         String command = "deleteChat:" + otherUser;
         return sendCommand(command);
     }
 
+    @Override
     public boolean sendImage(String content) throws IOException {
         String[] parts = content.split("" + (char) 29);
         if (parts.length != 2) {
@@ -299,69 +316,84 @@ public class Client implements Runnable, ClientInterface {
         return sendCommand(command);
     }
 
+    @Override
     public String getChat(String otherUsername) throws IOException {
         String command = "getChat:" + otherUsername;
         return requestData(command);
     }
 
+    @Override
     public String getMessages(String otherUsername) throws IOException {
         String command = "getMessages:" + otherUsername;
         return requestData(command);
     }
 
+    @Override
     public String getChatList() throws IOException {
         return requestData("getChatList: ");
     }
 
+    @Override
     public boolean createChat(String otherUsername) throws IOException {
         String command = "createChat:" + otherUsername;
         return sendCommand(command);
     }
 
+    @Override
     public String getFriendList() throws IOException {
         return requestData("getFriendList: ");
     }
 
+    @Override
     public String getBlockList() throws IOException {
         return requestData("getBlockList: ");
     }
 
+    @Override
     public boolean isFriendsOnly() throws IOException {
         String command = "isFriendsOnly: ";
         return sendCommand(command);
     }
 
+    @Override
     public boolean setFriendsOnly(String booleanValue) throws IOException {
         return sendCommand("setFriendsOnly:" + booleanValue);
     }
 
+    @Override
     public boolean setProfilePic(String profilePic) throws IOException {
         return sendCommand("setProfilePic:" + profilePic);
     }
 
+    @Override
     public String getProfilePic() throws IOException {
         return requestData("getProfilePic: ");
     }
 
+    @Override
     public boolean login(String content) throws IOException {
         String command = "login:" + content;
         return sendCommand(command);
     }
 
+    @Override
     public boolean isLoggedIn() throws IOException {
         String command = "isLoggedIn: ";
         return sendCommand(command);
     }
 
+    @Override
     public boolean register(String content) throws IOException {
         String command = "register:" + content;
         return sendCommand(command);
     }
 
+    @Override
     public boolean logout() throws IOException {
         return sendCommand("logout: ");
     }
 
+    @Override
     // May not be needed, potentially included in "logout".
     public boolean disconnect() {
         try {
@@ -375,6 +407,7 @@ public class Client implements Runnable, ClientInterface {
         }
     }
 
+    @Override
     public synchronized String requestData(String command) throws IOException {
         if (!socket.isConnected()) {
             throw new IOException("Socket is closed");
@@ -388,6 +421,7 @@ public class Client implements Runnable, ClientInterface {
         return response;
     }
 
+    @Override
     public synchronized boolean sendCommand(String command) throws IOException {
         String response = this.requestData(command);
         return response != null && Boolean.parseBoolean(response.trim());
@@ -399,7 +433,7 @@ public class Client implements Runnable, ClientInterface {
     // In addition, use the above functions to send and read the commands.
     // Abstraction is good.
     // format all remaining methods in this fashion
-
+    @Override
     public boolean updateProfile(String content) throws IOException {
         return sendCommand("updateProfile:" + content);
     }

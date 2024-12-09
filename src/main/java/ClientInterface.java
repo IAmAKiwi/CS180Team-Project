@@ -9,9 +9,27 @@ import java.io.IOException;
  */
 public interface ClientInterface {
     // Methods for managing profile data
+    String getUserList() throws IOException;
+
+    String addProfilePic(String content) throws IOException;
+
+    String accessFriendsFromUser(String content) throws IOException;
+
     boolean updateProfile(String content) throws IOException;
 
+    String accessBlockedFromUser(String content) throws IOException;
+
+    boolean removeUser(String user) throws IOException;
+
+    boolean sendImage(String content) throws IOException;
+
+    String getMessages(String otherUsername) throws IOException;
+
     boolean saveProfile(String content) throws IOException;
+
+    String requestData(String command) throws IOException;
+
+    boolean sendCommand(String command) throws IOException;
 
     boolean setProfilePic(String profilePic) throws IOException;
 

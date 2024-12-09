@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.io.File;
 
-public class LoginPanel extends JComponent implements Runnable {
+public class LoginPanel extends JComponent implements Runnable, LoginPanelInterface {
     private JFrame frame;
     private Container content;
     private JPanel contentPanel;
@@ -25,8 +25,6 @@ public class LoginPanel extends JComponent implements Runnable {
     private JLabel logoLabel;
     private String username;
     private String password;
-    // private String profilePicturePath =
-    // "C:/Users/peter/Github/CS180Team-Project/images/5.jpg";
     private String profilePicturePath = getPath("0.jpg", "images");
 
     public LoginPanel(Client client) {
@@ -34,7 +32,7 @@ public class LoginPanel extends JComponent implements Runnable {
         this.client = client;
         loginPanel = this;
     }
-
+    @Override
     public void addPlaceHolderStyle(JTextField textField) {
         Font font = textField.getFont();
         font = font.deriveFont(Font.ITALIC);

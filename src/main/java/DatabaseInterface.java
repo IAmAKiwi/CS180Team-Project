@@ -13,9 +13,21 @@ public interface DatabaseInterface {
 
     boolean validateNewUser(User user);
 
+    boolean removeUser(String username);
+
     User getUser(String username);
 
+    ArrayList<String> getAllFriendsFromUser(User u);
+
+    ArrayList<Photo> getAllPhotosFromUser(User u);
+
     ArrayList<User> getUsers();
+
+    void setUser(User user);
+
+    ArrayList<Message> getAllMessagesFromUser(User u);
+
+    ArrayList<String> getAllBlockedFromUser(User u);
 
     void setUsersList(ArrayList<User> userList);
 
@@ -54,6 +66,7 @@ public interface DatabaseInterface {
     PhotoHistory getPhotos(String user1, String user2);
 
     boolean addPhotoHistory(PhotoHistory photoHistory);
+
     boolean addPhoto(String sender, String receiver, String photoData);
 
     // File Operations
