@@ -1157,7 +1157,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                 rightPanel.add(friendsOnly, gbc);
                 gbc.gridx = 1;
                 JCheckBox friendsOnlyCheckBox = new JCheckBox();
-                if (currentFriendsOnly.equals("true")) {
+                if (currentFriendsOnly.trim().equals("true")) {
                     friendsOnlyCheckBox.setSelected(true);
                 } else {
                     friendsOnlyCheckBox.setSelected(false);
