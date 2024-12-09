@@ -133,13 +133,23 @@ public class GUI implements Runnable, GUIInterface {
     }
 
     private void createHeader() {
-        headerPanel = new RoundedPanel(15);
+        if (headerPanel != null) {
+            headerPanel.removeAll();
+        } else {
+            headerPanel = new RoundedPanel(15);
+        }
         headerPanel.setLayout(new BorderLayout());
         headerPanel.setBackground(new Color(245, 245, 245));
         headerPanel.setPreferredSize(new Dimension(frame.getWidth(), 60));
 
         // Get profile picture
-        String profilePic = profilePanel.getProfilePic();
+        String profilePic = "";
+        try {
+            profilePic = client.getProfilePic();
+        } catch (IOException ioe) {
+            disconnect();
+            return;
+        }
 
         // Check if the image string is valid
         if (profilePic != null && !profilePic.isEmpty()) {
@@ -207,7 +217,7 @@ public class GUI implements Runnable, GUIInterface {
         profileMenu.add(editProfileItem);
 
         profileButton.addActionListener(e -> {
-            profileMenu.show(profileButton, 0, profileButton.getHeight());
+            profileMenu.show(profileButton, profileMenu.getX(), profileButton.getHeight());
         });
 
         // Add the header panel to the frame
@@ -216,12 +226,15 @@ public class GUI implements Runnable, GUIInterface {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         gbc.weighty = 0.0;
+        gbc.gridx = 0;
         gbc.gridy = 0;
         frame.add(headerPanel, gbc);
 
         // Refresh the frame layout
-        frame.revalidate();
+        headerPanel.repaint();
+        headerPanel.revalidate();
         frame.repaint();
+        frame.revalidate();
     }
 
     class CircularButton extends JButton {
@@ -317,6 +330,7 @@ public class GUI implements Runnable, GUIInterface {
         createHeader();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridy = 1;
 
         gbc.weightx = 0.2;
         gbc.weighty = 1.0;
@@ -421,7 +435,7 @@ public class GUI implements Runnable, GUIInterface {
         // // logoutPanel.add(addFriendButton, logoutConstraints);
         // // logoutPanel.add(addBlockButton, logoutConstraints);
         GridBagConstraints logoutGbc = new GridBagConstraints();
-        logoutGbc.gridx = 2; // Right column
+        logoutGbc.gridx = 3; // Right column
         logoutGbc.gridy = 2; // Bottom row
         logoutGbc.anchor = GridBagConstraints.SOUTHEAST;
         logoutGbc.insets = new Insets(0, 0, 10, 10);
@@ -560,6 +574,7 @@ public class GUI implements Runnable, GUIInterface {
             return;
         }
         refreshChats();
+        createHeader();
     }
 
     public void logout() {
