@@ -445,7 +445,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 40, gridHeight);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 60, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
             String photosInfo = this.client.accessPhotosFromUser(username);
@@ -668,7 +668,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Create panel for grid of pictures
             JPanel gridPanel = new JPanel(new GridLayout(2, 3, 2, 2)); // 2 rows, 3 columns, 10px gaps
-            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 40, gridHeight);
+            gridPanel.setBounds(0, gridStartY, (int) gridWidth + 60, gridHeight);
             gridPanel.setBackground(Color.BLACK);
 
             String[] photos;

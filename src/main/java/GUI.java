@@ -299,7 +299,7 @@ public class GUI implements Runnable, GUIInterface {
         frame = new JFrame("Chatter");
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
+    
         client = loginPanel.getClient();
         if (client == null) {
             frame.setVisible(false);
@@ -325,22 +325,23 @@ public class GUI implements Runnable, GUIInterface {
         profilePanel = new ProfilePanel(username, client);
         updateProfilePanel();
         chatListPanel = new ChatListPanel(client);
-        // NEW CHANGE TESTING
         refreshChats();
         createHeader();
+        
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 1;
-
+    
         gbc.weightx = 0.2;
         gbc.weighty = 1.0;
         frame.add(chatListPanel, gbc);
-
+    
         gbc.weightx = 0.5;
         frame.add(chatPanel, gbc);
-
-        gbc.weightx = 0.9;
+    
+        gbc.weightx = 0.9; // Adjust weight to ensure profilePanel gets space
         // frame.add(profilePanel, gbc);
+    
         chatListPanel.addPropertyChangeListener("selectedChat", evt -> {
             String selectedUser = (String) evt.getNewValue();
             if (selectedUser != null) {
@@ -373,15 +374,15 @@ public class GUI implements Runnable, GUIInterface {
                         disconnect();
                         return;
                     }
-
+    
                     if (friendList.contains(selectedUser)) {
                         friendAndBlockButtons[0].setText("Unfriend");
                     }
-
+    
                     if (blockList.contains(selectedUser)) {
                         friendAndBlockButtons[1].setText("Unblock");
                     }
-
+    
                     friendAndBlockButtons[0].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -397,7 +398,7 @@ public class GUI implements Runnable, GUIInterface {
                             }
                         }
                     });
-
+    
                     friendAndBlockButtons[1].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -413,7 +414,7 @@ public class GUI implements Runnable, GUIInterface {
                             }
                         }
                     });
-
+    
                     frame.add(selectedProfilePanel, gbc);
                     frame.revalidate();
                     frame.repaint();
@@ -422,7 +423,7 @@ public class GUI implements Runnable, GUIInterface {
                 }
             }
         });
-
+    
         logoutButton = new RoundedButton("Logout", 15);
         logoutButton.setBackground(new Color(0, 149, 246));
         logoutButton.setForeground(Color.WHITE);
@@ -432,13 +433,13 @@ public class GUI implements Runnable, GUIInterface {
         RoundedPanel logoutPanel = new RoundedPanel(15);
         logoutPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         logoutPanel.add(logoutButton);
-        // // logoutPanel.add(addFriendButton, logoutConstraints);
-        // // logoutPanel.add(addBlockButton, logoutConstraints);
         GridBagConstraints logoutGbc = new GridBagConstraints();
-        logoutGbc.gridx = 3; // Right column
+        logoutGbc.gridx = 2; // Adjusted to fit within the layout
         logoutGbc.gridy = 2; // Bottom row
         logoutGbc.anchor = GridBagConstraints.SOUTHEAST;
         logoutGbc.insets = new Insets(0, 0, 10, 10);
+        logoutGbc.weightx = 1.0;
+        logoutGbc.weighty = 0.0;
         frame.add(logoutPanel, logoutGbc);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
@@ -451,13 +452,8 @@ public class GUI implements Runnable, GUIInterface {
         updateGUI();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(screenSize.width, screenSize.height);
-        // Set frame to maximized state
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Center the dialog
         frame.setLocation(0, 0);
-
-        // Make the dialog visible
         frame.setVisible(true);
         scheduleUpdates();
     }
