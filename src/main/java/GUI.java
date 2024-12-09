@@ -554,7 +554,7 @@ public class GUI implements Runnable, GUIInterface {
             return;
         }
         refreshChats();
-        createHeader();
+        // createHeader();
     }
 
     public void logout() {

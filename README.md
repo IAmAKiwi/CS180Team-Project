@@ -3,6 +3,41 @@
 ## Overview
 
 This project provides a comprehensive framework for a messaging application, including server-client communication, user management, and message handling. It includes detailed explanations of each class, method, and test case, as well as how the client and server interact.
+## Design Choices
+
+Our design decisions were inspired by modern and familiar social media applications to enhance user experience and accessibility. Below, we explain the thought process behind the key elements of our interface:
+
+### Login Panel
+The login panel takes inspiration from **Instagram**. Its clean and minimalistic design replicates the simplicity of Instagram's login interface, making it intuitive for users familiar with social media platforms. This choice aims to create a welcoming and recognizable entry point for our application.
+
+### Main Chat Frame
+The main chat frame is modeled after **Messenger**, reflecting its organized structure and user-friendly layout:
+- **Header**: 
+  - Includes the user's profile picture, designed as a clickable button.
+  - The button provides two options:
+    1. **My Profile**: Opens a window displaying:
+       - User profile details.
+       - Friends list.
+       - Blocked users list.
+    2. **Edit Profile**: Opens a panel where:
+       - The left side displays the current profile information.
+       - The right side contains editable text fields for updating user details.
+       - A live preview is provided, where changes made in the text fields are immediately reflected on the left side.
+
+### User Interactions
+- **Chat History**: 
+  - When a user selects another user, their chat history is displayed, ensuring continuity and context in conversations.
+- **Profile Display**:
+  - Alongside the chat history, the selected user's profile is shown.
+  - The profile includes:
+    - First name and last name.
+    - Bio.
+    - Birthday.
+    - Profile picture.
+    - The six most recent pictures sent by the user, adding a visual and interactive element to their profile.
+
+### Special Features
+The parallel updating of the profile in the **Edit Profile** panel adds a unique, dynamic interaction. This design allows users to immediately see the results of their changes, creating a smooth and responsive user experience.
 
 ## Core Components
 
@@ -205,8 +240,6 @@ This project provides a comprehensive framework for a messaging application, inc
    - Verify thread safety of shared resources
    - Monitor memory usage during large message exchanges
    - Test connection timeouts and cleanup
-
-
 
 ## Authors
 

@@ -583,7 +583,7 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
          * }
          */
     }
-
+    @Deprecated
     private void addUnreadIndicator(String username, int count) {
         // Add a small circle with number of unread messages
         RoundedLabel unreadLabel = new RoundedLabel(String.valueOf(count), 15);
@@ -595,7 +595,7 @@ public class ChatListPanel extends JPanel implements ChatListPanelInterface {
 
     // Custom rounded border for buttons
     private class RoundedBorder extends AbstractBorder {
-        private int radius;
+        private final int radius;
 
         RoundedBorder(int radius) {
             this.radius = radius;
