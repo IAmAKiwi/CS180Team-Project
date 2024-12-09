@@ -292,6 +292,7 @@ public class Server implements Runnable, ServerInterface {
 
     @Override
     public String getProfilePic() {
+        currentUser = db.getUser(currentUser.getUsername());
         return db.getUser(currentUser.getUsername()).getProfilePic();
     }
 
