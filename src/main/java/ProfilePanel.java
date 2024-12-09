@@ -350,7 +350,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                 this.add(iconLabel);
             } else {
                 ImageIcon appIcon = new ImageIcon(
-                    getPath("icons8-unlock-48.png", "symbols"));
+                        getPath("icons8-unlock-48.png", "symbols"));
                 Image scaledIcon = appIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
                 iconLabel.setBounds(40, 20, 40, 40); // x, y, width, height
@@ -370,7 +370,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsGap = 10;
 
             // Messages Stats
-            JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            JLabel messagesNumber = new JLabel(
+                    client.accessMessagesFromUser(profileInfo[0].replace("username:", "")).trim());
             // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
             messagesNumber.setForeground(statsColor);
@@ -385,7 +386,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Friends Stats
             // JLabel friendsNumber = new JLabel("966");
-            JLabel friendsNumber = new JLabel(client.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel friendsNumber = new JLabel(
+                    client.accessFriendsFromUser(profileInfo[0].replace("username:", "").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -399,7 +401,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Blocked Stats
             // JLabel blockedNumber = new JLabel("1M");
-            JLabel blockedNumber = new JLabel(client.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel blockedNumber = new JLabel(
+                    client.accessBlockedFromUser(profileInfo[0].replace("username:", "").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -492,26 +495,26 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                                 byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
                                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
                                 BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                    
+
                                 // Get panel and image dimensions
                                 int panelWidth = getWidth();
                                 int panelHeight = getHeight();
                                 int imgWidth = bufferedImage.getWidth();
                                 int imgHeight = bufferedImage.getHeight();
-                    
+
                                 // Calculate scaling factor to fit the panel
                                 double scaleX = (double) panelWidth / imgWidth;
                                 double scaleY = (double) panelHeight / imgHeight;
                                 double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
-                    
+
                                 // Calculate new dimensions
                                 int scaledWidth = (int) (imgWidth * scale);
                                 int scaledHeight = (int) (imgHeight * scale);
-                    
+
                                 // Center the image in the panel
                                 int x = (panelWidth - scaledWidth) / 2;
                                 int y = (panelHeight - scaledHeight) / 2;
-                    
+
                                 // Draw the scaled image
                                 g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
                             } else {
@@ -605,7 +608,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsGap = 10;
             Client tempClient = new Client();
             // Messages Stats
-            JLabel messagesNumber = new JLabel(tempClient.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            JLabel messagesNumber = new JLabel(
+                    tempClient.accessMessagesFromUser(profileInfo[0].replace("username:", "")).trim());
             // System.out.println(profileInfo[0].replace("username:","").trim());
             // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
@@ -621,7 +625,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Friends Stats
             // JLabel friendsNumber = new JLabel("966");
-            JLabel friendsNumber = new JLabel(tempClient.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel friendsNumber = new JLabel(
+                    tempClient.accessFriendsFromUser(profileInfo[0].replace("username:", "").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -635,7 +640,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Blocked Stats
             // JLabel blockedNumber = new JLabel("1M");
-            JLabel blockedNumber = new JLabel(tempClient.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel blockedNumber = new JLabel(
+                    tempClient.accessBlockedFromUser(profileInfo[0].replace("username:", "").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -711,26 +717,26 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                                 byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
                                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
                                 BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                    
+
                                 // Get panel and image dimensions
                                 int panelWidth = getWidth();
                                 int panelHeight = getHeight();
                                 int imgWidth = bufferedImage.getWidth();
                                 int imgHeight = bufferedImage.getHeight();
-                    
+
                                 // Calculate scaling factor to fit the panel
                                 double scaleX = (double) panelWidth / imgWidth;
                                 double scaleY = (double) panelHeight / imgHeight;
                                 double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
-                    
+
                                 // Calculate new dimensions
                                 int scaledWidth = (int) (imgWidth * scale);
                                 int scaledHeight = (int) (imgHeight * scale);
-                    
+
                                 // Center the image in the panel
                                 int x = (panelWidth - scaledWidth) / 2;
                                 int y = (panelHeight - scaledHeight) / 2;
-                    
+
                                 // Draw the scaled image
                                 g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
                             } else {
@@ -858,7 +864,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             int statsGap = 10;
 
             // Messages Stats
-            JLabel messagesNumber = new JLabel(client.accessMessagesFromUser(profileInfo[0].replace("username:","")).trim());
+            JLabel messagesNumber = new JLabel(
+                    client.accessMessagesFromUser(profileInfo[0].replace("username:", "")).trim());
             // System.out.println(profileInfo[0].replace("username:","").trim());
             // JLabel messagesNumber = new JLabel("699");
             messagesNumber.setFont(statsNumberFont);
@@ -874,7 +881,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Friends Stats
             // JLabel friendsNumber = new JLabel("966");
-            JLabel friendsNumber = new JLabel(client.accessFriendsFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel friendsNumber = new JLabel(
+                    client.accessFriendsFromUser(profileInfo[0].replace("username:", "").trim()));
             friendsNumber.setFont(statsNumberFont);
             friendsNumber.setForeground(statsColor);
             friendsNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -888,7 +896,8 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
 
             // Blocked Stats
             // JLabel blockedNumber = new JLabel("1M");
-            JLabel blockedNumber = new JLabel(client.accessBlockedFromUser(profileInfo[0].replace("username:","").trim()));
+            JLabel blockedNumber = new JLabel(
+                    client.accessBlockedFromUser(profileInfo[0].replace("username:", "").trim()));
             blockedNumber.setFont(statsNumberFont);
             blockedNumber.setForeground(statsColor);
             blockedNumber.setHorizontalAlignment(SwingConstants.CENTER);
@@ -965,26 +974,26 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
                                 byte[] imageBytes = Base64.getDecoder().decode(encodedImage);
                                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
                                 BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-                    
+
                                 // Get panel and image dimensions
                                 int panelWidth = getWidth();
                                 int panelHeight = getHeight();
                                 int imgWidth = bufferedImage.getWidth();
                                 int imgHeight = bufferedImage.getHeight();
-                    
+
                                 // Calculate scaling factor to fit the panel
                                 double scaleX = (double) panelWidth / imgWidth;
                                 double scaleY = (double) panelHeight / imgHeight;
                                 double scale = Math.max(scaleX, scaleY); // Ensure the image fits entirely
-                    
+
                                 // Calculate new dimensions
                                 int scaledWidth = (int) (imgWidth * scale);
                                 int scaledHeight = (int) (imgHeight * scale);
-                    
+
                                 // Center the image in the panel
                                 int x = (panelWidth - scaledWidth) / 2;
                                 int y = (panelHeight - scaledHeight) / 2;
-                    
+
                                 // Draw the scaled image
                                 g2.drawImage(bufferedImage, x, y, scaledWidth, scaledHeight, this);
                             } else {
@@ -1371,7 +1380,7 @@ public class ProfilePanel extends JPanel implements ProfilePanelInterface {
             } else {
                 gbc.gridheight = 1;
                 gbc.gridwidth = 1;
-                
+
                 JLabel newFriendsLabel = new JLabel("Friends:");
                 newFriendsLabel.setFont(new Font("Arial", Font.BOLD, 14));
                 newFriendsLabel.setForeground(Color.BLACK);

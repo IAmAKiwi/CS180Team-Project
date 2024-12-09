@@ -21,7 +21,7 @@ public interface LoginPanelInterface extends Runnable {
      * @param textField TextField to update
      */
     void removePlaceholderStyle(JTextField textField);
-    void addPlaceHolderStyle(JTextField textField);
+
     /**
      * Gets the client instance
      * 

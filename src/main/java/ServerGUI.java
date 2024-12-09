@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerGUI implements Runnable {
+public class ServerGUI implements Runnable, ServerGUIInterface {
     private int port = -1;
     private String host;
     private ServerSocket serverSocket;

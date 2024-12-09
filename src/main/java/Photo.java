@@ -30,7 +30,7 @@ public class Photo implements PhotoInterface {
      *
      * @param photoPath      The file path to the photo
      * @param senderUsername The username of the User that sent this Photo
-     * @param timeStamp The time stamp of the photo
+     * @param timeStamp      The time stamp of the photo
      */
     public Photo(String photoPath, String senderUsername, long timeStamp) {
         this();
@@ -42,7 +42,7 @@ public class Photo implements PhotoInterface {
     /**
      * Main constructor for the class Photo.
      *
-     * @param photoPath The file path to the photo
+     * @param photoPath      The file path to the photo
      * @param senderUsername The username of the User that sent this Photo
      */
     public Photo(String photoPath, String senderUsername) {

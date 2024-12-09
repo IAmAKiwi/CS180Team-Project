@@ -32,6 +32,7 @@ public class LoginPanel extends JComponent implements Runnable, LoginPanelInterf
         this.client = client;
         loginPanel = this;
     }
+
     @Override
     public void addPlaceHolderStyle(JTextField textField) {
         Font font = textField.getFont();
